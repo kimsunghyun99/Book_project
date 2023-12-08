@@ -16,23 +16,23 @@ import org.hibernate.annotations.OnDeleteAction;
 public class PurchaseInfoEntity {
 
     @Id
-    @Column(name = "purchase_seq")
-    private Long purchase_seq;
+    @Column(name = "purchaseseq")
+    private Long purchaseseq;
 
-    @Column(name = "purchase_addr", length = 100, nullable = true)
-    private String purchase_addr;
+    @Column(name = "purchaseaddr", length = 100, nullable = true)
+    private String purchaseaddr;
 
-    @Column(name = "purchase_zipcode", length = 10, nullable = true)
-    private Long purchase_zipcode;
+    @Column(name = "purchasezipcode", length = 10, nullable = true)
+    private Long purchasezipcode;
 
-    @Column(name = "purchase_detail_addr", length = 20, nullable = true)
-    private String purchase_detail_addr;
+    @Column(name = "purchasedetailaddr", length = 20, nullable = true)
+    private String purchasedetailaddr;
 
-    @Column(name = "purchase_name", length = 10, nullable = true)
-    private String purchase_name;
+    @Column(name = "purchasename", length = 10, nullable = true)
+    private String purchasename;
 
-    @Column(name = "purchase_telno", length = 10, nullable = true)
-    private String purchase_telno;
+    @Column(name = "purchasetelno", length = 10, nullable = true)
+    private String purchasetelno;
 
 
     @ManyToOne(fetch = FetchType.LAZY)

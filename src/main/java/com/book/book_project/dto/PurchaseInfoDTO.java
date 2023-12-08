@@ -13,22 +13,22 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PurchaseInfoDTO {
 
-    private Long purchase_seq;
-    private String purchase_addr;
-    private Long purchase_zipcode;
-    private String purchase_detail_addr;
-    private String purchase_name;
-    private String purchase_telno;
+    private Long purchaseseq;
+    private String purchaseaddr;
+    private Long purchasezipcode;
+    private String purchasedetailaddr;
+    private String purchasename;
+    private String purchasetelno;
     private MemberEntity userid;
 
  public PurchaseInfoDTO(PurchaseInfoEntity purchaseinfoEntity) {
 
-     this.purchase_seq = purchaseinfoEntity.getPurchase_seq();
-     this.purchase_addr = purchaseinfoEntity.getPurchase_addr();
-     this.purchase_zipcode = purchaseinfoEntity.getPurchase_zipcode();
-     this.purchase_detail_addr = purchaseinfoEntity.getPurchase_detail_addr();
-     this.purchase_name = purchaseinfoEntity.getPurchase_name();
-     this.purchase_telno = purchaseinfoEntity.getPurchase_telno();
+     this.purchaseseq = purchaseinfoEntity.getPurchaseseq();
+     this.purchaseaddr = purchaseinfoEntity.getPurchaseaddr();
+     this.purchasezipcode = purchaseinfoEntity.getPurchasezipcode();
+     this.purchasedetailaddr = purchaseinfoEntity.getPurchasedetailaddr();
+     this.purchasename = purchaseinfoEntity.getPurchasename();
+     this.purchasetelno = purchaseinfoEntity.getPurchasetelno();
      this.userid = purchaseinfoEntity.getUserid();
 
     }
@@ -37,12 +37,12 @@ public class PurchaseInfoDTO {
  public PurchaseInfoEntity dtoToEntity(PurchaseInfoDTO dto) {
 
      PurchaseInfoEntity entity = PurchaseInfoEntity.builder()
-                .purchase_seq(dto.getPurchase_seq())
-                .purchase_addr(dto.getPurchase_addr())
-                .purchase_zipcode(dto.getPurchase_zipcode())
-                .purchase_detail_addr(dto.getPurchase_detail_addr())
-                .purchase_name(dto.getPurchase_name())
-                .purchase_telno(dto.getPurchase_telno())
+                .purchaseseq(dto.getPurchaseseq())
+                .purchaseaddr(dto.getPurchaseaddr())
+                .purchasezipcode(dto.getPurchasezipcode())
+                .purchasedetailaddr(dto.getPurchasedetailaddr())
+                .purchasename(dto.getPurchasename())
+                .purchasetelno(dto.getPurchasetelno())
                 .userid(dto.getUserid())
                 .build();
         return entity;

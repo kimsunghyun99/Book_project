@@ -1,9 +1,6 @@
 package com.book.book_project.dto;
 
-import com.book.book_project.entity.ProductEntity;
-import com.book.book_project.entity.PurchaseDetailEntity;
-import com.book.book_project.entity.PurchaseStatusEntity;
-import com.book.book_project.entity.UnMemberEntity;
+import com.book.book_project.entity.*;
 import lombok.*;
 
 import java.sql.Timestamp;
@@ -19,7 +16,7 @@ public class PurchaseDetailDTO {
     private ProductEntity bookid;
     private UnMemberEntity unMembertelno;
     private PurchaseStatusEntity statusseq;
-    private PurchaseInfoEntity purchaseseq;
+    private RefundEntity purchaseseq;
     private String deliverystatus;
     private Timestamp purchasedate;
     private int volume;
@@ -37,7 +34,7 @@ public class PurchaseDetailDTO {
         this.totalprice=purchaseDetailEntity.getPurchasedetailseq();
     }
 
-    public PurchaseDetailEntity purchaseDetailEntity(PurchaseDetailDTO dto){
+    public PurchaseDetailEntity dtoToEntity(PurchaseDetailDTO dto){
 
         return PurchaseDetailEntity.builder()
                 .purchasedetailseq(dto.getPurchasedetailseq())

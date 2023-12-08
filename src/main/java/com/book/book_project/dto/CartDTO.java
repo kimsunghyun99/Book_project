@@ -34,7 +34,7 @@ public class CartDTO {
 
     //DTO --> Entity
 
-    public CartEntity dtotoEntity(CartDTO dto)  {
+    public CartEntity dtoToEntity(CartDTO dto)  {
 
         CartEntity cartEntity = CartEntity.builder()
                 .cartid(dto.getCartid())

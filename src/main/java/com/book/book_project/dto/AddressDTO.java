@@ -33,16 +33,16 @@ public class AddressDTO {
 	
 	//DTO --> Entity
 		
-		public AddressEntity dtotoEntity(AddressDTO dto)  {
+		public AddressEntity dtoToEntity(AddressDTO dto)  {
 
-			AddressEntity addresEntity = AddressEntity.builder()
+			AddressEntity addressEntity = AddressEntity.builder()
 					 										 .zipcode(dto.getZipcode())
 					 										 .province(dto.getProvince())
 					 										 .road(dto.getRoad())
 					 										 .building(dto.getBuilding())
 					 										 .oldaddr(dto.getOldaddr())
 					 										 .build();
-					 										 return addresEntity;
+					 										 return addressEntity;
 			 
 			 
 		 }

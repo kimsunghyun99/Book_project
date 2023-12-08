@@ -25,7 +25,7 @@ public class UnMemberDTO {
         this.buyer=unMemberEntity.getBuyer();
     }
 
-    public UnMemberEntity unMemberEntity(UnMemberDTO dto){
+    public UnMemberEntity dtoToEntity(UnMemberDTO dto){
 
         return UnMemberEntity.builder()
                 .unmembertelno(dto.getUnmembertelno())

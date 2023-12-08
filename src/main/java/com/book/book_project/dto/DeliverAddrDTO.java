@@ -40,7 +40,7 @@ public class DeliverAddrDTO {
 
     //DTO --> Entity
 
-    public DeliveryAddrEntity dtotoEntity(DeliverAddrDTO dto)  {
+    public DeliveryAddrEntity dtoToEntity(DeliverAddrDTO dto)  {
 
         DeliveryAddrEntity deliveryAddrEntity = DeliveryAddrEntity.builder()
                 .deliveryseq(dto.getDeliveryseq())

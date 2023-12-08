@@ -10,20 +10,20 @@ import lombok.*;
 @Builder
 public class CategoryDTO {
 
-    private int category_seq;   //분류번호
-    private String category_name;   //분류명
+    private int categoryseq;   //분류번호
+    private String categoryname;   //분류명
 
     //Entity -> DTO 이동
     public CategoryDTO (CategoryEntity categoryEntity ) {
-        this.category_seq = categoryEntity.getCategory_seq();
-        this.category_name = categoryEntity.getCategory_name();
+        this.categoryseq = categoryEntity.getCategoryseq();
+        this.categoryname = categoryEntity.getCategoryname();
     }
 
     //DTO -> Entity 이동
     public CategoryEntity dtoToEntity(CategoryDTO dto) {
         CategoryEntity categoryEntity = CategoryEntity.builder()
-                .category_seq(dto.getCategory_seq())
-                .category_name(dto.getCategory_name())
+                .categoryseq(dto.getCategoryseq())
+                .categoryname(dto.getCategoryname())
                 .build();
 
         return categoryEntity;

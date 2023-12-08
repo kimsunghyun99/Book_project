@@ -21,7 +21,7 @@ public class RefundDTO {
         this.refundreason=refundEntity.getRefundreason();
     }
 
-    public RefundEntity refundEntity(RefundDTO dto){
+    public RefundEntity dtoToEntity(RefundDTO dto){
 
         return RefundEntity.builder()
                 .refundseq(dto.getRefundSeq())

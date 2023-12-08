@@ -17,7 +17,7 @@ public class PurchaseStatusDTO {
         this.statusname=purchaseStatusEntity.getStatusname();
     }
 
-    public PurchaseStatusEntity purchaseStatusEntity(PurchaseStatusDTO dto){
+    public PurchaseStatusEntity dtoToEntity(PurchaseStatusDTO dto){
 
         return PurchaseStatusEntity.builder()
                 .statusseq(dto.getStatusseq())

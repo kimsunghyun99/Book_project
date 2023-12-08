@@ -17,10 +17,10 @@ public class CategoryEntity {
 
     //분류번호
     @Id
-    @Column(name = "category_seq", nullable = false)
-    private int category_seq;
+    @Column(name = "categoryseq", nullable = false)
+    private int categoryseq;
 
     //분류명
-    @Column(name = "category_name", length = 200, nullable = false)
-    private String category_name;
+    @Column(name = "categoryname", length = 200, nullable = false)
+    private String categoryname;
 }
