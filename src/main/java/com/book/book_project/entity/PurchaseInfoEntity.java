@@ -1,10 +1,9 @@
 package com.book.book_project.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Setter
@@ -30,12 +29,17 @@ public class PurchaseInfoEntity {
     private String purchase_detail_addr;
 
     @Column(name = "purchase_name", length = 10, nullable = true)
-    private Long purchase_name;
+    private String purchase_name;
 
     @Column(name = "purchase_telno", length = 10, nullable = true)
     private String purchase_telno;
 
-    @Column(name = "userid", length = 10, nullable = true)
-    private String userid;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name="userid", nullable = false)
+    private MemberEntity userid;
+
+
 
 }

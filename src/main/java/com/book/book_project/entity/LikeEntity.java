@@ -1,10 +1,9 @@
 package com.book.book_project.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.sql.Timestamp;
 
@@ -28,12 +27,14 @@ public class LikeEntity {
     @Column(name="likecheck", nullable=true)
     private String likecheck;
 
-    @Column(name="userid", length=20, nullable=false)
-    private String userid;
 
-    @Column(name="bookid", length=10, nullable=true)
-    private Long bookid;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name="userid", nullable = false)
+    private MemberEntity userid;
 
-
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name="bookid", nullable = false)
+    private ProductEntity bookid;
 }

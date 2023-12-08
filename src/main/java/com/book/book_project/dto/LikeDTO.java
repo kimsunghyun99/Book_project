@@ -1,6 +1,8 @@
 package com.book.book_project.dto;
 
 import com.book.book_project.entity.LikeEntity;
+import com.book.book_project.entity.MemberEntity;
+import com.book.book_project.entity.ProductEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,30 +16,30 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LikeDTO {
-    private Long likeSeq;
-    private Timestamp likeDate;
-    private String likeCheck;
-    private String userId;
-    private Long bookId;
+    private Long likeseq;
+    private Timestamp likedate;
+    private String likecheck;
+    private MemberEntity userid;
+    private ProductEntity bookid;
 
 public LikeDTO(LikeEntity likeEntity) {
 
-        this.likeSeq = likeEntity.getLikeseq();
-        this.likeDate = likeEntity.getLikedate();
-        this.likeCheck = likeEntity.getLikecheck();
-        this.userId = likeEntity.getUserid();
-        this.bookId = likeEntity.getBookid();
+        this.likeseq = likeEntity.getLikeseq();
+        this.likedate = likeEntity.getLikedate();
+        this.likecheck = likeEntity.getLikecheck();
+        this.userid = likeEntity.getUserid();
+        this.bookid = likeEntity.getBookid();
     }
 
     //Entity --> DTO
 public LikeEntity dtoToEntity(LikeDTO dto) {
 
         LikeEntity entity = LikeEntity.builder()
-                .likeSeq(dto.getLikeSeq())
-                .likeDate(dto.getLikeDate())
-                .likeCheck(dto.getLikeCheck())
-                .userId(dto.getUserId())
-                .bookId(dto.getBookId())
+                .likeseq(dto.getLikeseq())
+                .likedate(dto.getLikedate())
+                .likecheck(dto.getLikecheck())
+                .userid(dto.getUserid())
+                .bookid(dto.getBookid())
                 .build();
         return entity;
     }

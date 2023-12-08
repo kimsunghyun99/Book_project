@@ -1,5 +1,7 @@
 package com.book.book_project.dto;
 
+import com.book.book_project.entity.MemberEntity;
+import com.book.book_project.entity.ProductEntity;
 import com.book.book_project.entity.ReviewEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,33 +16,33 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReviewDTO {
-            private Long reviewSeq;
-            private Long bookId;
-            private String userId;
+            private Long reviewseq;
+            private ProductEntity bookid;
+            private MemberEntity userid;
             private String reviewer;
-            private String reviewContent;
-            private Timestamp reviewRegDate;
+            private String reviewcontent;
+            private Timestamp reviewregdate;
 
     public ReviewDTO(ReviewEntity reviewEntity) {
 
-        this.reviewSeq = reviewEntity.getReviewseq();
-        this.bookId = reviewEntity.getBookid();
-        this.userId = reviewEntity.getUserid();
+        this.reviewseq = reviewEntity.getReviewseq();
+        this.bookid = reviewEntity.getBookid();
+        this.userid = reviewEntity.getUserid();
         this.reviewer = reviewEntity.getReviewer();
-        this.reviewContent = reviewEntity.getReviewcontent();
-        this.reviewRegDate = reviewEntity.getReviewregdate();
+        this.reviewcontent = reviewEntity.getReviewcontent();
+        this.reviewregdate = reviewEntity.getReviewregdate();
     }
 
     //Entity --> DTO
     public ReviewEntity dtoToEntity(ReviewDTO dto) {
 
         ReviewEntity entity = ReviewEntity.builder()
-                .reviewSeq(dto.getReviewSeq())
-                .bookId(dto.getBookId())
-                .userId(dto.getUserId())
+                .reviewseq(dto.getReviewseq())
+                .bookid(dto.getBookid())
+                .userid(dto.getUserid())
                 .reviewer(dto.getReviewer())
-                .reviewContent(dto.getReviewContent())
-                .reviewRegDate(dto.getReviewRegDate())
+                .reviewcontent(dto.getReviewcontent())
+                .reviewregdate(dto.getReviewregdate())
                 .build();
         return entity;
     }

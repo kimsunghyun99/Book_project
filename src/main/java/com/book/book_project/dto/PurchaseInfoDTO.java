@@ -1,5 +1,6 @@
 package com.book.book_project.dto;
 
+import com.book.book_project.entity.MemberEntity;
 import com.book.book_project.entity.PurchaseInfoEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,7 +19,7 @@ public class PurchaseInfoDTO {
     private String purchase_detail_addr;
     private String purchase_name;
     private String purchase_telno;
-    private String userId;
+    private MemberEntity userid;
 
  public PurchaseInfoDTO(PurchaseInfoEntity purchaseinfoEntity) {
 
@@ -28,7 +29,7 @@ public class PurchaseInfoDTO {
      this.purchase_detail_addr = purchaseinfoEntity.getPurchase_detail_addr();
      this.purchase_name = purchaseinfoEntity.getPurchase_name();
      this.purchase_telno = purchaseinfoEntity.getPurchase_telno();
-     this.userId = purchaseinfoEntity.getUserid();
+     this.userid = purchaseinfoEntity.getUserid();
 
     }
 
@@ -39,10 +40,10 @@ public class PurchaseInfoDTO {
                 .purchase_seq(dto.getPurchase_seq())
                 .purchase_addr(dto.getPurchase_addr())
                 .purchase_zipcode(dto.getPurchase_zipcode())
-                .purchase_detail_addr(dto.getUserId())
+                .purchase_detail_addr(dto.getPurchase_detail_addr())
                 .purchase_name(dto.getPurchase_name())
                 .purchase_telno(dto.getPurchase_telno())
-                .userId(dto.getUserId())
+                .userid(dto.getUserid())
                 .build();
         return entity;
     }
