@@ -26,7 +26,7 @@ public class PurchaseInfoDTO {
      this.purchase_addr = purchaseinfoEntity.getPurchase_addr();
      this.purchase_zipcode = purchaseinfoEntity.getPurchase_zipcode();
      this.purchase_detail_addr = purchaseinfoEntity.getPurchase_detail_addr();
-     this.purchase_name = purchaseinfoEntity.getPurchase_name();
+     this.purchase_name = purchaseinfoEntity.getPurchase_name()
      this.purchase_telno = purchaseinfoEntity.getPurchase_telno();
      this.userId = purchaseinfoEntity.getUserid();
 

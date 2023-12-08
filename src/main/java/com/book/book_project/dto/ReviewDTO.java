@@ -36,7 +36,7 @@ public class ReviewDTO {
     public ReviewEntity dtoToEntity(ReviewDTO dto) {
 
         ReviewEntity entity = ReviewEntity.builder()
-                .reviewSeq(dto.getReviewSeq())
+                .reviewseq(dto.getReviewSeq())
                 .bookId(dto.getBookId())
                 .userId(dto.getUserId())
                 .reviewer(dto.getReviewer())

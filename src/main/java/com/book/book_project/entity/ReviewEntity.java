@@ -31,7 +31,7 @@ public class ReviewEntity {
     @Column(name = "reviewer", length = 20, nullable = false)
     private String reviewer;
 
-    @Column(name = "reviewcontent", length = 100, nullable = false)
+    @Column(name = "reviewcontent", length = 100, nullable = true)
     private String reviewcontent;
 
     @Column(name = "reviewregdate", nullable = true)
