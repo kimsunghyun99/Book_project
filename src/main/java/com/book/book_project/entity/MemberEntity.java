@@ -1,5 +1,6 @@
 package com.book.book_project.entity;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -33,17 +34,11 @@ public class MemberEntity {
     @Column(name="nickname", length=20, nullable=false)
     private String nickname;
 
-    @Column(name="zipcode", length=50, nullable=true)
-    private String zipcode;
-
-    @Column(name="address", length=1000, nullable=true)
-    private String address;
-
     @Column(name="username", length=200, nullable=false)
     private String username;
 
     @Column(name="birthday", length=2, nullable = false)
-    private LocalDateTime birthday;
+    private Timestamp birthday;
 
     @Column(name="gender", length=20, nullable=true)
     private String gender;
@@ -54,13 +49,8 @@ public class MemberEntity {
     @Column(name="password", length=200, nullable=false)
     private String password;
 
-
-    @Column(name="pwcheck",  nullable=true)
-    private int pwcheck;
-
-
     @Column(name="regdate", nullable=false)
-    private LocalDateTime regdate;
+    private Timestamp regdate;
 
     @Column(name="point", length=2, nullable = true)
     private int point;
@@ -74,22 +64,22 @@ public class MemberEntity {
     @Column(name="likegenre", length=2, nullable = false)
     private String likegenre;
 
+    @Column(name="pwcheck",  nullable=true)
+    private int pwcheck;
 
     @Column(name="lastlogindate",  nullable=true)
-    private LocalDateTime lastlogindate;
+    private Timestamp lastlogindate;
 
     @Column(name="lastlogoutdate",  nullable=true)
-    private LocalDateTime lastlogoutdate;
+    private Timestamp lastlogoutdate;
 
     @Column(name="lastpwdate", nullable=true)
-    private LocalDateTime lastpwdate;
+    private Timestamp lastpwdate;
 
     @Column(name="fromsocial", length=2, nullable = false)
     private String fromSocial;
 
     @Column(name="role", length=50, nullable=false)
     private String role;
-
-
 
 }
