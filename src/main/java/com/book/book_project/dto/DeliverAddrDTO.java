@@ -3,10 +3,14 @@ package com.book.book_project.dto;
 import com.book.book_project.entity.AddressEntity;
 import com.book.book_project.entity.DeliveryAddrEntity;
 import com.book.book_project.entity.MemberEntity;
+import lombok.*;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class DeliverAddrDTO {
-
-
     private String deliveryseq;
     private MemberEntity userid;
     private String addr;

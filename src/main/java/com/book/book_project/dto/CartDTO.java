@@ -2,14 +2,21 @@ package com.book.book_project.dto;
 
 import com.book.book_project.entity.CartEntity;
 import com.book.book_project.entity.MemberEntity;
+import com.book.book_project.entity.ProductEntity;
+import lombok.*;
 
 import java.sql.Timestamp;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class CartDTO {
 
     private String cartid;
     private MemberEntity userid;
-    private String bookid;
+    private ProductEntity bookid;
     private int cartvolume;
     private Timestamp cartregdate; // 생일
 
