@@ -35,7 +35,7 @@ public class CartEntity {
     @ManyToOne(fetch =FetchType.LAZY)
     @OnDelete(action= OnDeleteAction.CASCADE)
     @JoinColumn(name="bookid", nullable=false)
-    private MemberEntity bookid;
+    private ProductEntity bookid;
 
     @Column(name="cartvolume", nullable=false)
     private int cartvolume;
