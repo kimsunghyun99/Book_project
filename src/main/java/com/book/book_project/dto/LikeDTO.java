@@ -33,7 +33,7 @@ public LikeDTO(LikeEntity likeEntity) {
 public LikeEntity dtoToEntity(LikeDTO dto) {
 
         LikeEntity entity = LikeEntity.builder()
-                .likeseq(dto.getLikeSeq())
+                .likeSeq(dto.getLikeSeq())
                 .likeDate(dto.getLikeDate())
                 .likeCheck(dto.getLikeCheck())
                 .userId(dto.getUserId())

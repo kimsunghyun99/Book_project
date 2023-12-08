@@ -37,7 +37,7 @@ public class PurchaseInfoEntity {
     @Column(name = "purchase_telno", length = 10, nullable = true)
     private String purchase_telno;
 
-    @Column(name = "userid", length = 10, nullable = false)
+    @Column(name = "userid", length = 10, nullable = true)
     private String userid;
 
 }

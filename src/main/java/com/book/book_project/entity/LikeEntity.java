@@ -28,7 +28,7 @@ public class LikeEntity {
     @Column(name="likecheck", nullable=true)
     private String likecheck;
 
-    @Column(name="userid", length=20, nullable=true)
+    @Column(name="userid", length=20, nullable=false)
     private String userid;
 
     @Column(name="bookid", length=10, nullable=true)
