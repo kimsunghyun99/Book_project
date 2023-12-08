@@ -1,5 +1,6 @@
 package com.book.book_project.dto;
 
+import com.book.book_project.entity.ProductEntity;
 import com.book.book_project.entity.PurchaseDetailEntity;
 import com.book.book_project.entity.PurchaseStatusEntity;
 import com.book.book_project.entity.UnMemberEntity;
