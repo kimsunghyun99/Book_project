@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 @Builder
 public class CartDTO {
 
-    private String cartid;
+    private int cartid;
     private MemberEntity userid;
     private ProductEntity bookid;
     private int cartvolume;
