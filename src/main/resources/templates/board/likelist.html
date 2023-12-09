@@ -2,9 +2,119 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>즐겨찾기</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+
+    }
+
+    header {
+        background-color: #007ACC;
+        color: #FFF;
+        text-align: center;
+        padding: 10px;
+    }
+
+    nav {
+        background-color: #333;
+        color: #FFF;
+        text-align: center;
+        padding: 10px;
+    }
+    .book-list-control {
+        display: flex;
+        justify-content: right;
+    }
+
+    .book-list-control button{
+        margin : 0 5px;
+    }
+    .book-list {
+        display : flex;
+        justify-content : space-around;
+        flex-wrap: wrap;
+    }
+    .book-image {
+        width: 100%;
+        height: auto;
+    }
+    .book {
+        position: relative;
+        border : 1px solid black;
+        padding : 20px;
+        margin : 5px;
+        flex-basis: calc(25% - 1px);
+    }
+    .book-select {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+    }
+</style>
 </head>
 <body>
+<header>
+    <h1>교보문고</h1>
+</header>
+
+<nav>
+    <a href="#">홈</a> |
+    <a href="#">도서</a> |
+    <a href="#">이벤트</a> |
+    <a href="#">마이페이지</a>
+    <a href="/member/signup">회원가입</a>
+</nav>
+
+<h2>즐겨찾기</h2>
+<div class = "book-list-control">
+    <button>모두 선택</button>
+    <button>삭제</button>
+</div>
+
+<div class = "book-list">
+    <div class = "book">
+        <input type="checkbox" class="book-select">
+        <img src="#" alt="book image" class="book-image">
+        <h2>책 제목1</h2>
+        <p>가격</p>
+    </div>
+
+    <div class = "book">
+        <input type="checkbox" class="book-select">
+        <img src="#" alt="book image" class="book-image">
+        <h2>책 제목2</h2>
+        <p>가격</p>
+    </div>
+
+    <div class = "book">
+        <input type="checkbox" class="book-select">
+        <img src="#" alt="book image" class="book-image">
+        <h2>책 제목3</h2>
+        <p>가격</p>
+    </div>
+
+    <div class = "book">
+        <input type="checkbox" class="book-select">
+        <img src="#" alt="book image" class="book-image">
+        <h2>책 제목4</h2>
+        <p>가격</p>
+    </div>
+
+    <div class = "book">
+        <input type="checkbox" class="book-select">
+        <img src="#" alt="book image" class="book-image">
+        <h2>책 제목5</h2>
+        <p>가격</p>
+    </div>
+
+    <div class = "book">
+        <input type="checkbox" class="book-select">
+        <img src="#" alt="book image" class="book-image">
+        <h2>책 제목6</h2>
+        <p>가격</p>
+    </div>
+</div>
 
 </body>
 </html>

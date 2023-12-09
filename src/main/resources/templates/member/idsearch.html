@@ -120,11 +120,11 @@
                 var activeForm = document.getElementById(activeFormId);
                 activeForm.style.display = "none";
                 var activeHeader = activeForm.previousElementSibling;
-                activeHeader.textContent = activeFormId === "findForm" ? "휴대폰 번호로 찾기 ▶" : "이메일로 찾기 ▶";
+                activeHeader.textContent = activeFormId === "findForm" ? "휴대폰 번호로 찾기 ▼" : "이메일로 찾기 ▶";
             }
 
             form.style.display = "flex";
-            header.textContent = formid === "findForm" ? "휴대폰 번호로 찾기 ▼" : "이메일로 찾기 ▼";
+            header.textContent = formid === "findForm" ? "휴대폰 번호로 찾기 ▶" : "이메일로 찾기 ▼";
             activeFormId = formid;
         }
     }

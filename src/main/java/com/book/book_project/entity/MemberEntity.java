@@ -82,4 +82,7 @@ public class MemberEntity {
     @Column(name="role", length=50, nullable=false)
     private String role;
 
+    @Column(name="authkey", length=50, nullable = true)
+    private String authkey;
+
 }
