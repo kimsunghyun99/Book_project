@@ -1,4 +1,4 @@
 package com.book.book_project.service;
 
-public interface PurchaseDetailService {
+public interface BuyerInfoService {
 }

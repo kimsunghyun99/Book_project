@@ -1,7 +1,8 @@
 package com.book.book_project.dto;
 
 import com.book.book_project.entity.MemberEntity;
-import com.book.book_project.entity.PurchaseInfoEntity;
+import com.book.book_project.entity.BuyerInfoEntity;
+import com.book.book_project.entity.UnMemberEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,9 +12,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PurchaseInfoDTO {
+public class BuyerInfoDTO {
 
     private Long purchaseseq;
+    private UnMemberEntity unmembertelno;
     private String purchaseaddr;
     private Long purchasezipcode;
     private String purchasedetailaddr;
@@ -21,9 +23,10 @@ public class PurchaseInfoDTO {
     private String purchasetelno;
     private MemberEntity userid;
 
- public PurchaseInfoDTO(PurchaseInfoEntity purchaseinfoEntity) {
+ public BuyerInfoDTO(BuyerInfoEntity purchaseinfoEntity) {
 
      this.purchaseseq = purchaseinfoEntity.getPurchaseseq();
+     this.unmembertelno = purchaseinfoEntity.getUnmembertelno();
      this.purchaseaddr = purchaseinfoEntity.getPurchaseaddr();
      this.purchasezipcode = purchaseinfoEntity.getPurchasezipcode();
      this.purchasedetailaddr = purchaseinfoEntity.getPurchasedetailaddr();
@@ -34,10 +37,11 @@ public class PurchaseInfoDTO {
     }
 
     //Entity --> DTO
- public PurchaseInfoEntity dtoToEntity(PurchaseInfoDTO dto) {
+ public BuyerInfoEntity dtoToEntity(BuyerInfoDTO dto) {
 
-     PurchaseInfoEntity entity = PurchaseInfoEntity.builder()
+     BuyerInfoEntity entity = BuyerInfoEntity.builder()
                 .purchaseseq(dto.getPurchaseseq())
+                .unmembertelno(dto.getUnmembertelno())
                 .purchaseaddr(dto.getPurchaseaddr())
                 .purchasezipcode(dto.getPurchasezipcode())
                 .purchasedetailaddr(dto.getPurchasedetailaddr())

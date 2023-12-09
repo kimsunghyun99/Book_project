@@ -1,4 +1,4 @@
 package com.book.book_project.service;
 
-public class PurchaseDetailServiceImpl {
+public class BuyerInfoServiceImpl {
 }

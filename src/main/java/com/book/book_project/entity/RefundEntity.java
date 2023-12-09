@@ -23,7 +23,7 @@ public class RefundEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @OnDelete(action= OnDeleteAction.CASCADE)
     @JoinColumn(name="purchasedetailseq")
-    private PurchaseDetailEntity purchasedetailseq;
+    private BuyerInfoEntity purchasedetailseq;
 
 
 }
