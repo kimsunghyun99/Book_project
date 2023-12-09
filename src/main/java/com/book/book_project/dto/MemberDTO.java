@@ -41,7 +41,6 @@ public class MemberDTO {
     private Timestamp lastpwdate;  // 초기값 regdate와 동일
     private String fromSocial;    // 회원등록 시 초기값 N
     private String role;     // 초기값 USER
-    private String authkey;
 
 
     // Entity -> DTO로 이동
@@ -67,7 +66,6 @@ public class MemberDTO {
         this.lastpwdate = memberEntity.getLastpwdate();
         this.fromSocial = memberEntity.getFromSocial();
         this.role = memberEntity.getRole();
-        this.authkey = memberEntity.getAuthkey();
 
 
     }
@@ -95,7 +93,6 @@ public class MemberDTO {
                 .lastpwdate(member.getLastpwdate())
                 .fromSocial(member.getFromSocial())
                 .role(member.getRole())
-                .authkey(member.getAuthkey())
                 .build();
 
 

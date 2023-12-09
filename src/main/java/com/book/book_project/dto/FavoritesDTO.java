@@ -1,6 +1,6 @@
 package com.book.book_project.dto;
 
-import com.book.book_project.entity.LikeEntity;
+import com.book.book_project.entity.FavoritesEntity;
 import com.book.book_project.entity.MemberEntity;
 import com.book.book_project.entity.ProductEntity;
 import lombok.AllArgsConstructor;
@@ -16,28 +16,28 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FavoritesDTO {
-    private Long likeseq;
-    private Timestamp likedate;
-    private String likecheck;
+    private Long favoriteseq;
+    private Timestamp favoritedate;
+    private String favoritecheck;
     private MemberEntity userid;
     private ProductEntity bookid;
 
-public FavoritesDTO(LikeEntity likeEntity) {
+public FavoritesDTO(FavoritesEntity favoritesEntity) {
 
-        this.likeseq = likeEntity.getLikeseq();
-        this.likedate = likeEntity.getLikedate();
-        this.likecheck = likeEntity.getLikecheck();
-        this.userid = likeEntity.getUserid();
-        this.bookid = likeEntity.getBookid();
+        this.favoriteseq = favoritesEntity.getFavoriteseq();
+        this.favoritedate = favoritesEntity.getFavoritedate();
+        this.favoritecheck = favoritesEntity.getFavoritecheck();
+        this.userid = favoritesEntity.getUserid();
+        this.bookid = favoritesEntity.getBookid();
     }
 
     //Entity --> DTO
-public LikeEntity dtoToEntity(FavoritesDTO dto) {
+public FavoritesEntity dtoToEntity(FavoritesDTO dto) {
 
-        LikeEntity entity = LikeEntity.builder()
-                .likeseq(dto.getLikeseq())
-                .likedate(dto.getLikedate())
-                .likecheck(dto.getLikecheck())
+        FavoritesEntity entity = FavoritesEntity.builder()
+                .favoriteseq(dto.getFavoriteseq())
+                .favoritedate(dto.getFavoritedate())
+                .favoritecheck(dto.getFavoritecheck())
                 .userid(dto.getUserid())
                 .bookid(dto.getBookid())
                 .build();

@@ -14,7 +14,7 @@ public class UnMemberDTO {
     private String unmemberzipcode;
     private String unmemberaddress;
     private String unmemberdetailaddress;
-    private String buyer;
+    private String unmembername;
 
     public UnMemberDTO(UnMemberEntity unMemberEntity){
         this.unmembertelno=unMemberEntity.getUnmembertelno();
@@ -22,7 +22,7 @@ public class UnMemberDTO {
         this.unmemberzipcode=unMemberEntity.getUnmembezipcode();
         this.unmemberaddress=unMemberEntity.getUnmemberaddress();
         this.unmemberdetailaddress=unMemberEntity.getUnmemberdetailaddress();
-        this.buyer=unMemberEntity.getBuyer();
+        this.unmembername=unMemberEntity.getUnmembername();
     }
 
     public UnMemberEntity dtoToEntity(UnMemberDTO dto){
@@ -33,6 +33,7 @@ public class UnMemberDTO {
                 .unmembezipcode(dto.getUnmemberzipcode())
                 .unmemberaddress(dto.getUnmemberaddress())
                 .unmemberdetailaddress(dto.getUnmemberdetailaddress())
+                .unmembername(dto.getUnmembername())
                 .build();
     }
 }

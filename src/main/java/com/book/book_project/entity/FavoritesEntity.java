@@ -13,19 +13,19 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 
-@Entity(name="like")
-@Table(name="tbl_like")
-public class LikeEntity {
+@Entity(name="favorites")
+@Table(name="tbl_favorites")
+public class FavoritesEntity {
 
     @Id
-    @Column(name="likeseq")
-    private Long likeseq;
+    @Column(name="favoriteseq")
+    private Long favoriteseq;
 
-    @Column(name="likedate", nullable=true)
-    private Timestamp likedate;
+    @Column(name="favoritedate", nullable=true)
+    private Timestamp favoritedate;
 
-    @Column(name="likecheck", nullable=true)
-    private String likecheck;
+    @Column(name="favoritecheck", nullable=true)
+    private String favoritecheck;
 
 
     @ManyToOne(fetch = FetchType.LAZY)

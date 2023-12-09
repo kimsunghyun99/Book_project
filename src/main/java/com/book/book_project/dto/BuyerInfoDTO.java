@@ -15,23 +15,23 @@ import lombok.Setter;
 public class BuyerInfoDTO {
 
     private Long purchaseseq;
-    private UnMemberEntity unmembertelno;
-    private String purchaseaddr;
-    private Long purchasezipcode;
-    private String purchasedetailaddr;
-    private String purchasename;
-    private String purchasetelno;
     private MemberEntity userid;
+    private UnMemberEntity unmembertelno;
+    private Long receiverzipcode;
+    private String receiveraddr;
+    private String receiverdetailaddr;
+    private String receivername;
+    private String receivertelno;
 
  public BuyerInfoDTO(BuyerInfoEntity purchaseinfoEntity) {
 
      this.purchaseseq = purchaseinfoEntity.getPurchaseseq();
      this.unmembertelno = purchaseinfoEntity.getUnmembertelno();
-     this.purchaseaddr = purchaseinfoEntity.getPurchaseaddr();
-     this.purchasezipcode = purchaseinfoEntity.getPurchasezipcode();
-     this.purchasedetailaddr = purchaseinfoEntity.getPurchasedetailaddr();
-     this.purchasename = purchaseinfoEntity.getPurchasename();
-     this.purchasetelno = purchaseinfoEntity.getPurchasetelno();
+     this.receiverdetailaddr = purchaseinfoEntity.getReceiverdetailaddr();
+     this.receiverzipcode = purchaseinfoEntity.getReceiverzipcode();
+     this.receiveraddr = purchaseinfoEntity.getReceiveraddr();
+     this.receivername = purchaseinfoEntity.getReceivername();
+     this.receivertelno = purchaseinfoEntity.getReceivertelno();
      this.userid = purchaseinfoEntity.getUserid();
 
     }
@@ -42,11 +42,11 @@ public class BuyerInfoDTO {
      BuyerInfoEntity entity = BuyerInfoEntity.builder()
                 .purchaseseq(dto.getPurchaseseq())
                 .unmembertelno(dto.getUnmembertelno())
-                .purchaseaddr(dto.getPurchaseaddr())
-                .purchasezipcode(dto.getPurchasezipcode())
-                .purchasedetailaddr(dto.getPurchasedetailaddr())
-                .purchasename(dto.getPurchasename())
-                .purchasetelno(dto.getPurchasetelno())
+                .receiverdetailaddr(dto.getReceiverdetailaddr())
+                .receiverzipcode(dto.getReceiverzipcode())
+                .receiveraddr(dto.getReceiveraddr())
+                .receivername(dto.getReceivername())
+                .receivertelno(dto.getReceivertelno())
                 .userid(dto.getUserid())
                 .build();
         return entity;

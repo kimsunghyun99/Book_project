@@ -26,7 +26,7 @@ public class UnMemberEntity {
     private String unmemberaddress;
     @Column(name="unmemberdetailaddress", length = 200, nullable = false)
     private String unmemberdetailaddress;
-    @Column(name="buyer", length = 50, nullable = false)
-    private String buyer;
+    @Column(name="unmembername", length = 50, nullable = false)
+    private String unmembername;
 
 }

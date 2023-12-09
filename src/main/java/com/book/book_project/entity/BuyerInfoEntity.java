@@ -19,20 +19,20 @@ public class BuyerInfoEntity {
     @Column(name = "purchaseseq")
     private Long purchaseseq;
 
-    @Column(name = "purchaseaddr", length = 100, nullable = true)
-    private String purchaseaddr;
+    @Column(name = "receiverdetailaddr", length = 100, nullable = true)
+    private String receiverdetailaddr;
 
-    @Column(name = "purchasezipcode", length = 10, nullable = true)
-    private Long purchasezipcode;
+    @Column(name = "receiverzipcode", length = 10, nullable = true)
+    private Long receiverzipcode;
 
-    @Column(name = "purchasedetailaddr", length = 20, nullable = true)
-    private String purchasedetailaddr;
+    @Column(name = "receiveraddr", length = 20, nullable = true)
+    private String receiveraddr;
 
-    @Column(name = "purchasename", length = 10, nullable = true)
-    private String purchasename;
+    @Column(name = "receivername", length = 10, nullable = true)
+    private String receivername;
 
-    @Column(name = "purchasetelno", length = 10, nullable = true)
-    private String purchasetelno;
+    @Column(name = "receivertelno", length = 10, nullable = true)
+    private String receivertelno;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
