@@ -42,6 +42,9 @@
     <label for="username">사용자 이름:</label>
     <input type="text" id="username" name="username" required>
 
+    <label for="userid">아이디:</label>
+    <input type="text" id="userid" name="userid" required>
+
     <label for="email">이메일:</label>
     <input type="email" id="email" name="email" required>
 
@@ -50,6 +53,20 @@
 
     <label for="confirmPassword">비밀번호 확인:</label>
     <input type="password" id="confirmPassword" name="confirmPassword" required>
+
+    성별 :
+    <label><input type="radio" name="gender" value="남성">남성</label>
+    <label><input type="radio" name="gender" value="여성">여성</label><br>
+
+
+    <input type="text" id="addrSearch" name="addrSearch" class="addrSearch" placeholder="주소를 검색합니다.">
+    <input type="button" id="btn_addSearch" class="btn_addrSearch" value="주소검색" onclick="searchAddr()">
+    <input type="text" id="zipcode" class="input_field" name="zipcode" placeholder="우편번호가 검색되어 입력됩니다." readonly>
+    <input type="text" id="addr1" class="input_field" name="addr1" placeholder="주소가 검색되어 입력됩니다." readonly>
+    <input type="text" id="addr2" class="input_field" name="addr2" placeholder="상세 주소를 입력하세요">
+    <input type="hidden" id="address" name="address">
+
+
 
     <button type="submit">가입하기</button>
 </form>

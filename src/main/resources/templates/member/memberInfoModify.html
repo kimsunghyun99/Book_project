@@ -3,8 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <title>회원정보변경</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #aa {
+            margin: 0 auto;
+
+            text-align:center;
+
+        }
+
+        .btn_write {
+            display:inline-block;
+            width: 20%; /* 원하는 폭으로 조절하세요 */
+            font-size: 18px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .btn_cancel {
+            display:inline-block;
+            width: 20%; /* 원하는 폭으로 조절하세요 */
+            font-size: 18px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+    </style>
 </head>
 <body>
 
+성별 :
+<label><input type="radio" name="gender" th:checked="${memberInfo.gender == '남성'}" value="남성">남성</label>
+<label><input type="radio" name="gender" th:checked="${memberInfo.gender == '여성'}"value="여성">여성</label><br>
+
+
+<input type="text" id="addrSearch" name="addrSearch" class="addrSearch"  placeholder="주소를 검색합니다.">
+<input type="button" id="btn_addSearch" class="btn_addrSearch" value="주소검색" onclick="searchAddr()">
+
+<input type="text" id="zipcode" class="input_field" name="zipcode" th:value="${memberInfo.zipcode}" placeholder="우편번호가 검색되어 입력됩니다." readonly>
+<input type="text" id="addr1" class="input_field" name="addr1" th:value="${memberInfo.address}" placeholder="주소가 검색되어 입력됩니다." readonly>
+<input type="text" id="addr2" class="input_field" name="addr2" placeholder="상세 주소를 입력하세요">
+<input type="hidden" id="address" name="address">
+
+<div id="aa">
+<input type="button" id="btnRegister" class="btn_write" value="수정" onclick="">
+<input type="button" class="btn_cancel" value="취소" onclick="history.back()">
+</div>
 </body>
 </html>
