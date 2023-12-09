@@ -19,8 +19,8 @@ import java.time.LocalDateTime;
 public class CartEntity {
 
     @Id
-    @Column(name="cartid", nullable=false)
-    private String cartid;
+    @Column(name="cartid",length = 50,nullable=false)
+    private int cartid;
 
     // FK 만들기
     // FK 읽어올 때 Eager, lazy 두가지 타입이 있음
