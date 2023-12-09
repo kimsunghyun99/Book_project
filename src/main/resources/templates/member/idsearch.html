@@ -2,9 +2,142 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>ID찾기</title>
+</head>
+
+
+<body>
+
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>교보문고 ID 찾기</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 20%;
+            display: flex;
+            flex-direction: column; /* 수정된 부분 */
+            justify-content: space-between; /* 수정된 부분 */
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        h3 {
+            text-align: left;
+            color: #333;
+            cursor: pointer;
+            user-select: none;
+            margin-bottom: 5px;
+        }
+
+        form {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        input, button {
+            margin: 5px;
+            width: 100%; /* 입력 필드의 너비를 100%로 설정하여 부모 요소에 맞춥니다. */
+            padding: 10px; /* 선택적으로 패딩을 추가할 수 있습니다. */
+            box-sizing: border-box; /* 패딩을 요소의 크기에 포함시킵니다. */
+        }
+    </style>
 </head>
 <body>
+
+<div class="container">
+    <h1>ID 찾기</h1>
+    <br><br><br><br>
+    <h3 onclick="toggleForm('findForm')">휴대폰 번호로 찾기 ▶</h3>
+    <br>
+<form id="findForm" action="/submit" method="post">
+    <input type="text" placeholder="이름">
+    <br>
+    <input type="text" placeholder="생년월일">
+    <br>
+    <input type="text" placeholder="휴대폰번호">
+        <br>
+        <button type="submit">확인</button>
+    </form>
+
+
+<h3 onclick="toggleForm('findForm1')">이메일로 찾기 ▶</h3>
+
+
+<form id="findForm1" action="/submit" method="post">
+    <input type="text" placeholder="이름">
+    <br>
+    <input type="text" placeholder="생년월일">
+    <br>
+    <input type="text" placeholder="이메일">
+    <br>
+    <button type="submit">확인</button>
+</form>
+
+</div>
+
+
+
+<script>
+
+    var activeFormId = null;
+
+    function toggleForm(formid) {
+        var form = document.getElementById(formid);
+        var header = form.previousElementSibling;
+
+        if (activeFormId === formid) {
+            // 이미 선택된 폼이면 닫음
+            form.style.display = "none";
+            header.textContent = formid === "findForm" ? "휴대폰 번호로 찾기 ▶" : "이메일로 찾기 ▶";
+            activeFormId = null;
+        } else {
+            // 다른 폼을 선택하면 기존 폼 닫고 현재 폼 열기
+            if (activeFormId !== null) {
+                var activeForm = document.getElementById(activeFormId);
+                activeForm.style.display = "none";
+                var activeHeader = activeForm.previousElementSibling;
+                activeHeader.textContent = activeFormId === "findForm" ? "휴대폰 번호로 찾기 ▶" : "이메일로 찾기 ▶";
+            }
+
+            form.style.display = "flex";
+            header.textContent = formid === "findForm" ? "휴대폰 번호로 찾기 ▼" : "이메일로 찾기 ▼";
+            activeFormId = formid;
+        }
+    }
+</script>
+
+
+
+
+</body>
+</html>
+
+
+
 
 </body>
 </html>
