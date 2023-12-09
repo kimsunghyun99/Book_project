@@ -2,9 +2,42 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>회원구매내역조회</title>
 </head>
 <body>
-
+    <header>
+        <h1>교보문고</h1>
+    </header>
+    <h2>구매내역조회</h2>
+    <div>
+        <table>
+            <tr>
+                <th>주문일자</th>
+                <th>주문번호</th>
+                <th>상품명</th>
+                <th>주문상태</th>
+                <th>결제금액</th>
+                <th rowspan="2"> <a href="/" onMouseover="this.style.background='pink'; this.style.textDecoration='underline';"
+                                    onmouseout="this.style.background='white'; this.style.textDecoration='none';">리뷰작성</a></th>
+            </tr>
+            <tr>
+                <td>2023.12.01</td>
+                <td>23120101</td>
+                <td>책제목</td>
+                <td>배송완료</td>
+                <td>00000원</td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+    <div class="bottomText">
+        [<a href="/" onMouseover="this.style.background='pink'; this.style.textDecoration='underline';"
+            onmouseout="this.style.background='white'; this.style.textDecoration='none';">교환</a> |
+        <a href="/" onMouseover="this.style.background='pink'; this.style.textDecoration='underline';"
+           onmouseout="this.style.background='white'; this.style.textDecoration='none';">환불</a>]
+        <a href="/" onMouseover="this.style.background='pink'; this.style.textDecoration='underline';"
+           onmouseout="this.style.background='white'; this.style.textDecoration='none';">주문확정</a>
+        <br><br>
+    </div>
 </body>
 </html>
