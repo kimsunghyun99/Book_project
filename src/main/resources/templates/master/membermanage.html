@@ -1,10 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <title>회원 관리</title>
+    <style>
+        .main {
+            text-align: center;
+        }
 
+        .table-container {
+            width: 80%;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr; /* 1개의 컬럼 */
+            grid-row-gap: 20px; /* 행 간격 */
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .bottom_menu {
+            text-align: left;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="main">
+    <h1>회원</h1>
+    <div class="table-container">
+        <table class="InfoTable">
+            <tr>
+                <th>선택</th>
+                <th>순번</th>
+                <th>회원 아이디</th>
+                <th>회원명</th>
+                <th>가입일</th>
+                <th>총 결제 금액</th>
+                <th>성별/선호장르</th>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>1</td>
+                <td>ponyo</td>
+                <td>송포뇨</td>
+                <td>2023-12-09</td>
+                <td>18,000원</td>
+                <td>소설</td>
+            </tr>
+        </table>
+        <div class="bottom_menu">
+            <button>회원삭제</button>&nbsp;&nbsp;
+        </div>
+    </div>
+
+    <h1>회원별 구매 순위</h1>
+    <div class="table-container">
+    <table class="InfoTable">
+        <tr>
+            <td>1</td>
+        </tr>
+    </table>
+    </div>
+    <h1>휴먼계정</h1>
+    <div class="table-container">
+        <table class="SecondTable">
+            <tr>
+                <th>선택</th>
+                <th>순번</th>
+                <th>회원 아이디</th>
+                <th>회원명</th>
+                <th>마지막 로그인 날짜</th>
+                <th>총 결제 금액</th>
+                <th>성별/선호장르</th>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>1</td>
+                <td>ponyo</td>
+                <td>송포뇨</td>
+                <td>2023-12-09</td>
+                <td>18,000원</td>
+                <td>소설</td>
+            </tr>
+        </table>
+        <div class="bottom_menu">
+            <button>회원삭제</button>&nbsp;&nbsp;
+        </div>
+    </div>
+</div>
 </body>
 </html>
