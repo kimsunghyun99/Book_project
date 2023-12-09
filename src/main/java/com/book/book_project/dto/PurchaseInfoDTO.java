@@ -1,51 +1,49 @@
 package com.book.book_project.dto;
 
-import com.book.book_project.entity.MemberEntity;
-import com.book.book_project.entity.PurchaseInfoEntity;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+        import com.book.book_project.entity.*;
+        import lombok.*;
+
+        import java.sql.Timestamp;
+
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class PurchaseInfoDTO {
+    private int purchasedetailseq;
+    private ProductEntity bookid;
+    private PurchaseStatusEntity statusseq;
+    private RefundEntity purchaseseq;
+    private String deliverystatus;
+    private Timestamp purchasedate;
+    private int volume;
+    private int totalprice;
 
-    private Long purchaseseq;
-    private String purchaseaddr;
-    private Long purchasezipcode;
-    private String purchasedetailaddr;
-    private String purchasename;
-    private String purchasetelno;
-    private MemberEntity userid;
-
- public PurchaseInfoDTO(PurchaseInfoEntity purchaseinfoEntity) {
-
-     this.purchaseseq = purchaseinfoEntity.getPurchaseseq();
-     this.purchaseaddr = purchaseinfoEntity.getPurchaseaddr();
-     this.purchasezipcode = purchaseinfoEntity.getPurchasezipcode();
-     this.purchasedetailaddr = purchaseinfoEntity.getPurchasedetailaddr();
-     this.purchasename = purchaseinfoEntity.getPurchasename();
-     this.purchasetelno = purchaseinfoEntity.getPurchasetelno();
-     this.userid = purchaseinfoEntity.getUserid();
-
+    public PurchaseInfoDTO(PurchaseInfoEntity purchaseInfoEntity){
+        this.purchasedetailseq=purchaseInfoEntity.getPurchasedetailseq();
+        this.bookid=purchaseInfoEntity.getBookid();
+        this.statusseq=purchaseInfoEntity.getStatusseq();
+        this.purchaseseq=purchaseInfoEntity.getPurchaseseq();
+        this.deliverystatus=purchaseInfoEntity.getDeliverystatus();
+        this.purchasedate=purchaseInfoEntity.getPurchasedate();
+        this.volume=purchaseInfoEntity.getPurchasedetailseq();
+        this.totalprice=purchaseInfoEntity.getPurchasedetailseq();
     }
 
-    //Entity --> DTO
- public PurchaseInfoEntity dtoToEntity(PurchaseInfoDTO dto) {
+    public PurchaseInfoEntity dtoToEntity(PurchaseInfoDTO dto){
 
-     PurchaseInfoEntity entity = PurchaseInfoEntity.builder()
+        return PurchaseInfoEntity.builder()
+                .purchasedetailseq(dto.getPurchasedetailseq())
+                .bookid(dto.getBookid())
+                .statusseq(dto.getStatusseq())
                 .purchaseseq(dto.getPurchaseseq())
-                .purchaseaddr(dto.getPurchaseaddr())
-                .purchasezipcode(dto.getPurchasezipcode())
-                .purchasedetailaddr(dto.getPurchasedetailaddr())
-                .purchasename(dto.getPurchasename())
-                .purchasetelno(dto.getPurchasetelno())
-                .userid(dto.getUserid())
+                .deliverystatus(dto.getDeliverystatus())
+                .purchasedate(dto.getPurchasedate())
+                .volume(dto.getVolume())
+                .totalprice(dto.getTotalprice())
                 .build();
-        return entity;
     }
 
 }

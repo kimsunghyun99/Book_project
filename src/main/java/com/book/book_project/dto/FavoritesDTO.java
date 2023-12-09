@@ -15,14 +15,14 @@ import java.sql.Timestamp;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LikeDTO {
+public class FavoritesDTO {
     private Long likeseq;
     private Timestamp likedate;
     private String likecheck;
     private MemberEntity userid;
     private ProductEntity bookid;
 
-public LikeDTO(LikeEntity likeEntity) {
+public FavoritesDTO(LikeEntity likeEntity) {
 
         this.likeseq = likeEntity.getLikeseq();
         this.likedate = likeEntity.getLikedate();
@@ -32,7 +32,7 @@ public LikeDTO(LikeEntity likeEntity) {
     }
 
     //Entity --> DTO
-public LikeEntity dtoToEntity(LikeDTO dto) {
+public LikeEntity dtoToEntity(FavoritesDTO dto) {
 
         LikeEntity entity = LikeEntity.builder()
                 .likeseq(dto.getLikeseq())

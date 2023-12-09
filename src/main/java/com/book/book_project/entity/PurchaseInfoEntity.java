@@ -1,44 +1,55 @@
 package com.book.book_project.entity;
 
+
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.sql.Timestamp;
+
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-
-@Entity(name="purchaseinfo")
-@Table(name="tbl_purchaseinfo")
+@Builder
+@Entity(name="purchasedetail")
+@Table(name="tbl_purchasedetail")
 public class PurchaseInfoEntity {
 
     @Id
-    @Column(name = "purchaseseq")
-    private Long purchaseseq;
+    @Column(name="purchasedetailseq", nullable=false)
+    private int purchasedetailseq;
 
-    @Column(name = "purchaseaddr", length = 100, nullable = true)
-    private String purchaseaddr;
+    @Column(name="deliverystatus",length =200, nullable=false)
+    private String deliverystatus;
 
-    @Column(name = "purchasezipcode", length = 10, nullable = true)
-    private Long purchasezipcode;
+    @Column(name="purchasedate", nullable=false)
+    private Timestamp purchasedate;
 
-    @Column(name = "purchasedetailaddr", length = 20, nullable = true)
-    private String purchasedetailaddr;
+    @Column(name="volume", nullable=false)
+    private int volume;
 
-    @Column(name = "purchasename", length = 10, nullable = true)
-    private String purchasename;
-
-    @Column(name = "purchasetelno", length = 10, nullable = true)
-    private String purchasetelno;
-
+    @Column(name="totalPrice", nullable=false)
+    private int totalprice;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name="userid", nullable = false)
-    private MemberEntity userid;
+    @OnDelete(action= OnDeleteAction.CASCADE)
+    @JoinColumn(name="bookid", nullable = false)
+    private ProductEntity bookid;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action= OnDeleteAction.CASCADE)
+    @JoinColumn(name="purchaseseq", nullable = false)
+    private RefundEntity purchaseseq;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action= OnDeleteAction.CASCADE)
+    @JoinColumn(name="statusseq", nullable = false)
+    private PurchaseStatusEntity statusseq;
+
+
+
 
 
 

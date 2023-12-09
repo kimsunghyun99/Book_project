@@ -1,7 +1,7 @@
 package com.book.book_project.dto;
 
 
-import com.book.book_project.entity.PurchaseDetailEntity;
+import com.book.book_project.entity.PurchaseInfoEntity;
 import com.book.book_project.entity.RefundEntity;
 import lombok.*;
 
@@ -12,7 +12,7 @@ import lombok.*;
 @Builder
 public class RefundDTO {
     private int refundSeq;
-    private PurchaseDetailEntity purchasedetailseq;
+    private PurchaseInfoEntity purchasedetailseq;
     private String refundreason;
 
     public RefundDTO(RefundEntity refundEntity){
