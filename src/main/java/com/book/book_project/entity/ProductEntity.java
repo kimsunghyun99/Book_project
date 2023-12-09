@@ -60,7 +60,7 @@ public class ProductEntity {
     private int sale;   //할인율
 
     @Column(name="filesize", nullable = false)
-    private int filesize;   //파일크기
+    private long filesize;   //파일크기
 
     //FK 분류이름
     @ManyToOne(fetch = FetchType.LAZY)

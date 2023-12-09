@@ -27,7 +27,7 @@ public class ProductDTO {
     private Timestamp publicationdate;  //출판일
     private float grade;    //평점
     private int sale;   //할인율
-    private int filesize;   //파일크기
+    private long filesize;   //파일크기
     private CategoryEntity categoryseq;    //분류 이름
 
 
