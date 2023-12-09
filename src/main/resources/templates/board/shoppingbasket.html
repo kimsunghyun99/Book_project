@@ -3,8 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <title>장바구니</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    header {
+        background-color: #007ACC;
+        color: #FFF;
+        text-align: center;
+        padding: 10px;
+    }
+
+    nav {
+        background-color: #333;
+        color: #FFF;
+        text-align: center;
+        padding: 10px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    td img {
+        width: 100px; /* 이미지 크기 수정 */
+        height: 100px; /* 이미지 크기 수정 */
+        object-fit: cover;
+    }
+
+    .delete-button {
+        padding: 10px;
+        font-size: 1.2em;
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    .total-payment {
+        display: flex;
+        justify-content: space-between; /* 삭제 버튼과 결제 정보를 양 끝으로 배치 */
+        align-items: center;
+    }
+
+    .total-payment p {
+        margin-left: auto; /* 총 결제금액을 결제하기 버튼 옆으로 이동 */
+        gap: 10px;
+    }
+
+    .payment-button {
+        padding: 10px;
+        font-size: 1.2em;
+        background-color: #5cb85c;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+</style>
 </head>
 <body>
+<header>
+    <h1>교보문고</h1>
+</header>
 
+<nav>
+    <a href="#">홈</a> |
+    <a href="#">도서</a> |
+    <a href="#">이벤트</a> |
+    <a href="#">마이페이지</a>
+    <a href="/member/signup">회원가입</a>
+</nav>
+
+<h1>장바구니</h1>
+<table>
+    <tr>
+        <th><input type="checkbox"></th>
+        <th></th>
+        <th></th>
+    </tr>
+
+    <tr>
+        <td><input type="checkbox"></td>
+        <td>
+            <img src="book1.jpg" alt="책 이미지1">
+            <p>책 제목1</p>
+        </td>
+        <td>
+            <p>원가: 00</p>
+            <p>할인율: 00</p>
+            <p>포인트 적립: 00</p>
+            <p>결제금액: 00000원</p>
+        </td>
+    </tr>
+    <tr>
+        <td><input type="checkbox"></td>
+        <td>
+            <img src="book1.jpg" alt="책 이미지1">
+            <p>책 제목2</p>
+        </td>
+        <td>
+            <p>원가: 00</p>
+            <p>할인율: 00</p>
+            <p>포인트 적립: 00</p>
+            <p>결제금액: 00000원</p>
+        </td>
+    </tr>
+    <tr>
+        <td><input type="checkbox"></td>
+        <td>
+            <img src="book1.jpg" alt="책 이미지1">
+            <p>책 제목3</p>
+        </td>
+        <td>
+            <p>원가: 00</p>
+            <p>할인율: 00</p>
+            <p>포인트 적립: 00</p>
+            <p>결제금액: 00000원</p>
+        </td>
+    </tr>
+</table>
+<div class="total-payment">
+    <button class="delete-button">삭제</button>
+    <p>총 결제금액: 00000원</p>
+    <button class="payment-button">결제하기</button>
+</div>
 </body>
 </html>
