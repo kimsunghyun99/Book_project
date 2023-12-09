@@ -2,9 +2,67 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>패스워드 변경</title>
 </head>
 <body>
+<style>
+    .input_field {
+        display: block;
+        margin: 0 auto;
+        width: 80%; /* 원하는 폭으로 조절하세요 */
+        font-size: 16px; /* 원하는 폰트 크기로 조절하세요 */
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+        #aa {
+            margin: 0 auto;
+
+            text-align:center;
+
+        }
+
+        .btn_write {
+            display:inline-block;
+            width: 20%; /* 원하는 폭으로 조절하세요 */
+            font-size: 18px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .btn_cancel {
+            display:inline-block;
+            width: 20%; /* 원하는 폭으로 조절하세요 */
+            font-size: 18px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+
+
+</style>
+<div class="main">
+    <div class="ModifyForm">
+        <hr>
+        <h1 style="text-align:center">소중한 개인정보 보호를 변경을 위해 비밀번호를 변경해주세요.</h1>
+        <hr>
+        <br>
+        <form name="modifyForm" id="modifyForm" method="POST">
+            <input type="password" id="old_password" name="old_password"
+                   class="input_field" placeholder="기존 패스워드를 입력하세요">
+            <p id="msg" style="color:red;text-align:center;"></p>
+            <input type="password" id="new_password" name="new_password"
+                   class="input_field" placeholder="신규 패스워드를 입력하세요">
+            <p style="color:red;text-align:center;">※ 8~20이내의 영문자, 숫자, 특수문자 조합으로 암호를 만들어 주세요.</p>
+            <input type="password" id="new_password1" name="new_password1"
+                   class="input_field" placeholder="신규 패스워드를 한번 더 입력하세요">
+            <br>
+            <div id="aa">
+            <input type="button" class="btn_write"	 value="패스워드 변경" onclick="passwordUpdate()">
+            <input type="button" class="btn_cancel"	 value="취소" onclick="history.back()">
+            </div>
+        </form>
+    </div>
+</div>
 
 </body>
 </html>
