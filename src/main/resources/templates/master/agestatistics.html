@@ -2,12 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>막대 그래프 예시</title>
+    <title>순위와 막대 그래프</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
-<canvas id="myBarChart" width="400" height="200"></canvas>
+<div style="width: 400px; margin: auto;">
+    <h2>순위와 막대 그래프</h2>
+    <div style="width:80%; text-align:right; position:relative; left: 35px; margin:10px; padding: 10px;">
+        <select name="job">
+            <option value="all" disabled selected>선택</option>
+            <option value="일">일</option>
+            <option value="월">월</option>
+            <option value="년도">년도</option>
+        </select>
+      </div>
+    <canvas id="myBarChart" width="400" height="200"></canvas>
+    <div id="ranking"></div>
+</div>
 
 <script>
     // 데이터
@@ -38,6 +50,14 @@
         data: data,
         options: options
     });
+
+    // 순위 표시
+    var rankingDiv = document.getElementById('ranking');
+    var rankingData = data.datasets[0].data.slice().sort(function (a, b) { return b - a });
+    for (var i = 0; i < rankingData.length; i++) {
+        var index = data.datasets[0].data.indexOf(rankingData[i]);
+        rankingDiv.innerHTML += '<p>' + (i + 1) + '위: ' + data.labels[index] + '</p>';
+    }
 </script>
 
 </body>
