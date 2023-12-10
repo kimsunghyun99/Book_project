@@ -1,92 +1,95 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>상품 정보</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        padding: 20px;
-    }
-    header {
-        background-color: #007ACC;
-        color: #FFF;
-        text-align: center;
-        padding: 10px;
-    }
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
 
-    nav {
-        background-color: #333;
-        color: #FFF;
-        text-align: center;
-        padding: 10px;
-    }
+        header {
+            background-color: #007ACC;
+            color: #FFF;
+            text-align: center;
+            padding: 10px;
+        }
 
-    .book-details {
-        display: flex;
-        justify-content: center;
-        gap: 100px;
-    }
+        nav {
+            background-color: #333;
+            color: #FFF;
+            text-align: center;
+            padding: 10px;
+        }
 
-    .book-image-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-    }
+        .book-details {
+            display: flex;
+            justify-content: center;
+            gap: 100px;
+        }
 
-    .book-image {
-        width: 200px;
-        height: 300px;
-        border: 1px solid black;
-        object-fit: cover;
-    }
+        .book-image-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
 
-    .likes-reviews {
-        display: flex;
-        gap: 10px;
-    }
+        .book-image {
+            width: 200px;
+            height: 300px;
+            border: 1px solid black;
+            object-fit: cover;
+        }
 
-    .book-info {
-        display: flex;
-        flex-direction: column;
+        .likes-reviews {
+            display: flex;
+            gap: 10px;
+        }
 
-    }
+        .book-info {
+            display: flex;
+            flex-direction: column;
 
-    .book-info p {
-        font-size: 2em;
-    }
+        }
 
-    .book-info p {
-        font-size: 1.2em;
-    }
+        .book-info p {
+            font-size: 2em;
+        }
 
-    .book-actions {
-        display: flex;
-        gap: 10px;
-    }
+        .book-info p {
+            font-size: 1.2em;
+        }
 
-    .book-actions button {
-        padding: 100px;
-        font-size: 2em;
-        margin: 20px;
-        cursor: pointer;
-    }
+        .book-actions {
+            display: flex;
+            gap: 10px;
+        }
 
-    .book-cart {
-        background-color: #f0ad4e;
-        color: white;
-        padding: 10px;
-        border: 50px;
-    }
+        .book-actions button {
+            padding: 100px;
+            font-size: 2em;
+            margin: 20px;
+            cursor: pointer;
+        }
 
-    .book-buy {
-        background-color: #5cb85c;
-        color: white;
-        padding: 10px;
-        border: 50px;
-    }
-</style>
+        .book-cart {
+            background-color: #f0ad4e;
+            color: white;
+            padding: 10px;
+            border: 50px;
+        }
+
+        .book-buy {
+            background-color: #5cb85c;
+            color: white;
+            padding: 10px;
+            border: 50px;
+        }
+    </style>
+    <script>
+    </script>
 </head>
 <body>
 <header>
@@ -109,30 +112,32 @@
             <p class="book-reviews">후기: 00</p>
         </div>
     </div>
-    <div class="book-info"><br><br>
-        <p class="book-title">책제목</p>
-        <p class="book-author">작가: 작가이름</p>
-        <p class="book-price">가격: 0000원</p>
-        <p class="book-discount">할인율: 00%</p>
-        <p class="book-point">포인트적립: 00%</p>
+    <div class="book-info" th:if="${view != null}"><br><br>
+        <p class="book-title" th:text="${view.bookname}"></p>
+        <p class="book-author" th:text="'작가: ' + ${view.author}"></p>
+        <p class="book-price" th:text="'가격: ' + ${view.price} + '원'"></p>
+        <p class="book-discount" th:text="'할인율: ' + ${view.sale} + '%'"></p>
+        <p class="book-point" th:text="'포인트적립: ' + ${view.point} + '%'"></p>
         <div class="book-actions">
             <a href="shoppingBasket.html" class="book-cart">장바구니</a>
             <a href="shoppingBasket.html" class="book-buy">구매하기</a>
         </div>
     </div>
-</div>
-    <div>
-        <form id="replyForm" name="replyForm" method="POST">
-            작성자 : <input type="text" id="replywriter" name="replywriter" th:value="${session.username}" readonly><br>
-            <textarea id="replycontent" name="replycontent" cols="80" rows="5" maxlength="150" placeholder="글자수:150자 이내"></textarea><br>
-            <input type="hidden" id="seqno" name="seqno" th:value="${view.seqno}">
-            <input type="hidden" id="email" name="email" th:value="${session.email}">
-        </form>
-        <input type="button" id="btn_reply" value="댓글등록" onclick="replyRegister()">
-        <input type="button" id="btn_cancel" value="취소" onclick="replyCancel()">
-        <hr>
-        <div id="replyList" style="width:100%; height:600px; overflow:auto;"></div>
-        </div>
 
+</div>
+<div class="reviewDiv" style="width:60%;height:300px;margin:auto;text-align:left;">
+    <p id="reviewNotice">댓글을 작성해 주세요.</p>
+    <form id="reviewForm" name="reviewForm" method="POST">
+        작성자 : <input type="text" id="reviewwriter" name="reviewwriter" th:value="${session.username}" readonly><br>
+        <textarea id="reviewcontent" name="reviewcontent" cols="80" rows="5" maxlength="150" placeholder="글자수:150자 이내">
+				</textarea><br>
+        <input type="hidden" id="seqno" name="seqno" th:value="${view.seqno}">
+        <input type="hidden" id="email" name="email" th:value="${session.email}">
+    </form>
+    <input type="button" id="btn_review" value="댓글등록" onclick="reviewRegister()">
+    <input type="button" id="btn_cancel" value="취소" onclick="reviewCancel()">
+    <hr>
+    <div id="reviewList" style="width:100%; height:600px; overflow:auto;"></div>
+</div>
 </body>
 </html>

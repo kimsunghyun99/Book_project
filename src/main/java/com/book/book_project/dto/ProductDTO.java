@@ -15,6 +15,7 @@ public class ProductDTO {
 
     private int bookid; //도서번호
     private String bookname;    //책이름
+    private String author;
     private String publisher;   //출판사
     private int price;  //원가
     private int stock;  //재고
