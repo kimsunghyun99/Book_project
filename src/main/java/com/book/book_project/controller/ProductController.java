@@ -10,7 +10,7 @@ public class ProductController {
 
     // main화면 보기
     @GetMapping("/product/main")
-    public void getSignup() {}
+    public void getMain() {}
 
     @GetMapping("/product/productInfo")
     public void getReview(){}
