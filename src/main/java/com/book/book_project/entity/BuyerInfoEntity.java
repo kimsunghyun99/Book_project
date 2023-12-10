@@ -11,19 +11,20 @@ import org.hibernate.annotations.OnDeleteAction;
 @NoArgsConstructor
 @AllArgsConstructor
 
-@Entity(name="purchaseinfo")
-@Table(name="tbl_purchaseinfo")
+@Entity(name="buyerinfo")
+@Table(name="tbl_buyerinfo")
 public class BuyerInfoEntity {
 
     @Id
-    @Column(name = "purchaseseq")
-    private Long purchaseseq;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "buyerseq")
+    @SequenceGenerator(name = "buyerseq", sequenceName = "tbl_buyerseq", initialValue = 1, allocationSize = 1)
+    private int buyerseq;
 
     @Column(name = "receiverdetailaddr", length = 100, nullable = true)
     private String receiverdetailaddr;
 
     @Column(name = "receiverzipcode", length = 10, nullable = true)
-    private Long receiverzipcode;
+    private int receiverzipcode;
 
     @Column(name = "receiveraddr", length = 20, nullable = true)
     private String receiveraddr;
@@ -37,13 +38,13 @@ public class BuyerInfoEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name="userid", nullable = false)
+    @JoinColumn(name="tbl_buyerinfo_userid", nullable = false)
     private MemberEntity userid;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @OnDelete(action= OnDeleteAction.CASCADE)
-    @JoinColumn(name="unmembertelno", nullable = false)
+    @JoinColumn(name="tbl_buyerinfo_unmembertelno", nullable = false)
     private UnMemberEntity unmembertelno;
 
 

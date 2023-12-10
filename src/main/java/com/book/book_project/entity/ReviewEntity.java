@@ -9,17 +9,17 @@ import java.sql.Timestamp;
 
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Builder
 @Entity(name="review")
-@Table(name="tbl_reveiw")
+@Table(name="tbl_review")
 public class ReviewEntity {
 
     @Id
-    @Column(name = "reviewseq")
-    private Long reviewseq;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reviewseq")
+    @SequenceGenerator(name = "reviewseq", sequenceName = "tbl_reviewseq", initialValue = 1, allocationSize = 1)
+    private int reviewseq;
 
     @Column(name = "reviewer", length = 20, nullable = false)
     private String reviewer;
@@ -32,12 +32,12 @@ public class ReviewEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name="userid", nullable = false)
+    @JoinColumn(name="tbl_review_userid", nullable = false)
     private MemberEntity userid;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name="bookid", nullable = false)
+    @JoinColumn(name="tbl_review_bookid", nullable = false)
     private ProductEntity bookid;
 
 }

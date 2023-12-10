@@ -14,10 +14,10 @@ import lombok.Setter;
 @AllArgsConstructor
 public class BuyerInfoDTO {
 
-    private Long purchaseseq;
+    private int buyerseq;
     private MemberEntity userid;
     private UnMemberEntity unmembertelno;
-    private Long receiverzipcode;
+    private int receiverzipcode;
     private String receiveraddr;
     private String receiverdetailaddr;
     private String receivername;
@@ -25,7 +25,7 @@ public class BuyerInfoDTO {
 
  public BuyerInfoDTO(BuyerInfoEntity purchaseinfoEntity) {
 
-     this.purchaseseq = purchaseinfoEntity.getPurchaseseq();
+     this.buyerseq = purchaseinfoEntity.getBuyerseq();
      this.unmembertelno = purchaseinfoEntity.getUnmembertelno();
      this.receiverdetailaddr = purchaseinfoEntity.getReceiverdetailaddr();
      this.receiverzipcode = purchaseinfoEntity.getReceiverzipcode();
@@ -40,7 +40,7 @@ public class BuyerInfoDTO {
  public BuyerInfoEntity dtoToEntity(BuyerInfoDTO dto) {
 
      BuyerInfoEntity entity = BuyerInfoEntity.builder()
-                .purchaseseq(dto.getPurchaseseq())
+                .buyerseq(dto.getBuyerseq())
                 .unmembertelno(dto.getUnmembertelno())
                 .receiverdetailaddr(dto.getReceiverdetailaddr())
                 .receiverzipcode(dto.getReceiverzipcode())

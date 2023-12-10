@@ -1,13 +1,19 @@
 package com.book.book_project.controller;
 
+import com.book.book_project.dto.MemberDTO;
+import com.book.book_project.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
 
+    @Autowired
+    MemberService service;
     //회원 등록 화면 보기
     @GetMapping("/member/signup")
     public void getSignup() {}
@@ -24,12 +30,18 @@ public class MemberController {
     @GetMapping("/member/idSearch")
     private void getIdSearch() {}
 
+    @PostMapping("/member/idSearch")
+    private String postIdSearch(MemberDTO member){
+        String userid = service.searchId(member);
+
+        return "{\"data\":\"" + userid + "\"}";
+    }
+
     //패스워드 찾기 화면
     @GetMapping("/member/pwSearch")
     private void getPwSearch() {}
 
     //패스워드 변경 화면
-    @GetMapping("/member/pwModify")
     private void getPwModify() {}
 
     //회원 정보 수정 화면

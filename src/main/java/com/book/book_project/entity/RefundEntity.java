@@ -14,7 +14,8 @@ import org.hibernate.annotations.OnDeleteAction;
 @Table(name="tbl_refund")
 public class RefundEntity {
     @Id
-    @Column(name="refundseq", nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "refundseq")
+    @SequenceGenerator(name = "refundseq", sequenceName = "tbl_refundseq", initialValue = 1, allocationSize = 1)
     private int refundseq;
 
     @Column(name="refundreason", length = 2000, nullable = false)
@@ -22,8 +23,8 @@ public class RefundEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     @OnDelete(action= OnDeleteAction.CASCADE)
-    @JoinColumn(name="purchasedetailseq")
-    private PurchaseInfoEntity purchasedetailseq;
+    @JoinColumn(name="tbl_refund_purchaseinfoseq")
+    private PurchaseInfoEntity purchaseinfoseq;
 
 
 }

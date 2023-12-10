@@ -16,7 +16,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FavoritesDTO {
-    private Long favoriteseq;
+    private int favoriteseq;
     private Timestamp favoritedate;
     private String favoritecheck;
     private MemberEntity userid;

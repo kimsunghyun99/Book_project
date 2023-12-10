@@ -18,8 +18,9 @@ import java.sql.Timestamp;
 public class DeliveryAddrEntity {
 
     @Id
-    @Column(name="deliveryseq", nullable=false)
-    private String deliveryseq;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "deliveryaddrseq")
+    @SequenceGenerator(name = "deliveryaddrseq", sequenceName = "tbl_deliveryaddrseq", initialValue = 1, allocationSize = 1)
+    private int deliveryseq;
 
     // FK 만들기
     // FK 읽어올 때 Eager, lazy 두가지 타입이 있음
@@ -27,7 +28,7 @@ public class DeliveryAddrEntity {
     // Lazy는 자식키가 있는 테이블만 읽음 -> 정확도는 떨어지지만 성능이 향상
     @ManyToOne(fetch =FetchType.LAZY)
     @OnDelete(action= OnDeleteAction.CASCADE)
-    @JoinColumn(name="userid", nullable=false)
+    @JoinColumn(name="tbl_deliveryaddr_userid", nullable=false)
     private MemberEntity userid;
 
     @Column(name="addr", length=50, nullable=false)

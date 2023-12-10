@@ -18,8 +18,9 @@ import java.sql.Timestamp;
 public class FavoritesEntity {
 
     @Id
-    @Column(name="favoriteseq")
-    private Long favoriteseq;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "favoritesseq")
+    @SequenceGenerator(name = "favoritesseq", sequenceName = "tbl_favoritesseq", initialValue = 1, allocationSize = 1)
+    private int favoriteseq;
 
     @Column(name="favoritedate", nullable=true)
     private Timestamp favoritedate;
@@ -30,11 +31,11 @@ public class FavoritesEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name="userid", nullable = false)
+    @JoinColumn(name="tbl_favorites_userid", nullable = false)
     private MemberEntity userid;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name="bookid", nullable = false)
+    @JoinColumn(name="tbl_favorites_bookid", nullable = false)
     private ProductEntity bookid;
 }

@@ -13,13 +13,14 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity(name="purchasedetail")
-@Table(name="tbl_purchasedetail")
+@Entity(name="purchaseinfo")
+@Table(name="tbl_purchaseinfo")
 public class PurchaseInfoEntity {
 
     @Id
-    @Column(name="purchasedetailseq", nullable=false)
-    private int purchasedetailseq;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "purchaseinfoseq")
+    @SequenceGenerator(name = "purchaseinfoseq", sequenceName = "tbl_purchaseinfoseq", initialValue = 1, allocationSize = 1)
+    private int purchaseinfoseq;
 
     @Column(name="deliverystatus",length =200, nullable=false)
     private String deliverystatus;
@@ -35,17 +36,17 @@ public class PurchaseInfoEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action= OnDeleteAction.CASCADE)
-    @JoinColumn(name="bookid", nullable = false)
+    @JoinColumn(name="tbl_purchaseinfo_bookid", nullable = false)
     private ProductEntity bookid;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action= OnDeleteAction.CASCADE)
-    @JoinColumn(name="purchaseseq", nullable = false)
-    private RefundEntity purchaseseq;
+    @JoinColumn(name="tbl_purchaseinfo_buyerseq", nullable = false)
+    private BuyerInfoEntity buyerseq;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @OnDelete(action= OnDeleteAction.CASCADE)
-    @JoinColumn(name="statusseq", nullable = false)
+    @JoinColumn(name="tbl_purchaseinfo_statusseq", nullable = false)
     private PurchaseStatusEntity statusseq;
 
 
