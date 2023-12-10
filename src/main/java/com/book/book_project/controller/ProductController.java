@@ -14,4 +14,13 @@ public class ProductController {
 
     @GetMapping("/product/productInfo")
     public void getReview(){}
+
+    @GetMapping("/product/favoritesList")
+    public void getFavoritesList(){}
+
+    @GetMapping("/product/productList")
+    public void getProductList(){}
+
+    @GetMapping("/product/shoppingBasket")
+    public void getShoppingBasket(){}
 }
