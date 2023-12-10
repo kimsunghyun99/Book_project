@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>상품 정보</title>
 <style>
     body {
@@ -123,10 +124,10 @@
 </div>
     <div>
         <form id="replyForm" name="replyForm" method="POST">
-            작성자 : <input type="text" id="replywriter" name="replywriter" th:value="${session.username}" readonly><br>
+            작성자 : <input type="text" id="replywriter" name="replywriter" value="베르나르베르베르" readonly><br>
             <textarea id="replycontent" name="replycontent" cols="80" rows="5" maxlength="150" placeholder="글자수:150자 이내"></textarea><br>
-            <input type="hidden" id="seqno" name="seqno" th:value="${view.seqno}">
-            <input type="hidden" id="email" name="email" th:value="${session.email}">
+            <input type="hidden" id="seqno" name="seqno" value="1">
+            <input type="hidden" id="email" name="email" value="111@nnn.com">
         </form>
         <input type="button" id="btn_reply" value="댓글등록" onclick="replyRegister()">
         <input type="button" id="btn_cancel" value="취소" onclick="replyCancel()">
