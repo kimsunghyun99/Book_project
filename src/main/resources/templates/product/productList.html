@@ -1,10 +1,111 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>상품 목록 보기</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>국내 도서 및 새 책</title>
+    <style>
+        body {
+            display: flex;
+            font-family: Arial, sans-serif;
+        }
+
+        #categories {
+            width: 200px;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+
+        #books {
+            flex: 1;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px; /* 컨테이너 간 간격 조절을 위해 추가 */
+        }
+
+        .container h1 {
+            margin-bottom: 10px; /* h1과 책 사이 간격 조절을 위해 추가 */
+        }
+
+        .book {
+            width: 200px;
+            margin: 10px;
+            text-align: center;
+        }
+
+        .book img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
+
+<div id="categories">
+    <h2>국내 도서 카테고리</h2>
+    <ul>
+        <li>소설</li>
+        <li>시/에세이</li>
+        <li>역사/문화</li>
+        <li>과학/자연</li>
+        <li>인문/사회</li>
+        <li>경제/경영</li>
+    </ul>
+</div>
+
+<div id="books">
+    <div class="container">
+
+        <div class="book">
+            <img src="/resources/static/images/404.png" alt="책 1">
+            <p>책 제목 1</p>
+            <p>18,000원</p>
+        </div>
+        <div class="book">
+            <img src="/resources/static/images/404.png" alt="책 2">
+            <p>책 제목 2</p>
+            <p>18,000원</p>
+        </div>
+    </div>
+    <div class="container">
+
+        <div class="book">
+            <img src="/resources/static/images/404.png" alt="책 3">
+            <p>책 제목 3</p>
+            <p>18,000원</p>
+        </div>
+        <div class="book">
+            <img src="/resources/static/images/404.png" alt="책 4">
+            <p>책 제목 4</p>
+            <p>18,000원</p>
+        </div>
+    </div>
+    <div class="container">
+
+        <div class="book">
+            <img src="/resources/static/images/404.png" alt="책 5">
+            <p>책 제목 5</p>
+            <p>18,000원</p>
+        </div>
+        <div class="book">
+            <img src="/resources/static/images/404.png" alt="책 6">
+            <p>책 제목 6</p>
+            <p>18,000원</p>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
