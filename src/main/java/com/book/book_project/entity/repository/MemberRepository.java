@@ -16,6 +16,7 @@ import java.util.Optional;
 @Repository
 public interface MemberRepository extends JpaRepository<MemberEntity, String> {
 
+
     @Query(value="select userid from tbl_member where telno=? and username=? and birthday=? or email=?", nativeQuery = true)
     Optional<MemberEntity> findByTelnoOrEmail(@Param("telno") String telno, @Param("username") String username, @Param("birthday") int birthday, @Param("email") String email);
 }
