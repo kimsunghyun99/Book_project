@@ -19,7 +19,7 @@ public class FavoritesEntity {
 
     @Id
     @Column(name="favoriteseq")
-    private Long favoriteseq;
+    private int favoriteseq;
 
     @Column(name="favoritedate", nullable=true)
     private Timestamp favoritedate;

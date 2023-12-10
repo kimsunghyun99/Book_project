@@ -12,7 +12,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Builder
 @Entity(name="unmember")
 @Table(name="tbl_unmember")
-public class UnMemberEntity {
+public class  UnMemberEntity {
 
     @Id
     @Column(name="unmembertelno", length = 15, nullable = false)

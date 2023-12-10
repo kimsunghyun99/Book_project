@@ -1,9 +1,6 @@
 package com.book.book_project.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -12,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Entity(name="purchasestatus")
-@Table(name="tbl_purchasedetail")
+@Table(name="tbl_purchasestatus")
 public class PurchaseStatusEntity {
 
     @Id
