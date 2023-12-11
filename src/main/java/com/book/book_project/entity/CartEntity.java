@@ -27,13 +27,11 @@ public class CartEntity {
     // Eager는 부모키가 있는 테이블부터 검사해서 부모키가 제대로 되어 있는지 확인하고 자식키를 읽음 --> 정확도는 높지만 성능이 저하
     // Lazy는 자식키가 있는 테이블만 읽음 -> 정확도는 떨어지지만 성능이 향상
     @ManyToOne(fetch =FetchType.LAZY)
-    @OnDelete(action= OnDeleteAction.CASCADE)
     @JoinColumn(name="userid", nullable=false)
     private MemberEntity userid;
 
 
     @ManyToOne(fetch =FetchType.LAZY)
-    @OnDelete(action= OnDeleteAction.CASCADE)
     @JoinColumn(name="bookid", nullable=false)
     private ProductEntity bookid;
 
