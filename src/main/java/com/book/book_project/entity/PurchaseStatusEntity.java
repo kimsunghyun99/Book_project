@@ -13,7 +13,7 @@ import lombok.*;
 public class PurchaseStatusEntity {
 
     @Id
-    @Column(name="statusseq", nullable=false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int statusseq;
 
     @Column(name="statusname", length=50 ,nullable=false)

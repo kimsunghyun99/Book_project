@@ -1,9 +1,6 @@
 package com.book.book_project.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -17,8 +14,8 @@ import lombok.*;
 public class AddressEntity {
 	
 	@Id
-	@Column(name="seqno")
-	private Long seqno;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int seqno;
 	
 	@Column(name="zipcode", length=10, nullable=true)
 	private String zipcode;

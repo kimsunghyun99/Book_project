@@ -18,8 +18,8 @@ import java.sql.Timestamp;
 public class DeliveryAddrEntity {
 
     @Id
-    @Column(name="deliveryseq", nullable=false)
-    private String deliveryseq;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int deliveryseq;
 
     // FK 만들기
     // FK 읽어올 때 Eager, lazy 두가지 타입이 있음

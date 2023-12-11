@@ -17,7 +17,7 @@ import java.sql.Timestamp;
 public class ReviewEntity {
 
     @Id
-    @Column(name = "reviewseq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int reviewseq;
 
     @Column(name = "reviewer", length = 20, nullable = false)
