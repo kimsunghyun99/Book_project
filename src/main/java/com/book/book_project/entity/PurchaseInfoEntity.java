@@ -13,13 +13,13 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity(name="purchasedetail")
-@Table(name="tbl_purchasedetail")
+@Entity(name="purchaseinfo")
+@Table(name="tbl_purchaseinfo")
 public class PurchaseInfoEntity {
 
     @Id
-    @Column(name="purchasedetailseq", nullable=false)
-    private int purchasedetailseq;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int purchaseinfoseq;
 
     @Column(name="deliverystatus",length =200, nullable=false)
     private String deliverystatus;
@@ -40,10 +40,10 @@ public class PurchaseInfoEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action= OnDeleteAction.CASCADE)
-    @JoinColumn(name="purchaseseq", nullable = false)
-    private RefundEntity purchaseseq;
+    @JoinColumn(name="buyerseq", nullable = false)
+    private BuyerInfoEntity buyerseq;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @OnDelete(action= OnDeleteAction.CASCADE)
     @JoinColumn(name="statusseq", nullable = false)
     private PurchaseStatusEntity statusseq;

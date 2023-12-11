@@ -9,17 +9,16 @@ import java.sql.Timestamp;
 
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Builder
 @Entity(name="review")
-@Table(name="tbl_reveiw")
+@Table(name="tbl_review")
 public class ReviewEntity {
 
     @Id
-    @Column(name = "reviewseq")
-    private Long reviewseq;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int reviewseq;
 
     @Column(name = "reviewer", length = 20, nullable = false)
     private String reviewer;

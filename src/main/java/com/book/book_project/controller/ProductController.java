@@ -25,8 +25,7 @@ public class ProductController {
 
     // main화면 보기
     @GetMapping("/product/main")
-    public void getSignup() {
-    }
+    public void getMain() {}
 
     @GetMapping("/product/productInfo")
     public void getProductInfo(@RequestParam("bookid") int bookid, @RequestParam("page") int pageNum,
@@ -36,11 +35,17 @@ public class ProductController {
         model.addAttribute("view", service.view(bookid));
         model.addAttribute("page", pageNum);
         model.addAttribute("keyword", keyword);
-
-
-
-
     }
+
+    @GetMapping("/product/favoritesList")
+    public void getFavoritesList(){}
+
+    @GetMapping("/product/productList")
+    public void getProductList(){}
+
+    @GetMapping("/product/shoppingBasket")
+    public void getShoppingBasket(){}
+}
 
     //댓글 처리
 

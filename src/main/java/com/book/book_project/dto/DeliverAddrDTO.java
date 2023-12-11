@@ -11,7 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class DeliverAddrDTO {
-    private String deliveryseq;
+    private int deliveryseq;
     private MemberEntity userid;
     private String addr;
     private String detailaddr;

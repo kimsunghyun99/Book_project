@@ -1,9 +1,6 @@
 package com.book.book_project.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -17,7 +14,7 @@ public class CategoryEntity {
 
     //분류번호
     @Id
-    @Column(name = "categoryseq", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int categoryseq;
 
     //분류명
