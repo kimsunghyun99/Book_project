@@ -37,13 +37,13 @@ public class BuyerInfoEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name="tbl_buyerinfo_userid", nullable = false)
+    @JoinColumn(name="userid", nullable = false)
     private MemberEntity userid;
 
 
     @OneToOne(fetch = FetchType.LAZY)
     @OnDelete(action= OnDeleteAction.CASCADE)
-    @JoinColumn(name="tbl_buyerinfo_unmembertelno", nullable = false)
+    @JoinColumn(name="unmembertelno", nullable = false)
     private UnMemberEntity unmembertelno;
 
 

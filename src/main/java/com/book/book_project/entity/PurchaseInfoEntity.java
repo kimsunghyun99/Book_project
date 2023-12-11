@@ -35,17 +35,17 @@ public class PurchaseInfoEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action= OnDeleteAction.CASCADE)
-    @JoinColumn(name="tbl_purchaseinfo_bookid", nullable = false)
+    @JoinColumn(name="bookid", nullable = false)
     private ProductEntity bookid;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action= OnDeleteAction.CASCADE)
-    @JoinColumn(name="tbl_purchaseinfo_buyerseq", nullable = false)
+    @JoinColumn(name="buyerseq", nullable = false)
     private BuyerInfoEntity buyerseq;
 
     @OneToOne(fetch = FetchType.LAZY)
     @OnDelete(action= OnDeleteAction.CASCADE)
-    @JoinColumn(name="tbl_purchaseinfo_statusseq", nullable = false)
+    @JoinColumn(name="statusseq", nullable = false)
     private PurchaseStatusEntity statusseq;
 
 

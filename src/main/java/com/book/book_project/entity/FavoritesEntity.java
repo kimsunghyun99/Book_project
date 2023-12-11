@@ -30,11 +30,11 @@ public class FavoritesEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name="tbl_favorites_userid", nullable = false)
+    @JoinColumn(name="userid", nullable = false)
     private MemberEntity userid;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name="tbl_favorites_bookid", nullable = false)
+    @JoinColumn(name="bookid", nullable = false)
     private ProductEntity bookid;
 }
