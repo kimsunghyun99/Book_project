@@ -57,8 +57,17 @@ public class MemberServiceImpl implements MemberService {
 
 
 
-    public String searchId(MemberDTO member){
-        return memberRepository.findByTelnoOrEmail(member.getTelno(), member.getEmail(), member.getBirthday(), member.getUsername())
+    //아이디 찾기
+    public String idSearch(MemberDTO member){
+        return memberRepository.idFindByTelno(member.getTelno(), member.getUsername(), member.getBirthday())
                 .map(MemberEntity::getUserid).orElse("ID_NOT_FOUND");
+    }
+    
+    //비밀번호찾기
+    public String pwSearch(MemberDTO member){
+
+
+        return memberRepository.findById(member.getUserid())
+                .map(MemberEntity::getPassword).orElse("PW_NOT_FOUND");
     }
 }

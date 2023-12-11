@@ -23,7 +23,6 @@ import lombok.Setter;
 
 public class MemberDTO {
     private String userid;
-    private String email;
     private String nickname;
     private String username;
     private int birthday; // 생일
@@ -48,7 +47,6 @@ public class MemberDTO {
 
     public MemberDTO(MemberEntity memberEntity) {
         this.userid = memberEntity.getUserid();
-        this.email = memberEntity.getEmail();
         this.nickname = memberEntity.getNickname();
         this.username = memberEntity.getUsername();
         this.birthday = memberEntity.getBirthday();
@@ -75,7 +73,6 @@ public class MemberDTO {
     public MemberEntity dtoToEntity(MemberDTO member) {
         MemberEntity memberEntity = MemberEntity.builder()
                 .userid(member.getUserid())
-                .email(member.getEmail())
                 .nickname(member.getNickname())
                 .username(member.getUsername())
                 .birthday(member.getBirthday())

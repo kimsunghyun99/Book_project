@@ -28,9 +28,6 @@ public class MemberEntity {
     @Column(name="userid", nullable=false)
     private String userid;
 
-    @Column(name="email", nullable=false)
-    private String email;
-
     @Column(name="nickname", length=20, nullable=false)
     private String nickname;
 
