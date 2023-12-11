@@ -37,8 +37,7 @@ public class ProductController {
         model.addAttribute("page", pageNum);
         model.addAttribute("keyword", keyword);
 
-        ProductDTO dto = service.view(bookid);
-        System.out.println(dto.getBookid());
+
 
 
     }
