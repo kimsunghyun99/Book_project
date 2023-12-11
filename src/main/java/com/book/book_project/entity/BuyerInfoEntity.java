@@ -16,7 +16,7 @@ import org.hibernate.annotations.OnDeleteAction;
 public class BuyerInfoEntity {
 
     @Id
-    @Column(name = "buyerseq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int buyerseq;
 
     @Column(name = "receiverdetailaddr", length = 100, nullable = true)
@@ -37,13 +37,13 @@ public class BuyerInfoEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name="userid", nullable = false)
+    @JoinColumn(name="tbl_buyerinfo_userid", nullable = false)
     private MemberEntity userid;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @OnDelete(action= OnDeleteAction.CASCADE)
-    @JoinColumn(name="unmembertelno", nullable = false)
+    @JoinColumn(name="tbl_buyerinfo_unmembertelno", nullable = false)
     private UnMemberEntity unmembertelno;
 
 

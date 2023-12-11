@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 public class CartEntity {
 
     @Id
-    @Column(name="cartid",length = 50,nullable=false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int cartid;
 
     // FK 만들기
@@ -28,13 +28,13 @@ public class CartEntity {
     // Lazy는 자식키가 있는 테이블만 읽음 -> 정확도는 떨어지지만 성능이 향상
     @ManyToOne(fetch =FetchType.LAZY)
     @OnDelete(action= OnDeleteAction.CASCADE)
-    @JoinColumn(name="userid", nullable=false)
+    @JoinColumn(name="tbl_cart_userid", nullable=false)
     private MemberEntity userid;
 
 
     @ManyToOne(fetch =FetchType.LAZY)
     @OnDelete(action= OnDeleteAction.CASCADE)
-    @JoinColumn(name="bookid", nullable=false)
+    @JoinColumn(name="tbl_cart_bookid", nullable=false)
     private ProductEntity bookid;
 
     @Column(name="cartvolume", nullable=false)

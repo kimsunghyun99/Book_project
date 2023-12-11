@@ -18,7 +18,7 @@ import java.sql.Timestamp;
 public class PurchaseInfoEntity {
 
     @Id
-    @Column(name="purchaseinfoseq", nullable=false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int purchaseinfoseq;
 
     @Column(name="deliverystatus",length =200, nullable=false)
@@ -35,12 +35,17 @@ public class PurchaseInfoEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action= OnDeleteAction.CASCADE)
-    @JoinColumn(name="bookid", nullable = false)
+    @JoinColumn(name="tbl_purchaseinfo_bookid", nullable = false)
     private ProductEntity bookid;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action= OnDeleteAction.CASCADE)
-    @JoinColumn(name="statusseq", nullable = false)
+    @JoinColumn(name="tbl_purchaseinfo_buyerseq", nullable = false)
+    private BuyerInfoEntity buyerseq;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @OnDelete(action= OnDeleteAction.CASCADE)
+    @JoinColumn(name="tbl_purchaseinfo_statusseq", nullable = false)
     private PurchaseStatusEntity statusseq;
 
 

@@ -14,7 +14,7 @@ public class CategoryEntity {
 
     //분류번호
     @Id
-    @Column(name = "categoryseq", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int categoryseq;
 
     //분류명

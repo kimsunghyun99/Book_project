@@ -17,7 +17,7 @@ import java.sql.Timestamp;
 public class ReviewEntity {
 
     @Id
-    @Column(name = "reviewseq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int reviewseq;
 
     @Column(name = "reviewer", length = 20, nullable = false)
@@ -31,12 +31,12 @@ public class ReviewEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name="userid", nullable = false)
+    @JoinColumn(name="tbl_review_userid", nullable = false)
     private MemberEntity userid;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name="bookid", nullable = false)
+    @JoinColumn(name="tbl_review_bookid", nullable = false)
     private ProductEntity bookid;
 
 }
