@@ -14,8 +14,7 @@ import lombok.*;
 public class AddressEntity {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "addrseq")
-	@SequenceGenerator(name = "addrseq", sequenceName = "tbl_addrseq", initialValue = 1, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int seqno;
 	
 	@Column(name="zipcode", length=10, nullable=true)

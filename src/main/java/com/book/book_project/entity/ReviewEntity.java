@@ -17,8 +17,7 @@ import java.sql.Timestamp;
 public class ReviewEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reviewseq")
-    @SequenceGenerator(name = "reviewseq", sequenceName = "tbl_reviewseq", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int reviewseq;
 
     @Column(name = "reviewer", length = 20, nullable = false)

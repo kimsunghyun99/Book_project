@@ -18,8 +18,7 @@ import java.sql.Timestamp;
 public class PurchaseInfoEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "purchaseinfoseq")
-    @SequenceGenerator(name = "purchaseinfoseq", sequenceName = "tbl_purchaseinfoseq", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int purchaseinfoseq;
 
     @Column(name="deliverystatus",length =200, nullable=false)

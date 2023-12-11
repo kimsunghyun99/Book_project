@@ -14,8 +14,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Table(name="tbl_refund")
 public class RefundEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "refundseq")
-    @SequenceGenerator(name = "refundseq", sequenceName = "tbl_refundseq", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int refundseq;
 
     @Column(name="refundreason", length = 2000, nullable = false)

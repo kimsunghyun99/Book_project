@@ -14,8 +14,7 @@ public class CategoryEntity {
 
     //분류번호
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "categoryseq")
-    @SequenceGenerator(name = "categoryseq", sequenceName = "tbl_categoryseq", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int categoryseq;
 
     //분류명

@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 public class CartEntity {
 
     @Id
-    @Column(name="cartid",length = 50,nullable=false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int cartid;
 
     // FK 만들기

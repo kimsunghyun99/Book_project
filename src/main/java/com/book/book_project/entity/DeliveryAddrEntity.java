@@ -18,8 +18,7 @@ import java.sql.Timestamp;
 public class DeliveryAddrEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "deliveryaddrseq")
-    @SequenceGenerator(name = "deliveryaddrseq", sequenceName = "tbl_deliveryaddrseq", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int deliveryseq;
 
     // FK 만들기

@@ -16,8 +16,7 @@ import org.hibernate.annotations.OnDeleteAction;
 public class BuyerInfoEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "buyerseq")
-    @SequenceGenerator(name = "buyerseq", sequenceName = "tbl_buyerseq", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int buyerseq;
 
     @Column(name = "receiverdetailaddr", length = 100, nullable = true)

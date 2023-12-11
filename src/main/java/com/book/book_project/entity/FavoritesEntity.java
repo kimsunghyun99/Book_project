@@ -18,8 +18,7 @@ import java.sql.Timestamp;
 public class FavoritesEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "favoritesseq")
-    @SequenceGenerator(name = "favoritesseq", sequenceName = "tbl_favoritesseq", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int favoriteseq;
 
     @Column(name="favoritedate", nullable=true)
