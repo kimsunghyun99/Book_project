@@ -29,13 +29,14 @@ public class ProductDTO {
     private float grade;    //평점
     private int sale;   //할인율
     private long filesize;   //파일크기
-    private CategoryEntity categoryseq;    //분류 이름
+    private CategoryEntity tbl_product_categoryseq;    //분류 이름
 
 
     //Entity -> DTO
     public ProductDTO (ProductEntity productEntity) {
         this.bookid = productEntity.getBookid();
         this.bookname = productEntity.getBookname();
+        this.author = productEntity.getAuthor();
         this.publisher = productEntity.getPublisher();
         this.price = productEntity.getPrice();
         this.stock = productEntity.getStock();
@@ -49,7 +50,7 @@ public class ProductDTO {
         this.grade = productEntity.getGrade();
         this.sale = productEntity.getSale();
         this.filesize = productEntity.getFilesize();
-        this.categoryseq = productEntity.getCategoryseq();
+        this.tbl_product_categoryseq = productEntity.getCategoryseq();
     }
 
     //DTO -> Entity
@@ -57,6 +58,7 @@ public class ProductDTO {
         ProductEntity productEntity = ProductEntity.builder()
                 .bookid(dto.getBookid())
                 .bookname(dto.getBookname())
+                .author(dto.getAuthor())
                 .publisher(dto.getPublisher())
                 .price(dto.getPrice())
                 .stock(dto.getStock())
@@ -70,7 +72,7 @@ public class ProductDTO {
                 .grade(dto.getGrade())
                 .sale(dto.getSale())
                 .filesize(dto.getFilesize())
-                .categoryseq(dto.getCategoryseq())
+                .categoryseq(dto.getTbl_product_categoryseq())
                 .build();
 
         return productEntity;

@@ -4,6 +4,7 @@ import com.book.book_project.dto.ProductDTO;
 import com.book.book_project.dto.ReviewInterface;
 import com.book.book_project.entity.ProductEntity;
 import com.book.book_project.service.ProductService;
+import com.book.book_project.service.ReviewService;
 import com.book.book_project.util.PageUtil;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -22,10 +23,11 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService service;
+    private final ReviewService  reviewService;
 
     // main화면 보기
     @GetMapping("/product/main")
-    public void getSignup() {
+    public void getMain() {
     }
 
     @GetMapping("/product/productInfo")
@@ -36,12 +38,40 @@ public class ProductController {
         model.addAttribute("view", service.view(bookid));
         model.addAttribute("page", pageNum);
         model.addAttribute("keyword", keyword);
-
-
-
-
     }
 
-    //댓글 처리
+    @GetMapping("/product/favoritesList")
+    public void getFavoritesList() {
+    }
+
+    @GetMapping("/product/productList")
+    public void getProductList() {
+    }
+
+    @GetMapping("/product/shoppingBasket")
+    public void getShoppingBasket() {
+    }
+
+
+    //리뷰 처리
+    @ResponseBody
+    @PostMapping("/product/review")
+    public List<ReviewInterface> postReview(ReviewInterface review, @RequestParam("option") String option) throws Exception {
+
+        switch (option) {
+
+            case "I":
+                reviewService.ReviewRegistry(review); //리뷰 등록
+                break;
+            case "U":
+                reviewService.ReviewUpdate(review); //리뷰 수정
+                break;
+            case "D":
+                reviewService.ReviewDelete(review); //리뷰 삭제
+                break;
+        }
+
+        return reviewService.ReviewView(review);
+    }
 
 }

@@ -23,6 +23,9 @@ public class ProductEntity {
     @Column(name="bookname", length=50, nullable = false)
     private String bookname;    //책이름
 
+    @Column(name="author", length=50, nullable = false)
+    private String author;    //책이름
+
     @Column(name="publisher", length=50, nullable = false)
     private String publisher;   //출판사
 
