@@ -63,7 +63,7 @@ public class OnAuth2UserDetailsServiceimpl extends DefaultOAuth2UserService {
 		
 		session.setAttribute("email", email);
 		session.setAttribute("username", member.getUsername());
-
+		session.setAttribute("role", member.getRole());
 		//session.setAttribute("FromSocial", member.getFromSocial());
 		session.setAttribute("FromSocial","Y");
 		
@@ -84,7 +84,7 @@ public class OnAuth2UserDetailsServiceimpl extends DefaultOAuth2UserService {
 		
 		
 		MemberEntity member=MemberEntity.builder()
-															.userid("userid")
+															.userid("email")
 															.username("구글회원")
 															.password(pwdEncoder.encode("12345"))
 															.regdate(Timestamp.valueOf(LocalDateTime.now()))
