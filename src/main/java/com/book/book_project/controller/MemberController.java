@@ -66,6 +66,8 @@ public class MemberController {
         return data;
     }
 
+
+
     //패스워드 변경 화면
     @GetMapping("/member/pwModify")
     private void getPwModify() {
@@ -95,11 +97,14 @@ public class MemberController {
         return "{\"message\":\"GOOD\"}";
     }
 
+
+
     //회원 정보 수정 화면
     @GetMapping("/member/memberInfoModify")
     public void getMemberInfoModify() {}
 
 
+    //회원 정보 수정 하기
     @ResponseBody
     @PostMapping("/member/memberInfoModify")
     public String postMemberInfoModify(MemberDTO member, HttpSession session) throws Exception {
@@ -110,6 +115,8 @@ public class MemberController {
         return "{\"message\":\"GOOD\"}";
 
     }
+
+
 
     //주소 검색
     @GetMapping("/member/addrSearch")
@@ -131,9 +138,13 @@ public class MemberController {
         model.addAttribute("pageList", page.getPageAddress(pageNum, postNum, pageListCount, totalCount, addrSearch));
 
     }
+
+
+
     @PostMapping("/member/idSearch")
     private String postIdSearch(MemberDTO member){
         String userid = service.idSearch(member);
 
+        return "aaa";
     }
 }

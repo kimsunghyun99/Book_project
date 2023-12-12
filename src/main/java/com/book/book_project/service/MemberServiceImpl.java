@@ -79,5 +79,10 @@ public class MemberServiceImpl implements MemberService {
 
         return memberRepository.findById(member.getUserid())
                 .map(MemberEntity::getPassword).orElse("PW_NOT_FOUND");
+
     }
+
+
+
+
 }

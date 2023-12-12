@@ -24,4 +24,7 @@ public interface MemberService {
 
     //비밀번호 찾기
     String pwSearch(MemberDTO member);
+
+    //주소 검색
+    public Page<AddressEntity> addrSearch(int pageNum, int postNum, String addrSearch);
 }
