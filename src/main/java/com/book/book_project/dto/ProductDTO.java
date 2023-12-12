@@ -36,7 +36,7 @@ public class ProductDTO {
     public ProductDTO (ProductEntity productEntity) {
         this.bookid = productEntity.getBookid();
         this.bookname = productEntity.getBookname();
-        this.author = productEntity.getAuthor();
+        this.author=productEntity.getAuthor();
         this.publisher = productEntity.getPublisher();
         this.price = productEntity.getPrice();
         this.stock = productEntity.getStock();
@@ -58,6 +58,7 @@ public class ProductDTO {
         ProductEntity productEntity = ProductEntity.builder()
                 .bookid(dto.getBookid())
                 .bookname(dto.getBookname())
+                .author(dto.getAuthor())
                 .publisher(dto.getPublisher())
                 .price(dto.getPrice())
                 .stock(dto.getStock())
