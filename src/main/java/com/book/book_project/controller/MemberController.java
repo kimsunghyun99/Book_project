@@ -1,6 +1,7 @@
 package com.book.book_project.controller;
 
 import com.book.book_project.dto.MemberDTO;
+import com.book.book_project.entity.repository.UnMemberRepository;
 import com.book.book_project.service.LikeService;
 import com.book.book_project.service.MemberService;
 import jakarta.servlet.http.HttpSession;
@@ -39,6 +40,9 @@ public class MemberController {
 
     @Autowired
     private BCryptPasswordEncoder pwdEncoder;
+
+    @Autowired
+    private UnMemberRepository unMemberRepository;
 
 
     //회원 등록 화면 보기
@@ -110,7 +114,7 @@ public class MemberController {
     @PostMapping("/member/login")
     public void postLogin() {}
 
-    //로그인
+    //로그인 (23-12-11)
     @ResponseBody
     @PostMapping("/member/loginCheck")
     public String postLogin(MemberDTO member, HttpSession session) {
@@ -130,7 +134,7 @@ public class MemberController {
 
     }
 
-    //마이페이지 화면
+    //마이페이지 화면 (23-12-11)
     @GetMapping("/member/mypage")
     public void getMyPage(HttpSession session, Model model) {
         String userid = (String)session.getAttribute("userid");
@@ -162,7 +166,7 @@ public class MemberController {
     @GetMapping("/member/memberPurchaseList")
     public void getMemberPurchaseList() {}
 
-    //비회원 로그인 화면
+    //비회원 로그인 화면 (23-12-12)
     @GetMapping("/member/unMemberLogin")
     public void getUnMemberLogin() {}
 
