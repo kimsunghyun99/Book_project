@@ -127,7 +127,7 @@ public class MemberController {
 
     @PostMapping("/member/idSearch")
     private String postIdSearch(MemberDTO member){
-        String userid = service.searchId(member);
+        String userid = service.idSearch(member);
 
         return "{\"data\":\"" + userid + "\"}";
     }

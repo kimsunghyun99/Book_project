@@ -22,12 +22,10 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService service;
-    private final ReviewService  reviewService;
 
     // main화면 보기
     @GetMapping("/product/main")
-    public void getMain() {
-    }
+    public void getMain() {}
 
     @GetMapping("/product/productInfo")
     public void getProductInfo(@RequestParam("bookid") int bookid, @RequestParam("page") int pageNum,
@@ -40,37 +38,14 @@ public class ProductController {
     }
 
     @GetMapping("/product/favoritesList")
-    public void getFavoritesList() {
-    }
+    public void getFavoritesList(){}
 
     @GetMapping("/product/productList")
-    public void getProductList() {
-    }
+    public void getProductList(){}
 
     @GetMapping("/product/shoppingBasket")
-    public void getShoppingBasket() {
-    }
-
-
-    //리뷰 처리
-    @ResponseBody
-    @PostMapping("/product/review")
-    public List<ReviewInterface> postReview(ReviewInterface review, @RequestParam("option") String option) throws Exception {
-
-        switch (option) {
-
-            case "I":
-                reviewService.ReviewRegistry(review); //리뷰 등록
-                break;
-            case "U":
-                reviewService.ReviewUpdate(review); //리뷰 수정
-                break;
-            case "D":
-                reviewService.ReviewDelete(review); //리뷰 삭제
-                break;
-        }
-
-        return reviewService.ReviewView(review);
-    }
-
+    public void getShoppingBasket(){}
 }
+
+    //댓글 처리
+

@@ -20,13 +20,4 @@ public class  UnMemberEntity {
 
     @Column(name="temppassword", length = 200, nullable = false)
     private String temppassword;
-    @Column(name="unmembezipcode", length = 200, nullable = false)
-    private String unmembezipcode;
-    @Column(name="unmemberaddress", length = 200, nullable = false)
-    private String unmemberaddress;
-    @Column(name="unmemberdetailaddress", length = 200, nullable = false)
-    private String unmemberdetailaddress;
-    @Column(name="unmembername", length = 50, nullable = false)
-    private String unmembername;
-
 }
