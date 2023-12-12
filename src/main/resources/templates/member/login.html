@@ -36,7 +36,7 @@ text-align: center;
     width: 300px; /* 원하는 너비로 조절하세요 */
 }
 
-.email,
+.userid,
 .password,
 #btn_login {
     width: 100%; /* 폼의 너비에 맞춤 */
@@ -89,16 +89,16 @@ text-align: center;
             }
         }
 
-        let email = getCookie('email');
+        let userid = getCookie('userid');
         let password = getCookie('password');
         let authkey = getCookie('authkey');
 
-        //email 쿠키가 존재하면...
-        if(email !== undefined) {
-            document.querySelector('#rememberEmail').checked = true;
-            document.querySelector('#email').value = email;
+        //userid 쿠키가 존재하면...
+        if(userid !== undefined) {
+            document.querySelector('#rememberUserid').checked = true;
+            document.querySelector('#userid').value = userid;
         }else {
-            document.querySelector('#rememberEmail').checked = false;
+            document.querySelector('#rememberUserid').checked = false;
         }
 
         //password 쿠키가 존재하면
@@ -123,13 +123,13 @@ text-align: center;
     //로그인 처리
     const loginCheck = async () => {
 
-        const email = document.querySelector('#email');
+        const userid = document.querySelector('#userid');
         const password = document.querySelector('#password');
         const rememberMe = document.querySelector('#rememberMe');
 
-        if(email.value === ''){
+        if(userid.value === ''){
             alert("아이디를 입력하세요")
-            email.focus();
+            userid.focus();
             return false;
         }
         if(password.value === ''){
@@ -139,7 +139,7 @@ text-align: center;
         }
 
         let formData = new FormData();
-        formData.append("email", email.value);
+        formData.append("userid", userid.value);
         formData.append("password", password.value);
 
         await fetch('/member/loginCheck',{
@@ -148,7 +148,7 @@ text-align: center;
         }).then((response) => response.json())
             .then((data) => {
                 if(data.message === 'GOOD'){
-                    cookieManage(email.value, password.value);
+                    cookieManage(userid.value, password.value);
                     login();
                 }else if(data.message === 'ID_NOT_FOUND'){
                     msg.innerHTML = '존재하지 않는 아이디입니다';
@@ -163,8 +163,8 @@ text-align: center;
     }
 
     //아이디 체크 관리
-    const checkRememberEmail = () => {
-        if(document.querySelector('#rememberEmail').checked)
+    const checkRememberuserid = () => {
+        if(document.querySelector('#rememberUserid').checked)
             document.querySelector('#rememberMe').checked = false;
     }
 
@@ -177,7 +177,7 @@ text-align: center;
     //자동로그인 체크 관리
     const checkRememberMe = () => {
         if(document.querySelector('#rememberMe').checked)
-            document.querySelector('#rememberEmail').checked = false;
+            document.querySelector('#rememberUserid').checked = false;
         document.querySelector('#rememberPassword').checked = false;
     }
 
@@ -186,13 +186,13 @@ text-align: center;
     }
 
     //쿠키 관리
-    const cookieManage = (email, password) => {
+    const cookieManage = (userid, password) => {
 
         //userid 가 체크되었을 경우
-        if(rememberEmail.checked) {
-            document.cookie = 'email= ' + email + '; path=/; expires=Sun 31 Dec 2023 23:59:59 GMT';
+        if(rememberUserid.checked) {
+            document.cookie = 'userid= ' + userid + '; path=/; expires=Sun 31 Dec 2023 23:59:59 GMT';
         }else {
-            document.cookie = 'email= ' + email + '; path=/; max-age=0';
+            document.cookie = 'userid= ' + userid + '; path=/; max-age=0';
         }
 
         //password가 체크되었을 경우
@@ -215,14 +215,14 @@ text-align: center;
 
 <form name="loginForm" id="loginForm" method="post">
 
-    <input type="text" name="email" class="email" id="email" placeholder="아이디를 입력하세요">
+    <input type="text" name="userid" class="userid" id="userid" placeholder="아이디를 입력하세요">
     <input type="password" name="password" class="password" id="password" placeholder="패스워드를 입력하세요"  onkeydown="press()">
     <input type="button" id="btn_login" class="btn_login" value="로그인" onclick="loginCheck()">
     <p id="msg" style="color:red; text-align:center"></p>
     <br>
     <div class="remember">
 <div>
-    <input type="checkbox" id="rememberEmail" onclick="checkRememberEmail()">아이디 기억
+    <input type="checkbox" id="rememberuserid" onclick="checkRememberuserid()">아이디 기억
     <input type="checkbox" id="rememberPassword" onclick="checkRememberPassword()">패스워드 기억
     <input type="checkbox" id="rememberMe" class="remember" name="remember-me" onclick="checkRememberMe()">자동 로그인
 </div>

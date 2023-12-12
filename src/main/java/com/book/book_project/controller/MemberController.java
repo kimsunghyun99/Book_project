@@ -46,10 +46,13 @@ public class MemberController {
     @Autowired
     UnMemberService unMemberService;
 
+    @Autowired
+
+
 
     //회원 등록 화면 보기
     @GetMapping("/member/signup")
-    public void getSignup() {}
+    public void getSingup() {}
 
     //회원 등록 하기
     @ResponseBody
@@ -140,7 +143,7 @@ public class MemberController {
     @GetMapping("/member/mypage")
     public void getMyPage(HttpSession session, Model model) {
         String userid = (String)session.getAttribute("userid");
-
+        model.addAttribute("member", service.memberInfo(userid));//회원정보 불러오기
         model.addAttribute("favoriteInfo", service.findFavoritesByUserId(userid)); // 즐겨찾기 불러오기
         model.addAttribute("countJoinedRecordsByUserId", service.countJoinedRecordsByUserId(userid));//구매,주문 목록 갯수 구하기
     }
@@ -151,7 +154,7 @@ public class MemberController {
 
     @PostMapping("/member/idSearch")
     public String postIdSearch(MemberDTO member){
-        String userid = service.searchId(member);
+        String userid = service.idSearch(member);
 
         return "{\"data\":\"" + userid + "\"}";
     }
@@ -181,9 +184,9 @@ public class MemberController {
     @PostMapping("/member/unMemberLoginCheck")
     public String postUnMemberLogin(UnMemberDTO unMember) {
         //구매번호 존재 여부 확인
-        if() {
-            return "{\"message\":\"ID_NOT_FOUND\"}";
-        }
+//        if() {
+//            return "{\"message\":\"ID_NOT_FOUND\"}";
+//        }
 
         //비밀번호가 올바르게 들어왔는지 정확도 여부 확인
         if(!pwdEncoder.matches(unMember.getTemppassword(), unMemberService.unMemberInfo(unMember.getTemppassword()).getTemppassword())){

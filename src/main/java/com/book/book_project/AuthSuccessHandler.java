@@ -55,7 +55,7 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler  {
 	//	log.info("************************* FormLogin 성공 *************************");
 		
 		
-		setDefaultTargetUrl("/board/list?page=1");
+		setDefaultTargetUrl("/product/main");
 		super.onAuthenticationSuccess(request, response, authentication);
 		
 	}

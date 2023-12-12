@@ -90,7 +90,7 @@ public class WebSecurityConfig {
 		.sessionManagement(management -> management
 				.maximumSessions(1)
 				.maxSessionsPreventsLogin(false)
-				.expiredUrl("/member/login"));
+				.expiredUrl("/product/main"));
 				
 		//스프링 시큐리티의 로그 아웃 
 		http

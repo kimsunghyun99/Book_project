@@ -22,11 +22,11 @@ public interface MemberService {
     void modifyMember(MemberDTO member);
 
     //아이디 찾기
-    String idSearch(MemberDTO member);
+    public String idSearch(MemberDTO member);
 
     //비밀번호 찾기
     String pwSearch(MemberDTO member);
-    public String searchId(MemberDTO member);
+
 
     //아이디 중복 확인
     public int idCheck(String userid);
