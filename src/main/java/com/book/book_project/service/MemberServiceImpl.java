@@ -61,8 +61,19 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.save(memberEntity);
     }
 
-    public String searchId(MemberDTO member){
-        return memberRepository.findByTelnoOrEmail(member.getTelno(), member.getEmail(), member.getBirthday(), member.getUsername())
+    // update tbl_member set password = #{password}, lastpwdate= #{lastpwdate} where userid = #{userid}
+    //패스워드 수정
+    public void modifyMember(MemberDTO member) {
+        MemberEntity memberEntity =memberRepository.findById(member.getUserid()).get();
+        memberEntity.setPassword(pwdEncoder.encode(member.getPassword()));
+        memberRepository.save(memberEntity);
+    }
+
+
+
+    //아이디 찾기
+    public String idSearch(MemberDTO member){
+        return memberRepository.idFindByTelno(member.getTelno(), member.getUsername(), member.getBirthday())
                 .map(MemberEntity::getUserid).orElse("ID_NOT_FOUND");
     }
 
@@ -72,4 +83,12 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findById(userid).isEmpty()?0:1;
     }
 
+
+    //비밀번호찾기
+    public String pwSearch(MemberDTO member){
+
+
+        return memberRepository.findById(member.getUserid())
+                .map(MemberEntity::getPassword).orElse("PW_NOT_FOUND");
+    }
 }

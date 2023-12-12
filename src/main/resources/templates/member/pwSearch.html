@@ -44,7 +44,6 @@
         }
 
         form {
-            display: none;
             flex-direction: column;
             align-items: center;
         }
@@ -56,80 +55,61 @@
             box-sizing: border-box; /* 패딩을 요소의 크기에 포함시킵니다. */
         }
     </style>
+
+    <script>
+        const pwSearchByTelno = async() => {
+            if(useridT.value===null){
+                alert("아이디를 입력하세요");
+                useridT.focus();
+                return false;
+            }if(nameT.value===null){
+                alert("이름을 입력하세요");
+                nameT.focus();
+                return false;
+            }if(birthdayT.value===null){
+                alert("생년월일을 입력하세요");
+                birthdayT.focus();
+                return false;
+            }if(telno.value===null){
+                alert("전화번호를 입력하세요");
+                telno.focus();
+                return false;
+            }
+
+            let formData = new FormData(findByTelnoForm);
+
+            await fetch("/member/idSearch",{
+                method:'POST',
+                body:formData
+            }).then((response)=> response.json())
+                .then((data) => {
+                    if(data.status === 'GOOD'){
+                        document.location.href="/member/pwModify";
+                    } else if(data.status === 'ID_NOT_FOUND'){
+                        alert("입력값을 확인해주세요");
+                    }
+                }).catch((error)=> {
+                    console.log((error)=> console.log("error = " + error))
+                });
+        }
+    </script>
 </head>
 <body>
 
 <div class="container">
     <h1>PW 찾기</h1>
-    <br><br><br><br>
-    <h3 onclick="toggleForm('findForm')">휴대폰 번호로 찾기 ▶</h3>
-    <br>
-    <form id="findForm" action="/submit" method="post">
-
-        <input type="text" placeholder="아이디">
+    <br><br>
+    <form id="findByTelnoForm" action="/submit" method="post">
+        <input type="text" id="useridT" name="useridT" placeholder="아이디">
         <br>
-        <input type="text" placeholder="이름">
+        <input type="text" id="nameT" name="nameT" class="input_field" placeholder="이름">
         <br>
-        <input type="text" placeholder="생년월일">
+        <input type="text" id="birthdayT" name="birthdayT" class="input_field" placeholder="생년월일">
         <br>
-        <input type="text" placeholder="휴대폰번호">
+        <input type="text" id="telno" name="telno" class="input_field" placeholder="휴대폰번호">
         <br>
-        <button type="submit">확인</button>
+        <input type="button" id="btn_idSearchByTelno" class="btn_idSearchByTelno" value="비밀번호 찾기" onclick="pwSearchByTelno()">
     </form>
-
-
-    <h3 onclick="toggleForm('findForm1')">이메일로 찾기 ▶</h3>
-
-
-    <form id="findForm1" action="/submit" method="post">
-        <input type="text" placeholder="아이디">
-        <br>
-        <input type="text" placeholder="이름">
-        <br>
-        <input type="text" placeholder="생년월일">
-        <br>
-        <input type="text" placeholder="이메일">
-        <br>
-        <button type="submit">확인</button>
-    </form>
-
 </div>
-
-
-
-<script>
-
-    var activeFormId = null;
-
-    function toggleForm(formid) {
-        var form = document.getElementById(formid);
-        var header = form.previousElementSibling;
-
-        if (activeFormId === formid) {
-            // 이미 선택된 폼이면 닫음
-            form.style.display = "none";
-            header.textContent = formid === "findForm" ? "휴대폰 번호로 찾기 ▶" : "이메일로 찾기 ▶";
-            activeFormId = null;
-        } else {
-            // 다른 폼을 선택하면 기존 폼 닫고 현재 폼 열기
-            if (activeFormId !== null) {
-                var activeForm = document.getElementById(activeFormId);
-                activeForm.style.display = "none";
-                var activeHeader = activeForm.previousElementSibling;
-                activeHeader.textContent = activeFormId === "findForm" ? "휴대폰 번호로 찾기 ▼" : "이메일로 찾기 ▶";
-            }
-
-            form.style.display = "flex";
-            header.textContent = formid === "findForm" ? "휴대폰 번호로 찾기 ▶" : "이메일로 찾기 ▼";
-            activeFormId = formid;
-        }
-    }
-</script>
-
-
-
-
-
-
 </body>
 </html>
