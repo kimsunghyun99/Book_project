@@ -31,10 +31,10 @@ public class MemberEntity {
     @Column(name="nickname", length=100, nullable=false)
     private String nickname;
 
-    @Column(name="username", length=200, nullable=false)
+    @Column(name="username", length=200, nullable=true)
     private String username;
 
-    @Column(name="birthday", nullable = false)
+    @Column(name="birthday", nullable = true)
     private int birthday;
 
     @Column(name="gender", length=10, nullable=true)
@@ -43,22 +43,22 @@ public class MemberEntity {
     @Column(name="telno", length=15, nullable=true)
     private String telno;
 
-    @Column(name="password", length=200, nullable=false)
+    @Column(name="password", length=200, nullable=true)
     private String password;
 
-    @Column(name="regdate", nullable=false)
+    @Column(name="regdate", nullable=true)
     private Timestamp regdate;
 
     @Column(name="point", length=50, nullable = true)
     private int point;
 
-    @Column(name="memberclass", length=50, nullable = false)
+    @Column(name="memberclass", length=50, nullable = true)
     private String memberclass;
 
-    @Column(name="likauthor", length=50, nullable = false)
+    @Column(name="likauthor", length=50, nullable = true)
     private String likeauthor;
 
-    @Column(name="likegenre", length=50, nullable = false)
+    @Column(name="likegenre", length=50, nullable = true)
     private String likegenre;
 
     @Column(name="pwcheck",  nullable=true)
@@ -76,7 +76,7 @@ public class MemberEntity {
     @Column(name="fromsocial", length=2, nullable = true)
     private String fromSocial;
 
-    @Column(name="role", length=50, nullable=false)
+    @Column(name="role", length=50, nullable=true)
     private String role;
 
 }

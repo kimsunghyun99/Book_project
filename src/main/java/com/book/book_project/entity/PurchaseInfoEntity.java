@@ -18,8 +18,8 @@ import java.sql.Timestamp;
 public class PurchaseInfoEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int purchaseinfoseq;
+    @Column(name="purchaseinfonumber", nullable=false)
+    private int purchaseinfonumber;
 
     @Column(name="deliverystatus",length =200, nullable=false)
     private String deliverystatus;
