@@ -122,12 +122,12 @@ public class MemberController {
     public String postLogin(MemberDTO member, HttpSession session) {
 
         //아이디 존재 여부 확인
-        if(service.idCheck(member.getEmail()) == 0) {
+        if(service.idCheck(member.getUserid()) == 0) {
             return "{\"message\":\"ID_NOT_FOUND\"}";
         }
 
         //비밀번호가 올바르게 들어왔는지 정확도 여부 확인
-        if(!pwdEncoder.matches(member.getPassword(), service.memberInfo(member.getEmail()).getPassword())){
+        if(!pwdEncoder.matches(member.getPassword(), service.memberInfo(member.getUserid()).getPassword())){
             //잘못된 패스워드 일 경우
             return "{\"message\":\"PASSWORD_NOT_FOUND\"}";
         }
