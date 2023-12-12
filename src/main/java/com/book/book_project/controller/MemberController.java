@@ -1,9 +1,11 @@
 package com.book.book_project.controller;
 
 import com.book.book_project.dto.MemberDTO;
+import com.book.book_project.dto.UnMemberDTO;
 import com.book.book_project.entity.repository.UnMemberRepository;
 import com.book.book_project.service.LikeService;
 import com.book.book_project.service.MemberService;
+import com.book.book_project.service.UnMemberService;
 import jakarta.servlet.http.HttpSession;
 import com.book.book_project.dto.MemberDTO;
 import com.book.book_project.service.MemberService;
@@ -42,7 +44,7 @@ public class MemberController {
     private BCryptPasswordEncoder pwdEncoder;
 
     @Autowired
-    private UnMemberRepository unMemberRepository;
+    UnMemberService unMemberService;
 
 
     //회원 등록 화면 보기
@@ -169,6 +171,28 @@ public class MemberController {
     //비회원 로그인 화면 (23-12-12)
     @GetMapping("/member/unMemberLogin")
     public void getUnMemberLogin() {}
+
+    //비회원 로그인 (23-12-12)
+    @PostMapping("/member/unMemberLogin")
+    public void postUnMemberLogin() {}
+
+    //비회원 로그인 (23-12-12)
+    @ResponseBody
+    @PostMapping("/member/unMemberLoginCheck")
+    public String postUnMemberLogin(UnMemberDTO unMember) {
+        //구매번호 존재 여부 확인
+        if() {
+            return "{\"message\":\"ID_NOT_FOUND\"}";
+        }
+
+        //비밀번호가 올바르게 들어왔는지 정확도 여부 확인
+        if(!pwdEncoder.matches(unMember.getTemppassword(), unMemberService.unMemberInfo(unMember.getTemppassword()).getTemppassword())){
+            //잘못된 패스워드 일 경우
+            return "{\"message\":\"PASSWORD_NOT_FOUND\"}";
+        }
+
+        return "{\"message\":\"GOOD\"}";
+    }
 
     //비회원 구매내역 조회 화면
     @GetMapping("/member/unMemberPurchaseList")
