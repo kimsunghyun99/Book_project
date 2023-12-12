@@ -29,7 +29,7 @@ public class ProductDTO {
     private float grade;    //평점
     private int sale;   //할인율
     private long filesize;   //파일크기
-    private CategoryEntity categoryseq;    //분류 이름
+    private CategoryEntity categorynumber;    //분류 이름
 
 
     //Entity -> DTO
@@ -49,7 +49,7 @@ public class ProductDTO {
         this.grade = productEntity.getGrade();
         this.sale = productEntity.getSale();
         this.filesize = productEntity.getFilesize();
-        this.categoryseq = productEntity.getCategoryseq();
+        this.categorynumber = productEntity.getCategorynumber();
     }
 
     //DTO -> Entity
@@ -70,7 +70,7 @@ public class ProductDTO {
                 .grade(dto.getGrade())
                 .sale(dto.getSale())
                 .filesize(dto.getFilesize())
-                .categoryseq(dto.getCategoryseq())
+                .categorynumber(dto.getCategorynumber())
                 .build();
 
         return productEntity;
