@@ -12,12 +12,12 @@ import lombok.*;
 @Builder
 public class RefundDTO {
     private int refundSeq;
-    private PurchaseInfoEntity purchasedetailseq;
+    private PurchaseInfoEntity purchaseinfoseq;
     private String refundreason;
 
     public RefundDTO(RefundEntity refundEntity){
         this.refundSeq=refundEntity.getRefundseq();
-        this.purchasedetailseq=refundEntity.getPurchasedetailseq();
+        this.purchaseinfoseq=refundEntity.getPurchaseinfoseq();
         this.refundreason=refundEntity.getRefundreason();
     }
 
@@ -25,7 +25,7 @@ public class RefundDTO {
 
         return RefundEntity.builder()
                 .refundseq(dto.getRefundSeq())
-                .purchasedetailseq(dto.getPurchasedetailseq())
+                .purchaseinfoseq(dto.getPurchaseinfoseq())
                 .refundreason(dto.getRefundreason())
                 .build();
     }

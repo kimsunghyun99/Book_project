@@ -48,10 +48,10 @@ public class PageUtil {
 	}
 	
 	public String getPageAddress(int pageNum, int postNum, int pageListCount, int totalCount, String keyword) {
-		
-		int totalPage = (int)Math.ceil(totalCount/(double)postNum);
-		int totalSection = (int)Math.ceil(totalPage/(double)pageListCount);
-		int section = (int)Math.ceil(pageNum/(double)pageListCount);
+
+		int totalPage = (int)Math.ceil(totalCount/(double)postNum);  //전체개수 / 5 
+		int totalSection = (int)Math.ceil(totalPage/(double)pageListCount);    // 화면밑에 리스트 수 5
+		int section = (int)Math.ceil(pageNum/(double)pageListCount);   // 
 		String pageList = "";
 		if(totalPage != 1) {
 			

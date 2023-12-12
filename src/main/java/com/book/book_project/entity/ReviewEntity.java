@@ -9,17 +9,16 @@ import java.sql.Timestamp;
 
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Builder
 @Entity(name="review")
-@Table(name="tbl_reveiw")
+@Table(name="tbl_review")
 public class ReviewEntity {
 
     @Id
-    @Column(name = "reviewseq")
-    private Long reviewseq;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int reviewseq;
 
     @Column(name = "reviewer", length = 20, nullable = false)
     private String reviewer;
@@ -31,12 +30,12 @@ public class ReviewEntity {
     private Timestamp reviewregdate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+
     @JoinColumn(name="userid", nullable = false)
     private MemberEntity userid;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+
     @JoinColumn(name="bookid", nullable = false)
     private ProductEntity bookid;
 

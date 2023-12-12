@@ -4,7 +4,6 @@ import com.book.book_project.dto.ProductDTO;
 import com.book.book_project.dto.ReviewInterface;
 import com.book.book_project.entity.ProductEntity;
 import com.book.book_project.service.ProductService;
-import com.book.book_project.service.ReviewService;
 import com.book.book_project.util.PageUtil;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;

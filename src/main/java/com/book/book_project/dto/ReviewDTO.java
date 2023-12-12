@@ -16,7 +16,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReviewDTO {
-            private Long reviewseq;
+            private int reviewseq;
             private ProductEntity bookid;
             private MemberEntity userid;
             private String reviewer;

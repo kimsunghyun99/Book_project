@@ -55,7 +55,108 @@
             padding: 10px;
             box-sizing: border-box;
         }
+
+        input[type="radio"] {
+            display: inline-block;
+            vertical-align: middle; /* 수직 정렬 추가 */
+            margin-bottom: 0; /* 여백 제거 */
+        }
+
+        label {
+            display: inline-block;
+            vertical-align: middle; /* 수직 정렬 추가 */
+            margin-bottom: 8px;
+        }
+
+        form input[type="radio"] + input[type="radio"] {
+            margin-left: 10px;
+        }
+
     </style>
+
+    <script>
+
+            btnRegister.addEventListener('click',async ()=> {
+            address.value = addr1.value + " " + addr2.value;
+
+            if(address.value == '' ) {
+            if(zipcode.value == ''){
+            alert("우편번호를 입력하세요");
+            zipcode.focus();
+            return false;
+
+
+            if(addr2.value == '') {
+            alert("상세 주소를 입력하세요");
+            addr2.focus();
+            return false;
+        }
+            formData.append("address",address.value);
+
+        }
+
+            if(telno.value == '') {
+            alert("전화번호를 입력하세요");
+            telno.focus();
+            return false;
+        }
+
+            const beforeTelno = telno.value;
+            const afterTelno = beforeTelno.replace(/\-/ig,"").replace(/\ /ig,"").trim();
+            telno.value = afterTelno;
+
+
+            if(email.value == '') {
+            alert("이메일 주소를 입력하세요");
+            email.focus();
+            return false;
+        }
+
+            const formData = new FormData(RegistryForm);
+            //	 formData.append("userid", userid.value);
+        //     formData.forEach((value, key) => {
+        //     console.log(key + ': ' + value)
+        // });
+                // formData.append("address",'[[${memberInfo.address}]]');
+
+            await fetch('/member/memberInfoModify', {
+            method: 'POST',
+            body: formData
+        }).then((response)=> response.json())
+            .then((data)=> {
+            console.log(data.message);
+            if(data.message === 'GOOD'){
+            alert("수정되었습니다.");
+            document.location.href='/board/list?page=1';
+        } else {
+            alert("서버 장애로 수정에 실패했습니다.");
+        }
+        }).catch((error)=> {
+            console.log("error = " + error);
+        });
+            }
+            //document.RegistryForm.action = '/member/signup';
+            //document.RegistryForm.submit();
+        });
+
+            const searchAddr = () => {
+
+                if(addrSearch.value == '') {
+                    alert("검색할 주소를 입력하세요");
+                    addrSearch.focus();
+                    return false;
+                }
+
+                window.open(
+                    "/member/addrSearch?page=1&addrSearch=" + addrSearch.value,
+                    "주소검색",
+                    "width=950, height=540, top=50, left=50"
+                );
+            }
+
+
+    </script>
+
 </head>
 <body>
 
@@ -63,9 +164,13 @@
 <label><input type="radio" name="gender" th:checked="${memberInfo.gender == '남성'}" value="남성">남성</label>
 <label><input type="radio" name="gender" th:checked="${memberInfo.gender == '여성'}"value="여성">여성</label><br>
 
+<input type="text" id="email" class="input_field" name="email" th:value="${memberInfo.email}" placeholder=" 이메일주소를 입력하세요">
+<input type="text" id="telno" class="input_field" name="telno" th:value="${memberInfo.telno}" placeholder="전화번호를 입력하세요" >
 
 <input type="text" id="addrSearch" name="addrSearch" class="addrSearch"  placeholder="주소를 검색합니다.">
 <input type="button" id="btn_addSearch" class="btn_addrSearch" value="주소검색" onclick="searchAddr()">
+
+
 
 <input type="text" id="zipcode" class="input_field" name="zipcode" th:value="${memberInfo.zipcode}" placeholder="우편번호가 검색되어 입력됩니다." readonly>
 <input type="text" id="addr1" class="input_field" name="addr1" th:value="${memberInfo.address}" placeholder="주소가 검색되어 입력됩니다." readonly>

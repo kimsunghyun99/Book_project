@@ -37,8 +37,8 @@ public class MemberEntity {
     @Column(name="username", length=200, nullable=false)
     private String username;
 
-    @Column(name="birthday", length=2, nullable = false)
-    private Timestamp birthday;
+    @Column(name="birthday", nullable = false)
+    private int birthday;
 
     @Column(name="gender", length=20, nullable=true)
     private String gender;

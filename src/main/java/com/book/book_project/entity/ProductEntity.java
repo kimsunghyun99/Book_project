@@ -67,7 +67,7 @@ public class ProductEntity {
 
     //FK 분류이름
     @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+
     @JoinColumn(name="categoryseq", nullable = false)
     private CategoryEntity categoryseq;
 

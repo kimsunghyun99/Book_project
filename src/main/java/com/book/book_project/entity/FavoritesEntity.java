@@ -18,8 +18,8 @@ import java.sql.Timestamp;
 public class FavoritesEntity {
 
     @Id
-    @Column(name="favoriteseq")
-    private Long favoriteseq;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int favoriteseq;
 
     @Column(name="favoritedate", nullable=true)
     private Timestamp favoritedate;
@@ -29,12 +29,12 @@ public class FavoritesEntity {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+
     @JoinColumn(name="userid", nullable = false)
     private MemberEntity userid;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+
     @JoinColumn(name="bookid", nullable = false)
     private ProductEntity bookid;
 }

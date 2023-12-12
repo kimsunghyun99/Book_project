@@ -14,16 +14,16 @@ import org.hibernate.annotations.OnDeleteAction;
 @Table(name="tbl_refund")
 public class RefundEntity {
     @Id
-    @Column(name="refundseq", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int refundseq;
 
     @Column(name="refundreason", length = 2000, nullable = false)
     private String refundreason;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @OnDelete(action= OnDeleteAction.CASCADE)
-    @JoinColumn(name="purchasedetailseq")
-    private PurchaseInfoEntity purchasedetailseq;
+
+    @JoinColumn(name="purchaseinfoseq")
+    private PurchaseInfoEntity purchaseinfoseq;
 
 
 }

@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+   <title>아이디 찾기</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -56,75 +56,132 @@
             box-sizing: border-box; /* 패딩을 요소의 크기에 포함시킵니다. */
         }
     </style>
+    <script>
+
+        var activeFormId = null;
+
+        function toggleForm(formid) {
+            var form = document.getElementById(formid);
+            var header = form.previousElementSibling;
+
+            // 이미 선택된 폼이면 닫음
+            if (activeFormId === formid) {
+                form.style.display = "none";
+                header.textContent = formid === "findByTelnoForm" ? "휴대폰 번호로 찾기 ▶" : "이메일로 찾기 ▶";
+                activeFormId = null;
+            } else {
+                if (activeFormId !== formid) {
+                    var activeForm = document.getElementById(activeFormId);
+                    if (activeForm !== null) {
+                        activeForm.style.display = "none";
+                        var activeHeader = activeForm.previousElementSibling;
+                        activeHeader.textContent = activeFormId === "findByTelnoForm" ? "휴대폰 번호로 찾기 ▼" : "이메일로 찾기 ▼";
+                    }
+                    activeFormId = formid;
+                }
+                form.style.display = "flex";
+                header.textContent = formid === "findByEmailForm" ? "휴대폰 번호로 찾기 ▼" : "이메일로 찾기 ▼";
+                activeFormId = formid;
+            }
+        }
+
+        const idSearchByTelno = async() => {
+            if(nameT.value===null){
+                alert("이름을 입력하세요");
+                nameT.focus();
+                return false;
+            }if(birthdayT.value===null){
+                alert("생년월일을 입력하세요");
+                birthdayT.focus();
+                return false;
+            }if(telno.value===null){
+                alert("전화번호를 입력하세요");
+                telno.focus();
+                return false;
+            }
+
+            let formData = new FormData(findByTelnoForm);
+
+            await fetch("/member/idSearch",{
+                method:'POST',
+                body:formData
+            }).then((response)=> response.json())
+                .then((data) => {
+                    if(data.status === 'GOOD'){
+                        let resultIdByTelno = "<br><br><h1>아이디 : " + data.userid + "</h1>";
+                        SearchId.innerHTML = resultIdByTelno;
+                    } else if(data.status === 'ID_NOT_FOUND'){
+                        alert("입력값을 확인해주세요");
+                    }
+                }).catch((error)=> {
+                    console.log((error)=> console.log("error = " + error))
+                });
+        }
+        const idSearchByEmail = async() => {
+            if(nameE.value===null){
+                alert("이름을 입력하세요.");
+                nameT.focus();
+                return false;
+            }if(birthdayE.value===null){
+                alert("생년월일을 입력하세요.");
+                birthdayE.focus();
+                return false;
+            }if(email.value===null){
+                alert("이메일을 입력하세요.");
+                email.focus();
+                return false;
+            }
+
+            let formData = new FormData(findByEmailForm);
+
+            await fetch("/member/idSearch",{
+                method:'POST',
+                body:formData
+            }).then((response)=> response.json())
+                .then((data) => {
+                    if(data.status === 'GOOD'){
+                        let resultIdByEmail = "<br><br><h1>아이디 : " + data.userid + "</h1>";
+                        SearchId.innerHTML = resultIdByEmail;
+                    }else if(data.status === 'ID_NOT_FOUND'){
+                        alert("입력값을 확인해주세요");
+                    }
+                }).catch((error)=> {
+                    console.log((error)=> console.log("error = " + error))
+                });
+        }
+    </script>
 </head>
 <body>
 
 <div class="container">
     <h1>ID 찾기</h1>
     <br><br><br><br>
-    <h3 onclick="toggleForm('findForm')">휴대폰 번호로 찾기 ▶</h3>
+    <h3 onclick="toggleForm('findByTelnoForm')">휴대폰 번호로 찾기</h3>
     <br>
-<form id="findForm" action="/submit" method="post">
-    <input type="text" placeholder="이름">
+<form id="findByTelnoForm" action="/submit" method="post">
+    <input type="text" id="nameT" name="nameT" class="input_field" placeholder="이름">
     <br>
-    <input type="text" placeholder="생년월일">
+    <input type="text" id="birthdayT" name="birthdayT" class="input_field" placeholder="생년월일">
     <br>
-    <input type="text" placeholder="휴대폰번호">
+    <input type="text" id="telno" name="telno" class="input_field" placeholder="휴대폰번호">
         <br>
-        <button type="submit">확인</button>
+    <input type="button" id="btn_idSearchByTelno" class="btn_idSearchByTelno" value="ID 찾기" onclick="idSearchByTelno()">
     </form>
 
 
-<h3 onclick="toggleForm('findForm1')">이메일로 찾기 ▶</h3>
-
-
-<form id="findForm1" action="/submit" method="post">
-    <input type="text" placeholder="이름">
+<h3 onclick="toggleForm('findByEmailForm')">이메일로 찾기</h3>
     <br>
-    <input type="text" placeholder="생년월일">
+<form id="findByEmailForm" action="/submit" method="post">
+    <input type="text" id="nameE" name="nameE" class="input_field" placeholder="이름">
     <br>
-    <input type="text" placeholder="이메일">
+    <input type="text" id="birthdayE" name="birthdayE" class="input_field" placeholder="생년월일">
     <br>
-    <button type="submit">확인</button>
+    <input type="text" id="email" name="email" class="input_field" placeholder="이메일">
+    <br>
+    <input type="button" id="btn_idSearchByEmail" class="btn_idSearchByEmail" value="ID 찾기" onclick="idSearchByEmail()">
 </form>
+    <div class="SearchId" id="SearchId"></div>
 
 </div>
-
-
-
-<script>
-
-    var activeFormId = null;
-
-    function toggleForm(formid) {
-        var form = document.getElementById(formid);
-        var header = form.previousElementSibling;
-
-        if (activeFormId === formid) {
-            // 이미 선택된 폼이면 닫음
-            form.style.display = "none";
-            header.textContent = formid === "findForm" ? "휴대폰 번호로 찾기 ▶" : "이메일로 찾기 ▶";
-            activeFormId = null;
-        } else {
-            // 다른 폼을 선택하면 기존 폼 닫고 현재 폼 열기
-            if (activeFormId !== null) {
-                var activeForm = document.getElementById(activeFormId);
-                activeForm.style.display = "none";
-                var activeHeader = activeForm.previousElementSibling;
-                activeHeader.textContent = activeFormId === "findForm" ? "휴대폰 번호로 찾기 ▼" : "이메일로 찾기 ▶";
-            }
-
-            form.style.display = "flex";
-            header.textContent = formid === "findForm" ? "휴대폰 번호로 찾기 ▶" : "이메일로 찾기 ▼";
-            activeFormId = formid;
-        }
-    }
-</script>
-
-
-
-
-
-
 </body>
 </html>
