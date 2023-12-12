@@ -2,10 +2,14 @@ package com.book.book_project.service;
 
 import com.book.book_project.controller.MemberController;
 import com.book.book_project.dto.MemberDTO;
+import com.book.book_project.entity.AddressEntity;
 import com.book.book_project.entity.MemberEntity;
 import com.book.book_project.entity.repository.AddresRepository;
 import com.book.book_project.entity.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -48,14 +52,20 @@ public class MemberServiceImpl implements MemberService {
     }
 
     // update tbl_member set password = #{password}, lastpwdate= #{lastpwdate} where userid = #{userid}
-    //패스워드 수정
+    //회원정보 수정
     public void modifyMember(MemberDTO member) {
         MemberEntity memberEntity =memberRepository.findById(member.getUserid()).get();
         memberEntity.setPassword(pwdEncoder.encode(member.getPassword()));
         memberRepository.save(memberEntity);
     }
 
-
+    //주소 검색
+    @Override
+    public Page<AddressEntity> addrSearch(int pageNum, int postNum, String addrSearch) {
+        PageRequest pageRequest = PageRequest.of(pageNum-1, postNum, Sort.by(Sort.Direction.ASC, "zipcode"));
+        System.out.println(addresRepository.findByRoadContainingOrBuildingContaining(addrSearch, addrSearch, pageRequest).getContent());
+        return addresRepository.findByRoadContainingOrBuildingContaining(addrSearch, addrSearch, pageRequest);
+    }
 
     public String searchId(MemberDTO member){
         return memberRepository.findByTelnoOrEmail(member.getTelno(), member.getEmail(), member.getBirthday(), member.getUsername())
