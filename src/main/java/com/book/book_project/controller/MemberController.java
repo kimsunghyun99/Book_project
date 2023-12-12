@@ -94,18 +94,22 @@ public class MemberController {
     @ResponseBody
     @PostMapping("/member/pwModify")
     public String postPwModify(@RequestParam("old_password") String old_password,
-                               @RequestParam("new_password") String new_password, HttpSession session) throws Exception {
-
-        String userid = (String)session.getAttribute("userid");
+                               @RequestParam("new_password") String new_password) throws Exception {
+       // HTTP session 파라미터 잠시 삭제
+        System.out.println("controller1");
+      //  String userid = (String)session.getAttribute("userid");
 
         //패스워드가 올바르게 들어 왔는지 확인
-        if(!pwdEncoder.matches(old_password, service.memberInfo(userid).getPassword())) {
-            return "{\"message\":\"PASSWORD_NOT_FOUND\"}";
-        }
+//        if(!pwdEncoder.matches(old_password, service.memberInfo(userid).getPassword())) {
+//            return "{\"message\":\"PASSWORD_NOT_FOUND\"}";
+//        }
+
+        System.out.println("controller2");
+
 
         //신규 패스워드로 업데이트
         MemberDTO member = new MemberDTO();
-        member.setUserid(userid);
+
         member.setPassword(new_password);
         member.setLastpwdate(Timestamp.valueOf(LocalDateTime.now()));
         service.memberPasswordModify(member);

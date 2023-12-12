@@ -48,9 +48,9 @@ public class MemberServiceImpl implements MemberService {
     // update tbl_member set password = #{password}, lastpwdate= #{lastpwdate} where userid = #{userid}
     //패스워드 수정
     public void memberPasswordModify(MemberDTO member) {
-        MemberEntity memberEntity =memberRepository.findById(member.getUserid()).get();
-        memberEntity.setPassword(pwdEncoder.encode(member.getPassword()));
-        memberRepository.save(memberEntity);
+      //  MemberEntity memberEntity =memberRepository.findById(member.getUserid()).get();
+       // MemberEntity.setPassword(pwdEncoder.encode(member.getPassword()));
+      // memberRepository.save(MemberEntity);
     }
 
 
