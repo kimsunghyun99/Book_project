@@ -86,11 +86,11 @@ public class WebSecurityConfig {
 					.failureHandler(oAuth2FailureHandler));
 		
 		// 세션 설정
-		http
-		.sessionManagement(management -> management
-				.maximumSessions(1)
-				.maxSessionsPreventsLogin(false)
-				.expiredUrl("/member/login"));
+//		http
+//		.sessionManagement(management -> management
+//				.maximumSessions(1)
+//				.maxSessionsPreventsLogin(false)
+//				.expiredUrl("/member/login"));
 				
 		//스프링 시큐리티의 로그 아웃 
 		http

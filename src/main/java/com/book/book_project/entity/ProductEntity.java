@@ -17,7 +17,7 @@ import java.sql.Timestamp;
 public class ProductEntity {
 
     @Id
-    @Column(name="bookid", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int bookid; //도서번호
 
     @Column(name="bookname", length=100, nullable = false)
