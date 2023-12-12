@@ -12,7 +12,7 @@ package com.book.book_project.dto;
 @AllArgsConstructor
 @Builder
 public class PurchaseInfoDTO {
-    private int purchaseinfoseq;
+    private int purchaseinfonumber;
     private ProductEntity bookid;
     private PurchaseStatusEntity statusseq;
     private String deliverystatus;
@@ -21,7 +21,7 @@ public class PurchaseInfoDTO {
     private int totalprice;
 
     public PurchaseInfoDTO(PurchaseInfoEntity purchaseInfoEntity){
-        this.purchaseinfoseq=purchaseInfoEntity.getPurchaseinfoseq();
+        this.purchaseinfonumber=purchaseInfoEntity.getPurchaseinfonumber();
         this.bookid=purchaseInfoEntity.getBookid();
         this.statusseq=purchaseInfoEntity.getStatusseq();
         this.deliverystatus=purchaseInfoEntity.getDeliverystatus();
@@ -33,7 +33,7 @@ public class PurchaseInfoDTO {
     public PurchaseInfoEntity dtoToEntity(PurchaseInfoDTO dto){
 
         return PurchaseInfoEntity.builder()
-                .purchaseinfoseq(dto.getPurchaseinfoseq())
+                .purchaseinfonumber(dto.getPurchaseinfonumber())
                 .bookid(dto.getBookid())
                 .statusseq(dto.getStatusseq())
                 .deliverystatus(dto.getDeliverystatus())
