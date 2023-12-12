@@ -9,19 +9,19 @@ import org.springframework.stereotype.Service;
 public interface MemberService {
 
     //회원 가입
-    public void memberInfoRegistry(MemberDTO member);
+    void memberInfoRegistry(MemberDTO member);
 
     //회원 정보 가져 오기
-    public MemberDTO memberInfo(String userid);
+    MemberDTO memberInfo(String userid);
 
     //패스워드 수정
-    public void memberPasswordModify(MemberDTO member);
+    void memberPasswordModify(MemberDTO member);
 
-    public void modifyMember(MemberDTO member);
+    void modifyMember(MemberDTO member);
 
+    //아이디 찾기
+    String idSearch(MemberDTO member);
 
-    //주소 검색
-    public Page<AddressEntity> addrSearch(int pageNum, int postNum, String addrSearch);
-
-    public String searchId(MemberDTO member);
+    //비밀번호 찾기
+    String pwSearch(MemberDTO member);
 }

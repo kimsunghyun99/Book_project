@@ -26,16 +26,16 @@ public class ReviewEntity {
     @Column(name = "reviewcontent", length = 100, nullable = false)
     private String reviewcontent;
 
-    @Column(name = "reviewregdate", nullable = true)
+    @Column(name = "reviewregdate", nullable = false)
     private Timestamp reviewregdate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-
+    @OnDelete(action= OnDeleteAction.CASCADE)
     @JoinColumn(name="userid", nullable = false)
     private MemberEntity userid;
 
     @ManyToOne(fetch = FetchType.LAZY)
-
+    @OnDelete(action= OnDeleteAction.CASCADE)
     @JoinColumn(name="bookid", nullable = false)
     private ProductEntity bookid;
 

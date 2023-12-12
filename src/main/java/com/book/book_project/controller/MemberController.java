@@ -78,10 +78,10 @@ public class MemberController {
     public String postPwModify(@RequestParam("old_password") String old_password,
                                @RequestParam("new_password") String new_password, HttpSession session) throws Exception {
 
-        String userid = (String) session.getAttribute("userid");
+        String userid = (String)session.getAttribute("userid");
 
         //패스워드가 올바르게 들어 왔는지 확인
-        if (!pwdEncoder.matches(old_password, service.memberInfo(userid).getPassword())) {
+        if(!pwdEncoder.matches(old_password, service.memberInfo(userid).getPassword())) {
             return "{\"message\":\"PASSWORD_NOT_FOUND\"}";
         }
 
@@ -97,14 +97,13 @@ public class MemberController {
 
     //회원 정보 수정 화면
     @GetMapping("/member/memberInfoModify")
-    public void getMemberInfoModify() {
-    }
+    public void getMemberInfoModify() {}
 
 
     @ResponseBody
     @PostMapping("/member/memberInfoModify")
     public String postMemberInfoModify(MemberDTO member, HttpSession session) throws Exception {
-        member.setUserid((String) session.getAttribute("userid"));
+        member.setUserid((String)session.getAttribute("userid"));
         service.modifyMember(member);
 
 
@@ -131,6 +130,10 @@ public class MemberController {
         model.addAttribute("list", list);
         model.addAttribute("pageList", page.getPageAddress(pageNum, postNum, pageListCount, totalCount, addrSearch));
 
+    }
+    @PostMapping("/member/idSearch")
+    private String postIdSearch(MemberDTO member){
+        String userid = service.idSearch(member);
 
     }
 }

@@ -17,19 +17,19 @@ public class AddressEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int seqno;
 	
-	@Column(name="zipcode", length=10, nullable=true)
+	@Column(name="zipcode", length=10, nullable=false)
 	private String zipcode;
 	
-	@Column(name="province", length=50, nullable=true)
+	@Column(name="province", length=200, nullable=false)
 	private String province;
 	
-	@Column(name="road", length=200, nullable=true)
+	@Column(name="road", length=200, nullable=false)
 	private String road;
 	
-	@Column(name="building", length=200, nullable=true)
+	@Column(name="building", length=200, nullable=false)
 	private String building;
 	
-	@Column(name="oldaddr", length=200, nullable=true)
+	@Column(name="oldaddr", length=200, nullable=false)
 	private String oldaddr;
 	
 
