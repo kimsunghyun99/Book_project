@@ -14,6 +14,6 @@ import java.util.Optional;
 public interface UnMemberRepository extends JpaRepository<UnMemberEntity, String> {
 
     //unmembertelno와 purchaseinfoseq를 이용하여 비회원 정보를 조회
-    @Query(value = "SELECT u FROM tbl_unmember u JOIN tbl_buyerInfo b ON u.unmembertelno = b.unmembertelno JOIN tbl_purchaseInfo p ON b.buyerseq = p.buyerseq WHERE u.unmembertelno = :unmembertelno AND p.purchaseinfoseq = :purchaseinfoseq", nativeQuery = true)
+    @Query(value = "SELECT * FROM tbl_unmember u JOIN tbl_buyerInfo b ON u.unmembertelno = b.unmembertelno JOIN tbl_purchaseInfo p ON b.buyerseq = p.buyerseq WHERE u.unmembertelno = :unmembertelno AND p.purchaseinfoseq = :purchaseinfoseq", nativeQuery = true)
     Optional<UnMemberEntity> findByUnmembertelnoAndPurchaseinfoseq(@Param("unmembertelno") String unmembertelno, @Param("purchaseinfoseq") int purchaseinfoseq);
 }
