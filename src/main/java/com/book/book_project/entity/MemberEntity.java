@@ -28,7 +28,7 @@ public class MemberEntity {
     @Column(name="userid", nullable=false)
     private String userid;
 
-    @Column(name="nickname", length=20, nullable=false)
+    @Column(name="nickname", length=100, nullable=false)
     private String nickname;
 
     @Column(name="username", length=200, nullable=false)
@@ -37,10 +37,10 @@ public class MemberEntity {
     @Column(name="birthday", nullable = false)
     private int birthday;
 
-    @Column(name="gender", length=20, nullable=true)
+    @Column(name="gender", length=10, nullable=true)
     private String gender;
 
-    @Column(name="telno", length=20, nullable=true)
+    @Column(name="telno", length=15, nullable=true)
     private String telno;
 
     @Column(name="password", length=200, nullable=false)
@@ -49,31 +49,31 @@ public class MemberEntity {
     @Column(name="regdate", nullable=false)
     private Timestamp regdate;
 
-    @Column(name="point", length=2, nullable = true)
+    @Column(name="point", length=50, nullable = true)
     private int point;
 
-    @Column(name="memberclass", length=2, nullable = false)
+    @Column(name="memberclass", length=50, nullable = false)
     private String memberclass;
 
-    @Column(name="likauthor", length=2, nullable = false)
+    @Column(name="likauthor", length=50, nullable = false)
     private String likeauthor;
 
-    @Column(name="likegenre", length=2, nullable = false)
+    @Column(name="likegenre", length=50, nullable = false)
     private String likegenre;
 
     @Column(name="pwcheck",  nullable=true)
     private int pwcheck;
 
-    @Column(name="lastlogindate",  nullable=true)
+    @Column(name="lastlogindate")
     private Timestamp lastlogindate;
 
-    @Column(name="lastlogoutdate",  nullable=true)
+    @Column(name="lastlogoutdate")
     private Timestamp lastlogoutdate;
 
-    @Column(name="lastpwdate", nullable=true)
+    @Column(name="lastpwdate")
     private Timestamp lastpwdate;
 
-    @Column(name="fromsocial", length=2, nullable = false)
+    @Column(name="fromsocial", length=2, nullable = true)
     private String fromSocial;
 
     @Column(name="role", length=50, nullable=false)

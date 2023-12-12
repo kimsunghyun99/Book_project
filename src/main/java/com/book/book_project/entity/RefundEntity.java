@@ -21,7 +21,7 @@ public class RefundEntity {
     private String refundreason;
 
     @OneToOne(fetch = FetchType.LAZY)
-
+    @OnDelete(action= OnDeleteAction.CASCADE)
     @JoinColumn(name="purchaseinfoseq")
     private PurchaseInfoEntity purchaseinfoseq;
 

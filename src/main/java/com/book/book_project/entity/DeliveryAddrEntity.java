@@ -26,26 +26,26 @@ public class DeliveryAddrEntity {
     // Eager는 부모키가 있는 테이블부터 검사해서 부모키가 제대로 되어 있는지 확인하고 자식키를 읽음 --> 정확도는 높지만 성능이 저하
     // Lazy는 자식키가 있는 테이블만 읽음 -> 정확도는 떨어지지만 성능이 향상
     @ManyToOne(fetch =FetchType.LAZY)
-
+    @OnDelete(action= OnDeleteAction.CASCADE)
     @JoinColumn(name="userid", nullable=false)
     private MemberEntity userid;
 
-    @Column(name="addr", length=50, nullable=false)
+    @Column(name="addr", length=200, nullable=false)
     private String addr;
 
-    @Column(name="detailaddr", length=70, nullable=false)
+    @Column(name="detailaddr", length=200, nullable=false)
     private String detailaddr;
 
     @Column(name="zipcode", nullable=false)
     private int zipcode;
 
-    @Column(name="name", length=10, nullable=false)
+    @Column(name="name", length=50, nullable=false)
     private String name;
 
     @Column(name="memo",length=250, nullable=true)
     private String memo;
 
-    @Column(name="telno", length=20, nullable=false)
+    @Column(name="telno", length=15, nullable=false)
     private String telno;
 
 
