@@ -29,6 +29,8 @@ public class MemberServiceImpl implements MemberService {
     public void memberInfoRegistry(MemberDTO member) {
         member.setRegdate(Timestamp.valueOf(LocalDateTime.now()));
         member.setLastpwdate(Timestamp.valueOf(LocalDateTime.now()));
+        member.setMemberclass("bronze");
+        member.setRole("USER");
         member.setPwcheck(1);
         member.setFromSocial("N");
         memberRepository.save(member.dtoToEntity(member));
@@ -51,6 +53,8 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.save(memberEntity);
     }
 
+
+
     // update tbl_member set password = #{password}, lastpwdate= #{lastpwdate} where userid = #{userid}
     //회원정보 수정
     public void modifyMember(MemberDTO member) {
@@ -63,7 +67,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Page<AddressEntity> addrSearch(int pageNum, int postNum, String addrSearch) {
         PageRequest pageRequest = PageRequest.of(pageNum-1, postNum, Sort.by(Sort.Direction.ASC, "zipcode"));
-        System.out.println(addresRepository.findByRoadContainingOrBuildingContaining(addrSearch, addrSearch, pageRequest).getContent());
+        //System.out.println(addresRepository.findByRoadContainingOrBuildingContaining(addrSearch, addrSearch, pageRequest).getContent());
         return addresRepository.findByRoadContainingOrBuildingContaining(addrSearch, addrSearch, pageRequest);
     }
 

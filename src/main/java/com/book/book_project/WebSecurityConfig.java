@@ -47,8 +47,11 @@ public class WebSecurityConfig {
 	//스프링시큐리티 로그인 화면 사용 비활성화, CSRF/CORS 공격 방어용 보안 설정 비활성화 
 	@Bean
 	public SecurityFilterChain filter(HttpSecurity http) throws Exception {
-		
-		
+
+
+
+
+
 		// 스프링 시큐리티의 FormLogin 설정
 		http
 		.formLogin((login) -> login

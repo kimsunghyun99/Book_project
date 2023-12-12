@@ -62,6 +62,12 @@
                     return false;
                 }
 
+                if (nickname.value == '') {
+                    alert("닉네임을 입력하세요.");
+                    nickname.focus();
+                    return false;
+                }
+
                 if (telno.value == '') {
                     alert("전화번호를 입력하세요");
                     telno.focus();
@@ -140,13 +146,13 @@
                     zipcode.focus();
                     return false;
                 }
-                if (addr2.value == '') {
+                if (detailaddr.value == '') {
                     alert("상세 주소를 입력하세요");
-                    addr2.focus();
+                    detailaddr.focus();
                     return false;
                 }
 
-                address.value = addr1.value + " " + addr2.value;
+
 
 
                 const formData = new FormData(RegistryForm);
@@ -166,6 +172,8 @@
                     }).catch((error) => {
                         console.log("error = " + error);
                     });
+
+
             });
         }
 
@@ -187,11 +195,11 @@
 
                 const idCheck = async () => {
 
-                    const email = document.querySelector("#email");
+                    const userid = document.querySelector("#userid");
 
                     await fetch('/member/idCheck', {
                         method: "POST",
-                        body: email.value,
+                        body: userid.value,
                     }).then((response) => response.text())
                         .then((data) => {
                             const idCheckNotice = document.querySelector('#idCheckNotice');
@@ -200,7 +208,7 @@
                             else {
                                 idCheckNotice.innerHTML = "이미 사용중인 아이디입니다.";
                                 //userid.value = '';
-                                email.focus();
+                                userid.focus();
                             }
                         });
                 }
@@ -220,6 +228,10 @@
     <h2>회원가입</h2>
     <label for="username">사용자 이름:</label>
     <input type="text" id="username" name="username" required>
+
+    <label for="nickname">닉네임:</label>
+    <input type="text" id="nickname" name="nickname" required>
+
     <label for="telno">번호:</label>
     <input type="text" id="telno" class="input_field" name="telno" required>
 
@@ -243,9 +255,9 @@
     <input type="text" id="addrSearch" name="addrSearch" class="addrSearch" placeholder="주소를 검색합니다.">
     <input type="button" id="btn_addSearch" class="btn_addrSearch" value="주소검색" onclick="searchAddr()">
     <input type="text" id="zipcode" class="input_field" name="zipcode" placeholder="우편번호가 검색되어 입력됩니다." readonly>
-    <input type="text" id="addr1" class="input_field" name="addr1" placeholder="주소가 검색되어 입력됩니다." readonly>
-    <input type="text" id="addr2" class="input_field" name="addr2" placeholder="상세 주소를 입력하세요">
-    <input type="hidden" id="address" name="address">
+    <input type="text" id="addr1" class="input_field" name="addr" placeholder="주소가 검색되어 입력됩니다." readonly>
+    <input type="text" id="detailaddr" class="input_field" name="detailaddr" placeholder="상세 주소를 입력하세요">
+
 
 
     <label for="likeauthor">좋아하는 작가:</label>

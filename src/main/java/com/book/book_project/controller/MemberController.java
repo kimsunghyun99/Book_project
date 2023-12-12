@@ -1,5 +1,9 @@
 package com.book.book_project.controller;
 
+import com.book.book_project.dto.DeliverAddrDTO;
+import com.book.book_project.service.AddressService;
+import com.book.book_project.service.DeliveryService;
+import com.nimbusds.openid.connect.sdk.claims.Address;
 import org.springframework.ui.Model;
 import com.book.book_project.dto.MemberDTO;
 import com.book.book_project.entity.AddressEntity;
@@ -37,7 +41,18 @@ public class MemberController {
     MemberService service;
 
     @Autowired
+    DeliveryService deliveryService;
+
+
+    @Autowired
     private BCryptPasswordEncoder pwdEncoder;
+
+
+
+    @GetMapping("/member/login")
+    public void getLogin() {
+
+    }
 
 
     //회원 등록 화면 보기
@@ -48,16 +63,17 @@ public class MemberController {
     //회원 등록 하기
     @ResponseBody
     @PostMapping("/member/signup")
-    public Map<String, String> postSignup(MemberDTO member) throws Exception {
+    public Map<String, String> postSignup(MemberDTO member,DeliverAddrDTO deliverAddr) throws Exception {
 
         String inputPassword = member.getPassword();
         String pwd = pwdEncoder.encode(inputPassword); //단방향 암호화
         member.setPassword(pwd);
-        member.setLastpwdate(Timestamp.valueOf(LocalDateTime.now()));
-        member.setMemberclass("bronze");
-        member.setRole("USER");
-        member.setFromSocial("N");
         service.memberInfoRegistry(member);
+
+
+        deliverAddr.setName(member.getUsername());
+        deliveryService.memberaddrInfoRegistry(deliverAddr);
+
 
         Map<String, String> data = new HashMap<>();
         data.put("message", "GOOD");
