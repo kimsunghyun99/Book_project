@@ -56,8 +56,8 @@ public class WebSecurityConfig {
 				.loginPage("/member/login") // 사용자 지정 login 화면 및 명령문을 사용할때 그 경로를 스프링 시큐리티에게 공지
 				.successHandler(authSuccessHandler)
 				.failureHandler(authFailureHandler));
-				
-		
+
+
 		// 스프링 시큐리티의 자동로그인 설정
 		http  
 		       .rememberMe((me) -> me
@@ -73,7 +73,7 @@ public class WebSecurityConfig {
 		http
 			.authorizeHttpRequests((authz) -> authz
 					.requestMatchers("/member/**").permitAll()
-					.requestMatchers("/board/**").hasAnyAuthority("USER","MASTER")
+					.requestMatchers("/product/**").permitAll()
 					.requestMatchers("/master/**").hasAnyAuthority("MASTER")
 					.anyRequest().authenticated());
 					
