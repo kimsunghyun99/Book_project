@@ -89,6 +89,33 @@
         }
     </style>
     <script>
+
+        //통화 적용임
+        document.addEventListener('DOMContentLoaded', function() {
+            // JavaScript 코드 작성
+            const price = [[${view.price}]];
+            const changePrice = price.toLocaleString('ko-KR');
+            document.querySelector('.book-price').textContent = '가격: ' + changePrice + '원';
+        });
+
+
+        const nicknameInput = () => {
+
+            if(nicknameInput.value == '') {
+                alert("닉네임을 입력하세요");
+                nicknameInput.focus();
+                return false;
+            }
+
+            window.open(
+                "nickname.html",
+                "닉네임입력",
+                "width=950, height=540, top=50, left=50"
+            );
+        }
+
+
+
         //리뷰 등록
         const reviewRegister = async () => {
 
@@ -270,7 +297,67 @@
 
         }
 
-    </script>script>
+
+        const nicknameRegister = async () =>  {
+
+        const nickname = document.querySelector('#newNickname');
+
+        if(nickname.value === ''){
+            alert('닉네임을 입력하세요.');
+            nickname.focus();
+            return false;
+        }
+
+        let formData = new FormData(reviewForm)
+        await fetch('/product/review?option=I',{
+            method: 'POST',
+            body: formData
+        }).then((response)=> response.json())
+            .then((data)=> {
+                reviewList(data);
+                console.log("data = " + data);
+            }).catch((error) => {
+                console.log("error = " + error);
+                alert("시스템 장애로 리뷰 등록이 실패했습니다.");
+            });
+
+        reviewcontent.value = '';
+        }
+
+
+
+        function checkAndAlert() {
+
+            var reviewContentTextarea = document.getElementById("reviewcontent");
+            var currentNickname = "na";
+
+            // 새로운 닉네임이 null이고 리뷰 칸에 커서를 대면 확인 대화상자 띄우기
+            if (currentNickname === "na") {
+                if (confirm("새로운 닉네임을 입력하세요. 계속하시겠습니까?")) {
+                    reviewContentTextarea.blur(); // 리뷰 내용 입력 칸의 포커스 해제
+
+                    // "확인"을 눌렀을 때 실행될 코드
+                    window.open("product/nickname", "닉네임입력", "width=950, height=540, top=50, left=50"); // 새 창 열기
+                }
+            }
+        }
+
+        // function validateForm() {
+        //     var newNicknameInput = document.getElementById("newNickname");
+        //
+        //     // 새로운 닉네임이 비어있는 경우에 alert 띄우기
+        //     if (newNicknameInput.value.trim() === "") {
+        //         alert("새로운 닉네임을 입력하세요.");
+        //         return false; // 폼 제출을 중단
+        //     }
+        //
+        //     // 여기에 추가적인 유효성 검사 로직을 넣을 수 있습니다.
+        //
+        //     return true; // 폼 제출 허용
+        // }
+
+
+    </script>
 </head>
 <body>
 <header>
@@ -298,27 +385,35 @@
         <p class="book-author" th:text="'작가: ' + ${view.author}"></p>
         <p class="book-price" th:text="'가격: ' + ${view.price} + '원'"></p>
         <p class="book-discount" th:text="'할인율: ' + ${view.sale} + '%'"></p>
-        <p class="book-point" th:text="'포인트적립: ' + ${view.sale} + '%'"></p>
+        <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.price * 0.05, 3, 'COMMA')} + '원'"></p>
+
         <div class="book-actions">
             <a href="shoppingBasket.html" class="book-cart">장바구니</a>
             <a href="shoppingBasket.html" class="book-buy">구매하기</a>
         </div>
     </div>
 
+
 </div>
 <div class="reviewDiv" style="width:60%;height:300px;margin:auto;text-align:left;">
+
     <p id="reviewNotice">리뷰을 작성해 주세요.</p>
+
+    작성자: <input type="text" id="reviewer" name="reviewer" th:value="${session.nickname}" readonly>
+
     <form id="reviewForm" name="reviewForm" method="POST">
-        작성자 : <input type="text" id="reviewer" name="reviewer" th:value="${session.username}" readonly><br>
-        <textarea id="reviewcontent" name="reviewcontent" cols="80" rows="5" maxlength="150" placeholder="글자수:150자 이내">
-				</textarea><br>
-        <input type="hidden" id="bookid" name="bookid" th:value="${view.bookid}">
+        <label for="reviewcontent">리뷰 내용: </label>
+        <textarea id="reviewcontent" name="reviewcontent" cols="80" rows="5" maxlength="150" placeholder="글자수: 150자 이내"
+                  onfocus="checkAndAlert()"></textarea><br>
+        <input type="hidden" id="bookid" name="bookid" th:value="${session.bookid}">
         <input type="hidden" id="userid" name="userid" th:value="${session.userid}">
     </form>
-    <input type="button" id="btn_review" value="리뷰등록" onclick="reviewRegister()">
+
+    <input type="button" id="btn_review" value="리뷰 등록" onclick="reviewRegister()">
     <input type="button" id="btn_cancel" value="취소" onclick="reviewCancel()">
     <hr>
     <div id="reviewList" style="width:100%; height:600px; overflow:auto;"></div>
+
 </div>
 </body>
 </html>

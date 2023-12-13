@@ -53,6 +53,10 @@ public class ProductController {
     public void getShoppingBasket(){}
 
 
+    //닉네임 창
+    @GetMapping("/product/nickname")
+    public void getNickname() {}
+
     //댓글 처리
 
     //리뷰 처리
