@@ -4,6 +4,7 @@ import com.book.book_project.dto.ProductDTO;
 import com.book.book_project.dto.ReviewInterface;
 import com.book.book_project.entity.ProductEntity;
 import com.book.book_project.service.FavoritesService;
+import com.book.book_project.service.MemberService;
 import com.book.book_project.service.ProductService;
 import com.book.book_project.service.ReviewService;
 import com.book.book_project.util.PageUtil;
@@ -24,6 +25,7 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService service;
+    private final MemberService memberService;
     private final ReviewService reviewService;
 
     // main화면 보기
@@ -54,8 +56,14 @@ public class ProductController {
 
 
     //닉네임 창
+
     @GetMapping("/product/nickname")
-    public void getNickname() {}
+    public void getNickname(){}
+
+    @PostMapping ("/product/nickname")
+    public void postNickname(@RequestParam("nickname") String nickname) throws Exception {
+        memberService.memberInfo(nickname);
+    }
 
     //댓글 처리
 

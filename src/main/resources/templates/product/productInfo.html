@@ -99,20 +99,7 @@
         });
 
 
-        const nicknameInput = () => {
 
-            if(nicknameInput.value == '') {
-                alert("닉네임을 입력하세요");
-                nicknameInput.focus();
-                return false;
-            }
-
-            window.open(
-                "nickname.html",
-                "닉네임입력",
-                "width=950, height=540, top=50, left=50"
-            );
-        }
 
 
 
@@ -337,7 +324,7 @@
                     reviewContentTextarea.blur(); // 리뷰 내용 입력 칸의 포커스 해제
 
                     // "확인"을 눌렀을 때 실행될 코드
-                    window.open("product/nickname", "닉네임입력", "width=950, height=540, top=50, left=50"); // 새 창 열기
+                    window.open("nickname", "닉네임입력", "width=950, height=540, top=50, left=50"); // 새 창 열기
                 }
             }
         }
