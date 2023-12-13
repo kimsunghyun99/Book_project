@@ -7,9 +7,7 @@ import java.sql.Timestamp;
 
 public interface ReviewInterface {
 	int getReviewseq();
-
 	ProductEntity getBookid();
-
 	MemberEntity getUserid();
 	String getReviewer();
 	String getReviewcontent();
