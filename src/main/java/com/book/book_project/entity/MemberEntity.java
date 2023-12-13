@@ -28,7 +28,7 @@ public class MemberEntity {
     @Column(name="userid", nullable=false)
     private String userid;
 
-    @Column(name="nickname", length=100, nullable=false)
+    @Column(name="nickname", length=100, nullable=true)
     private String nickname;
 
     @Column(name="username", length=200, nullable=true)

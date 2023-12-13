@@ -84,11 +84,12 @@ public class OnAuth2UserDetailsServiceimpl extends DefaultOAuth2UserService {
 		
 		
 		MemberEntity member=MemberEntity.builder()
-															.userid("email")
+															.userid(email)
 															.username("구글회원")
 															.password(pwdEncoder.encode("12345"))
 															.regdate(Timestamp.valueOf(LocalDateTime.now()))
 															.fromSocial("Y")
+															.role("USER")
 														    .build();
 		
 		memberRepository.save(member);
