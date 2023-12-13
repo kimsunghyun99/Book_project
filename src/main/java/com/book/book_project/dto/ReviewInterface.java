@@ -6,7 +6,7 @@ import com.book.book_project.entity.ProductEntity;
 import java.sql.Timestamp;
 
 public interface ReviewInterface {
-	Long getReviewseq();
+	int getReviewseq();
 
 	ProductEntity getBookid();
 
