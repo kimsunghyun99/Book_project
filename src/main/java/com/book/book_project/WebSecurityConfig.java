@@ -60,10 +60,8 @@ public class WebSecurityConfig {
 		// 스프링 시큐리티의 접근권한 설정(Authentication)
 		http
 			.authorizeHttpRequests((authz) -> authz
-					.requestMatchers("/member/**").permitAll()
-					.requestMatchers("/product/**").permitAll()
-					//.requestMatchers("/master/**").hasAnyAuthority("MASTER")
-					.anyRequest().authenticated());
+					.requestMatchers("/master/**").hasAnyAuthority("MASTER")
+					.anyRequest().permitAll());
 
 		//OAuth2 
 		http
@@ -82,7 +80,7 @@ public class WebSecurityConfig {
 		// 스프링 시큐리티의 FormLogin 설정
 		http
 				.formLogin((login) -> login
-						.usernameParameter("email")   // Spring Security에서 사용하는 id 변수명 username, 그래서 사용자 지정 id 변수명을 이렇게 가르쳐줘야함
+						.usernameParameter("userid")   // Spring Security에서 사용하는 id 변수명 username, 그래서 사용자 지정 id 변수명을 이렇게 가르쳐줘야함
 						.loginPage("/member/login") // 사용자 지정 login 화면 및 명령문을 사용할때 그 경로를 스프링 시큐리티에게 공지
 						.successHandler(authSuccessHandler)
 						.failureHandler(authFailureHandler));
@@ -101,7 +99,7 @@ public class WebSecurityConfig {
 			    .csrf((csrf) -> csrf.disable());
 			http
 			.cors((cors) -> cors.disable());
-			
+
 			log.info("*************   스프링 시큐리티 설정 완료 ***************");
 			
 		return http.build();
