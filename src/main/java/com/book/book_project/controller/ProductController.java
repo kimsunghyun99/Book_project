@@ -4,7 +4,10 @@ import com.book.book_project.dto.ProductDTO;
 import com.book.book_project.dto.ReviewInterface;
 import com.book.book_project.entity.ProductEntity;
 import com.book.book_project.service.FavoritesService;
+import com.book.book_project.service.FavoritesService;
+import com.book.book_project.service.MemberService;
 import com.book.book_project.service.ProductService;
+import com.book.book_project.service.ReviewService;
 import com.book.book_project.util.PageUtil;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +26,8 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService service;
-    private final FavoritesService favoritesService;
+    private final MemberService memberService;
+    private final ReviewService reviewService;
 
     // main화면 보기
     @GetMapping("/product/main")
@@ -52,6 +56,16 @@ public class ProductController {
     public void getShoppingBasket(){}
 
 
+    //닉네임 창
+
+    @GetMapping("/product/nickname")
+    public void getNickname(){}
+
+    @PostMapping ("/product/nickname")
+    public void postNickname(@RequestParam("nickname") String nickname) throws Exception {
+        memberService.memberInfo(nickname);
+    }
+
     //댓글 처리
 
     //리뷰 처리
@@ -62,16 +76,16 @@ public class ProductController {
         switch (option) {
 
             case "I":
-                service.ReviewRegistry(review); //리뷰 등록
+                reviewService.ReviewRegistry(review); //리뷰 등록
                 break;
             case "U":
-                service.ReviewUpdate(review); //리뷰 수정
+                reviewService.ReviewUpdate(review); //리뷰 수정
                 break;
             case "D":
-                service.ReviewDelete(review); //리뷰 삭제
+                reviewService.ReviewDelete(review); //리뷰 삭제
                 break;
         }
 
-        return service.ReviewView(review);
+        return reviewService.ReviewView(review);
     }
 }

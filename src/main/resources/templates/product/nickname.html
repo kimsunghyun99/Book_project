@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>닉네임 입력</title>
+</head>
+<script>
+    const nicknameRegister = async () => {
+
+        if(nicknameInput.value == '') {
+            alert("닉네임을 입력하세요");
+            nicknameInput.focus();
+            return false;
+        }
+
+        let formData = new FormData(nicknameForm)
+        await fetch('/product/nickname',{
+            method: 'POST',
+            body: formData
+        }).then((response)=> response.json())
+            .then((data)=> {
+                console.log("data = " + data);
+            }).catch((error) => {
+                console.log("error = " + error);
+                alert("시스템 장애로 닉네임 등록이 실패했습니다.");
+            });
+
+    }
+
+</script>
+<body>
+    <form id="nicknameForm" name="nicknameForm" method="POST">
+    닉네임: <input type="text" id="nicknameInput" name="nicknameInput">
+    <input type="button" id="btn_nickname" value="등록" onclick="nicknameRegister()">
+    </form>
+</body>
+</html>

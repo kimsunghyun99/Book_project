@@ -1,4 +1,4 @@
 package com.book.book_project.service;
 
-public class LikeServiceImpl {
+public class FavoritesServiceImpl {
 }
