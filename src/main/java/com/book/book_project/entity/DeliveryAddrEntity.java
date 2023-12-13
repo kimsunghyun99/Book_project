@@ -37,7 +37,7 @@ public class DeliveryAddrEntity {
     private String detailaddr;
 
     @Column(name="zipcode", nullable=false)
-    private int zipcode;
+    private String zipcode;
 
     @Column(name="name", length=50, nullable=false)
     private String name;
