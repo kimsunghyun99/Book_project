@@ -47,17 +47,6 @@ public class WebSecurityConfig {
 	//스프링시큐리티 로그인 화면 사용 비활성화, CSRF/CORS 공격 방어용 보안 설정 비활성화 
 	@Bean
 	public SecurityFilterChain filter(HttpSecurity http) throws Exception {
-		
-		
-		// 스프링 시큐리티의 FormLogin 설정
-		http
-		.formLogin((login) -> login
-				.usernameParameter("email")   // Spring Security에서 사용하는 id 변수명 username, 그래서 사용자 지정 id 변수명을 이렇게 가르쳐줘야함
-				.loginPage("/member/login") // 사용자 지정 login 화면 및 명령문을 사용할때 그 경로를 스프링 시큐리티에게 공지
-				.successHandler(authSuccessHandler)
-				.failureHandler(authFailureHandler));
-
-
 		// 스프링 시큐리티의 자동로그인 설정
 		http  
 		       .rememberMe((me) -> me
@@ -67,17 +56,15 @@ public class WebSecurityConfig {
 		    		   .rememberMeParameter("remember-me")
 		    		   .userDetailsService(userDetailsService)
 		    		   .authenticationSuccessHandler(authSuccessHandler));
-		
-		
+
 		// 스프링 시큐리티의 접근권한 설정(Authentication)
 		http
 			.authorizeHttpRequests((authz) -> authz
 					.requestMatchers("/member/**").permitAll()
 					.requestMatchers("/product/**").permitAll()
-					.requestMatchers("/master/**").hasAnyAuthority("MASTER")
+					//.requestMatchers("/master/**").hasAnyAuthority("MASTER")
 					.anyRequest().authenticated());
-					
-		
+
 		//OAuth2 
 		http
 			.oauth2Login((login) -> login
@@ -86,13 +73,21 @@ public class WebSecurityConfig {
 					.failureHandler(oAuth2FailureHandler));
 		
 		// 세션 설정
-//		http
-//		.sessionManagement(management -> management
-//				.maximumSessions(1)
-//				.maxSessionsPreventsLogin(false)
-//				.expiredUrl("/member/login"));
-				
-		//스프링 시큐리티의 로그 아웃 
+		http
+		.sessionManagement(management -> management
+				.maximumSessions(1)
+				.maxSessionsPreventsLogin(false)
+				.expiredUrl("/member/login"));
+
+		// 스프링 시큐리티의 FormLogin 설정
+		http
+				.formLogin((login) -> login
+						.usernameParameter("email")   // Spring Security에서 사용하는 id 변수명 username, 그래서 사용자 지정 id 변수명을 이렇게 가르쳐줘야함
+						.loginPage("/member/login") // 사용자 지정 login 화면 및 명령문을 사용할때 그 경로를 스프링 시큐리티에게 공지
+						.successHandler(authSuccessHandler)
+						.failureHandler(authFailureHandler));
+
+		//스프링 시큐리티의 로그 아웃
 		http
 		.logout(logout -> logout
 				.logoutUrl("/member/logout")
