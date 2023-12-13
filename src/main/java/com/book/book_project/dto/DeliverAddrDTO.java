@@ -15,7 +15,7 @@ public class DeliverAddrDTO {
     private MemberEntity userid;
     private String addr;
     private String detailaddr;
-    private int zipcode;
+    private String zipcode;
     private String name;
     private String memo;
     private String telno;

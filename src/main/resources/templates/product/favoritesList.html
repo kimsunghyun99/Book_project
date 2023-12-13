@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>즐겨찾기</title>
@@ -75,7 +75,9 @@
 </div>
 
 <div class = "book-list">
-    <div class = "book">
+    <div class = "book" style="width:70%;height:auto;margin:auto;padding:20px;border:none;">
+            <img th:src="@{'/profile/' + ${memberInfo.stored_filename}}" style="display:block;width:80%;height:auto;margin:auto">
+        </div>
         <input type="checkbox" class="book-select">
         <img src="#" alt="book image" class="book-image">
         <h2>책 제목1</h2>

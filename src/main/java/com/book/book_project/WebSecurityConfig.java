@@ -47,8 +47,8 @@ public class WebSecurityConfig {
 	//스프링시큐리티 로그인 화면 사용 비활성화, CSRF/CORS 공격 방어용 보안 설정 비활성화 
 	@Bean
 	public SecurityFilterChain filter(HttpSecurity http) throws Exception {
-		
-		
+
+
 		// 스프링 시큐리티의 FormLogin 설정
 		http
 		.formLogin((login) -> login
@@ -67,8 +67,7 @@ public class WebSecurityConfig {
 		    		   .rememberMeParameter("remember-me")
 		    		   .userDetailsService(userDetailsService)
 		    		   .authenticationSuccessHandler(authSuccessHandler));
-		
-		
+
 		// 스프링 시큐리티의 접근권한 설정(Authentication)
 		http
 			.authorizeHttpRequests((authz) -> authz
@@ -104,7 +103,7 @@ public class WebSecurityConfig {
 			    .csrf((csrf) -> csrf.disable());
 			http
 			.cors((cors) -> cors.disable());
-			
+
 			log.info("*************   스프링 시큐리티 설정 완료 ***************");
 			
 		return http.build();
