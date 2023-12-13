@@ -23,7 +23,7 @@ public class BuyerInfoEntity {
     private String receiverdetailaddr;
 
     @Column(name = "receiverzipcode", length = 10, nullable = true)
-    private int receiverzipcode;
+    private String receiverzipcode;
 
     @Column(name = "receiveraddr", length = 20, nullable = true)
     private String receiveraddr;
