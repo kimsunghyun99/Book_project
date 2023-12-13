@@ -23,15 +23,19 @@ public class ReviewServiceImpl implements ReviewService{
 
     //리뷰 목록 보기
     @Override
-    public List<ReviewInterface> ReviewView(ReviewInterface review) throws Exception{
+    public List<ReviewInterface> reviewView(ReviewInterface review) throws Exception{
         return reviewRepository.reviewView(review.getReviewseq());
     }
 
     //리뷰 등록
     @Override
-    public void ReviewRegistry(ReviewInterface review) throws Exception {
+    public void reviewRegistry(ReviewInterface review) throws Exception {
         ProductEntity productEntity = productRepository.findById(review.getBookid().getBookid()).get();
         MemberEntity memberEntity = memberRepository.findById(review.getUserid().getUserid()).get();
+
+        System.out.println(productEntity);
+        System.out.println(memberEntity);
+        System.out.println(review.getReviewseq());
 
         ReviewEntity reviewEntity = ReviewEntity.builder()
                 .reviewseq(review.getReviewseq())
@@ -46,7 +50,7 @@ public class ReviewServiceImpl implements ReviewService{
 
     //리뷰 수정
     @Override
-    public void ReviewUpdate(ReviewInterface review) throws Exception{
+    public void reviewUpdate(ReviewInterface review) throws Exception{
         ReviewEntity reviewEntity = reviewRepository.findById(review.getReviewseq()).get();
         reviewEntity.setReviewcontent(review.getReviewcontent());
         reviewRepository.save(reviewEntity);
@@ -54,7 +58,7 @@ public class ReviewServiceImpl implements ReviewService{
 
     //리뷰 삭제
     @Override
-    public void ReviewDelete(ReviewInterface review) throws Exception{
+    public void reviewDelete(ReviewInterface review) throws Exception{
         ReviewEntity reviewEntity = reviewRepository.findById(review.getReviewseq()).get();
         reviewRepository.delete(reviewEntity);
     }

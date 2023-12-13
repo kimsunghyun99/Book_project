@@ -6,20 +6,35 @@
 </head>
 <script>
     const nicknameRegister = async () => {
-
-        if(nicknameInput.value == '') {
+        const nickname = document.querySelector('#nicknameInput');
+        if(nickname.value == '') {
             alert("닉네임을 입력하세요");
             nicknameInput.focus();
             return false;
         }
 
-        let formData = new FormData(nicknameForm)
+        const formData = new URLSearchParams();
+        formData.append("nickname", nickname.value);
+        console.log("nickname" + nickname);
         await fetch('/product/nickname',{
             method: 'POST',
-            body: formData
+            body: formData,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded' // URL 인코딩된 폼 데이터
+            }
         }).then((response)=> response.json())
             .then((data)=> {
-                console.log("data = " + data);
+                if(data.message === 'GOOD'){
+                    alert('닉네임이 등록되었습니다.');
+                    setTimeout(function() {
+                        window.close(); // 현재 창을 닫을 경우
+                        // 또는 아래와 같이 사용자가 열어둔 창을 닫을 수도 있습니다.
+                        // window.open('', '_self', '');
+                        // window.close();
+                    }, 2000);
+                } else {
+                    alert('닉네임 등록에 실패했습니다.');
+                }
             }).catch((error) => {
                 console.log("error = " + error);
                 alert("시스템 장애로 닉네임 등록이 실패했습니다.");

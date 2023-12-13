@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +37,21 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberDTO memberInfo(String userid) {
         return memberRepository.findById(userid).map(member -> new MemberDTO(member)).get();
+    }
+
+    //닉네임
+    @Override
+    public MemberDTO nickname(String userid, String nickname) {
+        Optional<MemberEntity> optionalMember = memberRepository.findById(userid);
+
+        if (optionalMember.isPresent()) {
+            MemberEntity member = optionalMember.get();
+            member.setNickname(nickname); // 닉네임 설정
+            memberRepository.save(member); // 변경된 회원 정보 저장
+            return new MemberDTO(member);
+        } else {
+            return null;
+        }
     }
 
 

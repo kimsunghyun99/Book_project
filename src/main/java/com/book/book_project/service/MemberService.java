@@ -12,6 +12,8 @@ public interface MemberService {
     //회원 정보 가져 오기
     MemberDTO memberInfo(String userid);
 
+    MemberDTO nickname(String userid, String nickname);
+
     //패스워드 수정
     void memberPasswordModify(MemberDTO member);
 

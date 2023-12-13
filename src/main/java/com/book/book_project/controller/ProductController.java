@@ -14,12 +14,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -60,13 +58,14 @@ public class ProductController {
 
     @GetMapping("/product/nickname")
     public void getNickname(){}
-
-    @PostMapping ("/product/nickname")
-    public void postNickname(@RequestParam("nickname") String nickname) throws Exception {
-        memberService.memberInfo(nickname);
+    @ResponseBody
+    @PostMapping("/product/nickname")
+    public String postNickname(@RequestParam("nickname") String nickname) throws Exception {
+        String userid = "aa@aa.com";
+        memberService.nickname(userid,nickname);
+        return "{\"message\":\"GOOD\"}";
     }
 
-    //댓글 처리
 
     //리뷰 처리
     @ResponseBody
@@ -76,16 +75,16 @@ public class ProductController {
         switch (option) {
 
             case "I":
-                reviewService.ReviewRegistry(review); //리뷰 등록
+                reviewService.reviewRegistry(review); //리뷰 등록
                 break;
             case "U":
-                reviewService.ReviewUpdate(review); //리뷰 수정
+                reviewService.reviewUpdate(review); //리뷰 수정
                 break;
             case "D":
-                reviewService.ReviewDelete(review); //리뷰 삭제
+                reviewService.reviewDelete(review); //리뷰 삭제
                 break;
         }
 
-        return reviewService.ReviewView(review);
+        return reviewService.reviewView(review);
     }
 }
