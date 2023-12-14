@@ -19,7 +19,7 @@ public class OAuth2FailureHandler extends SimpleUrlAuthenticationFailureHandler 
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException exception) throws IOException, ServletException {
 		// TODO Auto-generated method stub
-		super.onAuthenticationFailure(request, response, exception);
+
 		
 		log.debug("*************** 구글 인증 실패 ****************");
 		setDefaultFailureUrl("/member/login");
