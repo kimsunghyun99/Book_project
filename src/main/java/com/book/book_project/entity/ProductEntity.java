@@ -67,6 +67,6 @@ public class ProductEntity {
 
     //FK 분류이름
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="categorynumber" ,nullable = false)
-    private CategoryEntity categorynumber;
+    @JoinColumn(name="categoryseq" ,nullable = false)
+    private CategoryEntity categoryseq;
 }

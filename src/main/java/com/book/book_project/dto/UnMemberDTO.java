@@ -9,18 +9,35 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class UnMemberDTO {
-    private String unmembertelno;
+    private int unmemberseq;
+    private String addr;
+    private String zipcode;
+    private String detailaddr;
+    private String receivername;
+    private String receivertelno;
     private String temppassword;
 
+
+
     public UnMemberDTO(UnMemberEntity unMemberEntity){
-        this.unmembertelno=unMemberEntity.getUnmembertelno();
+        this.unmemberseq=unMemberEntity.getUnmemberseq();
+        this.addr=unMemberEntity.getAddr();
+        this.zipcode=unMemberEntity.getZipcode();
+        this.detailaddr=unMemberEntity.getDetailaddr();
+        this.receivername=unMemberEntity.getReceivername();
+        this.receivertelno=unMemberEntity.getReceivertelno();
         this.temppassword=unMemberEntity.getTemppassword();
     }
 
     public UnMemberEntity dtoToEntity(UnMemberDTO dto){
 
         return UnMemberEntity.builder()
-                .unmembertelno(dto.getUnmembertelno())
+                .unmemberseq(dto.getUnmemberseq())
+                .addr(dto.getAddr())
+                .zipcode(dto.getZipcode())
+                .detailaddr(dto.getDetailaddr())
+                .receivername(dto.getReceivername())
+                .receivertelno(dto.getReceivertelno())
                 .temppassword(dto.getTemppassword())
                 .build();
     }

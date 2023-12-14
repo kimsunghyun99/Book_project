@@ -35,7 +35,7 @@ public class MemberEntity {
     private String username;
 
     @Column(name="birthday", nullable = true)
-    private int birthday;
+    private String birthday;
 
     @Column(name="gender", length=10, nullable=true)
     private String gender;
@@ -54,12 +54,6 @@ public class MemberEntity {
 
     @Column(name="memberclass", length=50, nullable = true)
     private String memberclass;
-
-    @Column(name="likauthor", length=50, nullable = true)
-    private String likeauthor;
-
-    @Column(name="likegenre", length=50, nullable = true)
-    private String likegenre;
 
     @Column(name="pwcheck",  nullable=true)
     private int pwcheck;

@@ -30,7 +30,7 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public Page<ProductEntity> list(int pageNum, int postNum, String keyword) throws Exception {
         PageRequest pageRequest = PageRequest.of(pageNum - 1, postNum, Sort.by(Sort.Direction.DESC,"bookid"));
-        return productRepository.findByBookidContainingOrBooknameContainingOrCategorynumberContainingOrIsbnContainingOrPublisher
+        return productRepository.findByBookidContainingOrBooknameContainingOrCategoryseqContainingOrIsbnContainingOrPublisher
                 (keyword,keyword,keyword, keyword, keyword, pageRequest);
     }
 
