@@ -20,7 +20,7 @@ public interface MemberService {
     //회원 정보 가져 오기
     public MemberDTO memberInfo(String userid);
 
-    MemberDTO nickname(String userid, String nickname);
+    MemberDTO nickname(String userid, String nickname) throws Exception;
 
     //패스워드 수정
     public void memberPasswordModify(MemberDTO member);

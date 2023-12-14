@@ -9,7 +9,7 @@ import org.springframework.ui.Model;
 import com.book.book_project.dto.MemberDTO;
 import com.book.book_project.dto.UnMemberDTO;
 import com.book.book_project.entity.repository.UnMemberRepository;
-import com.book.book_project.service.LikeService;
+
 import com.book.book_project.entity.AddressEntity;
 import com.book.book_project.service.MemberService;
 import com.book.book_project.service.UnMemberService;
@@ -48,9 +48,6 @@ public class MemberController {
 
     @Autowired
     DeliveryService deliveryService;
-
-    @Autowired
-    LikeService likeService;
 
     @Autowired
     private BCryptPasswordEncoder pwdEncoder;

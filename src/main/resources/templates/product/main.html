@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -47,7 +47,7 @@
 </header>
 
 <nav>
-    <a href="#">홈</a> |
+    <a href="/product/main">홈</a> |
     <a href="#">도서</a> |
     <a href="#">이벤트</a> |
     <a href="#">마이페이지</a>
@@ -58,7 +58,8 @@
 <section>
     <h2>인기 도서</h2>
     <ul>
-        <li><a href="/product/productInfo?page=1">도서 제목 1</a></li>
+        <li><a th:href="@{'/product/productInfo?bookid=' + ${bookid} + '&page=1'}">도서 제목 1</a></li>
+
         <li><a href="#">도서 제목 2</a></li>
         <li><a href="#">도서 제목 3</a></li>
     </ul>

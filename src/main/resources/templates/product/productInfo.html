@@ -135,7 +135,7 @@
 
         const reviewList = (data) => {
 
-            var session_userid = /*'[[${session.userid}]]'*/ 'aa@aa.com';
+            var session_userid = '[[${session.userid}]]';
             const jsonInfo = data;
 
             let reviewList = document.querySelector('#reviewList');
@@ -151,10 +151,10 @@
                 let result = "";
                 result += "작성자 : " + jsonInfo[i].reviewer;
 
-                // if(jsonInfo[i].userid === session_userid){
-                //     result += "[<a href=" + "'javascript:reviewModify(" + jsonInfo[i].reviewseq + ")' style='cursor:pointer'>수정</a> | ";
-                //     result += "<a href=" + "'javascript:reviewDelete(" + jsonInfo[i].reviewseq + ")' style='cursor:pointer'>삭제</a>]";
-                // }
+                 if(jsonInfo[i].userid === session_userid){
+                     result += "[<a href=" + "'javascript:reviewModify(" + jsonInfo[i].reviewseq + ")' style='cursor:pointer'>수정</a> | ";
+                     result += "<a href=" + "'javascript:reviewDelete(" + jsonInfo[i].reviewseq + ")' style='cursor:pointer'>삭제</a>]";
+                }
 
                 let date = new Date(jsonInfo[i].reviewregdate);
                 let year = date.getFullYear();
@@ -190,7 +190,7 @@
             let formData = new FormData();
             formData.append("bookid", "[[${view.bookid}]]")
 
-            await fetch('/board/review?option=L',{
+            await fetch('/product/review?option=L',{
                 method: 'POST',
                 body: formData
             }).then((response) => response.json())
@@ -207,7 +207,7 @@
                 let formData = new FormData();
                 formData.append("reviewseq", reviewseq);
                 formData.append("bookid", "[[${view.bookid}]]")
-                await fetch('/board/review?option=D',{
+                await fetch('/product/review?option=D',{
 
                     method: 'POST',
                     body: formData
@@ -226,12 +226,12 @@
             //리뷰 내용 임시 저장
             const modifyreviewContent = document.querySelector('#c' + reviewseq);
 
-            var strreviewList = "작성자 : [[${session.username}]]&nbsp;"
+            var strreviewList = "작성자 : [[${session.nickname}]]&nbsp;"
                 + "<input type='button' id='btn_reviewModify' value='수정'>"
                 + "<input type='button' id='btn_reviewModifyCancel' value='취소'>"
                 + "<input type='hidden' name='reviewseq' value='" + reviewseq + "'>"
                 + "<input type='hidden' name='bookid' value='[[${view.bookid}]]'>"
-                + "<input type='hidden' id='reviewer' name='reviewer' value='[[${session.username}]]'>"
+                + "<input type='hidden' id='reviewer' name='reviewer' value='[[${session.nickname}]]'>"
                 + "<input type='hidden' id='userid' name='userid' value='[[${session.userid}]]'><br>"
                 + "<textarea id='modify_reviewcontent' name='reviewcontent' cols='80' rows='5' maxlength='150' placeholder='글자수:150자 이내'>"
                 + modifyreviewContent.innerHTML + "</textarea><br>";
@@ -253,7 +253,7 @@
                 formData.append("reviewseq", reviewseq);
                 formData.append("reviewcontent", modify_reviewcontent.value);
 
-                await fetch('/board/review?option=U',{
+                await fetch('/product/review?option=U',{
 
                     method: 'POST',
                     body: formData
@@ -291,10 +291,10 @@
         function checkAndAlert() {
 
             var reviewContentTextarea = document.getElementById("reviewcontent");
-            var currentNickname = "aa@aa.com"; //일단 임의값 넣었음
+            var currentNickname = '[[${session.nickname}]]';
 
             // 새로운 닉네임이 null이고 리뷰 칸에 커서를 대면 확인 대화상자 띄우기
-            if (currentNickname === "bb@aa.com") {
+            if (!currentNickname.trim()){
                 if (confirm("새로운 닉네임을 입력하세요. 계속하시겠습니까?")) {
                     reviewContentTextarea.blur(); // 리뷰 내용 입력 칸의 포커스 해제
 
@@ -353,16 +353,15 @@
     <p id="reviewNotice">리뷰을 작성해 주세요.</p>
     <form id="reviewForm" name="reviewForm" method="POST">
     <!--작성자: <input type="text" id="reviewer" name="reviewer" th:value="${session.nickname}" readonly-->
-    작성자: <input type="text" id="reviewer" name="reviewer" th:value="'aa@aa.com'" readonly>
+    작성자: <input type="text" id="reviewer" name="reviewer" th:value="${session.nickname}" readonly>
 
 
         <label for="reviewcontent">리뷰 내용: </label>
         <textarea id="reviewcontent" name="reviewcontent" cols="80" rows="5" maxlength="150" placeholder="글자수: 150자 이내"
                   onfocus="checkAndAlert()"></textarea><br>
-        <!--input type="hidden" id="bookid" name="bookid" th:value="${session.bookid}">
-        <input type="hidden" id="userid" name="userid" th:value="${session.userid}"-->
-        <input type="hidden" id="bookid" name="bookid" th:value="'1'">
-        <input type="hidden" id="userid" name="userid" th:value="'aa@aa.com'">
+        <input type="hidden" id="bookid" name="bookid" th:value="${session.bookid}">
+        <input type="hidden" id="userid" name="userid" th:value="${session.userid}">
+
     </form>
 
     <input type="button" id="btn_review" value="리뷰 등록" onclick="reviewRegister()">

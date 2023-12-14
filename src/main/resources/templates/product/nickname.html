@@ -7,7 +7,7 @@
 <script>
     const nicknameRegister = async () => {
         const nickname = document.querySelector('#nicknameInput');
-        if(nickname.value == '') {
+        if(nickname.value === '') {
             alert("닉네임을 입력하세요");
             nicknameInput.focus();
             return false;
@@ -28,9 +28,6 @@
                     alert('닉네임이 등록되었습니다.');
                     setTimeout(function() {
                         window.close(); // 현재 창을 닫을 경우
-                        // 또는 아래와 같이 사용자가 열어둔 창을 닫을 수도 있습니다.
-                        // window.open('', '_self', '');
-                        // window.close();
                     }, 2000);
                 } else {
                     alert('닉네임 등록에 실패했습니다.');

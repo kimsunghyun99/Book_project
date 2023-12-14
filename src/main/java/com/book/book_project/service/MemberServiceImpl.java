@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -62,8 +63,11 @@ public class MemberServiceImpl implements MemberService {
     }
     //닉네임
     @Override
-    public MemberDTO nickname(String userid, String nickname) {
+    @Transactional
+    public MemberDTO nickname(String userid, String nickname) throws Exception {
         Optional<MemberEntity> optionalMember = memberRepository.findById(userid);
+
+        System.out.println("impl" + optionalMember);
 
         if (optionalMember.isPresent()) {
             MemberEntity member = optionalMember.get();

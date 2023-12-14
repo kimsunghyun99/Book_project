@@ -30,7 +30,10 @@ public class ProductController {
 
     // main화면 보기
     @GetMapping("/product/main")
-    public void getMain() {}
+    public void getMain(Model model, ProductDTO dto) {
+
+        model.addAttribute("bookid", dto.getBookid());
+    }
 
     @GetMapping("/product/productInfo")
     public void getProductInfo(@RequestParam("page") int pageNum,
@@ -75,11 +78,14 @@ public class ProductController {
     public void getNickname(){}
     @ResponseBody
     @PostMapping("/product/nickname")
-    public String postNickname(@RequestParam("nickname") String nickname) throws Exception {
-        String userid = "aa@aa.com";
+    public String postNickname(HttpSession session, @RequestParam("nickname") String nickname) throws Exception {
+        String userid = (String)session.getAttribute("userid");
+        System.out.println("///////" +userid);
         memberService.nickname(userid,nickname);
         return "{\"message\":\"GOOD\"}";
     }
+
+
 
 
     //리뷰 처리
@@ -97,6 +103,10 @@ public class ProductController {
                 break;
             case "D":
                 reviewService.reviewDelete(review); //리뷰 삭제
+                break;
+
+            case "L":
+                reviewService.reviewView(review); // 리뷰 목록 조회
                 break;
         }
 
