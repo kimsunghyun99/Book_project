@@ -48,7 +48,7 @@ public class WebSecurityConfig {
 	@Bean
 	public SecurityFilterChain filter(HttpSecurity http) throws Exception {
 
-		// 스프링 시큐리티의 FormLogin 설정
+		// 스프링 시큐리티의 FormLogin 설정 //23.12.14 수정
 		http
 		.formLogin((login) -> login
 				.usernameParameter("userid")   // Spring Security에서 사용하는 id 변수명 username, 그래서 사용자 지정 id 변수명을 이렇게 가르쳐줘야함
