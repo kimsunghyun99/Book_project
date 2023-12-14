@@ -7,6 +7,7 @@ import java.util.List;
 public interface ReviewService {
 
 
+
     //리뷰 목록 보기
     public List<ReviewInterface> reviewView(ReviewInterface review) throws Exception;
 

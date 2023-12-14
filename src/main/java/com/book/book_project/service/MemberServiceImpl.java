@@ -2,6 +2,7 @@ package com.book.book_project.service;
 
 import com.book.book_project.controller.MemberController;
 import com.book.book_project.dto.MemberDTO;
+import com.book.book_project.entity.FavoritesEntity;
 import com.book.book_project.entity.MemberEntity;
 import com.book.book_project.entity.repository.AddresRepository;
 import com.book.book_project.entity.repository.MemberRepository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

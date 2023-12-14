@@ -2,20 +2,13 @@ package com.book.book_project.controller;
 
 import com.book.book_project.dto.MemberDTO;
 import com.book.book_project.dto.UnMemberDTO;
-import com.book.book_project.entity.repository.UnMemberRepository;
-import com.book.book_project.service.LikeService;
 import com.book.book_project.service.MemberService;
 import com.book.book_project.service.UnMemberService;
 import jakarta.servlet.http.HttpSession;
-import com.book.book_project.dto.MemberDTO;
-import com.book.book_project.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +20,6 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 @RequiredArgsConstructor
@@ -38,15 +30,12 @@ public class MemberController {
     MemberService service;
 
     @Autowired
-    LikeService likeService;
-
-    @Autowired
     private BCryptPasswordEncoder pwdEncoder;
 
     @Autowired
     UnMemberService unMemberService;
 
-    @Autowired
+
 
 
 

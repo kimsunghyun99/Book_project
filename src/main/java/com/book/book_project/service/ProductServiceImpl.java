@@ -28,10 +28,9 @@ public class ProductServiceImpl implements ProductService{
     private final ReviewRepository reviewRepository;
     //게시물 목록 보기
     @Override
-    public Page<ProductEntity> list(int pageNum, int postNum, String keyword) throws Exception {
-        PageRequest pageRequest = PageRequest.of(pageNum - 1, postNum, Sort.by(Sort.Direction.DESC,"bookid"));
-        return productRepository.findByBookidContainingOrBooknameContainingOrCategorynumberContainingOrIsbnContainingOrPublisher
-                (keyword,keyword,keyword, keyword, keyword, pageRequest);
+    public Page<ReviewEntity> list(int pageNum, int postNum) throws Exception {
+        PageRequest pageRequest = PageRequest.of(pageNum - 1, postNum, Sort.by(Sort.Direction.DESC, "reviewseq"));
+        return reviewRepository.findAll(pageRequest);
     }
 
     //책 내용 보기
@@ -43,42 +42,7 @@ public class ProductServiceImpl implements ProductService{
 
 
 
-//    //리뷰 목록 보기
-//    @Override
-//    public List<ReviewInterface> ReviewView(ReviewInterface review) throws Exception{
-//        return reviewRepository.reviewView(review.getReviewseq());
-//    }
-//
-//    //리뷰 등록
-//    @Override
-//    public void ReviewRegistry(ReviewInterface review) throws Exception {
-//        ProductEntity productEntity = productRepository.findById(review.getBookid().getBookid()).get();
-//        MemberEntity memberEntity = memberRepository.findById(review.getUserid().getUserid()).get();
-//
-//        ReviewEntity reviewEntity = ReviewEntity.builder()
-//                .bookid(productEntity)
-//                .userid(memberEntity)
-//                .reviewer(review.getReviewer())
-//                .reviewcontent(review.getReviewcontent())
-//                .reviewregdate(new Timestamp(System.currentTimeMillis()))
-//                .build();
-//        reviewRepository.save(reviewEntity);
-//    }
-//
-//    //리뷰 수정
-//    @Override
-//    public void ReviewUpdate(ReviewInterface review) throws Exception{
-//        ReviewEntity ReviewEntity = reviewRepository.findById(review.getReviewseq()).get();
-//        ReviewEntity.setReviewcontent(review.getReviewcontent());
-//        reviewRepository.save(ReviewEntity);
-//    }
-//
-//    //리뷰 삭제
-//    @Override
-//    public void ReviewDelete(ReviewInterface review) throws Exception{
-//        ReviewEntity ReviewEntity = reviewRepository.findById(review.getReviewseq()).get();
-//        reviewRepository.delete(ReviewEntity);
-//    }
+
 
 
 

@@ -3,6 +3,7 @@ package com.book.book_project.controller;
 import com.book.book_project.dto.ProductDTO;
 import com.book.book_project.dto.ReviewInterface;
 import com.book.book_project.entity.ProductEntity;
+import com.book.book_project.entity.ReviewEntity;
 import com.book.book_project.service.FavoritesService;
 import com.book.book_project.service.FavoritesService;
 import com.book.book_project.service.MemberService;
@@ -32,13 +33,24 @@ public class ProductController {
     public void getMain() {}
 
     @GetMapping("/product/productInfo")
-    public void getProductInfo(@RequestParam("bookid") int bookid, @RequestParam("page") int pageNum,
-                               @RequestParam(name = "keyword", defaultValue = "", required = false) String keyword,
+    public void getProductInfo(@RequestParam("page") int pageNum,
+                               @RequestParam("bookid") int bookid,
                                Model model) throws Exception {
 
+        int postNum = 5; //한 화면에 보여지는 게시물 행의 갯수
+        int pageListCount = 5; //화면 하단에 보여지는 페이지리스트의 페이지 갯수
+
+        PageUtil page = new PageUtil();
+        Page<ReviewEntity> list = service.list(pageNum, postNum);
+        int totalCount = (int)list.getTotalElements();
+
         model.addAttribute("view", service.view(bookid));
+        model.addAttribute("list", service.list(pageNum,postNum));
+        model.addAttribute("totalElement", totalCount);
+        model.addAttribute("postNum", postNum);
         model.addAttribute("page", pageNum);
-        model.addAttribute("keyword", keyword);
+        model.addAttribute("pageList", page.getPageList(pageNum, postNum, pageListCount,totalCount));
+
     }
 
     @GetMapping("/product/favoritesList")
@@ -48,7 +60,10 @@ public class ProductController {
     }
 
     @GetMapping("/product/productList")
-    public void getProductList(){}
+    public void getProductList(HttpSession session, Model model) throws Exception{
+        int bookid = (int) session.getAttribute("bookid");
+        model.addAttribute("view", service.view(bookid));
+    }
 
     @GetMapping("/product/shoppingBasket")
     public void getShoppingBasket(){}
