@@ -1,6 +1,8 @@
 package com.book.book_project.service;
 
 import com.book.book_project.dto.MemberDTO;
+import com.book.book_project.entity.AddressEntity;
+import org.springframework.data.domain.Page;
 import com.book.book_project.entity.FavoritesEntity;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,9 @@ public interface MemberService {
 
     //비밀번호 찾기
     String pwSearch(MemberDTO member);
+
+    //주소 검색
+    public Page<AddressEntity> addrSearch(int pageNum, int postNum, String addrSearch);
 
 
     //아이디 중복 확인

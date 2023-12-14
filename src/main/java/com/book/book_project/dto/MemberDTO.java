@@ -47,6 +47,7 @@ public class MemberDTO {
 
     public MemberDTO(MemberEntity memberEntity) {
         this.userid = memberEntity.getUserid();
+
         this.nickname = memberEntity.getNickname();
         this.username = memberEntity.getUsername();
         this.birthday = memberEntity.getBirthday();

@@ -33,7 +33,7 @@
             formData.append("old_password", old_password.value);
             formData.append("new_password", new_password.value);
 
-            await fetch('/member/memberPasswordModify',{
+            await fetch('/member/pwModify',{
                 method: "POST",
                 body: formData
             }).then((response) => response.json())

@@ -1,17 +1,25 @@
 package com.book.book_project.controller;
 
+import com.book.book_project.dto.DeliverAddrDTO;
+import com.book.book_project.service.AddressService;
+import com.book.book_project.service.DeliveryService;
+import com.nimbusds.openid.connect.sdk.claims.Address;
+import org.springframework.ui.Model;
 import com.book.book_project.dto.MemberDTO;
 import com.book.book_project.dto.UnMemberDTO;
 import com.book.book_project.entity.repository.UnMemberRepository;
 import com.book.book_project.service.LikeService;
+import com.book.book_project.entity.AddressEntity;
 import com.book.book_project.service.MemberService;
 import com.book.book_project.service.UnMemberService;
+import com.book.book_project.util.PageUtil;
 import jakarta.servlet.http.HttpSession;
 import com.book.book_project.dto.MemberDTO;
 import com.book.book_project.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,6 +46,10 @@ public class MemberController {
     MemberService service;
 
     @Autowired
+    DeliveryService deliveryService;
+
+
+    @Autowired
     LikeService likeService;
 
     @Autowired
@@ -46,14 +58,20 @@ public class MemberController {
     @Autowired
     UnMemberService unMemberService;
 
+
+
+
+
+
+
     //회원 등록 화면 보기
     @GetMapping("/member/signup")
-    public void getSingup() {}
+    public void getSignup() {}
 
     //회원 등록 하기
     @ResponseBody
     @PostMapping("/member/signup")
-    public Map<String,String> postSignup(MemberDTO member) throws Exception {
+    public Map<String, String> postSignup(MemberDTO member,DeliverAddrDTO deliverAddr) throws Exception {
 
         String inputPassword = member.getPassword();
         String pwd = pwdEncoder.encode(inputPassword); //단방향 암호화
@@ -61,9 +79,14 @@ public class MemberController {
         member.setLastpwdate(Timestamp.valueOf(LocalDateTime.now()));
         service.memberInfoRegistry(member);
 
-        Map<String,String> data = new HashMap<>();
+
+        deliverAddr.setName(member.getUsername());
+        deliveryService.memberaddrInfoRegistry(deliverAddr);
+
+
+        Map<String, String> data = new HashMap<>();
         data.put("message", "GOOD");
-        data.put("username", URLEncoder.encode(member.getUsername(),"UTF-8"));
+        data.put("username", URLEncoder.encode(member.getUsername(), "UTF-8"));
 
         return data;
     }
@@ -77,8 +100,9 @@ public class MemberController {
     @ResponseBody
     @PostMapping("/member/pwModify")
     public String postPwModify(@RequestParam("old_password") String old_password,
-                               @RequestParam("new_password") String new_password, HttpSession session) throws Exception {
+                               @RequestParam("new_password") String new_password,HttpSession session) throws Exception {
 
+        System.out.println("controller1");
         String userid = (String)session.getAttribute("userid");
 
         //패스워드가 올바르게 들어 왔는지 확인
@@ -86,9 +110,13 @@ public class MemberController {
             return "{\"message\":\"PASSWORD_NOT_FOUND\"}";
         }
 
+
+        System.out.println("controller2");
+
+
         //신규 패스워드로 업데이트
         MemberDTO member = new MemberDTO();
-        member.setUserid(userid);
+
         member.setPassword(new_password);
         member.setLastpwdate(Timestamp.valueOf(LocalDateTime.now()));
         service.memberPasswordModify(member);
@@ -96,6 +124,14 @@ public class MemberController {
         return "{\"message\":\"GOOD\"}";
     }
 
+
+
+    //회원 정보 수정 화면
+    @GetMapping("/member/memberInfoModify")
+    public void getMemberInfoModify() {}
+
+
+    //회원 정보 수정 하기
     @ResponseBody
     @PostMapping("/member/memberInfoModify")
     public String postMemberInfoModify(MemberDTO member, HttpSession session) throws Exception {
@@ -104,6 +140,29 @@ public class MemberController {
 
 
         return "{\"message\":\"GOOD\"}";
+
+    }
+
+
+
+    //주소 검색
+    @GetMapping("/member/addrSearch")
+    public void getAddrsearch(@RequestParam("addrSearch") String addrSearch,
+                              @RequestParam("page") int pageNum, Model model) {
+
+        int postNum = 5; //한 화면에 보여지는 게시물 행의 갯수
+        int startPoint = (pageNum - 1) * postNum + 1; //페이지 시작 게시물 번호
+        int endPoint = pageNum * postNum;
+        int pageListCount = 5; //화면 하단에 보여지는 페이지리스트의 페이지 갯수
+
+
+        Page<AddressEntity> list = service.addrSearch(pageNum, postNum, addrSearch);
+        int totalCount = (int) list.getTotalElements();
+
+        PageUtil page = new PageUtil();
+
+        model.addAttribute("list", list);
+        model.addAttribute("pageList", page.getPageAddress(pageNum, postNum, pageListCount, totalCount, addrSearch));
 
     }
 
@@ -159,9 +218,6 @@ public class MemberController {
     @GetMapping("/member/pwSearch")
     public void getPwSearch() {}
 
-    //회원 정보 수정 화면
-    @GetMapping("/member/memberInfoModify")
-    public void getMemberInfoModify() {}
 
     //구매내역 조회 화면
     @GetMapping("/member/memberPurchaseList")
