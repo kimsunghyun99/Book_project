@@ -1,18 +1,14 @@
 package com.book.book_project.controller;
 
 import com.book.book_project.dto.DeliverAddrDTO;
-import com.book.book_project.service.AddressService;
-import com.book.book_project.service.DeliveryService;
+import com.book.book_project.service.*;
 import com.nimbusds.openid.connect.sdk.claims.Address;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import com.book.book_project.dto.MemberDTO;
 import com.book.book_project.dto.UnMemberDTO;
 import com.book.book_project.entity.repository.UnMemberRepository;
-import com.book.book_project.service.LikeService;
 import com.book.book_project.entity.AddressEntity;
-import com.book.book_project.service.MemberService;
-import com.book.book_project.service.UnMemberService;
 import com.book.book_project.util.PageUtil;
 import jakarta.servlet.http.HttpSession;
 import com.book.book_project.dto.MemberDTO;
@@ -57,6 +53,7 @@ public class MemberController {
 
     @Autowired
     UnMemberService unMemberService;
+    
 
     //회원 등록 화면 보기
     @GetMapping("/member/signup")
@@ -206,6 +203,7 @@ public class MemberController {
     @GetMapping("/member/idSearch")
     public void getIdSearch() {}
 
+    //아이디 찾기
     @PostMapping("/member/idSearch")
     public String postIdSearch(MemberDTO member){
         String userid = service.idSearch(member);
@@ -218,9 +216,12 @@ public class MemberController {
     public void getPwSearch() {}
 
 
-    //구매내역 조회 화면
+    //회원 구매내역 조회 화면
     @GetMapping("/member/memberPurchaseList")
-    public void getMemberPurchaseList() {}
+    public void getMemberPurchaseList(Model model, HttpSession session,PurchaseInfoService purchaseInfoService) throws Exception {
+        String userid = (String)session.getAttribute("userid");
+        model.addAttribute("purchaseList",purchaseInfoService.purchaseList(userid));
+    }
 
 
 

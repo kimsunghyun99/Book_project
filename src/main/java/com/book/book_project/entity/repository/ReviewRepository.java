@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ReviewRepository extends JpaRepository<ReviewEntity, Long> {
+public interface ReviewRepository extends JpaRepository<ReviewEntity, Integer> {
 @Query(value="select * from tbl_review where bookid=:bookid order by reviewseq desc", nativeQuery = true)
 	List<ReviewInterface> reviewView(@Param("bookid") int bookid);
 
