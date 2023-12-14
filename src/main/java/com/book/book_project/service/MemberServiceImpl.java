@@ -2,12 +2,10 @@ package com.book.book_project.service;
 
 import com.book.book_project.controller.MemberController;
 import com.book.book_project.dto.MemberDTO;
-import com.book.book_project.entity.FavoritesEntity;
 import com.book.book_project.entity.MemberEntity;
 import com.book.book_project.entity.repository.AddresRepository;
 import com.book.book_project.entity.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.repository.query.Param;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -52,6 +50,21 @@ public class MemberServiceImpl implements MemberService {
     public List<FavoritesEntity> findFavoritesByUserId(String userid) {
         return memberRepository.findFavoritesByUserId(userid);
     }
+    //닉네임
+    @Override
+    public MemberDTO nickname(String userid, String nickname) {
+        Optional<MemberEntity> optionalMember = memberRepository.findById(userid);
+
+        if (optionalMember.isPresent()) {
+            MemberEntity member = optionalMember.get();
+            member.setNickname(nickname); // 닉네임 설정
+            memberRepository.save(member); // 변경된 회원 정보 저장
+            return new MemberDTO(member);
+        } else {
+            return null;
+        }
+    }
+
 
     // update tbl_member set password = #{password}, lastpwdate= #{lastpwdate} where userid = #{userid}
     //패스워드 수정
