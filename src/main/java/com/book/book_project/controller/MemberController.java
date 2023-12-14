@@ -1,12 +1,11 @@
 package com.book.book_project.controller;
 
-import com.book.book_project.dto.DeliverAddrDTO;
+import com.book.book_project.dto.*;
+import com.book.book_project.entity.BuyerInfoEntity;
 import com.book.book_project.service.*;
 import com.nimbusds.openid.connect.sdk.claims.Address;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import com.book.book_project.dto.MemberDTO;
-import com.book.book_project.dto.UnMemberDTO;
 import com.book.book_project.entity.repository.UnMemberRepository;
 import com.book.book_project.entity.AddressEntity;
 import com.book.book_project.util.PageUtil;
@@ -31,6 +30,7 @@ import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -53,6 +53,8 @@ public class MemberController {
 
     @Autowired
     UnMemberService unMemberService;
+
+    private final BuyerInfoService buyerInfoService;
     
 
     //회원 등록 화면 보기
@@ -220,9 +222,13 @@ public class MemberController {
     @GetMapping("/member/memberPurchaseList")
     public void getMemberPurchaseList(Model model, HttpSession session,PurchaseInfoService purchaseInfoService) throws Exception {
         String userid = (String)session.getAttribute("userid");
-        model.addAttribute("purchaseList",purchaseInfoService.purchaseList(userid));
+        List<BuyerInfoEntity> buyerInfo=buyerInfoService.buyerInfo(userid);
+        model.addAttribute("purchaseList",purchaseInfoService.purchaseList());
     }
 
+    //비회원 구매내역 조회 화면
+    @GetMapping("/member/unMemberPurchaseList")
+    public void getUnMemberPurchasesList() {}
 
 
     //비회원 로그인 화면
@@ -252,8 +258,6 @@ public class MemberController {
         return "{\"message\":\"GOOD\"}";
     }
 
-    //비회원 구매내역 조회 화면
-    @GetMapping("/member/unMemberPurchaseList")
-    public void getUnMemberPurchasesList() {}
+
 
 }

@@ -1,5 +1,6 @@
 package com.book.book_project.service;
 
+import com.book.book_project.entity.BuyerInfoEntity;
 import com.book.book_project.entity.PurchaseInfoEntity;
 import com.book.book_project.entity.repository.PurchaseInfoRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,10 +15,10 @@ public class PurchaseInfoServiceImpl implements PurchaseInfoService {
 
 
     @Override
-    public List<PurchaseInfoEntity> purchaseList(String userid){
+    public List<PurchaseInfoEntity> purchaseList(BuyerInfoEntity buyerseq){
 
 
-        return repository.findByUserid(userid);
+        return repository.findByBuyerseq(buyerseq);
     }
 
 }
