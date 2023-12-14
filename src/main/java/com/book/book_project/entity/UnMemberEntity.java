@@ -15,9 +15,24 @@ import org.hibernate.annotations.OnDeleteAction;
 public class  UnMemberEntity {
 
     @Id
-    @Column(name="unmembertelno", length = 15, nullable = false)
-    private String unmembertelno;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int unmemberseq;
 
-    @Column(name="temppassword", length = 200, nullable = false)
+    @Column(name="addr", length = 200, nullable = false)
+    private String addr;
+
+    @Column(name="zipcode", length = 50, nullable = false)
+    private String zipcode;
+
+    @Column(name="detailaddr", length = 200, nullable = false)
+    private String detailaddr;
+
+    @Column(name="receivername", length = 50, nullable = false)
+    private String receivername;
+
+    @Column(name="receivertelno", length = 15, nullable = false)
+    private String receivertelno;
+
+    @Column(name="temppassword", length = 100, nullable = false)
     private String temppassword;
 }

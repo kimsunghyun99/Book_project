@@ -54,11 +54,17 @@
     <script>
         window.onload = () => {
             const btnRegister = document.querySelector('#btnRegister');
-            btnRegister.addEventListener('click',async ()=> {
+            btnRegister.addEventListener('click', async () => {
 
                 if (username.value == '') {
                     alert("이름을 입력하세요.");
                     username.focus();
+                    return false;
+                }
+
+                if (nickname.value == '') {
+                    alert("닉네임을 입력하세요.");
+                    nickname.focus();
                     return false;
                 }
 
@@ -70,6 +76,28 @@
                 const beforeTelno = telno.value;
                 const afterTelno = beforeTelno.replace(/\-/ig, "").replace(/\ /ig, "").trim();
                 telno.value = afterTelno;
+
+
+                if (birthday.value == '') {
+                    alert("생년월일을 입력하세요");
+                    birthday.focus();
+                    return false;
+                }
+
+                if (userid.value == '') {
+                    alert("아이디를 입력하세요");
+                    userid.focus();
+                    return false;
+                }
+
+
+                const Userid = userid.value;
+                let regexr = Userid.search(/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/);
+
+                if (regexr < 0) {
+                    alert("이메일 형식을 제대로 맞춰주세요");
+                    return false;
+                }
 
 
                 const Pass = password.value;
@@ -89,6 +117,8 @@
                     password1.focus();
                     return false;
                 }
+
+
                 const gender = document.querySelectorAll('input[name=gender]:checked');
 
                 if (gender.length == 0) {
@@ -116,13 +146,13 @@
                     zipcode.focus();
                     return false;
                 }
-                if (addr2.value == '') {
+                if (detailaddr.value == '') {
                     alert("상세 주소를 입력하세요");
-                    addr2.focus();
+                    detailaddr.focus();
                     return false;
                 }
 
-                address.value = addr1.value + " " + addr2.value;
+
 
 
                 const formData = new FormData(RegistryForm);
@@ -144,6 +174,10 @@
                     });
 
 
+            });
+        }
+
+
                 const searchAddr = () => {
 
                     if (addrSearch.value == '') {
@@ -161,11 +195,11 @@
 
                 const idCheck = async () => {
 
-                    const email = document.querySelector("#email");
+                    const userid = document.querySelector("#userid");
 
                     await fetch('/member/idCheck', {
                         method: "POST",
-                        body: email.value,
+                        body: userid.value,
                     }).then((response) => response.text())
                         .then((data) => {
                             const idCheckNotice = document.querySelector('#idCheckNotice');
@@ -174,10 +208,10 @@
                             else {
                                 idCheckNotice.innerHTML = "이미 사용중인 아이디입니다.";
                                 //userid.value = '';
-                                email.focus();
+                                userid.focus();
                             }
                         });
-                };
+                }
 
 
 
@@ -194,19 +228,24 @@
     <h2>회원가입</h2>
     <label for="username">사용자 이름:</label>
     <input type="text" id="username" name="username" required>
+
+    <label for="nickname">닉네임:</label>
+    <input type="text" id="nickname" name="nickname" required>
+
     <label for="telno">번호:</label>
     <input type="text" id="telno" class="input_field" name="telno" required>
+
+    <label for="birthday">생년월일:</label>
+    <input type="text" id="birthday" class="input_field" name="birthday" required>
+
+
     <label for="userid">아이디:</label>
-    <input type="text" id="userid" name="userid" required>
-
-    <label for="email">이메일:</label>
-    <input type="email" id="email" name="email" required>
-
+    <input type="text" id="userid" name="userid" placeholder="이메일 형식으로 작성해주세요" required>
     <label for="password">비밀번호:</label>
     <input type="password" id="password" name="password" required>
 
-    <label for="confirmPassword">비밀번호 확인:</label>
-    <input type="password" id="confirmPassword" name="confirmPassword" required>
+    <label for="password1">비밀번호 확인:</label>
+    <input type="password" id="password1" name="password1" required>
 
     성별 :
     <label><input type="radio" name="gender" value="남성">남성</label>
@@ -216,11 +255,8 @@
     <input type="text" id="addrSearch" name="addrSearch" class="addrSearch" placeholder="주소를 검색합니다.">
     <input type="button" id="btn_addSearch" class="btn_addrSearch" value="주소검색" onclick="searchAddr()">
     <input type="text" id="zipcode" class="input_field" name="zipcode" placeholder="우편번호가 검색되어 입력됩니다." readonly>
-    <input type="text" id="addr1" class="input_field" name="addr1" placeholder="주소가 검색되어 입력됩니다." readonly>
-    <input type="text" id="addr2" class="input_field" name="addr2" placeholder="상세 주소를 입력하세요">
-    <input type="hidden" id="address" name="address">
-
-
+    <input type="text" id="addr1" class="input_field" name="addr" placeholder="주소가 검색되어 입력됩니다." readonly>
+    <input type="text" id="detailaddr" class="input_field" name="detailaddr" placeholder="상세 주소를 입력하세요">
 
     <input type="button" id="btnRegister" class="btn_write" value="가입하기">
 </form>

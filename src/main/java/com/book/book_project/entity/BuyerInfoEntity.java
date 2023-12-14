@@ -40,12 +40,4 @@ public class BuyerInfoEntity {
     @JoinColumn(name="userid", nullable = false)
     private MemberEntity userid;
 
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @OnDelete(action= OnDeleteAction.CASCADE)
-    @JoinColumn(name="unmembertelno", nullable = false)
-    private UnMemberEntity unmembertelno;
-
-
-
 }
