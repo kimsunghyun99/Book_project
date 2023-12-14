@@ -57,6 +57,17 @@ public class DeliverAddrDTO {
 
     }
 
-
-
+    @Override
+    public String toString() {
+        return "DeliverAddrDTO{" +
+                "deliveryseq=" + deliveryseq +
+                ", userid=" + userid +
+                ", addr='" + addr + '\'' +
+                ", detailaddr='" + detailaddr + '\'' +
+                ", zipcode='" + zipcode + '\'' +
+                ", name='" + name + '\'' +
+                ", memo='" + memo + '\'' +
+                ", telno='" + telno + '\'' +
+                '}';
+    }
 }

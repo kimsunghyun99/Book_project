@@ -4,6 +4,7 @@ import com.book.book_project.dto.DeliverAddrDTO;
 import com.book.book_project.service.AddressService;
 import com.book.book_project.service.DeliveryService;
 import com.nimbusds.openid.connect.sdk.claims.Address;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import com.book.book_project.dto.MemberDTO;
 import com.book.book_project.dto.UnMemberDTO;
@@ -66,14 +67,20 @@ public class MemberController {
     @PostMapping("/member/signup")
     public Map<String, String> postSignup(MemberDTO member,DeliverAddrDTO deliverAddr) throws Exception {
 
+        System.out.println("MemberDTO"+ member.toString());
+        System.out.println("deliverAddr"+ deliverAddr.toString());
+
         String inputPassword = member.getPassword();
         String pwd = pwdEncoder.encode(inputPassword); //단방향 암호화
         member.setPassword(pwd);
         member.setLastpwdate(Timestamp.valueOf(LocalDateTime.now()));
         service.memberInfoRegistry(member);
 
+        System.out.println("member"+member.getUserid());
 
         deliverAddr.setName(member.getUsername());
+        deliverAddr.setUserid(member.dtoToEntity(member));
+
         deliveryService.memberaddrInfoRegistry(deliverAddr);
 
         Map<String, String> data = new HashMap<>();
