@@ -15,15 +15,15 @@ import java.util.List;
 public interface MemberService {
 
     //회원 가입
-    void memberInfoRegistry(MemberDTO member);
+    public void memberInfoRegistry(MemberDTO member);
 
     //회원 정보 가져 오기
-    MemberDTO memberInfo(String userid);
+    public MemberDTO memberInfo(String userid);
 
     //패스워드 수정
-    void memberPasswordModify(MemberDTO member);
+    public void memberPasswordModify(MemberDTO member);
 
-    void modifyMember(MemberDTO member);
+    public void modifyMember(MemberDTO member);
 
     //아이디 찾기
     public String idSearch(MemberDTO member);

@@ -22,7 +22,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		
 	   
 	   
-	   log.info("*************** 구글 인증 성공 ****************");
+	   log.info("*************** 소셜로그인 인증 성공 ****************");
 	   setDefaultTargetUrl("/product/main");
 	   		
 	   

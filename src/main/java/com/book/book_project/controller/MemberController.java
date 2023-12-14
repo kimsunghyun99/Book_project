@@ -83,8 +83,6 @@ public class MemberController {
         return data;
     }
 
-
-
     //패스워드 변경 화면
     @GetMapping("/member/pwModify")
     public void getPwModify() {}
