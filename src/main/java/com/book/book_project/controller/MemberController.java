@@ -46,10 +46,6 @@ public class MemberController {
     @Autowired
     UnMemberService unMemberService;
 
-    @Autowired
-
-
-
     //회원 등록 화면 보기
     @GetMapping("/member/signup")
     public void getSingup() {}
