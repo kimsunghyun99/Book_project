@@ -31,7 +31,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		MemberEntity memberInfo  = memberRepository.findById(userid).get();
 		
 		if(memberInfo == null) {
-			throw new UsernameNotFoundException("아이디가 존재하지 않습니다.");
+			throw new UsernameNotFoundException("아이디가 존재하지 않습니다....");
 		}
 		
 		// SimpleGrantedAuthority : 여러개의 사용자 Role값을 받는 객체
