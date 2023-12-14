@@ -32,14 +32,13 @@ public class MemberDTO {
     private Timestamp regdate;      // 초기값 LocalDateTime.now()
     private int point;    // 마일리지
     private String memberclass; // 회원등급
-    private String likeauthor;     // 좋아하는 작가
-    private String likegenre;     // 좋아하는 장르
     private int pwcheck;   // 초기값 1
     private Timestamp lastlogindate;
     private Timestamp lastlogoutdate;
     private Timestamp lastpwdate;  // 초기값 regdate와 동일
     private String fromSocial;    // 회원등록 시 초기값 N
     private String role;     // 초기값 USER
+
 
 
     // Entity -> DTO로 이동
@@ -57,8 +56,6 @@ public class MemberDTO {
         this.regdate = memberEntity.getRegdate();
         this.point = memberEntity.getPoint();
         this.memberclass = memberEntity.getMemberclass();
-        this.likeauthor = memberEntity.getLikeauthor();
-        this.likegenre = memberEntity.getLikegenre();
         this.pwcheck = memberEntity.getPwcheck();
         this.lastlogindate = memberEntity.getLastlogindate();
         this.lastlogoutdate = memberEntity.getLastlogoutdate();
@@ -83,8 +80,6 @@ public class MemberDTO {
                 .regdate(member.getRegdate())
                 .point(member.getPoint())
                 .memberclass(member.getMemberclass())
-                .likeauthor(member.getLikeauthor())
-                .likegenre(member.getLikegenre())
                 .pwcheck(member.getPwcheck())
                 .lastlogindate(member.getLastlogindate())
                 .lastlogoutdate(member.getLastlogoutdate())
@@ -97,5 +92,25 @@ public class MemberDTO {
         return memberEntity;
     }
 
-
+    @Override
+    public String toString() {
+        return "MemberDTO{" +
+                "userid='" + userid + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", username='" + username + '\'' +
+                ", birthday='" + birthday + '\'' +
+                ", gender='" + gender + '\'' +
+                ", telno='" + telno + '\'' +
+                ", password='" + password + '\'' +
+                ", regdate=" + regdate +
+                ", point=" + point +
+                ", memberclass='" + memberclass + '\'' +
+                ", pwcheck=" + pwcheck +
+                ", lastlogindate=" + lastlogindate +
+                ", lastlogoutdate=" + lastlogoutdate +
+                ", lastpwdate=" + lastpwdate +
+                ", fromSocial='" + fromSocial + '\'' +
+                ", role='" + role + '\'' +
+                '}';
+    }
 }
