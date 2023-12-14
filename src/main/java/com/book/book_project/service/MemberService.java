@@ -38,6 +38,8 @@ public interface MemberService {
     public Page<AddressEntity> addrSearch(int pageNum, int postNum, String addrSearch);
 
 
+
+
     //아이디 중복 확인
     public int idCheck(String userid);
 

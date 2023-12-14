@@ -25,10 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URLEncoder;
 import java.sql.Timestamp;
@@ -94,7 +91,6 @@ public class MemberController {
     public String postPwModify(@RequestParam("old_password") String old_password,
                                @RequestParam("new_password") String new_password,HttpSession session) throws Exception {
 
-        System.out.println("controller1");
         String userid = (String)session.getAttribute("userid");
 
         //패스워드가 올바르게 들어 왔는지 확인
@@ -102,13 +98,9 @@ public class MemberController {
             return "{\"message\":\"PASSWORD_NOT_FOUND\"}";
         }
 
-
-        System.out.println("controller2");
-
-
         //신규 패스워드로 업데이트
         MemberDTO member = new MemberDTO();
-
+        member.setUserid(userid);
         member.setPassword(new_password);
         member.setLastpwdate(Timestamp.valueOf(LocalDateTime.now()));
         service.memberPasswordModify(member);
@@ -120,7 +112,14 @@ public class MemberController {
 
     //회원 정보 수정 화면
     @GetMapping("/member/memberInfoModify")
-    public void getMemberInfoModify() {}
+    public void getMemberInfoModify(HttpSession session, Model model) {
+        String userid = (String)session.getAttribute("userid");
+        model.addAttribute("memberInfo", service.memberInfo(userid));
+        deliveryService.list(userid)
+
+        model.addAttribute("list", deliveryService.list(userid));
+    }
+
 
 
     //회원 정보 수정 하기
@@ -157,6 +156,17 @@ public class MemberController {
         model.addAttribute("pageList", page.getPageAddress(pageNum, postNum, pageListCount, totalCount, addrSearch));
 
     }
+
+// 회원가입 시 아이디체크
+    @ResponseBody
+    @PostMapping("/member/idCheck")
+    public int postIdCheck(@RequestBody String userid) throws Exception {
+        int result = service.idCheck(userid);
+        return result;
+
+    }
+
+
 
     //로그인 화면 보기
     @GetMapping("/member/login")

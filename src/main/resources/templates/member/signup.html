@@ -153,8 +153,7 @@
                 }
 
 
-
-
+                const RegistryForm = document.getElementById('RegistryForm');
                 const formData = new FormData(RegistryForm);
 
                 await fetch('/member/signup', {
@@ -214,9 +213,20 @@
                 }
 
 
+        document.getElementById('interests1').style.display = 'none';
 
+        // select 변경 시 호출되는 함수
+        function handleInterestChange() {
+            var selectElement = document.getElementById('interests');
+            var inputElement = document.getElementById('interests1');
 
+            if (selectElement.value === 'INPUT') {
+                inputElement.style.display = 'block';
+            } else {
+                inputElement.style.display = 'none';
+            }
 
+        }
 
     </script>
 
@@ -240,7 +250,9 @@
 
 
     <label for="userid">아이디:</label>
-    <input type="text" id="userid" name="userid" placeholder="이메일 형식으로 작성해주세요" required>
+    <input type="text" id="userid" name="userid" placeholder="이메일 형식으로 작성해주세요" onchange="idCheck()" required>
+    <br><span id="idCheckNotice"></span>
+    <br>
     <label for="password">비밀번호:</label>
     <input type="password" id="password" name="password" required>
 
@@ -259,14 +271,25 @@
     <input type="text" id="detailaddr" class="input_field" name="detailaddr" placeholder="상세 주소를 입력하세요">
 
 
+    관심분야 :
+    <select id="interests" name="interests" onchange="handleInterestChange()">
+        <option value="all" disabled selected>관심분야 ▼</option>
+        <option value="JAVA">JAVA</option>
+        <option value="PYTHON">PYTHON</option>
+        <option value="C">C</option>
+        <option value="C#">C#</option>
+        <option value="C++">C++</option>
+        <option value="PHP">PHP</option>
+        <option value="REACT">REACT</option>
+        <option value="VIEW">VIEW</option>
+        <option value="JS">JS</option>
+        <option value="ANDROID">ANDROID</option>
+        <option value="INPUT">직접입력</option>
+    </select>
+<br><br>
+    <input type="text" id="interests1" class="input_field" name="interests1" placeholder="직접입력">
 
-    <label for="likeauthor">좋아하는 작가:</label>
-    <input type="text" id="likeauthor" class="likeauthor" name="likeauthor" required>
-    <label for="likegenre">좋아하는 장르:</label>
-    <input type="text" id="likegenre" name="likegenre" required>
-
-
-
+<br><br>
     <input type="button" id="btnRegister" class="btn_write" value="가입하기">
 </form>
 
