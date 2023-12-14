@@ -1,7 +1,8 @@
 package com.book.book_project.service;
 
-import org.springframework.stereotype.Service;
+import com.book.book_project.dto.FavoritesDTO;
 
-@Service
 public interface LikeService {
+
+
 }

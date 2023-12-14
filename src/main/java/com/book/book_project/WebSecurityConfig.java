@@ -52,6 +52,8 @@ public class WebSecurityConfig {
 
 
 
+
+
 		// 스프링 시큐리티의 FormLogin 설정
 		http
 		.formLogin((login) -> login
@@ -70,15 +72,12 @@ public class WebSecurityConfig {
 		    		   .rememberMeParameter("remember-me")
 		    		   .userDetailsService(userDetailsService)
 		    		   .authenticationSuccessHandler(authSuccessHandler));
-		
-		
+
 		// 스프링 시큐리티의 접근권한 설정(Authentication)
 		http
 			.authorizeHttpRequests((authz) -> authz
-					.requestMatchers("/member/**").permitAll()
-					.requestMatchers("/product/**").permitAll()
 					.requestMatchers("/master/**").hasAnyAuthority("MASTER")
-					.anyRequest().authenticated());
+					.anyRequest().permitAll());
 					
 		
 		//OAuth2 
@@ -89,11 +88,11 @@ public class WebSecurityConfig {
 					.failureHandler(oAuth2FailureHandler));
 		
 		// 세션 설정
-//		http
-//		.sessionManagement(management -> management
-//				.maximumSessions(1)
-//				.maxSessionsPreventsLogin(false)
-//				.expiredUrl("/member/login"));
+		http
+		.sessionManagement(management -> management
+				.maximumSessions(1)
+				.maxSessionsPreventsLogin(false)
+				.expiredUrl("/member/login"));
 				
 		//스프링 시큐리티의 로그 아웃 
 		http
@@ -109,7 +108,7 @@ public class WebSecurityConfig {
 			    .csrf((csrf) -> csrf.disable());
 			http
 			.cors((cors) -> cors.disable());
-			
+
 			log.info("*************   스프링 시큐리티 설정 완료 ***************");
 			
 		return http.build();

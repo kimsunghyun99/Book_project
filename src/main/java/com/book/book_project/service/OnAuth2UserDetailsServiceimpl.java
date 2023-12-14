@@ -34,10 +34,22 @@ public class OnAuth2UserDetailsServiceimpl extends DefaultOAuth2UserService {
 		public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 			
 		OAuth2User oAuth2User = super.loadUser(userRequest);
-		
+
+		//23.12.13 수정
 		String provider  = userRequest.getClientRegistration().getRegistrationId();
-		String providerId = oAuth2User.getAttribute("sub");
-		String email = oAuth2User.getAttribute("email");
+		String providerId = "";
+		String email = "";
+
+		//23.12.13 수정
+		if (provider.equals("naver")) {  // 네이버 로그인인 경우
+			Map<String, Object> attributes = oAuth2User.getAttributes();
+			Map<String, Object> response = (Map<String, Object>) attributes.get("response");
+			providerId = response.get("id").toString();
+			email = (String) response.get("email");
+		} else {  // 구글 로그인인 경우
+			providerId = oAuth2User.getAttribute("sub");
+			email = oAuth2User.getAttribute("email");
+		}
 		
 		log.info("provider = {}", provider);
 		log.info("providerId = {}", providerId);
@@ -53,8 +65,7 @@ public class OnAuth2UserDetailsServiceimpl extends DefaultOAuth2UserService {
 		List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
 		SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(member.getRole()); 
 		grantedAuthorities.add(grantedAuthority);
-		
-		
+
 		MemberOAuth2DTO memberOAuth2DTO =new MemberOAuth2DTO();
 		// attributes, authorities, name을 MemberOAuth2DTO에 넣어 줌.
 		memberOAuth2DTO.setAttribute(oAuth2User.getAttributes());
@@ -63,7 +74,7 @@ public class OnAuth2UserDetailsServiceimpl extends DefaultOAuth2UserService {
 		
 		session.setAttribute("email", email);
 		session.setAttribute("username", member.getUsername());
-
+		session.setAttribute("role", member.getRole());
 		//session.setAttribute("FromSocial", member.getFromSocial());
 		session.setAttribute("FromSocial","Y");
 		
@@ -71,6 +82,7 @@ public class OnAuth2UserDetailsServiceimpl extends DefaultOAuth2UserService {
 		
 		}
 
+	//23.12.13 수정
 	private MemberEntity saveSocialMember(String email) {
 	    
 		// 구글 회원 계정으로 로그인 한 회원의 경우  사이트 운영에 필요한 최소한의 정보를 
@@ -81,19 +93,21 @@ public class OnAuth2UserDetailsServiceimpl extends DefaultOAuth2UserService {
 		if(result.isPresent()) { 
 			return result.get();
 		}
-		
-		
-		MemberEntity member=MemberEntity.builder()
-															.userid("userid")
-															.username("구글회원")
-															.password(pwdEncoder.encode("12345"))
-															.regdate(Timestamp.valueOf(LocalDateTime.now()))
-															.fromSocial("Y")
-														    .build();
+
+		String provider = email.split("@")[1];  // 이메일 주소에서 제공자를 추출
+		String username = provider.equals("naver.com") ? "네이버회원" : "구글회원";
+
+		MemberEntity member = MemberEntity.builder()
+				.userid(email)
+				.username(username)
+				.password(pwdEncoder.encode("12345"))
+				.regdate(Timestamp.valueOf(LocalDateTime.now()))
+				.fromSocial("Y")
+				.role("USER")
+				.build();
 		
 		memberRepository.save(member);
-		
-		
+
 		return member;
 	
 }

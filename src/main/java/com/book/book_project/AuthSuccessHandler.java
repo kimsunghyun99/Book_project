@@ -45,17 +45,15 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler  {
 		//세션 생성
 		HttpSession session = request.getSession();
 		session.setMaxInactiveInterval(3600*24*7);//세션 유지 기간 설정
-//		session.setAttribute("email", service.memberInfo(memberInfo.getEmail()).getEmail());
-//		session.setAttribute("username", service.memberInfo(memberInfo.getEmail()).getUsername());
-//		session.setAttribute("role", service.memberInfo(memberInfo.getEmail()).getRole());
 		session.setAttribute("userid", memberInfo.getUserid());
 		session.setAttribute("username", memberInfo.getUsername());
+		session.setAttribute("role", memberInfo.getRole());
 		session.setAttribute("FromSocial", memberInfo.getFromSocial());
 		
 	//	log.info("************************* FormLogin 성공 *************************");
 		
 		
-		setDefaultTargetUrl("/board/list?page=1");
+		setDefaultTargetUrl("/product/main");
 		super.onAuthenticationSuccess(request, response, authentication);
 		
 	}

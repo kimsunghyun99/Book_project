@@ -28,10 +28,10 @@ public class MemberEntity {
     @Column(name="userid", nullable=false)
     private String userid;
 
-    @Column(name="nickname", length=100, nullable=false)
+    @Column(name="nickname", length=100, nullable= true)
     private String nickname;
 
-    @Column(name="username", length=200, nullable=true)
+    @Column(name="username", length=200, nullable=false)
     private String username;
 
     @Column(name="birthday", nullable = true)
@@ -43,7 +43,7 @@ public class MemberEntity {
     @Column(name="telno", length=15, nullable=true)
     private String telno;
 
-    @Column(name="password", length=200, nullable=true)
+    @Column(name="password", length=200, nullable=false)
     private String password;
 
     @Column(name="regdate", nullable=true)
@@ -73,10 +73,10 @@ public class MemberEntity {
     @Column(name="lastpwdate")
     private Timestamp lastpwdate;
 
-    @Column(name="fromsocial", length=2, nullable = true)
+    @Column(name="fromsocial", length=2, nullable = false)
     private String fromSocial;
 
-    @Column(name="role", length=50, nullable=true)
+    @Column(name="role", length=50, nullable=false)
     private String role;
 
 }

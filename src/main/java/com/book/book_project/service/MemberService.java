@@ -3,7 +3,11 @@ package com.book.book_project.service;
 import com.book.book_project.dto.MemberDTO;
 import com.book.book_project.entity.AddressEntity;
 import org.springframework.data.domain.Page;
+import com.book.book_project.entity.FavoritesEntity;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 public interface MemberService {
@@ -20,11 +24,21 @@ public interface MemberService {
     void modifyMember(MemberDTO member);
 
     //아이디 찾기
-    String idSearch(MemberDTO member);
+    public String idSearch(MemberDTO member);
 
     //비밀번호 찾기
     String pwSearch(MemberDTO member);
 
     //주소 검색
     public Page<AddressEntity> addrSearch(int pageNum, int postNum, String addrSearch);
+
+
+    //아이디 중복 확인
+    public int idCheck(String userid);
+
+    //회원 구매, 주문 목록 갯수 구하기
+    public Long countJoinedRecordsByUserId(String userid);
+
+    //즐겨찾기 정보 가져오기
+    public List<FavoritesEntity> findFavoritesByUserId(String userid);
 }

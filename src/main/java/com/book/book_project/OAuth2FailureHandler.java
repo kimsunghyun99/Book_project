@@ -23,6 +23,7 @@ public class OAuth2FailureHandler extends SimpleUrlAuthenticationFailureHandler 
 		
 		log.debug("*************** 구글 인증 실패 ****************");
 		setDefaultFailureUrl("/member/login");
+		super.onAuthenticationFailure(request, response, exception);
 	}
 
 }

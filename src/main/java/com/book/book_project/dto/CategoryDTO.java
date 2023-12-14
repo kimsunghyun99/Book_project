@@ -12,11 +12,15 @@ public class CategoryDTO {
 
     private String categorynumber;   //분류번호
     private String categoryname;   //분류명
+    private int depth;
+    private String parent;
 
     //Entity -> DTO 이동
     public CategoryDTO (CategoryEntity categoryEntity ) {
         this.categorynumber = categoryEntity.getCategorynumber();
         this.categoryname = categoryEntity.getCategoryname();
+        this.depth=categoryEntity.getDepth();
+        this.parent=categoryEntity.getParent();
     }
 
     //DTO -> Entity 이동
@@ -24,6 +28,8 @@ public class CategoryDTO {
         CategoryEntity categoryEntity = CategoryEntity.builder()
                 .categorynumber(dto.getCategorynumber())
                 .categoryname(dto.getCategoryname())
+                .depth(dto.getDepth())
+                .parent(dto.getParent())
                 .build();
 
         return categoryEntity;

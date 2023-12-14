@@ -1,73 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>로그인</title>
-    <style>
+<meta charset="UTF-8">
+<title>로그인</title>
+<style>
 
 
-        h1 {
-            color: #333;
-            margin-top: 0; /* 기존 스타일에서 추가 */
-        }
-
-        .container {
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-    body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    h1 {
+        color: #333;
+        margin-top: 0; /* 기존 스타일에서 추가 */
     }
 
+    .container {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
+body {
+font-family: Arial, sans-serif;
+background-color: #f4f4f4;
+margin: 0;
+padding: 0;
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100vh;
+}
 
-    form {
-    text-align: center;
-        width: 300px; /* 원하는 너비로 조절하세요 */
+
+form {
+text-align: center;
+    width: 300px; /* 원하는 너비로 조절하세요 */
+}
+
+.userid,
+.password,
+#btn_login {
+    width: 100%; /* 폼의 너비에 맞춤 */
+    padding: 10px;
+    box-sizing: border-box;
+    margin: 5px;
+}
+
+.btn_login {
+font-size: 18px; /* 원하는 폰트 크기로 조절하세요 */
+}
+
+.bottomText {
+text-align: center;
+}
+
+    .remember {
+        display: inline-block;
+        justify-content: space-between;
+        align-items: center;
     }
 
-    .email,
-    .password,
-    #btn_login {
-        width: 100%; /* 폼의 너비에 맞춤 */
-        padding: 10px;
-        box-sizing: border-box;
-        margin: 5px;
+    .bottomText a {
+        margin-right: 5px;
+        text-align: center;
     }
 
-    .btn_login {
-    font-size: 18px; /* 원하는 폰트 크기로 조절하세요 */
+    .oauth-link {
+        margin-top: 10px;
     }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
+<script>
+    window.onload = async() => {
 
-    .bottomText {
-    text-align: center;
-    }
+        //쿠키 가져오기
+        const getCookie = (name) => {
 
-        .remember {
-            display: inline-block;
-            justify-content: space-between;
-            align-items: center;
+            const cookies = document.cookie.split(`; `).map((el)=>el.split('='));
+            let getItem = [];
+
+            for(let i=0; i<cookies.length; i++) {
+                if(cookies[i][0] === name){
+                    getItem.push(cookies[i][1]);
+                    break;
+                }
+            }
+            if(getItem.length > 0) {
+                return decodeURIComponent(getItem[0]);
+            }
         }
 
-        .bottomText a {
-            margin-right: 5px;
-            text-align: center;
+        let userid = getCookie('userid');
+        let password = getCookie('password');
+        let authkey = getCookie('authkey');
+
+        //userid 쿠키가 존재하면...
+        if(userid !== undefined) {
+            document.querySelector('#rememberUserid').checked = true;
+            document.querySelector('#userid').value = userid;
+        }else {
+            document.querySelector('#rememberUserid').checked = false;
         }
 
-        .oauth-link {
-            margin-top: 10px;
+        //password 쿠키가 존재하면
+        if(password !== undefined) {
+            document.querySelector('#rememberPassword').checked = true;
+            //base64로 인코딩 된 password를 디코딩
+            const decrypt = CryptoJS.enc.Base64.parse(password);
+            const hashData = decrypt.toString(CryptoJS.enc.Utf8);
+            password = hashData;
+
+            document.querySelector('#password').value = password;
+        }else {
+            document.querySelector('#rememberPassword').checked = false;
         }
-    </style>
+    }
+
+    const login = () => {
+        document.loginForm.action = '/member/login'; //리퀘스트 발생
+        document.loginForm.submit();
+    }
+
+    //로그인 처리
+    const loginCheck = async () => {
+
+        const userid = document.querySelector('#userid');
+        const password = document.querySelector('#password');
+        const rememberMe = document.querySelector('#rememberMe');
+
+        if(userid.value === ''){
+            alert("아이디를 입력하세요")
+            userid.focus();
+            return false;
+        }
+        if(password.value === ''){
+            alert("비밀번호를 입력하세요")
+            password.focus();
+            return false;
+        }
+
+        let formData = new FormData();
+        formData.append("userid", userid.value);
+        formData.append("password", password.value);
+
+        await fetch('/member/loginCheck',{
+            method: "POST",
+            body: formData
+        }).then((response) => response.json())
+            .then((data) => {
+                if(data.message === 'GOOD'){
+                    cookieManage(userid.value, password.value);
+                    login();
+                }else if(data.message === 'ID_NOT_FOUND'){
+                    msg.innerHTML = '존재하지 않는 아이디입니다';
+                }else if(data.message === 'PASSWORD_NOT_FOUND'){
+                    msg.innerHTML = '잘못된 비밀번호입니다';
+                }else{
+                    alert("시스템 장애로 로그인이 실패했습니다");
+                }
+            }).catch((error) => {
+                console.log("error =" + error);
+            })
+    }
+
+    //아이디 체크 관리
+    const checkRememberuserid = () => {
+        if(document.querySelector('#rememberUserid').checked)
+            document.querySelector('#rememberMe').checked = false;
+    }
+
+    //패스워드 체크 관리
+    const checkRememberPassword = () => {
+        if(document.querySelector('#rememberPassword').checked)
+            document.querySelector('#rememberMe').checked = false;
+    }
+
+    //자동로그인 체크 관리
+    const checkRememberMe = () => {
+        if(document.querySelector('#rememberMe').checked)
+            document.querySelector('#rememberUserid').checked = false;
+        document.querySelector('#rememberPassword').checked = false;
+    }
+
+    const press = () => {
+        if(event.keyCode == 13) loginCheck();
+    }
+
+    //쿠키 관리
+    const cookieManage = (userid, password) => {
+
+        //userid 가 체크되었을 경우
+        if(rememberUserid.checked) {
+            document.cookie = 'userid= ' + userid + '; path=/; expires=Sun 31 Dec 2023 23:59:59 GMT';
+        }else {
+            document.cookie = 'userid= ' + userid + '; path=/; max-age=0';
+        }
+
+        //password가 체크되었을 경우
+        if(rememberPassword.checked) {
+            //Base64(양방향 복호화 알고리즘)로 패스워드 인코딩
+            const key = CryptoJS.enc.Utf8.parse(password);
+            const base64 = CryptoJS.enc.Base64.stringify(key);
+            password = base64;
+            document.cookie = 'password= ' + password + '; path=/; expires=Sun 31 Dec 2023 23:59:59 GMT';
+        }else {
+            document.cookie = 'password= ' + password + '; path=/; max-age=0';
+        }
+    }
+</script>
 </head>
 <body>
 
@@ -76,14 +215,14 @@
 
 <form name="loginForm" id="loginForm" method="post">
 
-    <input type="text" name="email" class="email" id="email" placeholder="아이디를 입력하세요">
+    <input type="text" name="userid" class="userid" id="userid" placeholder="아이디를 입력하세요">
     <input type="password" name="password" class="password" id="password" placeholder="패스워드를 입력하세요"  onkeydown="press()">
     <input type="button" id="btn_login" class="btn_login" value="로그인" onclick="loginCheck()">
     <p id="msg" style="color:red; text-align:center"></p>
     <br>
     <div class="remember">
 <div>
-    <input type="checkbox" id="rememberEmail" onclick="checkRememberEmail()">아이디 기억
+    <input type="checkbox" id="rememberuserid" onclick="checkRememberuserid()">아이디 기억
     <input type="checkbox" id="rememberPassword" onclick="checkRememberPassword()">패스워드 기억
     <input type="checkbox" id="rememberMe" class="remember" name="remember-me" onclick="checkRememberMe()">자동 로그인
 </div>
@@ -91,6 +230,7 @@
 
         <div class="oauth-link">
             <a href="/oauth2/authorization/google">구글계정으로 로그인</a>
+            <a href="/oauth2/authorization/naver">네이버계정 으로 로그인</a>
         </div>
     </div>
 </form>

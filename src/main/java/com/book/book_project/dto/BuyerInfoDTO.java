@@ -17,7 +17,7 @@ public class BuyerInfoDTO {
     private int buyerseq;
     private MemberEntity userid;
     private UnMemberEntity unmembertelno;
-    private int receiverzipcode;
+    private String receiverzipcode;
     private String receiveraddr;
     private String receiverdetailaddr;
     private String receivername;
