@@ -1,7 +1,10 @@
 package com.book.book_project.service;
 
 import com.book.book_project.controller.MemberController;
+import com.book.book_project.dto.BuyerInfoDTO;
 import com.book.book_project.dto.MemberDTO;
+import com.book.book_project.dto.PurchaseInfoDTO;
+import com.book.book_project.entity.BuyerInfoEntity;
 import com.book.book_project.entity.FavoritesEntity;
 import com.book.book_project.entity.AddressEntity;
 import com.book.book_project.entity.MemberEntity;
@@ -104,10 +107,11 @@ public class MemberServiceImpl implements MemberService {
 
         return memberRepository.findById(member.getUserid())
                 .map(MemberEntity::getPassword).orElse("PW_NOT_FOUND");
-
     }
 
-
-
-
+//    @Override
+//    public BuyerInfoDTO buyerAndPurchaseInfo(String userid) {
+//        BuyerInfoEntity buyerInfoEntity = memberRepository.
+//        return null;
+//    }
 }

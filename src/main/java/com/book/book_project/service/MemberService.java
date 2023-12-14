@@ -1,6 +1,8 @@
 package com.book.book_project.service;
 
+import com.book.book_project.dto.BuyerInfoDTO;
 import com.book.book_project.dto.MemberDTO;
+import com.book.book_project.dto.PurchaseInfoDTO;
 import com.book.book_project.entity.AddressEntity;
 import org.springframework.data.domain.Page;
 import com.book.book_project.entity.FavoritesEntity;
@@ -28,6 +30,9 @@ public interface MemberService {
 
     //비밀번호 찾기
     String pwSearch(MemberDTO member);
+
+//    //구매자정보 가져오기
+//    BuyerInfoDTO buyerAndPurchaseInfo(String userid);
 
     //주소 검색
     public Page<AddressEntity> addrSearch(int pageNum, int postNum, String addrSearch);

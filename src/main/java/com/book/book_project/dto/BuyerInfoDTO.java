@@ -16,7 +16,6 @@ public class BuyerInfoDTO {
 
     private int buyerseq;
     private MemberEntity userid;
-    private UnMemberEntity unmembertelno;
     private String receiverzipcode;
     private String receiveraddr;
     private String receiverdetailaddr;
@@ -26,7 +25,6 @@ public class BuyerInfoDTO {
  public BuyerInfoDTO(BuyerInfoEntity purchaseinfoEntity) {
 
      this.buyerseq = purchaseinfoEntity.getBuyerseq();
-     this.unmembertelno = purchaseinfoEntity.getUnmembertelno();
      this.receiverdetailaddr = purchaseinfoEntity.getReceiverdetailaddr();
      this.receiverzipcode = purchaseinfoEntity.getReceiverzipcode();
      this.receiveraddr = purchaseinfoEntity.getReceiveraddr();
@@ -41,7 +39,6 @@ public class BuyerInfoDTO {
 
      BuyerInfoEntity entity = BuyerInfoEntity.builder()
                 .buyerseq(dto.getBuyerseq())
-                .unmembertelno(dto.getUnmembertelno())
                 .receiverdetailaddr(dto.getReceiverdetailaddr())
                 .receiverzipcode(dto.getReceiverzipcode())
                 .receiveraddr(dto.getReceiveraddr())

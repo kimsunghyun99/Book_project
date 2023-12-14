@@ -48,7 +48,6 @@ public class MemberController {
     @Autowired
     DeliveryService deliveryService;
 
-
     @Autowired
     LikeService likeService;
 
@@ -57,12 +56,6 @@ public class MemberController {
 
     @Autowired
     UnMemberService unMemberService;
-
-
-
-
-
-
 
     //회원 등록 화면 보기
     @GetMapping("/member/signup")
@@ -82,7 +75,6 @@ public class MemberController {
 
         deliverAddr.setName(member.getUsername());
         deliveryService.memberaddrInfoRegistry(deliverAddr);
-
 
         Map<String, String> data = new HashMap<>();
         data.put("message", "GOOD");
@@ -225,6 +217,9 @@ public class MemberController {
     @GetMapping("/member/memberPurchaseList")
     public void getMemberPurchaseList() {}
 
+
+
+    //비회원 로그인 화면
     //비회원 로그인 화면 (23-12-12)
     @GetMapping("/member/unMemberLogin")
     public void getUnMemberLogin() {}

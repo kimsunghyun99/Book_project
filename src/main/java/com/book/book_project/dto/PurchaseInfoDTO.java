@@ -15,6 +15,7 @@ public class PurchaseInfoDTO {
     private int purchaseinfonumber;
     private ProductEntity bookid;
     private PurchaseStatusEntity statusseq;
+    private BuyerInfoEntity buyerseq;
     private String deliverystatus;
     private Timestamp purchasedate;
     private int volume;
@@ -24,6 +25,7 @@ public class PurchaseInfoDTO {
         this.purchaseinfonumber=purchaseInfoEntity.getPurchaseinfonumber();
         this.bookid=purchaseInfoEntity.getBookid();
         this.statusseq=purchaseInfoEntity.getStatusseq();
+        this.buyerseq=purchaseInfoEntity.getBuyerseq();
         this.deliverystatus=purchaseInfoEntity.getDeliverystatus();
         this.purchasedate=purchaseInfoEntity.getPurchasedate();
         this.volume=purchaseInfoEntity.getVolume();
@@ -36,6 +38,7 @@ public class PurchaseInfoDTO {
                 .purchaseinfonumber(dto.getPurchaseinfonumber())
                 .bookid(dto.getBookid())
                 .statusseq(dto.getStatusseq())
+                .buyerseq(dto.getBuyerseq())
                 .deliverystatus(dto.getDeliverystatus())
                 .purchasedate(dto.getPurchasedate())
                 .volume(dto.getVolume())

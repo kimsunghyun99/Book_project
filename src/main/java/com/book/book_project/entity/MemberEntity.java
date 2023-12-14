@@ -35,7 +35,7 @@ public class MemberEntity {
     private String username;
 
     @Column(name="birthday", nullable = true)
-    private int birthday;
+    private String birthday;
 
     @Column(name="gender", length=10, nullable=true)
     private String gender;

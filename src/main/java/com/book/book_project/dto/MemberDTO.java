@@ -25,7 +25,7 @@ public class MemberDTO {
     private String userid;
     private String nickname;
     private String username;
-    private int birthday; // 생일
+    private String birthday; // 생일
     private String gender;
     private String telno;
     private String password;
