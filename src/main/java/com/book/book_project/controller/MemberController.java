@@ -2,12 +2,14 @@ package com.book.book_project.controller;
 
 import com.book.book_project.dto.DeliverAddrDTO;
 import com.book.book_project.entity.DeliveryAddrEntity;
+import com.book.book_project.entity.MemberEntity;
 import com.book.book_project.service.AddressService;
 import com.book.book_project.service.DeliveryService;
 import com.book.book_project.dto.*;
 import com.book.book_project.entity.BuyerInfoEntity;
 import com.book.book_project.service.*;
 import com.nimbusds.openid.connect.sdk.claims.Address;
+import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import com.book.book_project.entity.repository.UnMemberRepository;
@@ -122,7 +124,8 @@ public class MemberController {
 
     //회원 정보 수정 화면
     @GetMapping("/member/memberInfoModify")
-    public void getMemberInfoModify(HttpSession session, Model model) {
+    public void getMemberInfoModify(HttpSession session, Model model ) throws Exception {
+
         String userid = (String)session.getAttribute("userid");
         model.addAttribute("memberInfo", service.memberInfo(userid));
         List<DeliveryAddrEntity> deliveryAddrEntityList=deliveryService.list(userid);
@@ -135,20 +138,24 @@ public class MemberController {
     //회원 정보 수정 하기
     @ResponseBody
     @PostMapping("/member/memberInfoModify")
-    public String postMemberInfoModify(MemberDTO member, @RequestBody Map<String,Object> params, HttpSession session, @RequestParam("option") String option) throws Exception {
+    public String postMemberInfoModify(MemberDTO member, HttpSession session, @RequestBody DeliverAddrDTO deliverAddrDTO, @RequestParam("option") String option)throws Exception {
 
+
+        System.out.println("컨트롤러1");
 
         member.setUserid((String)session.getAttribute("userid"));
-        int deliveryseq = Integer.parseInt(params.get("deleteseqno").toString());
+        deliverAddrDTO.setUserid(((MemberEntity)session.getAttribute("userid")));
+      //  int deliveryseq = Integer.parseInt(params.get("deleteseqno").toString());
 
         switch(option) {
 
-           //  case "I" : service.replyRegistry(reply); // 회원 배송지 등록
-           //     break;
+            case "I" : deliveryService.adddeliveraddr(deliverAddrDTO); // 회원 배송지 등록
+                break;
+            case "D" : deliveryService.deletedeliveraddr(deliverAddrDTO); // 회원 배송지 삭제
+                break;
             case "U" : service.modifyMember(member); //회원 기본정보 수정
                 break;
-            case "D" : deliveryService.deletedeliveraddr(deliveryseq); // 회원 배송지 삭제
-                break;
+
         }
 
 
@@ -176,6 +183,7 @@ public class MemberController {
         PageUtil page = new PageUtil();
 
         model.addAttribute("list", list);
+
         model.addAttribute("pageList", page.getPageAddress(pageNum, postNum, pageListCount, totalCount, addrSearch));
 
     }
@@ -244,46 +252,46 @@ public class MemberController {
     @GetMapping("/member/pwSearch")
     public void getPwSearch() {}
 
-
-    //회원 구매내역 조회 화면
-    @GetMapping("/member/memberPurchaseList")
-    public void getMemberPurchaseList(Model model, HttpSession session,PurchaseInfoService purchaseInfoService) throws Exception {
-        String userid = (String)session.getAttribute("userid");
-        List<BuyerInfoEntity> buyerInfo=buyerInfoService.buyerInfo(userid);
-        model.addAttribute("purchaseList",purchaseInfoService.purchaseList());
-    }
-
-    //비회원 구매내역 조회 화면
-    @GetMapping("/member/unMemberPurchaseList")
-    public void getUnMemberPurchasesList() {}
-
-
-    //비회원 로그인 화면
-    //비회원 로그인 화면 (23-12-12)
-    @GetMapping("/member/unMemberLogin")
-    public void getUnMemberLogin() {}
-
-    //비회원 로그인 (23-12-12)
-    @PostMapping("/member/unMemberLogin")
-    public void postUnMemberLogin() {}
-
-    //비회원 로그인 (23-12-12)
-    @ResponseBody
-    @PostMapping("/member/unMemberLoginCheck")
-    public String postUnMemberLogin(UnMemberDTO unMember) {
-        //구매번호 존재 여부 확인
-//        if() {
-//            return "{\"message\":\"ID_NOT_FOUND\"}";
+//
+//    //회원 구매내역 조회 화면
+//    @GetMapping("/member/memberPurchaseList")
+//    public void getMemberPurchaseList(Model model, HttpSession session,PurchaseInfoService purchaseInfoService) throws Exception {
+//        String userid = (String)session.getAttribute("userid");
+//        List<BuyerInfoEntity> buyerInfo=buyerInfoService.buyerInfo(userid);
+//      //  model.addAttribute("purchaseList",purchaseInfoService.purchaseList());
+//    }
+//
+//    //비회원 구매내역 조회 화면
+//    @GetMapping("/member/unMemberPurchaseList")
+//    public void getUnMemberPurchasesList() {}
+//
+//
+//    //비회원 로그인 화면
+//    //비회원 로그인 화면 (23-12-12)
+//    @GetMapping("/member/unMemberLogin")
+//    public void getUnMemberLogin() {}
+//
+//    //비회원 로그인 (23-12-12)
+//    @PostMapping("/member/unMemberLogin")
+//    public void postUnMemberLogin() {}
+//
+//    //비회원 로그인 (23-12-12)
+//    @ResponseBody
+//    @PostMapping("/member/unMemberLoginCheck")
+//    public String postUnMemberLogin(UnMemberDTO unMember) {
+//        //구매번호 존재 여부 확인
+////        if() {
+////            return "{\"message\":\"ID_NOT_FOUND\"}";
+////        }
+//
+//        //비밀번호가 올바르게 들어왔는지 정확도 여부 확인
+//        if(!pwdEncoder.matches(unMember.getTemppassword(), unMemberService.unMemberInfo(unMember.getTemppassword()).getTemppassword())){
+//            //잘못된 패스워드 일 경우
+//            return "{\"message\":\"PASSWORD_NOT_FOUND\"}";
 //        }
-
-        //비밀번호가 올바르게 들어왔는지 정확도 여부 확인
-        if(!pwdEncoder.matches(unMember.getTemppassword(), unMemberService.unMemberInfo(unMember.getTemppassword()).getTemppassword())){
-            //잘못된 패스워드 일 경우
-            return "{\"message\":\"PASSWORD_NOT_FOUND\"}";
-        }
-
-        return "{\"message\":\"GOOD\"}";
-    }
+//
+//        return "{\"message\":\"GOOD\"}";
+//    }
 
 
 

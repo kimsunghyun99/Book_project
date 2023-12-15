@@ -71,7 +71,7 @@ public class MemberServiceImpl implements MemberService {
 
 
 
-    // update tbl_member set password = #{password}, lastpwdate= #{lastpwdate} where userid = #{userid}
+
     //회원정보 수정
     @Override
     public void modifyMember(MemberDTO member) {
