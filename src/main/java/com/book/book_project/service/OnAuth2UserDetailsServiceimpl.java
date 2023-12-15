@@ -51,9 +51,10 @@ public class OnAuth2UserDetailsServiceimpl extends DefaultOAuth2UserService {
 				email = oAuth2User.getAttribute("email");
 			} else if (provider.equals("kakao")) { //카카오 로그인인 경우
 				Map<String, Object> attributes = oAuth2User.getAttributes();
-				Map<String, Object> response = (Map<String, Object>) attributes.get("response");
-				providerId = response.get("id").toString();
-				email = (String) response.get("kakao_account");
+				Map<String, Object> response = (Map<String, Object>) attributes.get("kakao_account");
+				System.out.println(response);
+				providerId = response.get("profile").toString();
+				email = response.get("email").toString();
 			}
 
 		log.info("provider = {}", provider);
