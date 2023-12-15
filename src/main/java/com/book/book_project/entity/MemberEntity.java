@@ -55,12 +55,6 @@ public class MemberEntity {
     @Column(name="memberclass", length=50, nullable = true)
     private String memberclass;
 
-    @Column(name="likauthor", length=50, nullable = true)
-    private String likeauthor;
-
-    @Column(name="likegenre", length=50, nullable = true)
-    private String likegenre;
-
     @Column(name="pwcheck",  nullable=true)
     private int pwcheck;
 

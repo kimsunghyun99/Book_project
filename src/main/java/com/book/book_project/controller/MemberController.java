@@ -4,15 +4,14 @@ import com.book.book_project.dto.DeliverAddrDTO;
 import com.book.book_project.entity.DeliveryAddrEntity;
 import com.book.book_project.service.AddressService;
 import com.book.book_project.service.DeliveryService;
+import com.book.book_project.dto.*;
+import com.book.book_project.entity.BuyerInfoEntity;
+import com.book.book_project.service.*;
 import com.nimbusds.openid.connect.sdk.claims.Address;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import com.book.book_project.dto.MemberDTO;
-import com.book.book_project.dto.UnMemberDTO;
 import com.book.book_project.entity.repository.UnMemberRepository;
-import com.book.book_project.service.LikeService;
 import com.book.book_project.entity.AddressEntity;
-import com.book.book_project.service.MemberService;
-import com.book.book_project.service.UnMemberService;
 import com.book.book_project.util.PageUtil;
 import jakarta.servlet.http.HttpSession;
 import com.book.book_project.dto.MemberDTO;
@@ -56,6 +55,9 @@ public class MemberController {
     @Autowired
     UnMemberService unMemberService;
 
+    private final BuyerInfoService buyerInfoService;
+
+
     //회원 등록 화면 보기
     @GetMapping("/member/signup")
     public void getSignup() {}
@@ -65,14 +67,20 @@ public class MemberController {
     @PostMapping("/member/signup")
     public Map<String, String> postSignup(MemberDTO member,DeliverAddrDTO deliverAddr) throws Exception {
 
+        System.out.println("MemberDTO"+ member.toString());
+        System.out.println("deliverAddr"+ deliverAddr.toString());
+
         String inputPassword = member.getPassword();
         String pwd = pwdEncoder.encode(inputPassword); //단방향 암호화
         member.setPassword(pwd);
         member.setLastpwdate(Timestamp.valueOf(LocalDateTime.now()));
         service.memberInfoRegistry(member);
 
+        System.out.println("member"+member.getUserid());
 
         deliverAddr.setName(member.getUsername());
+        deliverAddr.setUserid(member.dtoToEntity(member));
+
         deliveryService.memberaddrInfoRegistry(deliverAddr);
 
         Map<String, String> data = new HashMap<>();
@@ -224,6 +232,7 @@ public class MemberController {
     @GetMapping("/member/idSearch")
     public void getIdSearch() {}
 
+    //아이디 찾기
     @PostMapping("/member/idSearch")
     public String postIdSearch(MemberDTO member){
         String userid = service.idSearch(member);
@@ -236,10 +245,17 @@ public class MemberController {
     public void getPwSearch() {}
 
 
-    //구매내역 조회 화면
+    //회원 구매내역 조회 화면
     @GetMapping("/member/memberPurchaseList")
-    public void getMemberPurchaseList() {}
+    public void getMemberPurchaseList(Model model, HttpSession session,PurchaseInfoService purchaseInfoService) throws Exception {
+        String userid = (String)session.getAttribute("userid");
+        List<BuyerInfoEntity> buyerInfo=buyerInfoService.buyerInfo(userid);
+        model.addAttribute("purchaseList",purchaseInfoService.purchaseList());
+    }
 
+    //비회원 구매내역 조회 화면
+    @GetMapping("/member/unMemberPurchaseList")
+    public void getUnMemberPurchasesList() {}
 
 
     //비회원 로그인 화면
@@ -269,8 +285,6 @@ public class MemberController {
         return "{\"message\":\"GOOD\"}";
     }
 
-    //비회원 구매내역 조회 화면
-    @GetMapping("/member/unMemberPurchaseList")
-    public void getUnMemberPurchasesList() {}
+
 
 }
