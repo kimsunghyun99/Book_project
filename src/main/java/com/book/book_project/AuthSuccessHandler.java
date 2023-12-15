@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import java.time.LocalDateTime;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
+@Log4j2
 public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler  {
 
 	//private final MemberService service;
@@ -47,8 +49,12 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler  {
 		session.setMaxInactiveInterval(3600*24*7);//세션 유지 기간 설정
 		session.setAttribute("userid", memberInfo.getUserid());
 		session.setAttribute("username", memberInfo.getUsername());
+		session.setAttribute("nickname", memberInfo.getNickname());
 		session.setAttribute("role", memberInfo.getRole());
 		session.setAttribute("FromSocial", memberInfo.getFromSocial());
+		log.info("userid" + memberInfo.getUserid());
+		log.info(session.getAttribute("userid"));
+
 		
 	//	log.info("************************* FormLogin 성공 *************************");
 		
