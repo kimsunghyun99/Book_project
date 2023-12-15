@@ -8,6 +8,6 @@ import java.util.List;
 
 @Service
 public interface BuyerInfoService {
-    List<BuyerInfoEntity> buyerInfo(String userid);
-
+//    List<BuyerInfoEntity> buyerInfo(String userid);
+//
 }

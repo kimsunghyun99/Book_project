@@ -78,10 +78,10 @@ public class ProductController {
     public void getNickname(){}
     @ResponseBody
     @PostMapping("/product/nickname")
-    public String postNickname(HttpSession session, @RequestParam("nickname") String nickname) throws Exception {
+    public String postNickname(HttpSession session, @RequestParam("nickname") String nickname, Model model) throws Exception {
         String userid = (String)session.getAttribute("userid");
-        System.out.println("///////" +userid);
         memberService.nickname(userid,nickname);
+        model.addAttribute("nicknameview" + memberService.nickname(userid,nickname));
         return "{\"message\":\"GOOD\"}";
     }
 

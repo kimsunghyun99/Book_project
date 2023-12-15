@@ -93,7 +93,7 @@
         //통화 적용임
         document.addEventListener('DOMContentLoaded', function() {
             // JavaScript 코드 작성
-            const price = [[${view.price}]];
+            const price = '[[${view.price}]]';
             const changePrice = price.toLocaleString('ko-KR');
             document.querySelector('.book-price').textContent = '가격: ' + changePrice + '원';
         });
@@ -353,14 +353,12 @@
     <p id="reviewNotice">리뷰을 작성해 주세요.</p>
     <form id="reviewForm" name="reviewForm" method="POST">
     <!--작성자: <input type="text" id="reviewer" name="reviewer" th:value="${session.nickname}" readonly-->
+        <input type="hidden" id="email" name="email" th:value="${session.userid}">
     작성자: <input type="text" id="reviewer" name="reviewer" th:value="${session.nickname}" readonly>
-
 
         <label for="reviewcontent">리뷰 내용: </label>
         <textarea id="reviewcontent" name="reviewcontent" cols="80" rows="5" maxlength="150" placeholder="글자수: 150자 이내"
                   onfocus="checkAndAlert()"></textarea><br>
-        <input type="hidden" id="bookid" name="bookid" th:value="${session.bookid}">
-        <input type="hidden" id="userid" name="userid" th:value="${session.userid}">
 
     </form>
 

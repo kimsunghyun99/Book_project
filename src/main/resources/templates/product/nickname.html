@@ -1,10 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>닉네임 입력</title>
 </head>
 <script>
+
+    const nicknameCheck = (nickname) => {
+
+        window.opener.document.getElementById('reviewer').value = nickname;
+        window.close();
+
+    }
     const nicknameRegister = async () => {
         const nickname = document.querySelector('#nicknameInput');
         if(nickname.value === '') {
@@ -26,6 +33,7 @@
             .then((data)=> {
                 if(data.message === 'GOOD'){
                     alert('닉네임이 등록되었습니다.');
+                    window.opener.document.getElementById('reviewer').value = nickname;
                     setTimeout(function() {
                         window.close(); // 현재 창을 닫을 경우
                     }, 2000);
@@ -43,7 +51,8 @@
 <body>
     <form id="nicknameForm" name="nicknameForm" method="POST">
     닉네임: <input type="text" id="nicknameInput" name="nicknameInput">
-    <input type="button" id="btn_nickname" value="등록" onclick="nicknameRegister()">
+        <input type="button" id="btn_nickname" value="등록" th:onclick="'nicknameRegister(\'' + ${nicknameview.nickname} + '\')'">
+
     </form>
 </body>
 </html>
