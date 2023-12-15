@@ -4,6 +4,7 @@ import com.book.book_project.entity.FavoritesEntity;
 import com.book.book_project.entity.MemberEntity;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -26,4 +27,13 @@ public interface MemberRepository extends JpaRepository<MemberEntity, String> {
     //즐겨찾기 목록 보기
     @Query(value="SELECT * FROM tbl_favorite f JOIN tbl_member m ON f.userid = m.userid WHERE m.userid = :userid", nativeQuery = true)
     List<FavoritesEntity> findFavoritesByUserId(@Param("userid") String userid);
+
+
+    // 회원 정보 변경
+    @Transactional
+    @Modifying //  테이블에 DML ( insert, update, delete) 을 실행 시켜 변화를 주었을 경우 테이블에 반영된 내용을 엔티티 클래스에 반영
+    @Query(value="update tbl_member set username = :username, nickname = :nickname, telno = :telno, interests =:interests where userid = :userid",nativeQuery = true)
+    public void membermodify(@Param("userid") String userid);
+
+
 }

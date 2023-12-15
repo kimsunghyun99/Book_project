@@ -23,7 +23,10 @@ public interface MemberService {
     //패스워드 수정
     public void memberPasswordModify(MemberDTO member);
 
+    // 회원정보 수정
     public void modifyMember(MemberDTO member);
+
+
 
     //아이디 찾기
     public String idSearch(MemberDTO member);
@@ -38,6 +41,7 @@ public interface MemberService {
     public Page<AddressEntity> addrSearch(int pageNum, int postNum, String addrSearch);
 
 
+
     //아이디 중복 확인
     public int idCheck(String userid);
 
@@ -46,4 +50,9 @@ public interface MemberService {
 
     //즐겨찾기 정보 가져오기
     public List<FavoritesEntity> findFavoritesByUserId(String userid);
+
+
+
+
+
 }

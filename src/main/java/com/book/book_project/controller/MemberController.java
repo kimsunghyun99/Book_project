@@ -1,18 +1,17 @@
 package com.book.book_project.controller;
 
 import com.book.book_project.dto.DeliverAddrDTO;
+import com.book.book_project.entity.DeliveryAddrEntity;
 import com.book.book_project.service.AddressService;
 import com.book.book_project.service.DeliveryService;
+import com.book.book_project.dto.*;
+import com.book.book_project.entity.BuyerInfoEntity;
+import com.book.book_project.service.*;
 import com.nimbusds.openid.connect.sdk.claims.Address;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import com.book.book_project.dto.MemberDTO;
-import com.book.book_project.dto.UnMemberDTO;
 import com.book.book_project.entity.repository.UnMemberRepository;
-import com.book.book_project.service.LikeService;
 import com.book.book_project.entity.AddressEntity;
-import com.book.book_project.service.MemberService;
-import com.book.book_project.service.UnMemberService;
 import com.book.book_project.util.PageUtil;
 import jakarta.servlet.http.HttpSession;
 import com.book.book_project.dto.MemberDTO;
@@ -26,15 +25,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -57,6 +54,9 @@ public class MemberController {
 
     @Autowired
     UnMemberService unMemberService;
+
+    private final BuyerInfoService buyerInfoService;
+
 
     //회원 등록 화면 보기
     @GetMapping("/member/signup")
@@ -101,7 +101,6 @@ public class MemberController {
     public String postPwModify(@RequestParam("old_password") String old_password,
                                @RequestParam("new_password") String new_password,HttpSession session) throws Exception {
 
-        System.out.println("controller1");
         String userid = (String)session.getAttribute("userid");
 
         //패스워드가 올바르게 들어 왔는지 확인
@@ -109,13 +108,9 @@ public class MemberController {
             return "{\"message\":\"PASSWORD_NOT_FOUND\"}";
         }
 
-
-        System.out.println("controller2");
-
-
         //신규 패스워드로 업데이트
         MemberDTO member = new MemberDTO();
-
+        member.setUserid(userid);
         member.setPassword(new_password);
         member.setLastpwdate(Timestamp.valueOf(LocalDateTime.now()));
         service.memberPasswordModify(member);
@@ -127,15 +122,35 @@ public class MemberController {
 
     //회원 정보 수정 화면
     @GetMapping("/member/memberInfoModify")
-    public void getMemberInfoModify() {}
+    public void getMemberInfoModify(HttpSession session, Model model) {
+        String userid = (String)session.getAttribute("userid");
+        model.addAttribute("memberInfo", service.memberInfo(userid));
+        List<DeliveryAddrEntity> deliveryAddrEntityList=deliveryService.list(userid);
+
+        model.addAttribute("list", deliveryAddrEntityList);
+    }
+
 
 
     //회원 정보 수정 하기
     @ResponseBody
     @PostMapping("/member/memberInfoModify")
-    public String postMemberInfoModify(MemberDTO member, HttpSession session) throws Exception {
+    public String postMemberInfoModify(MemberDTO member, @RequestBody Map<String,Object> params, HttpSession session, @RequestParam("option") String option) throws Exception {
+
+
         member.setUserid((String)session.getAttribute("userid"));
-        service.modifyMember(member);
+        int deliveryseq = Integer.parseInt(params.get("deleteseqno").toString());
+
+        switch(option) {
+
+           //  case "I" : service.replyRegistry(reply); // 회원 배송지 등록
+           //     break;
+            case "U" : service.modifyMember(member); //회원 기본정보 수정
+                break;
+            case "D" : deliveryService.deletedeliveraddr(deliveryseq); // 회원 배송지 삭제
+                break;
+        }
+
 
 
         return "{\"message\":\"GOOD\"}";
@@ -164,6 +179,17 @@ public class MemberController {
         model.addAttribute("pageList", page.getPageAddress(pageNum, postNum, pageListCount, totalCount, addrSearch));
 
     }
+
+// 회원가입 시 아이디체크
+    @ResponseBody
+    @PostMapping("/member/idCheck")
+    public int postIdCheck(@RequestBody String userid) throws Exception {
+        int result = service.idCheck(userid);
+        return result;
+
+    }
+
+
 
     //로그인 화면 보기
     @GetMapping("/member/login")
@@ -206,6 +232,7 @@ public class MemberController {
     @GetMapping("/member/idSearch")
     public void getIdSearch() {}
 
+    //아이디 찾기
     @PostMapping("/member/idSearch")
     public String postIdSearch(MemberDTO member){
         String userid = service.idSearch(member);
@@ -218,10 +245,17 @@ public class MemberController {
     public void getPwSearch() {}
 
 
-    //구매내역 조회 화면
+    //회원 구매내역 조회 화면
     @GetMapping("/member/memberPurchaseList")
-    public void getMemberPurchaseList() {}
+    public void getMemberPurchaseList(Model model, HttpSession session,PurchaseInfoService purchaseInfoService) throws Exception {
+        String userid = (String)session.getAttribute("userid");
+        List<BuyerInfoEntity> buyerInfo=buyerInfoService.buyerInfo(userid);
+        model.addAttribute("purchaseList",purchaseInfoService.purchaseList());
+    }
 
+    //비회원 구매내역 조회 화면
+    @GetMapping("/member/unMemberPurchaseList")
+    public void getUnMemberPurchasesList() {}
 
 
     //비회원 로그인 화면
@@ -251,8 +285,6 @@ public class MemberController {
         return "{\"message\":\"GOOD\"}";
     }
 
-    //비회원 구매내역 조회 화면
-    @GetMapping("/member/unMemberPurchaseList")
-    public void getUnMemberPurchasesList() {}
+
 
 }
