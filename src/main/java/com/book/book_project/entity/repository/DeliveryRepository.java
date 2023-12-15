@@ -14,7 +14,7 @@ import java.util.List;
 public interface DeliveryRepository extends JpaRepository<DeliveryAddrEntity, Integer> {
 
 
-    @Query(value="SELECT d.deliveryseq, d.addr, d.detailaddr, d.zipcode FROM tbl_member m JOIN tbl_deliveraddr d ON m.userid = d.userid WHERE d.userid = :userid", nativeQuery = true)
+    @Query(value="SELECT d.* FROM tbl_member m JOIN tbl_deliveraddr d ON m.userid = d.userid WHERE d.userid = :userid", nativeQuery = true)
     List<DeliveryAddrEntity> findDeliveryAddrEntitiesBy(@Param("userid") String userid);
 
 

@@ -1,6 +1,7 @@
 package com.book.book_project.controller;
 
 import com.book.book_project.dto.DeliverAddrDTO;
+import com.book.book_project.entity.DeliveryAddrEntity;
 import com.book.book_project.service.AddressService;
 import com.book.book_project.service.DeliveryService;
 import com.nimbusds.openid.connect.sdk.claims.Address;
@@ -31,6 +32,7 @@ import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -115,9 +117,9 @@ public class MemberController {
     public void getMemberInfoModify(HttpSession session, Model model) {
         String userid = (String)session.getAttribute("userid");
         model.addAttribute("memberInfo", service.memberInfo(userid));
-        deliveryService.list(userid)
+        List<DeliveryAddrEntity> deliveryAddrEntityList=deliveryService.list(userid);
 
-        model.addAttribute("list", deliveryService.list(userid));
+        model.addAttribute("list", deliveryAddrEntityList);
     }
 
 
@@ -125,9 +127,22 @@ public class MemberController {
     //회원 정보 수정 하기
     @ResponseBody
     @PostMapping("/member/memberInfoModify")
-    public String postMemberInfoModify(MemberDTO member, HttpSession session) throws Exception {
+    public String postMemberInfoModify(MemberDTO member, @RequestBody Map<String,Object> params, HttpSession session, @RequestParam("option") String option) throws Exception {
+
+
         member.setUserid((String)session.getAttribute("userid"));
-        service.modifyMember(member);
+        int deliveryseq = Integer.parseInt(params.get("deleteseqno").toString());
+
+        switch(option) {
+
+           //  case "I" : service.replyRegistry(reply); // 회원 배송지 등록
+           //     break;
+            case "U" : service.modifyMember(member); //회원 기본정보 수정
+                break;
+            case "D" : deliveryService.deletedeliveraddr(deliveryseq); // 회원 배송지 삭제
+                break;
+        }
+
 
 
         return "{\"message\":\"GOOD\"}";

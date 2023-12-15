@@ -92,6 +92,13 @@
         #interests1 {
             display:none;
         }
+        table {
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 5px;
+        }
 
     </style>
 
@@ -124,6 +131,35 @@
         }
 
 
+        const DeleteAddr = async() => {
+
+
+                const deleteseqnoValue = document.getElementById('deleteseqno').value;
+
+            await fetch('/member/memberInfoModify?option=D', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ deleteseqno: deleteseqnoValue }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if(data.message === 'GOOD'){
+                        alert("삭제되었습니다.");
+                    }
+                    else {
+                        alert("삭제 실패 했습니다.");
+                    }
+                }).catch((error)=> {
+                    console.log("error = " + error);
+                })
+
+        }
+
+
+
+
     </script>
 
 
@@ -131,7 +167,7 @@
 <body>
 
 <h1>회원정보 변경</h1>
-
+<form id="RegistryForm" name="RegistryForm" method="POST" enctype="form-data">
 <label for="username">사용자 이름:</label>
 <input type="text" id="username" name="username" th:value="${memberInfo.username}" placeholder="이름을 입력하세요" required>
 
@@ -144,25 +180,33 @@
 <h4 style="display: inline-block;">배송지 목록</h4>
 <div id="ADDorDelete" style="display: inline-block;">
     <input type="button" id="add" value="+" onclick="AddAddr()">
-    <input type="button" id="delete" value="-">
+    <input type="button" id="delete" value="-" onclick="DeleteAddr()">
 </div>
 
-<table class="InfoTable">
+<table class="InfoTable" style="border-width: 2px; border-style: solid;">
+    <thead>
     <tr>
-        <th>번호</th>
+        <th>선택</th>
+        <th>받는사람</th>
         <th>주소</th>
         <th>우편번호</th>
     </tr>
+    </thead>
+    <tbody>
     <th:block th:if="${list != null}">
 
         <tr th:each="list:${list}">
-        <td th:text="${list.deliveryseq}"></td>
+
+         <td style="text-align: center;"><input type="checkbox"></td>
+        <input type="hidden" id="deleteseqno" th:text="${list.deliveryseq}">
+        <td th:text="${list.name}"></td>
         <td th:text="${list.addr} + ' ' + ${list.detailaddr}" ></td>
         <td th:text="${list.zipcode}"></td>
         </tr>
     </th:block>
+    </tbody>
     </table>
-
+<br><br>
     <div id="addplus">
 <input type="text" id="addrSearch" name="addrSearch" class="addrSearch"  placeholder="주소를 검색합니다.">
 <input type="button" id="btn_addSearch" class="btn_addrSearch" value="주소검색" onclick="searchAddr()">
@@ -189,10 +233,10 @@
 
 <br><br>
 <input type="text" id="interests1" class="input_field" name="interests1" placeholder="직접입력">
-
+</form>
 
 <div id="aa">
-<input type="button" id="btnRegister" class="btn_write" value="수정" onclick="">
+<input type="button" id="btnRegister" class="btn_write" value="수정">
 <input type="button" class="btn_cancel" value="취소" onclick="history.back()">
 </div>
 
@@ -228,24 +272,26 @@
 
         }
 
-        //     const formData = new FormData(RegistryForm);
-        //
-        //
-        //     await fetch('/member/memberInfoModify', {
-        //     method: 'POST',
-        //     body: formData
-        // }).then((response)=> response.json())
-        //     .then((data)=> {
-        //     console.log(data.message);
-        //     if(data.message === 'GOOD'){
-        //     alert("수정되었습니다.");
-        //     document.location.href='/product/main';
-        // } else {
-        //     alert("서버 장애로 수정에 실패했습니다.");
-        // }
-        // }).catch((error)=> {
-        //     console.log("error = " + error);
-        // });
+
+        const RegistryForm = document.getElementById('RegistryForm');
+            const formData = new FormData(RegistryForm);
+
+
+            await fetch('/member/memberInfoModify?option=U', {
+            method: 'POST',
+            body: formData
+        }).then((response)=> response.json())
+            .then((data)=> {
+            console.log(data.message);
+            if(data.message === 'GOOD'){
+            alert("수정되었습니다.");
+            document.location.href='/product/main';
+        } else {
+            alert("서버 장애로 수정에 실패했습니다.");
+        }
+        }).catch((error)=> {
+            console.log("error = " + error);
+        });
 
     });
 
