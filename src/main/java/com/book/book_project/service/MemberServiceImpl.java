@@ -4,11 +4,9 @@ import com.book.book_project.controller.MemberController;
 import com.book.book_project.dto.BuyerInfoDTO;
 import com.book.book_project.dto.MemberDTO;
 import com.book.book_project.dto.PurchaseInfoDTO;
-import com.book.book_project.entity.BuyerInfoEntity;
-import com.book.book_project.entity.FavoritesEntity;
-import com.book.book_project.entity.AddressEntity;
-import com.book.book_project.entity.MemberEntity;
+import com.book.book_project.entity.*;
 import com.book.book_project.entity.repository.AddresRepository;
+import com.book.book_project.entity.repository.DeliveryRepository;
 import com.book.book_project.entity.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
@@ -82,6 +80,7 @@ public class MemberServiceImpl implements MemberService {
 
     // update tbl_member set password = #{password}, lastpwdate= #{lastpwdate} where userid = #{userid}
     //패스워드 수정
+    @Override
     public void memberPasswordModify(MemberDTO member) {
         MemberEntity memberEntity =memberRepository.findById(member.getUserid()).get();
         memberEntity.setPassword(pwdEncoder.encode(member.getPassword()));
@@ -92,11 +91,16 @@ public class MemberServiceImpl implements MemberService {
 
     // update tbl_member set password = #{password}, lastpwdate= #{lastpwdate} where userid = #{userid}
     //회원정보 수정
+    @Override
     public void modifyMember(MemberDTO member) {
         MemberEntity memberEntity =memberRepository.findById(member.getUserid()).get();
-        memberEntity.setPassword(pwdEncoder.encode(member.getPassword()));
-        memberRepository.save(memberEntity);
+       // memberEntity.setPassword(pwdEncoder.encode(member.getPassword()));
+         memberRepository.membermodify(member.getUserid());
     }
+
+
+
+
 
     //주소 검색
     @Override
