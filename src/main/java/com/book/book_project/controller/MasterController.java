@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class MasterController {
 
-
+///
     // 나이대별 통계
     @GetMapping("/master/ageStatistics")
     public void getAgeStatistics() {}

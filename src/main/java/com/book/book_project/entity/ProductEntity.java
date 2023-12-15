@@ -32,17 +32,17 @@ public class ProductEntity {
     @Column(name="price", nullable = false)
     private int price;  //원가
 
+    @Column(name = "pricesales", nullable=true)
+    private int pricesales;//할인가
+
     @Column(name="stock", nullable = false)
     private int stock;  //재고
 
     @Column(name="description", length=2000, nullable = false)
     private String description; //설명
 
-    @Column(name="orgimg", length=200, nullable = true)
-    private String orgimg;  //원본책표지이미지
-
-    @Column(name="storedimg", length=200, nullable = true)
-    private String storedimg;   //저장된책표지이미지
+    @Column(name="cover", length=200, nullable = true)
+    private String cover;  //표지이미지
 
     @Column(name="regdate", nullable = false)
     private Timestamp regdate;  //등록일
@@ -56,14 +56,8 @@ public class ProductEntity {
     @Column(name="publicationdate", nullable = false)
     private Timestamp publicationdate;  //출판일
 
-    @Column(name="grade", nullable = true)
-    private float grade;    //평점
-
-    @Column(name="sale", nullable = true)
-    private int sale;   //할인율
-
-    @Column(name="filesize", nullable = false)
-    private long filesize;   //파일크기
+    @Column(name="salespoint", nullable = true)
+    private int salespointe;   //판매지수
 
     //FK 분류이름
     @ManyToOne(fetch = FetchType.LAZY)

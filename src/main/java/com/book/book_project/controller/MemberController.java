@@ -2,6 +2,7 @@ package com.book.book_project.controller;
 
 import com.book.book_project.dto.DeliverAddrDTO;
 import com.book.book_project.entity.DeliveryAddrEntity;
+import com.book.book_project.entity.PurchaseInfoEntity;
 import com.book.book_project.service.AddressService;
 import com.book.book_project.service.DeliveryService;
 import com.book.book_project.dto.*;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -250,7 +252,15 @@ public class MemberController {
     public void getMemberPurchaseList(Model model, HttpSession session,PurchaseInfoService purchaseInfoService) throws Exception {
         String userid = (String)session.getAttribute("userid");
         List<BuyerInfoEntity> buyerInfo=buyerInfoService.buyerInfo(userid);
-        model.addAttribute("purchaseList",purchaseInfoService.purchaseList());
+
+        List<PurchaseInfoEntity> purchaseInfoList = new ArrayList<>();
+
+        for(BuyerInfoEntity buyerInfoEntity:buyerInfo){
+            int buyerseq = buyerInfoEntity.getBuyerseq();
+            List<PurchaseInfoEntity> purchaseList = purchaseInfoService.purchaseList(buyerseq);
+            purchaseInfoList.addAll(purchaseList);
+        }
+        model.addAttribute("purchaseList",purchaseInfoList);
     }
 
     //비회원 구매내역 조회 화면
