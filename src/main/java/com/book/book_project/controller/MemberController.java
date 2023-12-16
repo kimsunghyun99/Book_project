@@ -29,6 +29,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Member;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -141,17 +142,24 @@ public class MemberController {
     public String postMemberInfoModify(MemberDTO member, HttpSession session, @RequestBody DeliverAddrDTO deliverAddrDTO, @RequestParam("option") String option)throws Exception {
 
 
+        MemberEntity memberEntity = new MemberEntity();
+
+        String Userid = (String)session.getAttribute("userid");
+
+        member.setUserid(Userid);
+        memberEntity.setUserid(member.getUserid());
+
         System.out.println("컨트롤러1");
 
-        member.setUserid((String)session.getAttribute("userid"));
-        deliverAddrDTO.setUserid(((MemberEntity)session.getAttribute("userid")));
-      //  int deliveryseq = Integer.parseInt(params.get("deleteseqno").toString());
+        deliverAddrDTO.setUserid(memberEntity);
+
+        int deleteseq = (deliverAddrDTO.getDeliveryseq());
 
         switch(option) {
 
             case "I" : deliveryService.adddeliveraddr(deliverAddrDTO); // 회원 배송지 등록
                 break;
-            case "D" : deliveryService.deletedeliveraddr(deliverAddrDTO); // 회원 배송지 삭제
+            case "D" : deliveryService.deletedeliveraddr(deleteseq); // 회원 배송지 삭제 완료
                 break;
             case "U" : service.modifyMember(member); //회원 기본정보 수정
                 break;
