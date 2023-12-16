@@ -17,8 +17,6 @@ public interface ProductService {
     //상세 내용 보기
     public ProductDTO view(int bookid) throws Exception;
 
-
-
-
+    void setBookList(List<ProductEntity> list) throws  Exception;
 
 }
