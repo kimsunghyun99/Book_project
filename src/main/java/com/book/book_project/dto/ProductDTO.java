@@ -27,7 +27,7 @@ public class ProductDTO {
     private String isbn;    //책 고유번호
     private String status;  //판매 상태
     private Timestamp publicationdate;  //출판일
-    private int salespoint;
+    private int salespoint;//판매지수
     private CategoryEntity categoryseq;    //분류 이름
 
 

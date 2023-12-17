@@ -15,7 +15,7 @@ public class PurchaseInfoServiceImpl implements PurchaseInfoService {
 
 
     @Override
-    public List<PurchaseInfoEntity> purchaseList(int buyerseq){
+    public List<PurchaseInfoEntity> purchaseList(BuyerInfoEntity buyerseq){
 
 
         return repository.findByBuyerseq(buyerseq);
