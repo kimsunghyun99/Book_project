@@ -228,7 +228,7 @@
                 <td th:text="${list.addr} + ' ' + ${list.detailaddr}" ></td>
                 <td th:text="${list.zipcode}"></td>
                 <td ><input type="button" style="text-align: center;" value="삭제" onclick="DeleteAddr(this)"></td>
-                <td><input type="text" id="deleteseqno" th:value="${list.deliveryseq}"></td>
+                <input type="hidden" id="deleteseqno" th:value="${list.deliveryseq}">
 <!--                <span style="display: none" id="deleteseqno" th:value="${list.deliveryseq}"></span>-->
             </tr>
 
@@ -292,7 +292,10 @@
 
         await fetch('/member/memberInfoModify?option=U', {
             method: 'POST',
-            body: formData
+            body: formData,
+            headers: {
+                'Content-Type': 'application/json'
+            },
         }).then((response)=> response.json())
             .then((data)=> {
                 console.log(data.message);

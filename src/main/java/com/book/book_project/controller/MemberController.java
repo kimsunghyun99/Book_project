@@ -139,7 +139,7 @@ public class MemberController {
     //회원 정보 수정 하기
     @ResponseBody
     @PostMapping("/member/memberInfoModify")
-    public String postMemberInfoModify(MemberDTO member, HttpSession session, @RequestBody DeliverAddrDTO deliverAddrDTO, @RequestParam("option") String option)throws Exception {
+    public String postMemberInfoModify(@RequestBody MemberDTO member, HttpSession session, @RequestBody DeliverAddrDTO deliverAddrDTO, @RequestParam("option") String option)throws Exception {
 
 
         MemberEntity memberEntity = new MemberEntity();
