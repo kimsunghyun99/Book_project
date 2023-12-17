@@ -1,5 +1,6 @@
 package com.book.book_project.service;
 
+import com.book.book_project.dto.MemberDTO;
 import com.book.book_project.entity.BuyerInfoEntity;
 import com.book.book_project.entity.MemberEntity;
 import com.book.book_project.entity.repository.BuyerInfoRepository;
@@ -11,10 +12,10 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class BuyerInfoServiceImpl implements BuyerInfoService {
-//
+
    private final BuyerInfoRepository repository;
-//    @Override
-//    public List<BuyerInfoEntity> buyerInfo(String userid) {
-//        return repository.findByUserid(userid);
-//    }
+    @Override
+    public List<BuyerInfoEntity> buyerInfo(MemberEntity userid) {
+        return repository.findByUserid(userid);
+    }
 }

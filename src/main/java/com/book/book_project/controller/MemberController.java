@@ -266,17 +266,17 @@ public class MemberController {
     //회원 구매내역 조회 화면
     @GetMapping("/member/memberPurchaseList")
     public void getMemberPurchaseList(Model model, HttpSession session,PurchaseInfoService purchaseInfoService) throws Exception {
-        String userid = (String)session.getAttribute("userid");
+        MemberEntity userid = (MemberEntity) session.getAttribute("userid");
         List<BuyerInfoEntity> buyerInfo=buyerInfoService.buyerInfo(userid);
 
         List<PurchaseInfoEntity> purchaseInfoList = new ArrayList<>();
 
         for(BuyerInfoEntity buyerInfoEntity:buyerInfo){
-            int buyerseq = buyerInfoEntity.getBuyerseq();
+            BuyerInfoEntity buyerseq = buyerInfoEntity;
             List<PurchaseInfoEntity> purchaseList = purchaseInfoService.purchaseList(buyerseq);
             purchaseInfoList.addAll(purchaseList);
+            model.addAttribute("purchaseList",purchaseInfoList);
         }
-        model.addAttribute("purchaseList",purchaseInfoList);
     }
 
     //비회원 구매내역 조회 화면
