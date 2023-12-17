@@ -93,9 +93,17 @@
         //통화 적용임
         document.addEventListener('DOMContentLoaded', function() {
             // JavaScript 코드 작성
-            const price = '[[${view.price}]]';
+            const price = [[${view.price}]];
             const changePrice = price.toLocaleString('ko-KR');
             document.querySelector('.book-price').textContent = '가격: ' + changePrice + '원';
+        });
+
+        //통화 적용임
+        document.addEventListener('DOMContentLoaded', function() {
+            // JavaScript 코드 작성
+            const price = [[${view.pricesales}]];
+            const changePrice = price.toLocaleString('ko-KR');
+            document.querySelector('.book-discount').textContent = '할인가: ' + changePrice + '원';
         });
 
 
@@ -289,20 +297,27 @@
 
 
         function checkAndAlert() {
-
             var reviewContentTextarea = document.getElementById("reviewcontent");
-            var currentNickname = '[[${session.nickname}]]';
+            var currentNickname =document.getElementById("reviewer");
+            var currentUserid = '[[${session.userid}]]';
+            var FromSocial = '[[${session.FromSocial}]]'; // 가정: socialfrom이 세션 속성으로 존재한다고 가정
 
-            // 새로운 닉네임이 null이고 리뷰 칸에 커서를 대면 확인 대화상자 띄우기
-            if (!currentNickname.trim()){
-                if (confirm("새로운 닉네임을 입력하세요. 계속하시겠습니까?")) {
-                    reviewContentTextarea.blur(); // 리뷰 내용 입력 칸의 포커스 해제
+            if (currentUserid) {
+                if (currentNickname.value == null) {
+                    if (confirm("새로운 닉네임을 입력하세요. 계속하시겠습니까?")) {
+                        reviewContentTextarea.blur(); // 리뷰 내용 입력 칸의 포커스 해제
 
-                    // "확인"을 눌렀을 때 실행될 코드
-                    window.open("nickname", "닉네임입력", "width=950, height=540, top=50, left=50"); // 새 창 열기
-                }
+                        // "확인"을 눌렀을 때 실행될 코드
+                        window.open("nickname", "닉네임입력", "width=950, height=540, top=50, left=50"); // 새 창 열기
+                    }
+                    }else{
+                        reviewContentTextarea.focus();
+                    }
+
+
             }
         }
+
 
 
 
@@ -310,9 +325,6 @@
     </script>
 </head>
 <body>
-    <script>
-        startupPage();
-    </script>
 <header>
     <h1>교보문고</h1>
 </header>
@@ -337,8 +349,8 @@
         <p class="book-title" th:text="${view.bookname}"></p>
         <p class="book-author" th:text="'작가: ' + ${view.author}"></p>
         <p class="book-price" th:text="'가격: ' + ${view.price} + '원'"></p>
-        <p class="book-discount" th:text="'할인율: ' + ${view.sale} + '%'"></p>
-        <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.price * 0.05, 3, 'COMMA')} + '원'"></p>
+        <p class="book-discount" th:text="'할인가: ' + ${view.pricesales} + '%'"></p>
+        <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.pricesales * 0.05, 3, 'COMMA')} + '원'"></p>
 
         <div class="book-actions">
             <a href="shoppingBasket.html" class="book-cart">장바구니</a>
@@ -352,22 +364,20 @@
 
     <p id="reviewNotice">리뷰을 작성해 주세요.</p>
     <form id="reviewForm" name="reviewForm" method="POST">
-    <!--작성자: <input type="text" id="reviewer" name="reviewer" th:value="${session.nickname}" readonly-->
-        <input type="hidden" id="email" name="email" th:value="${session.userid}">
-    작성자: <input type="text" id="reviewer" name="reviewer" th:value="${session.nickname}" readonly>
+        <input type="hidden" id="userid" name="userid" th:value="${session.userid}">
+    작성자: <input type="text" id="reviewer" name="reviewer" th:value="${nickname}" readonly>
+
 
         <label for="reviewcontent">리뷰 내용: </label>
         <textarea id="reviewcontent" name="reviewcontent" cols="80" rows="5" maxlength="150" placeholder="글자수: 150자 이내"
                   onfocus="checkAndAlert()"></textarea><br>
-
     </form>
 
     <input type="button" id="btn_review" value="리뷰 등록" onclick="reviewRegister()">
     <input type="button" id="btn_cancel" value="취소" onclick="reviewCancel()">
     <hr>
     <div id="reviewList" style="width:100%; height:600px; overflow:auto;"></div>
-
+    <div>[(${pageList})]</div>
 </div>
-<div>[(${pageList})]</div>
 </body>
 </html>

@@ -38,7 +38,8 @@ public class ProductController {
     @GetMapping("/product/productInfo")
     public void getProductInfo(@RequestParam("page") int pageNum,
                                @RequestParam("bookid") int bookid,
-                               Model model) throws Exception {
+                               Model model,
+                               HttpSession session) throws Exception {
 
         int postNum = 5; //한 화면에 보여지는 게시물 행의 갯수
         int pageListCount = 5; //화면 하단에 보여지는 페이지리스트의 페이지 갯수
@@ -46,7 +47,11 @@ public class ProductController {
         PageUtil page = new PageUtil();
         Page<ReviewEntity> list = service.list(pageNum, postNum);
         int totalCount = (int)list.getTotalElements();
+        String userid = (String)session.getAttribute("userid");
+        String nickname = memberService.memberInfo(userid).getNickname();
 
+
+        model.addAttribute("nickname", nickname);
         model.addAttribute("view", service.view(bookid));
         model.addAttribute("list", service.list(pageNum,postNum));
         model.addAttribute("totalElement", totalCount);
@@ -80,6 +85,7 @@ public class ProductController {
     @PostMapping("/product/nickname")
     public String postNickname(HttpSession session, @RequestParam("nickname") String nickname, Model model) throws Exception {
         String userid = (String)session.getAttribute("userid");
+        session.setAttribute("nickname", nickname);
         memberService.nickname(userid,nickname);
         model.addAttribute("nicknameview" + memberService.nickname(userid,nickname));
         return "{\"message\":\"GOOD\"}";
