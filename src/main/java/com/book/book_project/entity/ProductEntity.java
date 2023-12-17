@@ -14,11 +14,11 @@ import java.sql.Timestamp;
 @Builder
 @Entity(name="product")
 @Table(name="tbl_product")
-public class ProductEntity {
+public class ProductEntity  {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int bookid; //도서번호
+    @Column(name="bookid", length=100, nullable = false)
+    private String bookid; //도서번호
 
     @Column(name="bookname", length=100, nullable = false)
     private String bookname;    //책이름
@@ -46,9 +46,6 @@ public class ProductEntity {
 
     @Column(name="regdate", nullable = false)
     private Timestamp regdate;  //등록일
-
-    @Column(name="isbn", length=100, nullable = false)
-    private String isbn;    //책 고유번호
 
     @Column(name="status", length=100, nullable = false)
     private String status;  //판매상태
