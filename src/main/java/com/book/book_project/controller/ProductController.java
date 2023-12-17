@@ -28,7 +28,7 @@ public class ProductController {
     public void getMain() {}
 
     @GetMapping("/product/productInfo")
-    public void getProductInfo(@RequestParam("bookid") int bookid, @RequestParam("page") int pageNum,
+    public void getProductInfo(@RequestParam("bookid") String bookid, @RequestParam("page") int pageNum,
                                @RequestParam(name = "keyword", defaultValue = "", required = false) String keyword,
                                Model model) throws Exception {
 

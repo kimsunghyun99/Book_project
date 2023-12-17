@@ -24,14 +24,14 @@ public class ReviewServiceImpl implements ReviewService{
     //리뷰 목록 보기
     @Override
     public List<ReviewInterface> ReviewView(ReviewInterface review) throws Exception{
-        return reviewRepository.reviewView(review.getReviewseq());
+        return reviewRepository.reviewView(review.getBookid());
     }
 
     //리뷰 등록
     @Override
     public void ReviewRegistry(ReviewInterface Review) throws Exception {
-        ProductEntity productEntity = productRepository.findById(Review.getBookid().getBookid()).get();
-        MemberEntity memberEntity = memberRepository.findById(Review.getUserid().getUserid()).get();
+        ProductEntity productEntity = productRepository.findById(Review.getBookid()).get();
+        MemberEntity memberEntity = memberRepository.findById(Review.getUserid()).get();
 
         ReviewEntity reviewEntity = ReviewEntity.builder()
                 .reviewseq(Review.getReviewseq())

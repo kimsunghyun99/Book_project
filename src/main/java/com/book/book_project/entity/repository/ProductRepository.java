@@ -7,12 +7,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Map;
 
 
-public interface ProductRepository extends JpaRepository<ProductEntity, Integer> {
+public interface ProductRepository extends JpaRepository<ProductEntity, String> {
 
     //책 목록 보기
-    public Page<ProductEntity> findByBookidContainingOrBooknameContainingOrCategorynumberContainingOrIsbnContainingOrPublisher
+    Page<ProductEntity> findByBookidContainingOrBooknameContainingOrCategorynumberContainingOrIsbnContainingOrPublisher
     (String keyword1,String keyword2,String keyword3, String keyword4, String keyword5,Pageable pageable);
 
 
@@ -20,5 +21,6 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Integer>
 
     //bookid 가져 오기
     @Query(value="select bookid from tbl_product", nativeQuery=true)
-    public Long getBookid();
+    String getBookid();
+
 }
