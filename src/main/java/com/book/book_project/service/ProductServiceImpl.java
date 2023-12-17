@@ -23,9 +23,10 @@ public class ProductServiceImpl implements ProductService{
     private final ReviewRepository reviewRepository;
     //게시물 목록 보기
     @Override
-    public Page<ReviewEntity> list(int pageNum, int postNum) throws Exception {
-        PageRequest pageRequest = PageRequest.of(pageNum - 1, postNum, Sort.by(Sort.Direction.DESC, "reviewseq"));
-        return reviewRepository.findAll(pageRequest);
+    public Page<ProductEntity> list(int pageNum, int postNum, String keyword) throws Exception {
+        PageRequest pageRequest = PageRequest.of(pageNum - 1, postNum, Sort.by(Sort.Direction.DESC,"bookid"));
+        return productRepository.findByBookidContainingOrBooknameContainingOrCategorynumberContainingOrIsbnContainingOrPublisher
+                (keyword,keyword,keyword, keyword, keyword, pageRequest);
     }
 
     //책 내용 보기

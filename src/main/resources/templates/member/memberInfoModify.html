@@ -78,8 +78,8 @@
             margin-top: 10px; /* 원하는 여백 값으로 조절하세요 */
         }
 
-        #add, #delete {
-            width:20px;
+        #add {
+            width:60px;
             font-size: 14px; /* 원하는 글자 크기로 조절하세요 */
             padding: 5px 10px; /* 원하는 패딩 값으로 조절하세요 */
             margin-left: 5px; /* 각 버튼 사이 여백 조절 */
@@ -93,12 +93,14 @@
             display:none;
         }
         table {
+
             border-collapse: collapse;
         }
         th, td {
             border: 1px solid black;
             padding: 5px;
         }
+
 
     </style>
 
@@ -131,29 +133,32 @@
         }
 
 
-        const DeleteAddr = async() => {
+        const DeleteAddr = async (button) => {
 
+            const row = button.closest('tr');
+            const deleteseqnoValue = parseInt(row.querySelector('#deleteseqno').value);
+           // const deleteseqnoValue = parseInt((document.getElementById('deleteseqno')).value);
 
-                const deleteseqnoValue = document.getElementById('deleteseqno').value;
-
+            console.log("!!!!!!!!!!!!!!!!!!"+deleteseqnoValue);
             await fetch('/member/memberInfoModify?option=D', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ deleteseqno: deleteseqnoValue }),
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    if(data.message === 'GOOD'){
-                        alert("삭제되었습니다.");
-                    }
-                    else {
-                        alert("삭제 실패 했습니다.");
-                    }
-                }).catch((error)=> {
-                    console.log("error = " + error);
+                body: JSON.stringify({
+                    deliveryseq: deleteseqnoValue
                 })
+            }).then((response) => response.json())
+                .then((data) => {
+                    console.log(data.message);
+                    if (data.message === 'GOOD') {
+                        alert("삭제되었습니다.");
+                    } else {
+                        alert("서버 장애로 삭제 실패했습니다.");
+                    }
+                }).catch((error) => {
+                    console.log("error = " + error);
+                });
 
         }
 
@@ -168,76 +173,84 @@
 
 <h1>회원정보 변경</h1>
 <form id="RegistryForm" name="RegistryForm" method="POST" enctype="form-data">
-<label for="username">사용자 이름:</label>
-<input type="text" id="username" name="username" th:value="${memberInfo.username}" placeholder="이름을 입력하세요" required>
 
-<label for="nickname">닉네임:</label>
-<input type="text" id="nickname" name="nickname" th:value="${memberInfo.nickname}" placeholder="닉네임을 입력하세요" required>
+    <input type="hidden" id="userid" name="userid" th:value="${memberInfo.userid}">
+    <label for="username">사용자 이름:</label>
+    <input type="text" id="username" name="username" th:value="${memberInfo.username}" placeholder="이름을 입력하세요" required>
+
+    <label for="nickname">닉네임:</label>
+    <input type="text" id="nickname" name="nickname" th:value="${memberInfo.nickname}" placeholder="닉네임을 입력하세요" required>
 
 
-<input type="text" id="telno" class="input_field" name="telno" th:value="${memberInfo.telno}" placeholder="전화번호를 입력하세요" >
+    <input type="text" id="telno" class="input_field" name="telno" th:value="${memberInfo.telno}" placeholder="전화번호를 입력하세요" >
 
-<h4 style="display: inline-block;">배송지 목록</h4>
-<div id="ADDorDelete" style="display: inline-block;">
-    <input type="button" id="add" value="+" onclick="AddAddr()">
-    <input type="button" id="delete" value="-" onclick="DeleteAddr()">
-</div>
+    관심분야 :
+    <select id="interests" name="interests" onchange="handleInterestChange()">
+        <option value="all" disabled selected>관심분야 ▼</option>
+        <option value="JAVA">JAVA</option>
+        <option value="PYTHON">PYTHON</option>
+        <option value="C">C</option>
+        <option value="C#">C#</option>
+        <option value="C++">C++</option>
+        <option value="PHP">PHP</option>
+        <option value="REACT">REACT</option>
+        <option value="VIEW">VIEW</option>
+        <option value="JS">JS</option>
+        <option value="ANDROID">ANDROID</option>
+        <option value="INPUT">직접입력</option>
+    </select>
 
-<table class="InfoTable" style="border-width: 2px; border-style: solid;">
-    <thead>
-    <tr>
-        <th>선택</th>
-        <th>받는사람</th>
-        <th>주소</th>
-        <th>우편번호</th>
-    </tr>
-    </thead>
-    <tbody>
-    <th:block th:if="${list != null}">
-
-        <tr th:each="list:${list}">
-
-         <td style="text-align: center;"><input type="checkbox"></td>
-        <input type="hidden" id="deleteseqno" th:text="${list.deliveryseq}">
-        <td th:text="${list.name}"></td>
-        <td th:text="${list.addr} + ' ' + ${list.detailaddr}" ></td>
-        <td th:text="${list.zipcode}"></td>
-        </tr>
-    </th:block>
-    </tbody>
-    </table>
-<br><br>
-    <div id="addplus">
-<input type="text" id="addrSearch" name="addrSearch" class="addrSearch"  placeholder="주소를 검색합니다.">
-<input type="button" id="btn_addSearch" class="btn_addrSearch" value="주소검색" onclick="searchAddr()">
-<input type="text" id="zipcode" class="input_field" name="zipcode" placeholder="우편번호가 검색되어 입력됩니다." readonly>
-<input type="text" id="addr" class="input_field" name="addr"  placeholder="주소가 검색되어 입력됩니다." readonly>
-<input type="text" id="detailaddr" class="input_field" name="detailaddr" placeholder="상세 주소를 입력하세요">
-</div>
-<br><br><br>
-관심분야 :
-<select id="interests" name="interests" onchange="handleInterestChange()">
-    <option value="all" disabled selected>관심분야 ▼</option>
-    <option value="JAVA">JAVA</option>
-    <option value="PYTHON">PYTHON</option>
-    <option value="C">C</option>
-    <option value="C#">C#</option>
-    <option value="C++">C++</option>
-    <option value="PHP">PHP</option>
-    <option value="REACT">REACT</option>
-    <option value="VIEW">VIEW</option>
-    <option value="JS">JS</option>
-    <option value="ANDROID">ANDROID</option>
-    <option value="INPUT">직접입력</option>
-</select>
-
-<br><br>
-<input type="text" id="interests1" class="input_field" name="interests1" placeholder="직접입력">
+    <br><br>
+    <input type="text" id="interests1" class="input_field" name="interests1" placeholder="직접입력">
 </form>
 
+    <h4 style="display: inline-block;">배송지 목록</h4>
+    <div id="ADDorDelete" style="display: inline-block;">
+        <input type="button" id="add" value="추가" onclick="AddAddr()">
+    </div>
+
+    <table class="InfoTable" style="border-width: 2px; border-style: solid;">
+        <thead>
+        <tr>
+
+            <th>받는사람</th>
+            <th>주소</th>
+            <th>우편번호</th>
+            <th>삭제</th>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:if="${list != null}">
+
+            <tr th:each="list:${list}">
+
+                <td th:text="${list.name}"></td>
+                <td th:text="${list.addr} + ' ' + ${list.detailaddr}" ></td>
+                <td th:text="${list.zipcode}"></td>
+                <td ><input type="button" style="text-align: center;" value="삭제" onclick="DeleteAddr(this)"></td>
+                <input type="hidden" id="deleteseqno" th:value="${list.deliveryseq}">
+<!--                <span style="display: none" id="deleteseqno" th:value="${list.deliveryseq}"></span>-->
+            </tr>
+
+        </th:block>
+        </tbody>
+    </table>
+    <br><br>
+    <div id="addplus">
+        <input type="text" id="addrSearch" name="addrSearch" class="addrSearch" placeholder="주소를 검색합니다.">
+        <input type="button" id="btn_addSearch" class="btn_addrSearch" value="주소검색" onclick="searchAddr()">
+        <input type="text" id="zipcode" class="input_field" name="zipcode" placeholder="우편번호가 검색되어 입력됩니다." readonly>
+        <input type="text" id="addr1" class="input_field" name="addr1" placeholder="주소가 검색되어 입력됩니다." readonly>
+        <input type="text" id="detailaddr" class="input_field" name="detailaddr" placeholder="상세 주소를 입력하세요">
+        <input type="text" id="receiver" class="input_field" name="receiver" placeholder="받는사람 이름을 입력하세요">
+        <input type="button" id="realAddADDR" class="input_field" name="realAddADDR" value="배송지 추가" onclick="realAddADDR()">
+    </div>
+    <br><br><br>
+
+
 <div id="aa">
-<input type="button" id="btnRegister" class="btn_write" value="수정">
-<input type="button" class="btn_cancel" value="취소" onclick="history.back()">
+    <input type="button" id="btnRegister" class="btn_write" value="수정">
+    <input type="button" class="btn_cancel" value="취소" onclick="history.back()">
 </div>
 
 
@@ -274,26 +287,61 @@
 
 
         const RegistryForm = document.getElementById('RegistryForm');
-            const formData = new FormData(RegistryForm);
+        const formData = new FormData(RegistryForm);
 
 
-            await fetch('/member/memberInfoModify?option=U', {
+        await fetch('/member/memberInfoModify?option=U', {
             method: 'POST',
-            body: formData
+            body: formData,
+            headers: {
+                'Content-Type': 'application/json'
+            },
         }).then((response)=> response.json())
             .then((data)=> {
-            console.log(data.message);
-            if(data.message === 'GOOD'){
-            alert("수정되었습니다.");
-            document.location.href='/product/main';
-        } else {
-            alert("서버 장애로 수정에 실패했습니다.");
-        }
-        }).catch((error)=> {
-            console.log("error = " + error);
-        });
-
+                console.log(data.message);
+                if(data.message === 'GOOD'){
+                    alert("수정되었습니다.");
+                    document.location.href='/product/main';
+                } else {
+                    alert("서버 장애로 수정에 실패했습니다.");
+                }
+            }).catch((error)=> {
+                console.log("error = " + error);
+            });
     });
+
+
+
+        // 배송지 추가
+       const realAddADDR = async() => {
+           const data = {
+               // userid: userid.value,
+               addr: addr1.value,
+               detailaddr: detailaddr.value,
+               zipcode: zipcode.value,
+               name: receiver.value,
+               telno: telno.value
+           }
+           console.log(data);
+            await fetch('/member/memberInfoModify?option=I', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).then((response) => response.json())
+                .then((data) => {
+                    console.log(data.message);
+                    if (data.message === 'GOOD') {
+                        alert("추가되었습니다.");
+
+                    } else {
+                        alert("서버 장애로 추가 실패했습니다.");
+                    }
+                }).catch((error) => {
+                    console.log("error = " + error);
+                });
+        }
 
 
     const searchAddr = () => {

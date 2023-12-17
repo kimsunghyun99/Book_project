@@ -9,6 +9,7 @@ import com.book.book_project.entity.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -30,11 +31,18 @@ public class DeliveryServiceImpl implements DeliveryService {
         }
 
     // 회원정보 수정 시 , 주소 삭제
-//    @Override
-//    public void deletedeliveraddr(int deliveryseq) throws Exception {
-//        DeliveryAddrEntity deliveryAddrEntity = DeliveryRepository.findById(deliveryseq).get();
-//        DeliveryRepository.delete(deliveryAddrEntity);
-//    }
+    @Override
+    public void deletedeliveraddr(int deleteseq) throws Exception {
+        DeliveryAddrEntity deliveryAddrEntity = deliveryRepository.findById(deleteseq).get();
+        System.out.println(deleteseq);
+        deliveryRepository.delete(deliveryAddrEntity);
+    }
+
+    // 회원정보 수정 시 , 주소 추가
+    @Override
+    public void adddeliveraddr(DeliverAddrDTO deliverAddr) throws Exception {
+        deliveryRepository.save(deliverAddr.dtoToEntity(deliverAddr));
+    }
 
 
 

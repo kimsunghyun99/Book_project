@@ -16,9 +16,9 @@ import java.util.Optional;
 @Repository
 public interface BuyerInfoRepository extends JpaRepository<BuyerInfoEntity, String> {
 
-//    //비회원 구매번호 조회
-//    @Query(value = "SELECT * FROM tbl_unmember u JOIN tbl_buyerInfo b ON u.unmembertelno = b.unmembertelno JOIN tbl_purchaseInfo p ON b.buyerseq = p.buyerseq WHERE u.temppassword = :temppassword AND p.purchaseinfoseq = :purchaseinfoseq", nativeQuery = true)
-//    Optional<UnMemberEntity> findByTemppasswordAndPurchaseinfoseq(@Param("temppassword") String temppassword, @Param("purchaseinfoseq") int purchaseinfoseq);
-//
-//    List<BuyerInfoEntity> findByUserid(String userid);
+    //비회원 구매번호 조회
+    @Query(value = "SELECT * FROM tbl_unmember u JOIN tbl_buyerInfo b ON u.unmembertelno = b.unmembertelno JOIN tbl_purchaseInfo p ON b.buyerseq = p.buyerseq WHERE u.temppassword = :temppassword AND p.purchaseinfoseq = :purchaseinfoseq", nativeQuery = true)
+    Optional<UnMemberEntity> findByTemppasswordAndPurchaseinfoseq(@Param("temppassword") String temppassword, @Param("purchaseinfoseq") int purchaseinfoseq);
+
+    List<BuyerInfoEntity> findByUserid(MemberEntity userid);
 }

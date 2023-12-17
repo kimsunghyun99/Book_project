@@ -18,6 +18,10 @@ public interface DeliveryService {
     public List<DeliveryAddrEntity> list(String userid);
 
     // 회원정보 시 배송지 삭제
-//    public void deletedeliveraddr(int deliveryseq) throws Exception;
+    public void deletedeliveraddr(int deleteseq) throws Exception;
+
+    // 회원정보 시 배송지 추가
+    public void adddeliveraddr(DeliverAddrDTO deliverAddrDTO) throws Exception;
+
 
 }
