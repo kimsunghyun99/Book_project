@@ -18,7 +18,7 @@ public class ProductEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int bookid; //도서번호
+    private String bookid; //도서번호
 
     @Column(name="bookname", length=100, nullable = false)
     private String bookname;    //책이름

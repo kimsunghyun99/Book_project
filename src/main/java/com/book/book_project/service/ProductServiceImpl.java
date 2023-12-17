@@ -31,7 +31,7 @@ public class ProductServiceImpl implements ProductService{
     //책 내용 보기
     //
     @Override
-    public ProductDTO view(int bookid) throws Exception {
+    public ProductDTO view(String bookid) throws Exception {
         return productRepository.findById(bookid).map(view -> new ProductDTO(view)).orElse(null);
     }
 

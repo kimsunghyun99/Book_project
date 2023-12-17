@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.sql.Timestamp;
 import java.util.List;
@@ -30,39 +31,51 @@ public class MasterController {
     @GetMapping("/master/bookUpdate")
     public void getBookUpdate() throws Exception {
         String key = "ttbdpfwnl01191710001";
-        String result = "";
-        URL url = new URL("http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey="+key+"&Query = 검색키워드 &QueryType=Title" +
-                "&MaxResult=50&start=1&output=js&Version=20131101");
+        String categoryName = "컴퓨터/모바일"; // 원하는 카테고리 이름으로 변경
+        URL url = new URL("http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=" + key + "&Query=" + URLEncoder.encode(categoryName, "UTF-8") + "&QueryType=Title" +
+                "&MaxResults=50&start=1&output=js&Version=20131101");
+
+        System.out.println(url);
+
         BufferedReader bf = new BufferedReader(new InputStreamReader(url.openStream(),"UTF-8"));
+        String result = "";
+        String line;
+        while((line = bf.readLine()) != null) {
+            result = result.concat(line);
+        }
+        bf.close();
 
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
-        JSONArray item = (JSONArray) jsonObject.get("item");
+        JSONArray itemArray = (JSONArray) jsonObject.get("itemList");
 
-        List<ProductEntity> itemList = new ArrayList<>();
+        List<ProductEntity> productList = new ArrayList<>();
 
-        for(int i=0; i<item.size(); i++){
-            ProductEntity entity = new ProductEntity();
+        if(itemArray != null) {
+            for(Object itemObj : itemArray) {
+                JSONObject itemInfo = (JSONObject) itemObj;
+                ProductEntity product = new ProductEntity();
 
-            JSONObject itemInfo = (JSONObject) item.get(i);
-            entity.setBookname((String)itemInfo.get("title"));
-            entity.setAuthor((String)itemInfo.get("author"));
-            entity.setPublisher((String)itemInfo.get("publisher"));
-            entity.setPrice((Integer)itemInfo.get("pricestandard"));
-            entity.setStock((Integer)itemInfo.get("stockstatus"));
-            entity.setDescription((String)itemInfo.get("description"));
-            entity.setCover((String)itemInfo.get("cover"));
-            entity.setRegdate(new Timestamp(System.currentTimeMillis()));
-            entity.setIsbn((String)itemInfo.get("isbn"));
-            entity.setStatus((String)itemInfo.get("stockstatus"));
-            entity.setPublicationdate((Timestamp) itemInfo.get("pubdate"));
-            entity.setSalespoint((Integer) itemInfo.get("salesPoint"));
+                product.setBookname((String) itemInfo.get("title"));
+                product.setAuthor((String) itemInfo.get("author"));
+                product.setPublisher((String) itemInfo.get("publisher"));
+                product.setPrice((Integer) itemInfo.get("pricestandard"));
+                product.setStock((Integer) itemInfo.get("stockstatus"));
+                product.setDescription((String) itemInfo.get("description"));
+                product.setCover((String) itemInfo.get("cover"));
+                product.setRegdate(new Timestamp(System.currentTimeMillis()));
+                product.setIsbn((String) itemInfo.get("isbn"));
+                product.setBookid((String) itemInfo.get("isbn"));
+                product.setStatus((String) itemInfo.get("stockstatus"));
+                product.setPublicationdate((Timestamp) itemInfo.get("pubdate"));
+                product.setSalespoint((Integer) itemInfo.get("salesPoint"));
 
-            itemList.add(entity);
-
+                productList.add(product);
+            }
 
         }
-        productService.setBookList(itemList);
+        productService.setBookList(productList);
+        System.out.println(productList);
     }
 
     // 나이대별 통계

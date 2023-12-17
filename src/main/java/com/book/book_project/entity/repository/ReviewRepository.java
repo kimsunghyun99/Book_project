@@ -12,8 +12,8 @@ import java.util.List;
 
 public interface ReviewRepository extends JpaRepository<ReviewEntity, Integer> {
 @Query(value="select * from tbl_review where bookid=:bookid order by reviewseq desc", nativeQuery = true)
-	List<ReviewInterface> reviewView(@Param("bookid") int bookid);
+	List<ReviewInterface> reviewView(@Param("bookid") String bookid);
 
 @Query(value="select * from tbl_review where bookid=:bookid order by reviewseq desc", nativeQuery = true)
-	List<ReviewDTO> reviewView1(@Param("bookid") int bookid);
+	List<ReviewDTO> reviewView1(@Param("bookid") String bookid);
         }

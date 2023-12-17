@@ -242,8 +242,8 @@ public class MemberController {
     public void getMyPage(HttpSession session, Model model) {
         String userid = (String)session.getAttribute("userid");
         model.addAttribute("memberInfo", service.memberInfo(userid));//회원정보 불러오기
-        model.addAttribute("favoriteInfo", service.findFavoritesByUserId(userid)); // 즐겨찾기 불러오기
-        model.addAttribute("countJoinedRecordsByUserId", service.countJoinedRecordsByUserId(userid));//구매,주문 목록 갯수 구하기
+//        model.addAttribute("favoriteInfo", service.findFavoritesByUserId(userid)); // 즐겨찾기 불러오기
+//        model.addAttribute("countJoinedRecordsByUserId", service.countJoinedRecordsByUserId(userid));//구매,주문 목록 갯수 구하기
     }
 
     //아이디 찾기 화면

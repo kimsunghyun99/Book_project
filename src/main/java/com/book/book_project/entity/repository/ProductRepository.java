@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 
-public interface ProductRepository extends JpaRepository<ProductEntity, Integer> {
+public interface ProductRepository extends JpaRepository<ProductEntity, String> {
 
     //책 목록 보기
     public Page<ProductEntity> findByBookidContainingOrBooknameContainingOrCategorynumberContainingOrIsbnContainingOrPublisher
