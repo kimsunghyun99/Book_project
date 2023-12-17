@@ -9,5 +9,5 @@ public interface PurchaseInfoService {
 
     //비회원 구매 번호 조회
     //public
-    List<PurchaseInfoEntity> purchaseList(BuyerInfoEntity buyerseq) throws Exception;
+    List<PurchaseInfoEntity> purchaseList(int buyerseq) throws Exception;
 }
