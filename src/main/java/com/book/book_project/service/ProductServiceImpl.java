@@ -35,10 +35,4 @@ public class ProductServiceImpl implements ProductService{
         return productRepository.findById(bookid).map(view -> new ProductDTO(view)).orElse(null);
     }
 
-    @Override
-    public void setBookList(List<ProductEntity> list) throws Exception {
-        productRepository.saveAll(list);
-    }
-
-
 }

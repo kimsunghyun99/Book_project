@@ -31,7 +31,7 @@ public class ReviewServiceImpl implements ReviewService{
     @Override
     public void ReviewRegistry(ReviewInterface Review) throws Exception {
         ProductEntity productEntity = productRepository.findById(Review.getBookid()).get();
-        MemberEntity memberEntity = memberRepository.findById(Review.getUserid().getUserid()).get();
+        MemberEntity memberEntity = memberRepository.findById(Review.getUserid()).get();
 
         ReviewEntity reviewEntity = ReviewEntity.builder()
                 .reviewseq(Review.getReviewseq())

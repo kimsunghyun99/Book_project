@@ -2,7 +2,6 @@ package com.book.book_project.entity.repository;
 
 import com.book.book_project.dto.ReviewDTO;
 import com.book.book_project.dto.ReviewInterface;
-import com.book.book_project.entity.ProductEntity;
 import com.book.book_project.entity.ReviewEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

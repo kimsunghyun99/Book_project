@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.sql.SQLOutput;
+import java.net.URLEncoder;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.sql.Timestamp;
 import java.util.List;
@@ -26,16 +27,17 @@ import java.util.List;
 public class MasterController {
 
     private final ProductService productService;
+    private ProductRepository productRepository;
 
     //책 업데이트
     @GetMapping("/master/bookUpdate")
     public void getBookUpdate() throws Exception {
         String key = "ttbdpfwnl01191710001";
-        String categoryName = "컴퓨터/모바일"; // 원하는 카테고리 이름으로 변경
-        URL url = new URL("http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=" + key + "&Query=" + URLEncoder.encode(categoryName, "UTF-8") + "&QueryType=Title" +
-                "&MaxResults=50&start=1&output=js&Version=20131101");
+        String title = "Java"; // 검색하려는 제목
+        URL url = new URL("http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=" + key
+                + "&Query=" + URLEncoder.encode(title, "UTF-8") + "&QueryType=Title"
+                + "&MaxResults=50&start=1&output=js&Version=20131101");
 
-        System.out.println(url);
 
         BufferedReader bf = new BufferedReader(new InputStreamReader(url.openStream(),"UTF-8"));
         String result = "";
@@ -48,6 +50,7 @@ public class MasterController {
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
         JSONArray itemArray = (JSONArray) jsonObject.get("itemList");
+
 
         List<ProductEntity> productList = new ArrayList<>();
 
