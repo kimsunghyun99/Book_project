@@ -11,7 +11,7 @@
     </header>
     <h2>구매내역조회</h2>
     <div>
-        <table>
+        <table border="1px">
             <tr>
                 <th>주문일자</th>
                 <th>주문번호</th>
@@ -21,25 +21,17 @@
                 <th rowspan="2"> <a href="/product/productInfo" onMouseover="this.style.background='pink'; this.style.textDecoration='underline';"
                                     onmouseout="this.style.background='white'; this.style.textDecoration='none';">리뷰작성</a></th>
             </tr>
-            <<th:block th:if="${list != null}">
-            <tr th:each="list:${list}"
+            <<th:block th:if="${purchaseList != null}">
+            <tr th:each="list:${purchaseList}"
                 onMouseover="this.style.background='#46D2D2'"
                 onMouseout="this.style.background='white'">
-                <td th:text="${list.seqno}"></td>
-                <td style="text-align: left;">
-                    <a th:href="@{'/board/view?seqno=' + ${list.seqno} + '&page=' +
-			${page} + '&keyword=' + ${keyword}}"
-                       onMouseover="this.style.textDecoration='underline'"
-                       onMouseout="this.style.textDecoration='none'">
-                        <span th:text="${list.title}"></span>
-                    </a>
-                </td>
-                <td th:text="${list.writer}"></td>
-                <td th:text="${list.regdate}"></td>
-                <td th:text="${list.hitno}"></td>
+                <td th:text="${purchaseList.purchasedate}"></td>
+                <td th:text="${purchaseList.purchaseinfonumber}"></td>
+                <td th:text="${purchaseList.status}"></td>
+                <td th:text="${purchaseList.totalprice}"></td>
             </tr>
             </th:block>
-            <th:block th:if="${list == null}">
+            <th:block th:if="${purchaseList == null}">
                 <td colspan="5">구매목록이 없습니다.</td>
             </th:block>
         </table>
