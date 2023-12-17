@@ -21,8 +21,8 @@ public class PurchaseInfoEntity {
     @Column(name="purchaseinfonumber", nullable=false)
     private int purchaseinfonumber;
 
-    @Column(name="deliverystatus",length =200, nullable=false)
-    private String deliverystatus;
+    @Column(name="status",length =200, nullable=false)
+    private String status;
 
     @Column(name="purchasedate", nullable=false)
     private Timestamp purchasedate;

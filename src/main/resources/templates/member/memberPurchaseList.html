@@ -11,7 +11,7 @@
     </header>
     <h2>구매내역조회</h2>
     <div>
-        <table>
+        <table border="1px">
             <tr>
                 <th>주문일자</th>
                 <th>주문번호</th>
@@ -27,8 +27,8 @@
                 onMouseout="this.style.background='white'">
                 <td th:text="${purchaseList.purchasedate}"></td>
                 <td th:text="${purchaseList.purchaseinfonumber}"></td>
-                <td th:text="${purchaseList.regdate}"></td>
-                <td th:text="${purchaseList.hitno}"></td>
+                <td th:text="${purchaseList.status}"></td>
+                <td th:text="${purchaseList.totalprice}"></td>
             </tr>
             </th:block>
             <th:block th:if="${purchaseList == null}">
