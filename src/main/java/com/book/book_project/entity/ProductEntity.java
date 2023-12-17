@@ -57,10 +57,11 @@ public class ProductEntity {
     private Timestamp publicationdate;  //출판일
 
     @Column(name="salespoint", nullable = true)
-    private int salespointe;   //판매지수
+    private int salespoint;   //판매지수
 
     //FK 분류이름
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="categoryseq" ,nullable = false)
     private CategoryEntity categoryseq;
+
 }

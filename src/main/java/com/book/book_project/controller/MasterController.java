@@ -2,6 +2,7 @@ package com.book.book_project.controller;
 
 
 import com.book.book_project.dto.ProductDTO;
+import com.book.book_project.entity.ProductEntity;
 import com.book.book_project.entity.repository.ProductRepository;
 import com.book.book_project.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.sql.Timestamp;
+import java.util.List;
 
 
 @Controller
@@ -37,26 +39,26 @@ public class MasterController {
         JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
         JSONArray item = (JSONArray) jsonObject.get("item");
 
-        ArrayList<ProductDTO> itemList = new ArrayList<>();
+        List<ProductEntity> itemList = new ArrayList<>();
 
         for(int i=0; i<item.size(); i++){
-            ProductDTO dto = new ProductDTO();
+            ProductEntity entity = new ProductEntity();
 
             JSONObject itemInfo = (JSONObject) item.get(i);
-            dto.setBookname((String)itemInfo.get("title"));
-            dto.setAuthor((String)itemInfo.get("author"));
-            dto.setPublisher((String)itemInfo.get("publisher"));
-            dto.setPrice((Integer)itemInfo.get("pricestandard"));
-            dto.setStock((Integer)itemInfo.get("stockstatus"));
-            dto.setDescription((String)itemInfo.get("description"));
-            dto.setCover((String)itemInfo.get("cover"));
-            dto.setRegdate(new Timestamp(System.currentTimeMillis()));
-            dto.setIsbn((String)itemInfo.get("isbn"));
-            dto.setStatus((String)itemInfo.get("stockstatus"));
-            dto.setPublicationdate((Timestamp) itemInfo.get("pubdate"));
-            dto.setSalespoint((Integer) itemInfo.get("salesPoint"));
+            entity.setBookname((String)itemInfo.get("title"));
+            entity.setAuthor((String)itemInfo.get("author"));
+            entity.setPublisher((String)itemInfo.get("publisher"));
+            entity.setPrice((Integer)itemInfo.get("pricestandard"));
+            entity.setStock((Integer)itemInfo.get("stockstatus"));
+            entity.setDescription((String)itemInfo.get("description"));
+            entity.setCover((String)itemInfo.get("cover"));
+            entity.setRegdate(new Timestamp(System.currentTimeMillis()));
+            entity.setIsbn((String)itemInfo.get("isbn"));
+            entity.setStatus((String)itemInfo.get("stockstatus"));
+            entity.setPublicationdate((Timestamp) itemInfo.get("pubdate"));
+            entity.setSalespoint((Integer) itemInfo.get("salesPoint"));
 
-            itemList.add(dto);
+            itemList.add(entity);
 
 
         }

@@ -45,13 +45,14 @@ public class ProductDTO {
         this.isbn = productEntity.getIsbn();
         this.status = productEntity.getStatus();
         this.publicationdate = productEntity.getPublicationdate();
-        this.salespoint =productEntity.getSalespointe();
+        this.salespoint =productEntity.getSalespoint();
         this.categoryseq = productEntity.getCategoryseq();
     }
 
     //DTO -> Entity
     public ProductEntity dtoToEntity(ProductDTO dto) {
-        ProductEntity productEntity = ProductEntity.builder()
+
+        return ProductEntity.builder()
                 .bookid(dto.getBookid())
                 .bookname(dto.getBookname())
                 .publisher(dto.getPublisher())
@@ -65,11 +66,9 @@ public class ProductDTO {
                 .isbn(dto.getIsbn())
                 .status(dto.getStatus())
                 .publicationdate(dto.getPublicationdate())
-                .salespointe(dto.getSalespoint())
+                .salespoint(dto.getSalespoint())
                 .categoryseq(dto.getCategoryseq())
                 .build();
-
-        return productEntity;
     }
 
 }

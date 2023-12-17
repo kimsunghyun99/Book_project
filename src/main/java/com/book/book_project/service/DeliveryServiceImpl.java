@@ -30,11 +30,11 @@ public class DeliveryServiceImpl implements DeliveryService {
         }
 
     // 회원정보 수정 시 , 주소 삭제
-    @Override
-    public void deletedeliveraddr(int deliveryseq) throws Exception {
-        DeliveryAddrEntity deliveryAddrEntity = DeliveryRepository.findById(deliveryseq).get();
-        DeliveryRepository.delete(deliveryAddrEntity);
-    }
+//    @Override
+//    public void deletedeliveraddr(int deliveryseq) throws Exception {
+//        DeliveryAddrEntity deliveryAddrEntity = DeliveryRepository.findById(deliveryseq).get();
+//        DeliveryRepository.delete(deliveryAddrEntity);
+//    }
 
 
 
