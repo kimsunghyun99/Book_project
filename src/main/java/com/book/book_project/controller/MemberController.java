@@ -2,6 +2,7 @@ package com.book.book_project.controller;
 
 import com.book.book_project.dto.DeliverAddrDTO;
 import com.book.book_project.entity.DeliveryAddrEntity;
+import com.book.book_project.entity.PurchaseInfoEntity;
 import com.book.book_project.entity.MemberEntity;
 import com.book.book_project.service.AddressService;
 import com.book.book_project.service.DeliveryService;
@@ -33,6 +34,7 @@ import java.lang.reflect.Member;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -260,46 +262,54 @@ public class MemberController {
     @GetMapping("/member/pwSearch")
     public void getPwSearch() {}
 
-//
-//    //회원 구매내역 조회 화면
-//    @GetMapping("/member/memberPurchaseList")
-//    public void getMemberPurchaseList(Model model, HttpSession session,PurchaseInfoService purchaseInfoService) throws Exception {
-//        String userid = (String)session.getAttribute("userid");
-//        List<BuyerInfoEntity> buyerInfo=buyerInfoService.buyerInfo(userid);
-//      //  model.addAttribute("purchaseList",purchaseInfoService.purchaseList());
-//    }
-//
-//    //비회원 구매내역 조회 화면
-//    @GetMapping("/member/unMemberPurchaseList")
-//    public void getUnMemberPurchasesList() {}
-//
-//
-//    //비회원 로그인 화면
-//    //비회원 로그인 화면 (23-12-12)
-//    @GetMapping("/member/unMemberLogin")
-//    public void getUnMemberLogin() {}
-//
-//    //비회원 로그인 (23-12-12)
-//    @PostMapping("/member/unMemberLogin")
-//    public void postUnMemberLogin() {}
-//
-//    //비회원 로그인 (23-12-12)
-//    @ResponseBody
-//    @PostMapping("/member/unMemberLoginCheck")
-//    public String postUnMemberLogin(UnMemberDTO unMember) {
-//        //구매번호 존재 여부 확인
-////        if() {
-////            return "{\"message\":\"ID_NOT_FOUND\"}";
-////        }
-//
-//        //비밀번호가 올바르게 들어왔는지 정확도 여부 확인
-//        if(!pwdEncoder.matches(unMember.getTemppassword(), unMemberService.unMemberInfo(unMember.getTemppassword()).getTemppassword())){
-//            //잘못된 패스워드 일 경우
-//            return "{\"message\":\"PASSWORD_NOT_FOUND\"}";
+
+    //회원 구매내역 조회 화면
+    @GetMapping("/member/memberPurchaseList")
+    public void getMemberPurchaseList(Model model, HttpSession session,PurchaseInfoService purchaseInfoService) throws Exception {
+        String userid = (String)session.getAttribute("userid");
+        List<BuyerInfoEntity> buyerInfo=buyerInfoService.buyerInfo(userid);
+
+        List<PurchaseInfoEntity> purchaseInfoList = new ArrayList<>();
+
+        for(BuyerInfoEntity buyerInfoEntity:buyerInfo){
+            int buyerseq = buyerInfoEntity.getBuyerseq();
+            List<PurchaseInfoEntity> purchaseList = purchaseInfoService.purchaseList(buyerseq);
+            purchaseInfoList.addAll(purchaseList);
+        }
+        model.addAttribute("purchaseList",purchaseInfoList);
+    }
+
+    //비회원 구매내역 조회 화면
+    @GetMapping("/member/unMemberPurchaseList")
+    public void getUnMemberPurchasesList() {}
+
+
+    //비회원 로그인 화면
+    //비회원 로그인 화면 (23-12-12)
+    @GetMapping("/member/unMemberLogin")
+    public void getUnMemberLogin() {}
+
+    //비회원 로그인 (23-12-12)
+    @PostMapping("/member/unMemberLogin")
+    public void postUnMemberLogin() {}
+
+    //비회원 로그인 (23-12-12)
+    @ResponseBody
+    @PostMapping("/member/unMemberLoginCheck")
+    public String postUnMemberLogin(UnMemberDTO unMember) {
+        //구매번호 존재 여부 확인
+//        if() {
+//            return "{\"message\":\"ID_NOT_FOUND\"}";
 //        }
-//
-//        return "{\"message\":\"GOOD\"}";
-//    }
+
+        //비밀번호가 올바르게 들어왔는지 정확도 여부 확인
+        if(!pwdEncoder.matches(unMember.getTemppassword(), unMemberService.unMemberInfo(unMember.getTemppassword()).getTemppassword())){
+            //잘못된 패스워드 일 경우
+            return "{\"message\":\"PASSWORD_NOT_FOUND\"}";
+        }
+
+        return "{\"message\":\"GOOD\"}";
+    }
 
 
 
