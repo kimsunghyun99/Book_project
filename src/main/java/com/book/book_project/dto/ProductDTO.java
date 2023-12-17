@@ -28,7 +28,7 @@ public class ProductDTO {
     private String status;  //판매 상태
     private Timestamp publicationdate;  //출판일
     private int salespoint;//판매지수
-    private CategoryEntity categoryseq;    //분류 이름
+    private CategoryEntity categorynumber;    //분류 이름
 
 
     //Entity -> DTO
@@ -46,7 +46,7 @@ public class ProductDTO {
         this.status = productEntity.getStatus();
         this.publicationdate = productEntity.getPublicationdate();
         this.salespoint =productEntity.getSalespoint();
-        this.categoryseq = productEntity.getCategoryseq();
+        this.categorynumber = productEntity.getCategorynumber();
     }
 
     //DTO -> Entity
@@ -67,7 +67,7 @@ public class ProductDTO {
                 .status(dto.getStatus())
                 .publicationdate(dto.getPublicationdate())
                 .salespoint(dto.getSalespoint())
-                .categoryseq(dto.getCategoryseq())
+                .categorynumber(dto.getCategorynumber())
                 .build();
     }
 

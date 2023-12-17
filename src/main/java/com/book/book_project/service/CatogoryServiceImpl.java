@@ -1,4 +1,7 @@
 package com.book.book_project.service;
 
-public class CatogoryServiceImpl {
+import org.springframework.stereotype.Service;
+
+@Service
+public class CatogoryServiceImpl implements CategoryService {
 }
