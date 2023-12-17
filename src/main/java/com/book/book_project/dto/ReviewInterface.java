@@ -1,14 +1,13 @@
 package com.book.book_project.dto;
 
-import com.book.book_project.entity.MemberEntity;
-import com.book.book_project.entity.ProductEntity;
+import java.sql.Timestamp;
 
 import java.sql.Timestamp;
 
 public interface ReviewInterface {
-	Integer getReviewseq();
-	ProductEntity getBookid();
-	MemberEntity getUserid();
+	int getReviewseq();
+	String getBookid();
+	String getUserid();
 	String getReviewer();
 	String getReviewcontent();
 	Timestamp getReviewregdate();

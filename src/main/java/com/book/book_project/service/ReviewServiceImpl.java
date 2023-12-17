@@ -30,8 +30,8 @@ public class ReviewServiceImpl implements ReviewService{
     //리뷰 등록
     @Override
     public void reviewRegistry(ReviewInterface review) throws Exception {
-        ProductEntity productEntity = productRepository.findById(review.getBookid().getBookid()).get();
-        MemberEntity memberEntity = memberRepository.findById(review.getUserid().getUserid()).get();
+        ProductEntity productEntity = productRepository.findById(review.getBookid()).get();
+        MemberEntity memberEntity = memberRepository.findById(review.getUserid()).get();
 
         System.out.println(productEntity);
         System.out.println(memberEntity);

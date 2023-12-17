@@ -48,6 +48,10 @@ public class PurchaseInfoEntity {
     @JoinColumn(name="statusseq", nullable = false)
     private PurchaseStatusEntity statusseq;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action=OnDeleteAction.CASCADE)
+    @JoinColumn(name = "unmemberseq", nullable = false)
+    private UnMemberEntity unmemberseq;
 
 
 
