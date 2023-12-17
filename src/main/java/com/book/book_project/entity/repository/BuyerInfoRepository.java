@@ -20,5 +20,5 @@ public interface BuyerInfoRepository extends JpaRepository<BuyerInfoEntity, Stri
     @Query(value = "SELECT * FROM tbl_unmember u JOIN tbl_buyerInfo b ON u.unmembertelno = b.unmembertelno JOIN tbl_purchaseInfo p ON b.buyerseq = p.buyerseq WHERE u.temppassword = :temppassword AND p.purchaseinfoseq = :purchaseinfoseq", nativeQuery = true)
     Optional<UnMemberEntity> findByTemppasswordAndPurchaseinfoseq(@Param("temppassword") String temppassword, @Param("purchaseinfoseq") int purchaseinfoseq);
 
-    List<BuyerInfoEntity> findByUserid(String userid);
+    List<BuyerInfoEntity> findByUserid(MemberEntity userid);
 }
