@@ -139,7 +139,7 @@ public class MemberController {
 
 
         member.setUserid((String)session.getAttribute("userid"));
-        int deliveryseq = Integer.parseInt(params.get("deleteseqno").toString());
+        int deliveryseq = Integer.parseInt(params.values().toString());
 
         switch(option) {
 

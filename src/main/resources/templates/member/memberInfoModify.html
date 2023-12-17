@@ -134,27 +134,25 @@
         const DeleteAddr = async() => {
 
 
-                const deleteseqnoValue = document.getElementById('deleteseqno').value;
+            const deleteseqnoValue = document.getElementById('deleteseqno').value;
 
-            await fetch('/member/memberInfoModify?option=D', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ deleteseqno: deleteseqnoValue }),
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    if(data.message === 'GOOD'){
-                        alert("삭제되었습니다.");
-                    }
-                    else {
-                        alert("삭제 실패 했습니다.");
-                    }
-                }).catch((error)=> {
-                    console.log("error = " + error);
+            if (deleteseqnoValue !== '') {
+                await fetch('/member/memberInfoModify?option=D', {
+                    method: 'POST',
+                    body: JSON.stringify({deleteseqno: deleteseqnoValue}),
                 })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.message === 'GOOD') {
+                            alert("삭제되었습니다.");
+                        } else {
+                            alert("삭제 실패 했습니다.");
+                        }
+                    }).catch((error) => {
+                        console.log("error = " + error);
+                    })
 
+            }
         }
 
 
@@ -272,7 +270,6 @@
 
         }
 
-
         const RegistryForm = document.getElementById('RegistryForm');
             const formData = new FormData(RegistryForm);
 
@@ -295,7 +292,6 @@
 
     });
 
-
     const searchAddr = () => {
 
         if(addrSearch.value == '') {
@@ -310,12 +306,6 @@
             "width=950, height=540, top=50, left=50"
         );
     }
-
-
-
-
-
-
 </script>
 
 </body>

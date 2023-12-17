@@ -80,10 +80,6 @@ public class MemberServiceImpl implements MemberService {
          memberRepository.membermodify(member.getUserid());
     }
 
-
-
-
-
     //주소 검색
     @Override
     public Page<AddressEntity> addrSearch(int pageNum, int postNum, String addrSearch) {
