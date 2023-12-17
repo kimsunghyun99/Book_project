@@ -16,6 +16,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.sql.SQLOutput;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.sql.Timestamp;
@@ -29,15 +30,15 @@ public class MasterController {
     private final ProductService productService;
     private ProductRepository productRepository;
 
-    //책 업데이트
     @GetMapping("/master/bookUpdate")
     public void getBookUpdate() throws Exception {
         String key = "ttbdpfwnl01191710001";
-        String title = "Java"; // 검색하려는 제목
+        String title = "자바"; // 검색하려는 제목
         URL url = new URL("http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=" + key
                 + "&Query=" + URLEncoder.encode(title, "UTF-8") + "&QueryType=Title"
                 + "&MaxResults=50&start=1&output=js&Version=20131101");
 
+        System.out.println(url);
 
         BufferedReader bf = new BufferedReader(new InputStreamReader(url.openStream(),"UTF-8"));
         String result = "";
@@ -45,12 +46,13 @@ public class MasterController {
         while((line = bf.readLine()) != null) {
             result = result.concat(line);
         }
+        System.out.println(result);
+
         bf.close();
 
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
         JSONArray itemArray = (JSONArray) jsonObject.get("itemList");
-
 
         List<ProductEntity> productList = new ArrayList<>();
 
@@ -67,20 +69,18 @@ public class MasterController {
                 product.setDescription((String) itemInfo.get("description"));
                 product.setCover((String) itemInfo.get("cover"));
                 product.setRegdate(new Timestamp(System.currentTimeMillis()));
-                product.setIsbn((String) itemInfo.get("isbn"));
                 product.setBookid((String) itemInfo.get("isbn"));
                 product.setStatus((String) itemInfo.get("stockstatus"));
                 product.setPublicationdate((Timestamp) itemInfo.get("pubdate"));
                 product.setSalespoint((Integer) itemInfo.get("salesPoint"));
 
                 productList.add(product);
-            }
 
+                productRepository.save(product); // DB에 저장
+            }
         }
-        productService.setBookList(productList);
         System.out.println(productList);
     }
-
     // 나이대별 통계
     @GetMapping("/master/ageStatistics")
     public void getAgeStatistics() {}
