@@ -92,10 +92,16 @@ public class MemberServiceImpl implements MemberService {
 
     //회원정보 수정
     @Override
-    public void modifyMember(MemberDTO member) {
-        MemberEntity memberEntity =memberRepository.findById(member.getUserid()).get();
-       // memberEntity.setPassword(pwdEncoder.encode(member.getPassword()));
-         memberRepository.membermodify(member.getUserid());
+    public void modifyMember(String userid,String username, String nickname,String telno) {
+//        member.dtoToEntity(member);
+//       // memberEntity.setPassword(pwdEncoder.encode(member.getPassword()));
+//         //memberRepository.membermodify(member.dtoToEntity());
+//        member.setRole("USER");
+//        member.setFromSocial("N");
+//        member.setMemberclass("bronze");
+     //   MemberEntity memberEntity = member.dtoToEntity(member);
+      //  memberRepository.save(memberEntity);  // 변경 내용을 데이터베이스에 저장
+        memberRepository.membermodify(userid,username, nickname, telno);
     }
 
     //주소 검색
