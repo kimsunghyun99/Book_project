@@ -1,7 +1,7 @@
 package com.book.book_project.controller;
 
 
-import com.book.book_project.dto.ProductDTO;
+
 import com.book.book_project.entity.ProductEntity;
 import com.book.book_project.entity.repository.ProductRepository;
 import com.book.book_project.service.ProductService;
@@ -16,8 +16,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -33,9 +31,9 @@ public class MasterController {
     @GetMapping("/master/bookUpdate")
     public void getBookUpdate() throws Exception {
         String key = "ttbdpfwnl01191710001";
-        String title = "Java"; // 검색하려는 제목
+        List<String> titleList = List.of("자바","파이썬","HTML");
         URL url = new URL("http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=" + key
-                + "&Query=" + URLEncoder.encode(title, "UTF-8") + "&QueryType=Title"
+                + "&Query=" + URLEncoder.encode(titleList.get(0), "UTF-8") + "&QueryType=Title"
                 + "&MaxResults=50&start=1&output=js&Version=20131101");
 
 
