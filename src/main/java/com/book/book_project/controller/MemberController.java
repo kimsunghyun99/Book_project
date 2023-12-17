@@ -135,29 +135,29 @@ public class MemberController {
 
 
     //회원 정보 수정 하기
-    @ResponseBody
-    @PostMapping("/member/memberInfoModify")
-    public String postMemberInfoModify(MemberDTO member, @RequestBody Map<String,Object> params, HttpSession session, @RequestParam("option") String option) throws Exception {
-
-
-        member.setUserid((String)session.getAttribute("userid"));
-        int deliveryseq = Integer.parseInt(params.get("deleteseqno").toString());
-
-        switch(option) {
-
-           //  case "I" : service.replyRegistry(reply); // 회원 배송지 등록
-           //     break;
-            case "U" : service.modifyMember(member); //회원 기본정보 수정
-                break;
-            case "D" : deliveryService.deletedeliveraddr(deliveryseq); // 회원 배송지 삭제
-                break;
-        }
-
-
-
-        return "{\"message\":\"GOOD\"}";
-
-    }
+//    @ResponseBody
+//    @PostMapping("/member/memberInfoModify")
+//    public String postMemberInfoModify(MemberDTO member, @RequestBody Map<String,Object> params, HttpSession session, @RequestParam("option") String option) throws Exception {
+//
+//
+//        member.setUserid((String)session.getAttribute("userid"));
+//        int deliveryseq = Integer.parseInt(params.get("deleteseqno").toString());
+//
+//        switch(option) {
+//
+//           //  case "I" : service.replyRegistry(reply); // 회원 배송지 등록
+//           //     break;
+//            case "U" : service.modifyMember(member); //회원 기본정보 수정
+//                break;
+//            case "D" : deliveryService.deletedeliveraddr(deliveryseq); // 회원 배송지 삭제
+//                break;
+//        }
+//
+//
+//
+//        return "{\"message\":\"GOOD\"}";
+//
+//    }
 
 
 
