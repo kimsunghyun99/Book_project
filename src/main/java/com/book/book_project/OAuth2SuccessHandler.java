@@ -20,11 +20,9 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) throws IOException, ServletException {
 
-	   
 	   log.info("*************** 소셜로그인 인증 성공 ****************");
+
 	   setDefaultTargetUrl("/product/main");
-	   		
-	   
 		super.onAuthenticationSuccess(request, response, authentication);
 	}
     }

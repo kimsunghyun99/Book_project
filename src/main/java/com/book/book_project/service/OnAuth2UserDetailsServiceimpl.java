@@ -78,11 +78,11 @@ public class OnAuth2UserDetailsServiceimpl extends DefaultOAuth2UserService {
 		memberOAuth2DTO.setAuthorities(grantedAuthorities);
 		memberOAuth2DTO.setName(member.getUsername());
 
-		session.setAttribute("email", email);
+		session.setAttribute("userid", email);
 		session.setAttribute("username", member.getUsername());
 		session.setAttribute("role", member.getRole());
 		session.setAttribute("FromSocial","Y");
-
+		//log.info(session.getAttribute("userid"));
 			return memberOAuth2DTO;
 		}
 

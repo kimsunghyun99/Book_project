@@ -26,6 +26,7 @@ public class ProductDTO {
     private Timestamp regdate;  //등록일
     private String publicationdate;  //출판일
     private int salespoint;//판매지수
+
     private CategoryEntity categorynumber;    //분류 이름
 
 
