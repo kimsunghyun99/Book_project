@@ -100,9 +100,9 @@
         </td>
         <td>
             <p class="book-price" th:text="'가격: ' + ${view.price} + '원'"></p>
-            <p class="book-discount" th:text="'할인율: ' + ${view.sale} + '%'"></p>
-            <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.price * 0.05, 3, 'COMMA')} + '원'"></p>
-            <p class="book-price" th:text="'결제금액: ' + ${view.price} + '원'"></p>
+            <p class="book-discount" th:text="'할인가: ' + ${view.pricesales} + '%'"></p>
+            <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.pricesales * 0.05, 3, 'COMMA')} + '원'"></p>
+
         </td>
     </tr>
     <tr>
@@ -113,9 +113,8 @@
         </td>
         <td>
             <p class="book-price" th:text="'가격: ' + ${view.price} + '원'"></p>
-            <p class="book-discount" th:text="'할인율: ' + ${view.sale} + '%'"></p>
-            <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.price * 0.05, 3, 'COMMA')} + '원'"></p>
-            <p class="book-price" th:text="'결제금액: ' + ${view.price} + '원'"></p>
+            <p class="book-discount" th:text="'할인가: ' + ${view.pricesales} + '%'"></p>
+            <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.pricesales * 0.05, 3, 'COMMA')} + '원'"></p>
         </td>
     </tr>
     <tr>
@@ -126,9 +125,8 @@
         </td>
         <td>
             <p class="book-price" th:text="'가격: ' + ${view.price} + '원'"></p>
-            <p class="book-discount" th:text="'할인율: ' + ${view.sale} + '%'"></p>
-            <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.price * 0.05, 3, 'COMMA')} + '원'"></p>
-            <p class="book-price" th:text="'결제금액: ' + ${view.price} + '원'"></p>
+            <p class="book-discount" th:text="'할인가: ' + ${view.pricesales} + '%'"></p>
+            <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.pricesales * 0.05, 3, 'COMMA')} + '원'"></p>
         </td>
     </tr>
 </table>

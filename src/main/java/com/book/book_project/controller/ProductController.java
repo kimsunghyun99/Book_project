@@ -4,6 +4,7 @@ import com.book.book_project.dto.ProductDTO;
 import com.book.book_project.dto.ReviewInterface;
 import com.book.book_project.entity.ProductEntity;
 import com.book.book_project.entity.ReviewEntity;
+import com.book.book_project.entity.repository.ProductRepository;
 import com.book.book_project.service.FavoritesService;
 import com.book.book_project.service.FavoritesService;
 import com.book.book_project.service.MemberService;
@@ -27,17 +28,20 @@ public class ProductController {
     private final ProductService service;
     private final MemberService memberService;
     private final ReviewService reviewService;
+    private final ProductRepository productRepository;
 
     // main화면 보기
     @GetMapping("/product/main")
-    public void getMain(Model model, ProductDTO dto) {
+    public void getMain(Model model) {
+        List<ProductEntity> bookList=productRepository.getProductList();
+        model.addAttribute("bookListId", bookList.get(0).getBookid()); // 이거 null -> 수ㅡ정필요
 
-        model.addAttribute("bookid", dto.getBookid());
+        System.out.println(bookList.get(0).getBookid());
     }
 
     @GetMapping("/product/productInfo")
     public void getProductInfo(@RequestParam("page") int pageNum,
-                               @RequestParam("bookid") int bookid,
+                               @RequestParam("bookid") String bookid,
                                Model model,
                                HttpSession session) throws Exception {
 
@@ -45,19 +49,19 @@ public class ProductController {
         int pageListCount = 5; //화면 하단에 보여지는 페이지리스트의 페이지 갯수
 
         PageUtil page = new PageUtil();
-        Page<ReviewEntity> list = service.list(pageNum, postNum);
-        int totalCount = (int)list.getTotalElements();
+//        Page<ReviewEntity> list = service.list(pageNum, postNum);
+//        int totalCount = (int)list.getTotalElements();
         String userid = (String)session.getAttribute("userid");
         String nickname = memberService.memberInfo(userid).getNickname();
 
 
         model.addAttribute("nickname", nickname);
         model.addAttribute("view", service.view(bookid));
-        model.addAttribute("list", service.list(pageNum,postNum));
-        model.addAttribute("totalElement", totalCount);
-        model.addAttribute("postNum", postNum);
-        model.addAttribute("page", pageNum);
-        model.addAttribute("pageList", page.getPageList(pageNum, postNum, pageListCount,totalCount));
+//        model.addAttribute("list", service.list(pageNum,postNum));
+//        model.addAttribute("totalElement", totalCount);
+//        model.addAttribute("postNum", postNum);
+//        model.addAttribute("page", pageNum);
+//        model.addAttribute("pageList", page.getPageList(pageNum, postNum, pageListCount,totalCount));
 
     }
 
@@ -69,7 +73,7 @@ public class ProductController {
 
     @GetMapping("/product/productList")
     public void getProductList(HttpSession session, Model model) throws Exception{
-        int bookid = (int) session.getAttribute("bookid");
+        String bookid = (String) session.getAttribute("bookid");
         model.addAttribute("view", service.view(bookid));
     }
 
@@ -97,8 +101,11 @@ public class ProductController {
     //리뷰 처리
     @ResponseBody
     @PostMapping("/product/review")
-    public List<ReviewInterface> postReview(ReviewInterface review, @RequestParam("option") String option) throws Exception {
+    public List<ReviewInterface> postReview(@RequestBody ReviewInterface review, @RequestParam("option") String option) throws Exception {
 
+
+        System.out.println(review.getReviewer());
+        System.out.println(option);
         switch (option) {
 
             case "I":

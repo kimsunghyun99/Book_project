@@ -90,6 +90,10 @@
     </style>
     <script>
 
+
+
+//        const bookdiscount = document.querySelector('.book-discount').value;
+//        const bookprice = document.querySelector('.book-price').value;
         //통화 적용임
         document.addEventListener('DOMContentLoaded', function() {
             // JavaScript 코드 작성
@@ -101,12 +105,10 @@
         //통화 적용임
         document.addEventListener('DOMContentLoaded', function() {
             // JavaScript 코드 작성
-            const price = [[${view.pricesales}]];
-            const changePrice = price.toLocaleString('ko-KR');
+            const DisCountPrice = [[${view.pricesales}]];
+            const changePrice = DisCountPrice.toLocaleString('ko-KR');
             document.querySelector('.book-discount').textContent = '할인가: ' + changePrice + '원';
         });
-
-
 
 
 
@@ -114,14 +116,14 @@
         //리뷰 등록
         const reviewRegister = async () => {
 
-            const reviewcontent = document.querySelector('#reviewcontent');
+            const reviewcontent = document.getElementById('reviewcontent');
 
             if(reviewcontent.value === ''){
                 alert('리뷰을 입력하세요.');
                 reviewcontent.focus();
                 return false;
             }
-
+            const reviewForm = document.getElementById(reviewForm);
             let formData = new FormData(reviewForm)
             await fetch('/product/review?option=I',{
                 method: 'POST',
@@ -192,6 +194,8 @@
             }
 
         }
+
+        // bookid 여기서 확인해봐야함
 
         //페이지 시작할 때 리뷰 목록 가져 오기
         const startupPage = async () => {
@@ -300,10 +304,10 @@
             var reviewContentTextarea = document.getElementById("reviewcontent");
             var currentNickname =document.getElementById("reviewer");
             var currentUserid = '[[${session.userid}]]';
-            var FromSocial = '[[${session.FromSocial}]]'; // 가정: socialfrom이 세션 속성으로 존재한다고 가정
-
+         //   var FromSocial = '[[${session.FromSocial}]]'; // 가정: socialfrom이 세션 속성으로 존재한다고 가정
+                console.log(currentNickname);
             if (currentUserid) {
-                if (currentNickname.value == null) {
+                if (currentNickname.value == '') {
                     if (confirm("새로운 닉네임을 입력하세요. 계속하시겠습니까?")) {
                         reviewContentTextarea.blur(); // 리뷰 내용 입력 칸의 포커스 해제
 
@@ -379,5 +383,16 @@
     <div id="reviewList" style="width:100%; height:600px; overflow:auto;"></div>
     <div>[(${pageList})]</div>
 </div>
+
+
+
+
+
+
 </body>
+
+
+
+
+
 </html>

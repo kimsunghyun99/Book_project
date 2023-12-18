@@ -10,5 +10,5 @@ public interface ReviewInterface {
 	String getUserid();
 	String getReviewer();
 	String getReviewcontent();
-	Timestamp getReviewregdate();
+	String getReviewregdate();
 }

@@ -24,7 +24,7 @@ public class ReviewServiceImpl implements ReviewService{
     //리뷰 목록 보기
     @Override
     public List<ReviewInterface> reviewView(ReviewInterface review) throws Exception{
-        return reviewRepository.reviewView(review.getReviewseq());
+        return reviewRepository.reviewView(review.getBookid());
     }
 
     //리뷰 등록
