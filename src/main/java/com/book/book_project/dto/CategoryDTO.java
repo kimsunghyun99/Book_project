@@ -10,7 +10,7 @@ import lombok.*;
 @Builder
 public class CategoryDTO {
 
-    private String categorynumber;   //분류번호
+    private int categorynumber;   //분류번호
     private String categoryname;   //분류명
     private String parent;
 
