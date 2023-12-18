@@ -13,8 +13,8 @@ import java.util.Map;
 public interface ProductRepository extends JpaRepository<ProductEntity, String> {
 
     //책 목록 보기
-    Page<ProductEntity> findByBookidContainingOrBooknameContainingOrCategorynumberContainingOrIsbnContainingOrPublisher
-    (String keyword1,String keyword2,String keyword3, String keyword4, String keyword5,Pageable pageable);
+    Page<ProductEntity> findByBookidContainingOrBooknameContainingOrCategorynumberContainingOrPublisher
+    (String keyword1,String keyword2,String keyword3, String keyword4, Pageable pageable);
 
 
 //    List<Object> findById(ProductEntity bookid);

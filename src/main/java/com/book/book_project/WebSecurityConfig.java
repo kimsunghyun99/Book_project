@@ -72,7 +72,7 @@ public class WebSecurityConfig {
 					//.requestMatchers("/master/**").hasAnyAuthority("MASTER")
 			.authorizeHttpRequests((authz) -> authz
 					.anyRequest().permitAll());
-					
+
 		
 		//OAuth2 
 		http

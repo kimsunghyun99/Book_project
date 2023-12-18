@@ -82,7 +82,7 @@ public class OnAuth2UserDetailsServiceimpl extends DefaultOAuth2UserService {
 		session.setAttribute("username", member.getUsername());
 		session.setAttribute("role", member.getRole());
 		session.setAttribute("FromSocial","Y");
-
+		//log.info(session.getAttribute("userid"));
 			return memberOAuth2DTO;
 		}
 
