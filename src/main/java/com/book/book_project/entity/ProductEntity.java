@@ -36,7 +36,7 @@ public class ProductEntity  {
     private int pricesales;//할인가
 
     @Column(name="stock", nullable = false)
-    private int stock;  //재고
+    private String stock;  //재고
 
     @Column(name="description", length=2000, nullable = false)
     private String description; //설명
@@ -47,11 +47,8 @@ public class ProductEntity  {
     @Column(name="regdate", nullable = false)
     private Timestamp regdate;  //등록일
 
-    @Column(name="status", length=100, nullable = false)
-    private String status;  //판매상태
-
     @Column(name="publicationdate", nullable = false)
-    private Timestamp publicationdate;  //출판일
+    private String publicationdate;  //출판일
 
     @Column(name="salespoint", nullable = true)
     private int salespoint;   //판매지수

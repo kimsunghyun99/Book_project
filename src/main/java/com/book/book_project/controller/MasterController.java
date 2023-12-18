@@ -2,6 +2,7 @@ package com.book.book_project.controller;
 
 
 
+import com.book.book_project.entity.CategoryEntity;
 import com.book.book_project.entity.ProductEntity;
 import com.book.book_project.entity.repository.ProductRepository;
 import com.book.book_project.service.ProductService;
@@ -17,6 +18,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -25,53 +27,54 @@ import java.util.List;
 public class MasterController {
 
     private final ProductService productService;
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     //책 업데이트
     @GetMapping("/master/bookUpdate")
     public void getBookUpdate() throws Exception {
         String key = "ttbdpfwnl01191710001";
-        List<String> titleList = List.of("자바","파이썬","HTML");
-        URL url = new URL("http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=" + key
-                + "&Query=" + URLEncoder.encode(titleList.get(0), "UTF-8") + "&QueryType=Title"
-                + "&MaxResults=50&start=1&output=js&Version=20131101");
+        String result="";
+        String title = "자바";
+        ArrayList<ProductEntity> itemList = new ArrayList<>();
 
-
+        URL url = new URL("http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey="+key+
+                "&Query="+title+"&QueryType=Title&MaxResults-50&start=1&output=js&Version=20131101");
         BufferedReader bf = new BufferedReader(new InputStreamReader(url.openStream(),"UTF-8"));
-        String result = "";
-        String line;
-        while((line = bf.readLine()) != null) {
-            result = result.concat(line);
-        }
-        bf.close();
+        result = bf.readLine();
 
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
-        JSONArray itemArray = (JSONArray) jsonObject.get("itemList");
+        JSONArray item = (JSONArray) jsonObject.get("item");
+
+        for(int i=0; i<item.size();i++){
+            ProductEntity entity = new ProductEntity();
+            JSONObject itemInfo = (JSONObject) item.get(i);
+
+            entity.setBookname((String) itemInfo.get("title"));
+            entity.setAuthor((String) itemInfo.get("author"));
+            entity.setPublisher((String) itemInfo.get("publisher"));
+            entity.setPrice((Integer) itemInfo.get("priceStandard"));
+            entity.setDescription((String) itemInfo.get("description"));
+            entity.setCover((String) itemInfo.get("cover"));
+            entity.setRegdate(new Timestamp(System.currentTimeMillis()));
+            entity.setBookid((String) itemInfo.get("isbn"));
+            entity.setPublicationdate((String) itemInfo.get("pubdate"));
+            entity.setSalespoint((Integer) itemInfo.get("salesPoint"));
+            entity.setCategorynumber((CategoryEntity) "2732");
 
 
-        if(itemArray != null) {
-            for(Object itemObj : itemArray) {
-                JSONObject itemInfo = (JSONObject) itemObj;
-                ProductEntity product = new ProductEntity();
+            itemList.add(entity);
 
-                product.setBookid((String) itemInfo.get("isbn"));
-                product.setBookname((String) itemInfo.get("title"));
-                product.setAuthor((String) itemInfo.get("author"));
-                product.setPublisher((String) itemInfo.get("publisher"));
-                product.setPrice((Integer) itemInfo.get("pricestandard"));
-                product.setStock((Integer) itemInfo.get("stockstatus"));
-                product.setDescription((String) itemInfo.get("description"));
-                product.setCover((String) itemInfo.get("cover"));
-                product.setRegdate(new Timestamp(System.currentTimeMillis()));
-                product.setStatus((String) itemInfo.get("stockstatus"));
-                product.setPublicationdate((Timestamp) itemInfo.get("pubdate"));
-                product.setSalespoint((Integer) itemInfo.get("salesPoint"));
-
-                productRepository.save(product);
-            }
+            productRepository.save(entity);
 
         }
+
+        System.out.println(itemList.size()+"\n");
+        for(int i=0; i<itemList.size(); i++){
+            System.out.println(itemList.get(i));
+        }
+
+
 
     }
 
