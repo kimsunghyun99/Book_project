@@ -16,14 +16,6 @@ public interface ProductRepository extends JpaRepository<ProductEntity, String> 
     Page<ProductEntity> findByBookidContainingOrBooknameContainingOrCategorynumberContainingOrPublisher
     (String keyword1,String keyword2,int keyword3, String keyword4, Pageable pageable);
 
-
-//    List<Object> findById(ProductEntity bookid);
-
-//    //bookid 가져 오기
-//    @Query(value="select * from tbl_product", nativeQuery=true)
-//    String getBookid();
-//
-//    //
     @Query(value="select * from tbl_product", nativeQuery=true)
     List<ProductEntity> getProductList();
 

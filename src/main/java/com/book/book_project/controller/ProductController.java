@@ -30,6 +30,7 @@ public class ProductController {
     private final ReviewService reviewService;
     private final ProductRepository productRepository;
 
+
     // main화면 보기
     @GetMapping("/product/main")
     public void getMain(Model model) {
@@ -49,19 +50,23 @@ public class ProductController {
         int pageListCount = 5; //화면 하단에 보여지는 페이지리스트의 페이지 갯수
 
         PageUtil page = new PageUtil();
-//        Page<ReviewEntity> list = service.list(pageNum, postNum);
-//        int totalCount = (int)list.getTotalElements();
-        String userid = (String)session.getAttribute("userid");
-        String nickname = memberService.memberInfo(userid).getNickname();
+        Page<ReviewEntity> list = reviewService.reviewView(pageNum, postNum);
+        int totalCount = (int)list.getTotalElements();
 
 
-        model.addAttribute("nickname", nickname);
+        if(session.getAttribute("userid")!=null){
+            String userid = (String)session.getAttribute("userid");
+            String nickname = memberService.memberInfo(userid).getNickname();
+            model.addAttribute("nickname", nickname);
+        }
+
+
         model.addAttribute("view", service.view(bookid));
-//        model.addAttribute("list", service.list(pageNum,postNum));
-//        model.addAttribute("totalElement", totalCount);
-//        model.addAttribute("postNum", postNum);
-//        model.addAttribute("page", pageNum);
-//        model.addAttribute("pageList", page.getPageList(pageNum, postNum, pageListCount,totalCount));
+        model.addAttribute("list", service.list(pageNum,postNum));
+        model.addAttribute("totalElement", totalCount);
+        model.addAttribute("postNum", postNum);
+        model.addAttribute("page", pageNum);
+        model.addAttribute("pageList", page.getPageList(pageNum, postNum, pageListCount,totalCount));
 
     }
 

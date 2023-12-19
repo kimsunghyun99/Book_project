@@ -21,15 +21,7 @@ public class ProductServiceImpl implements ProductService{
 
     private final ProductRepository productRepository;
 
-    //댓글 목록 보기
-//    @Override
-//    public Page<ReviewEntity> list(int pageNum, int postNum) throws Exception {
-//        PageRequest pageRequest = PageRequest.of(pageNum - 1, postNum, Sort.by(Sort.Direction.DESC,"reviewseq"));
-//        return productRepository.findAll(bookid,  pageRequest);
-//    }
-
     //책 내용 보기
-    //
     @Override
     public ProductDTO view(String bookid) throws Exception {
         return productRepository.findById(bookid).map(view -> new ProductDTO(view)).orElse(null);
