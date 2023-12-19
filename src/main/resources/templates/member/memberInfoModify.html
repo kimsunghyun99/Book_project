@@ -174,14 +174,13 @@
 <h1>회원정보 변경</h1>
 <form id="RegistryForm" name="RegistryForm" method="POST" enctype="form-data">
 
-    <input type="hidden" id="userid" name="userid" th:value="${memberInfo.userid}">
     <label for="username">사용자 이름:</label>
     <input type="text" id="username" name="username" th:value="${memberInfo.username}" placeholder="이름을 입력하세요" required>
 
     <label for="nickname">닉네임:</label>
     <input type="text" id="nickname" name="nickname" th:value="${memberInfo.nickname}" placeholder="닉네임을 입력하세요" required>
 
-
+    <label for="nickname">전화번호:</label>
     <input type="text" id="telno" class="input_field" name="telno" th:value="${memberInfo.telno}" placeholder="전화번호를 입력하세요" >
 
     관심분야 :
@@ -249,7 +248,7 @@
 
 
 <div id="aa">
-    <input type="button" id="btnRegister" class="btn_write" value="수정">
+    <input type="button" id="btnRegister" class="btn_write" value="수정" onclick="ModifyMember()">
     <input type="button" class="btn_cancel" value="취소" onclick="history.back()">
 </div>
 
@@ -262,17 +261,14 @@
             alert("이름을 입력하세요");
             username.focus();
             return false;
+        }
 
-            if(zipcode.value == '') {
-                alert("우편번호를 입력하세요");
-                zipcode.focus();
-                return false;
-            }
-            if(detailaddr.value == '') {
-                alert("상세 주소를 입력하세요");
-                detailaddr.focus();
-                return false;
-            }
+        if(nickname.value == '') {
+            alert("닉네임을 입력하세요");
+            nickname.focus();
+            return false;
+        }
+
             if(telno.value == '') {
                 alert("전화번호를 입력하세요");
                 telno.focus();
@@ -282,35 +278,45 @@
             const afterTelno = beforeTelno.replace(/\-/ig,"").replace(/\ /ig,"").trim();
             telno.value = afterTelno;
 
-
-        }
-
-
-        const RegistryForm = document.getElementById('RegistryForm');
-        const formData = new FormData(RegistryForm);
-
-
-        await fetch('/member/memberInfoModify?option=U', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        }).then((response)=> response.json())
-            .then((data)=> {
-                console.log(data.message);
-                if(data.message === 'GOOD'){
-                    alert("수정되었습니다.");
-                    document.location.href='/product/main';
-                } else {
-                    alert("서버 장애로 수정에 실패했습니다.");
-                }
-            }).catch((error)=> {
-                console.log("error = " + error);
-            });
     });
 
 
+
+        // const RegistryForm = document.getElementById('RegistryForm');
+        // const formData = new FormData(RegistryForm);
+
+
+
+    const ModifyMember = async() => {
+        const data = {
+            //    userid: userid.value,
+            username: username.value,
+            nickname: nickname.value,
+            telno: telno.value
+        }
+        console.log(data);
+       // const formData = new FormData(RegistryForm);
+
+        await fetch('/member/memberInfoModify1?option=U', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then((response) => response.json())
+            .then((data) => {
+                console.log(data.message);
+                if (data.message === 'GOOD') {
+                    alert("수정되었습니다.");
+                    document.location.href = '/product/main';
+                } else {
+                    alert("서버 장애로 수정에 실패했습니다.");
+                }
+            }).catch((error) => {
+                console.log("error = " + error);
+            });
+
+    }
 
         // 배송지 추가
        const realAddADDR = async() => {
@@ -342,6 +348,7 @@
                     console.log("error = " + error);
                 });
         }
+
 
 
     const searchAddr = () => {

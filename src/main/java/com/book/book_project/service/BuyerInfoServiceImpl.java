@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BuyerInfoServiceImpl implements BuyerInfoService {
 
-   private final BuyerInfoRepository repository;
+    private final BuyerInfoRepository repository;
     @Override
     public List<BuyerInfoEntity> buyerInfo(MemberEntity userid) {
         return repository.findByUserid(userid);

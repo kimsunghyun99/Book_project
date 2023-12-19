@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Member;
 import java.net.URLEncoder;
+import java.sql.SQLOutput;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -138,24 +139,29 @@ public class MemberController {
 
 
 
-    //회원 정보 수정 하기
+    //회원 정보 수정 하기 , 주소 추가, 삭제
     @ResponseBody
     @PostMapping("/member/memberInfoModify")
-    public String postMemberInfoModify(@RequestBody MemberDTO member, HttpSession session, @RequestBody DeliverAddrDTO deliverAddrDTO, @RequestParam("option") String option)throws Exception {
-
+    public String postMemberInfoModify( HttpSession session, @RequestBody DeliverAddrDTO deliverAddrDTO, @RequestParam("option") String option)throws Exception {
 
         MemberEntity memberEntity = new MemberEntity();
-
-        String Userid = (String)session.getAttribute("userid");
-
-        member.setUserid(Userid);
-        memberEntity.setUserid(member.getUserid());
-
-        System.out.println("컨트롤러1");
-
+        String userid = (String)session.getAttribute("userid");
+        memberEntity.setUserid(userid);
         deliverAddrDTO.setUserid(memberEntity);
 
+
+//        System.out.println("주소");
+//        System.out.println(deliverAddrDTO.getDeliveryseq());
+//        System.out.println(deliverAddrDTO.getAddr());
+//        System.out.println(deliverAddrDTO.getZipcode());
+//        System.out.println("컨트롤러1");
+//        System.out.println(option);
+//        System.out.println("구분");
+//        System.out.println(deliverAddrDTO.getTelno());
+
+
         int deleteseq = (deliverAddrDTO.getDeliveryseq());
+
 
         switch(option) {
 
@@ -163,12 +169,39 @@ public class MemberController {
                 break;
             case "D" : deliveryService.deletedeliveraddr(deleteseq); // 회원 배송지 삭제 완료
                 break;
-            case "U" : service.modifyMember(member); //회원 기본정보 수정
-                break;
-
         }
 
+        return "{\"message\":\"GOOD\"}";
 
+    }
+
+
+    //회원 정보만 수정 하기
+    @ResponseBody
+    @PostMapping("/member/memberInfoModify1")
+    public String postMemberInfoModify( @RequestBody MemberDTO member, HttpSession session, @RequestParam("option") String option)throws Exception {
+
+
+        String userid = (String)session.getAttribute("userid");
+        member.setUserid(userid);
+        //member.setPassword(service.memberInfo(userid).getPassword());
+
+
+        System.out.println("컨트롤러1");
+
+//        System.out.println(member.getUsername());
+//        System.out.println(member.getNickname());
+//        System.out.println(member.getTelno());
+
+
+        String username = member.getUsername();
+        String nickname = member.getNickname();
+        String telno = member.getTelno();
+
+
+        if ("U".equals(option)) {
+            service.modifyMember(userid,username, nickname,telno); // 회원 기본정보 수정
+        }
 
         return "{\"message\":\"GOOD\"}";
 
@@ -241,9 +274,9 @@ public class MemberController {
     @GetMapping("/member/mypage")
     public void getMyPage(HttpSession session, Model model) {
         String userid = (String)session.getAttribute("userid");
-        model.addAttribute("member", service.memberInfo(userid));//회원정보 불러오기
-        model.addAttribute("favoriteInfo", service.findFavoritesByUserId(userid)); // 즐겨찾기 불러오기
-        model.addAttribute("countJoinedRecordsByUserId", service.countJoinedRecordsByUserId(userid));//구매,주문 목록 갯수 구하기
+        model.addAttribute("memberInfo", service.memberInfo(userid));//회원정보 불러오기
+//        model.addAttribute("favoriteInfo", service.findFavoritesByUserId(userid)); // 즐겨찾기 불러오기
+//        model.addAttribute("countJoinedRecordsByUserId", service.countJoinedRecordsByUserId(userid));//구매,주문 목록 갯수 구하기
     }
 
     //아이디 찾기 화면
