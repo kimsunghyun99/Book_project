@@ -1,5 +1,6 @@
 package com.book.book_project.controller;
 
+import com.book.book_project.dto.CartDTO;
 import com.book.book_project.dto.ProductDTO;
 import com.book.book_project.dto.ReviewInterface;
 import com.book.book_project.entity.ProductEntity;
@@ -57,6 +58,7 @@ public class ProductController {
 
         model.addAttribute("nickname", nickname);
         model.addAttribute("view", service.view(bookid));
+
 //        model.addAttribute("list", service.list(pageNum,postNum));
 //        model.addAttribute("totalElement", totalCount);
 //        model.addAttribute("postNum", postNum);
@@ -77,8 +79,35 @@ public class ProductController {
         model.addAttribute("view", service.view(bookid));
     }
 
+
+
+    // 장바구니에 저장된 상품 보기
     @GetMapping("/product/shoppingBasket")
-    public void getShoppingBasket(){}
+    public void getShoppingBasket(Model model, HttpSession session) throws Exception{
+
+
+        // 비회원일 경우 ( seession 이 존재하느냐를 따져서 해야함 -> 일단 회원만 되게 설정)
+        String cart_userid = (String)session.getAttribute("userid")==null?"":(String)session.getAttribute("email");
+
+
+    }
+
+
+    // 장바구니로 상품 이동
+    @ResponseBody
+    @PostMapping("/product/shoppingBasket")
+    public void postShoppingBasket(@RequestBody CartDTO cartDTO) throws Exception{
+
+//
+//        if(service.pCartQuantity(cartDTO) == 0 )
+//            service.pCartInsert(cartDTO);
+//        else
+//            service.pCartUpdate(cartDTO);
+//
+//        return service.pCartCount(cartDTO.getCart_email());
+//
+
+    }
 
 
     //닉네임 창

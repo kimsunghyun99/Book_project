@@ -87,11 +87,28 @@
             padding: 10px;
             border: 50px;
         }
+
+        #volume input {
+            display: inline-block; /* 인라인 요소로 배치 */
+            font-size: 16px; /* 원하는 폰트 크기로 조절 */
+            margin: 0; /* 기본 마진 제거 */
+        }
+
+        #quantity {
+            display: inline-block; /* 인라인 요소로 배치 */
+            font-size: 16px; /* 원하는 폰트 크기로 조절 */
+            margin: 0 5px; /* 좌우 마진 추가하여 간격 조절 */
+        }
+
+        #volume br {
+            display: none; /* 줄바꿈 요소 숨김 */
+        }
+
     </style>
     <script>
-
-
-
+        var number = 1;
+        var totalPrice = parseInt('[[${view.pricesales}]]');
+        var price = parseInt('[[${view.pricesales}]]');
 //        const bookdiscount = document.querySelector('.book-discount').value;
 //        const bookprice = document.querySelector('.book-price').value;
         //통화 적용임
@@ -322,7 +339,19 @@
             }
         }
 
+const count = (type) =>  {
 
+    number = parseInt(document.getElementById('quantity').innerHTML);
+    if(type === 'plus') {
+        number ++;
+        totalPrice += price;
+    }else if(type === 'minus' && number !==1 )  {
+        number --;
+        totalPrice -= price;
+    }
+    document.getElementById('quantity').innerHTML = number;
+    document.getElementById('total_price').innerHTML = totalPrice.toLocaleString('ko-KR');
+}
 
 
 
@@ -355,6 +384,18 @@
         <p class="book-price" th:text="'가격: ' + ${view.price} + '원'"></p>
         <p class="book-discount" th:text="'할인가: ' + ${view.pricesales} + '%'"></p>
         <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.pricesales * 0.05, 3, 'COMMA')} + '원'"></p>
+
+        <div id="volume">
+        <input type='button' onclick='count("plus")' value='+'/>
+        <span id="quantity">1</span>
+        <input type='button' onclick='count("minus")' value='-'/><br><br>
+        </div>
+        <br>
+        <div style="text-align:right;font-size:30px;font-weight:bold;">
+            <span>상품 금액 : </span>&nbsp;
+            <span id="total_price">[[${#numbers.formatInteger(view.pricesales,3,'COMMA')}]]</span><span>원</span>
+        </div><br>
+        <br>
 
         <div class="book-actions">
             <a href="shoppingBasket.html" class="book-cart">장바구니</a>
