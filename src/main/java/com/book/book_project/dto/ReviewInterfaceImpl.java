@@ -3,6 +3,7 @@ package com.book.book_project.dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+
     public class ReviewInterfaceImpl implements ReviewInterface {
         private int reviewseq;
         private String bookid;

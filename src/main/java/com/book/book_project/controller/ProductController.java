@@ -50,19 +50,21 @@ public class ProductController {
         int pageListCount = 5; //화면 하단에 보여지는 페이지리스트의 페이지 갯수
 
         PageUtil page = new PageUtil();
-//        Page<ReviewEntity> list = service.list(pageNum, postNum);
-//        int totalCount = (int)list.getTotalElements();
+        Page<ReviewEntity> list = reviewService.list(pageNum, postNum);
+        int totalCount = (int)list.getTotalElements();
         String userid = (String)session.getAttribute("userid");
         String nickname = memberService.memberInfo(userid).getNickname();
 
 
         model.addAttribute("nickname", nickname);
         model.addAttribute("view", service.view(bookid));
-//        model.addAttribute("list", service.list(pageNum,postNum));
-//        model.addAttribute("totalElement", totalCount);
-//        model.addAttribute("postNum", postNum);
-//        model.addAttribute("page", pageNum);
-//        model.addAttribute("pageList", page.getPageList(pageNum, postNum, pageListCount,totalCount));
+        model.addAttribute("list", reviewService.list(pageNum,postNum));
+        model.addAttribute("totalElement", totalCount);
+        model.addAttribute("postNum", postNum);
+        model.addAttribute("page", pageNum);
+        model.addAttribute("pageList", page.getPageList(pageNum, postNum, pageListCount,totalCount));
+
+
 
     }
 
@@ -102,9 +104,7 @@ public class ProductController {
     //리뷰 처리
     @ResponseBody
     @PostMapping(value = "/product/review")
-    public List<ReviewInterface> postReview(@RequestBody ReviewInterface review, @RequestParam("option") String option) throws Exception {
-
-        System.out.println("/////////: " + review);
+    public List<ReviewInterface> postReview(@RequestBody ReviewInterfaceImpl review, @RequestParam("option") String option) throws Exception {
 
         switch (option) {
 

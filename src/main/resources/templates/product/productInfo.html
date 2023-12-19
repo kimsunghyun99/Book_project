@@ -158,16 +158,16 @@ const reviewRegister = async () => {
     }
 
     const data = {
-        reviewer: reviewer.value, // 이 부분에서 reviewer 변수가 정의되어 있는지 확인해주세요.
+        reviewer: reviewer.value,
         reviewcontent: reviewcontent.value,
         userid: userid.value,
         bookid: bookid.value
     };
-    let formData = new FormData(reviewForm);
+    //let formData = new FormData(reviewForm);
 
     await fetch('/product/review?option=I', {
         method: 'POST',
-        headers: {"Content-Type": "application/json"}, // 수정: 'content-type' -> 'Content-Type'
+        headers: {"Content-Type": "application/json"},
        body: JSON.stringify(data)
        //  body : formData
     })
@@ -243,13 +243,15 @@ const reviewRegister = async () => {
         // bookid 여기서 확인해봐야함
 
         //페이지 시작할 때 리뷰 목록 가져 오기
-        const startupPage = async () => {
-            let formData = new FormData();
-            formData.append("bookid", "[[${view.bookid}]]")
 
+const startupPage = async () => {
+            // let formData = new FormData();
+            // formData.append("bookid", "[[${view.bookid}]]")
+    const data = {bookid: parseInt('[[${view.bookid}]]')};
             await fetch('/product/review?option=L',{
                 method: 'POST',
-                body: formData
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(data)
             }).then((response) => response.json())
                 .then((data) => reviewList(data))
                 .catch((error) => {
@@ -261,13 +263,16 @@ const reviewRegister = async () => {
         //리뷰 삭제
         const reviewDelete = async(reviewseq) => {
             if(confirm("정말로 삭제하시겠습니까?")) {
-                let formData = new FormData();
-                formData.append("reviewseq", reviewseq);
-                formData.append("bookid", "[[${view.bookid}]]")
+                // let formData = new FormData();
+                // formData.append("reviewseq", reviewseq);
+                // formData.append("bookid", "[[${view.bookid}]]")
+                const data = { reviewseq: reviewseq, bookid: parseInt('[[${view.bookid}]]')};
                 await fetch('/product/review?option=D',{
 
                     method: 'POST',
-                    body: formData
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(data)
+                    //body: formData
                 }).then((response) => response.json())
                     .then((data) => reviewList(data))
                     .catch((error) => {
@@ -306,14 +311,19 @@ const reviewRegister = async () => {
 
             btnreviewModify.addEventListener('click', async ()=> {
 
-                let formData = new FormData();
-                formData.append("reviewseq", reviewseq);
-                formData.append("reviewcontent", modify_reviewcontent.value);
+                // let formData = new FormData();
+                // formData.append("reviewseq", reviewseq);
+                // formData.append("reviewcontent", modify_reviewcontent.value);
+                const data = {
+                    reviewseq: reviewseq,
+                    reviewcontent: modify_reviewcontent.value
+                };
 
                 await fetch('/product/review?option=U',{
 
                     method: 'POST',
-                    body: formData
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(data)
                 }).catch((error) => {
                     console.log("error = " + error);
                     alert("서버 장애로 리뷰 수정이 실패했습니다.");
@@ -341,10 +351,6 @@ const reviewRegister = async () => {
 
         }
 
-
-
-
-
         function checkAndAlert() {
             var reviewContentTextarea = document.getElementById("reviewcontent");
             var currentNickname =document.getElementById("reviewer");
@@ -369,11 +375,12 @@ const reviewRegister = async () => {
 
 
 
-
-
     </script>
 </head>
 <body>
+<script>
+    startupPage();
+</script>
 <header>
     <h1>교보문고</h1>
 </header>
