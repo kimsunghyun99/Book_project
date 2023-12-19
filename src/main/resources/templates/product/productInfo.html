@@ -114,34 +114,79 @@
 
 
         //리뷰 등록
-        const reviewRegister = async () => {
 
-            const reviewcontent = document.getElementById('reviewcontent');
+// const reviewRegister = async () => {
+//     const reviewcontent = document.getElementById('reviewcontent');
+//
+//     if (reviewcontent.value === '') {
+//         alert('리뷰를 입력하세요.');
+//         reviewcontent.focus();
+//         return false;
+//     }
+//
+//     const reviewForm = document.getElementById('reviewForm');
+//     const formData = new FormData(reviewForm);
+//
+//     try {
+//         const response = await fetch('/product/review?option=I', {
+//             method: 'POST',
+//             body: formData
+//         });
+//
+//         if (!response.ok) {
+//             throw new Error('리뷰 등록이 실패했습니다.');
+//         }
+//
+//         const data = await response.json();
+//         reviewList(data);
+//         console.log("data = " + data);
+//     } catch (error) {
+//         console.log("error = " + error);
+//         alert("시스템 장애로 리뷰 등록이 실패했습니다.");
+//     }
+//
+//     reviewcontent.value = '';
+// }
 
-            if(reviewcontent.value === ''){
-                alert('리뷰을 입력하세요.');
-                reviewcontent.focus();
-                return false;
-            }
-            const reviewForm = document.getElementById(reviewForm);
-            let formData = new FormData(reviewForm)
-            await fetch('/product/review?option=I',{
-                method: 'POST',
-                body: formData
-            }).then((response)=> response.json())
-                .then((data)=> {
-                    reviewList(data);
-                    console.log("data = " + data);
-                }).catch((error) => {
-                    console.log("error = " + error);
-                    alert("시스템 장애로 리뷰 등록이 실패했습니다.");
-                });
+const reviewRegister = async () => {
+    const reviewcontent = document.querySelector('#reviewcontent');
 
-            reviewcontent.value = '';
-        }
+    if (reviewcontent.value === '') {
+        alert('댓글을 입력하세요.');
+        reviewcontent.focus();
+        return false;
+    }
+
+    const data = {
+        reviewer: reviewer.value, // 이 부분에서 reviewer 변수가 정의되어 있는지 확인해주세요.
+        reviewcontent: reviewcontent.value,
+        userid: userid.value,
+        bookid: bookid.value
+    };
+    let formData = new FormData(reviewForm);
+
+    await fetch('/product/review?option=I', {
+        method: 'POST',
+        headers: {"Content-Type": "application/json"}, // 수정: 'content-type' -> 'Content-Type'
+       body: JSON.stringify(data)
+       //  body : formData
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            reviewList(data);
+            console.log("data = " + data);
+        })
+        .catch((error) => {
+            console.log("error = " + error);
+            alert("시스템 장애로 댓글 등록이 실패했습니다.");
+        });
+
+    reviewcontent.value = '';
+};
 
 
-        //리뷰 목록 가져 오기
+
+//리뷰 목록 가져 오기
 
         const reviewList = (data) => {
 
@@ -343,9 +388,9 @@
 <br><br><br>
 <div class="book-details">
     <div class="book-image-container"><br><br>
-        <img class="book-image" src="book.jpg" alt="책 이미지">
+        <img class="book-image" src="/images/Demian.jpg" alt="책 이미지">
         <div class="likes-reviews">
-            <p class="book-likes">좋아요: 00</p>
+<!--            <p class="book-likes">좋아요: 00</p>-->
             <p class="book-reviews">후기: 00</p>
         </div>
     </div>
@@ -368,11 +413,13 @@
 
     <p id="reviewNotice">리뷰을 작성해 주세요.</p>
     <form id="reviewForm" name="reviewForm" method="POST">
+        <input type="hidden" id="bookid" name="bookid" th:value="${view.bookid}">
         <input type="hidden" id="userid" name="userid" th:value="${session.userid}">
     작성자: <input type="text" id="reviewer" name="reviewer" th:value="${nickname}" readonly>
+        <br><br>
 
 
-        <label for="reviewcontent">리뷰 내용: </label>
+<!--        <label for="reviewcontent">리뷰 내용: </label>-->
         <textarea id="reviewcontent" name="reviewcontent" cols="80" rows="5" maxlength="150" placeholder="글자수: 150자 이내"
                   onfocus="checkAndAlert()"></textarea><br>
     </form>

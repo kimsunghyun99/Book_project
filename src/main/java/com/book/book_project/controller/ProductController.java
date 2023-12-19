@@ -2,6 +2,7 @@ package com.book.book_project.controller;
 
 import com.book.book_project.dto.ProductDTO;
 import com.book.book_project.dto.ReviewInterface;
+import com.book.book_project.dto.ReviewInterfaceImpl;
 import com.book.book_project.entity.ProductEntity;
 import com.book.book_project.entity.ReviewEntity;
 import com.book.book_project.entity.repository.ProductRepository;
@@ -100,12 +101,11 @@ public class ProductController {
 
     //리뷰 처리
     @ResponseBody
-    @PostMapping("/product/review")
+    @PostMapping(value = "/product/review")
     public List<ReviewInterface> postReview(@RequestBody ReviewInterface review, @RequestParam("option") String option) throws Exception {
 
+        System.out.println("/////////: " + review);
 
-        System.out.println(review.getReviewer());
-        System.out.println(option);
         switch (option) {
 
             case "I":
@@ -116,10 +116,6 @@ public class ProductController {
                 break;
             case "D":
                 reviewService.reviewDelete(review); //리뷰 삭제
-                break;
-
-            case "L":
-                reviewService.reviewView(review); // 리뷰 목록 조회
                 break;
         }
 
