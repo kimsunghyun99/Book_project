@@ -4,16 +4,11 @@ import com.book.book_project.dto.DeliverAddrDTO;
 import com.book.book_project.entity.DeliveryAddrEntity;
 import com.book.book_project.entity.PurchaseInfoEntity;
 import com.book.book_project.entity.MemberEntity;
-import com.book.book_project.service.AddressService;
 import com.book.book_project.service.DeliveryService;
 import com.book.book_project.dto.*;
 import com.book.book_project.entity.BuyerInfoEntity;
 import com.book.book_project.service.*;
-import com.nimbusds.openid.connect.sdk.claims.Address;
-import org.springframework.data.repository.query.Param;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import com.book.book_project.entity.repository.UnMemberRepository;
 import com.book.book_project.entity.AddressEntity;
 import com.book.book_project.util.PageUtil;
 import jakarta.servlet.http.HttpSession;
@@ -21,16 +16,11 @@ import com.book.book_project.dto.MemberDTO;
 import com.book.book_project.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Member;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -138,24 +128,29 @@ public class MemberController {
 
 
 
-    //회원 정보 수정 하기
+    //회원 정보 수정 하기 , 주소 추가, 삭제
     @ResponseBody
     @PostMapping("/member/memberInfoModify")
-    public String postMemberInfoModify(@RequestBody MemberDTO member, HttpSession session, @RequestBody DeliverAddrDTO deliverAddrDTO, @RequestParam("option") String option)throws Exception {
-
+    public String postMemberInfoModify( HttpSession session, @RequestBody DeliverAddrDTO deliverAddrDTO, @RequestParam("option") String option)throws Exception {
 
         MemberEntity memberEntity = new MemberEntity();
-
-        String Userid = (String)session.getAttribute("userid");
-
-        member.setUserid(Userid);
-        memberEntity.setUserid(member.getUserid());
-
-        System.out.println("컨트롤러1");
-
+        String userid = (String)session.getAttribute("userid");
+        memberEntity.setUserid(userid);
         deliverAddrDTO.setUserid(memberEntity);
 
+
+//        System.out.println("주소");
+//        System.out.println(deliverAddrDTO.getDeliveryseq());
+//        System.out.println(deliverAddrDTO.getAddr());
+//        System.out.println(deliverAddrDTO.getZipcode());
+//        System.out.println("컨트롤러1");
+//        System.out.println(option);
+//        System.out.println("구분");
+//        System.out.println(deliverAddrDTO.getTelno());
+
+
         int deleteseq = (deliverAddrDTO.getDeliveryseq());
+
 
         switch(option) {
 
@@ -163,12 +158,39 @@ public class MemberController {
                 break;
             case "D" : deliveryService.deletedeliveraddr(deleteseq); // 회원 배송지 삭제 완료
                 break;
-            case "U" : service.modifyMember(member); //회원 기본정보 수정
-                break;
-
         }
 
+        return "{\"message\":\"GOOD\"}";
 
+    }
+
+
+    //회원 정보만 수정 하기
+    @ResponseBody
+    @PostMapping("/member/memberInfoModify1")
+    public String postMemberInfoModify( @RequestBody MemberDTO member, HttpSession session, @RequestParam("option") String option)throws Exception {
+
+
+        String userid = (String)session.getAttribute("userid");
+        member.setUserid(userid);
+        //member.setPassword(service.memberInfo(userid).getPassword());
+
+
+        System.out.println("컨트롤러1");
+
+//        System.out.println(member.getUsername());
+//        System.out.println(member.getNickname());
+//        System.out.println(member.getTelno());
+
+
+        String username = member.getUsername();
+        String nickname = member.getNickname();
+        String telno = member.getTelno();
+
+
+        if ("U".equals(option)) {
+            service.modifyMember(userid,username, nickname,telno); // 회원 기본정보 수정
+        }
 
         return "{\"message\":\"GOOD\"}";
 

@@ -24,7 +24,7 @@ public interface MemberService {
     public void memberPasswordModify(MemberDTO member);
 
     // 회원정보 수정
-    public void modifyMember(MemberDTO member);
+    public void modifyMember(String userid,String username, String nickname,String telno);
 
 
 
