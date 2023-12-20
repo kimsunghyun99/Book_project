@@ -4,6 +4,7 @@ package com.book.book_project.controller;
 import com.book.book_project.dto.ProductDTO;
 import com.book.book_project.entity.CategoryEntity;
 import com.book.book_project.entity.ProductEntity;
+import com.book.book_project.entity.repository.CategoryRepository;
 import com.book.book_project.entity.repository.ProductRepository;
 import com.book.book_project.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -31,14 +33,17 @@ public class MasterController {
 
     private final ProductService productService;
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
 
     @GetMapping("/master/bookUpdate")
     public void getBookUpdate() throws Exception {
         String key = "ttbdpfwnl01191710001";
-        String title = "자바"; // 검색하려는 제목
+        String title = "프로그래밍"; // 검색하려는 제목
         URL url = new URL("http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=" + key
                 + "&Query=" + URLEncoder.encode(title, "UTF-8") + "&QueryType=Title"
-                + "&MaxResults=1&start=1&output=js&Version=20131101");
+                + "&MaxResults=50&start=1&output=js&Version=20131101");
+
+
 
         System.out.println(url);
 
@@ -67,21 +72,28 @@ public class MasterController {
                 product.setAuthor((String) itemInfo.get("author"));
                 product.setPublisher((String) itemInfo.get("publisher"));
                 product.setPrice((Integer) itemInfo.get("priceStandard"));
-                product.setStock((String) itemInfo.get("stockStatus "));
+                product.setStock((String) itemInfo.get("stockStatus"));
                 product.setDescription((String) itemInfo.get("description"));
                 product.setCover((String) itemInfo.get("cover"));
                 product.setRegdate(new Timestamp(System.currentTimeMillis()));
                 product.setBookid((String) itemInfo.get("isbn"));
                 product.setPublicationdate((String) itemInfo.get("pubDate"));
                 product.setSalespoint((Integer) itemInfo.get("salesPoint"));
-                // categoryId를 int로 변환하여 설정
+                // api에서 받아온 categoryId를 int로 변환하여 설정
                 int categoryId = (Integer) itemInfo.get("categoryId");
-                CategoryEntity category = new CategoryEntity();
-                category.setCategorynumber(categoryId);
-                product.setCategorynumber(category);
 
-                productList.add(product);
-                productRepository.save(product); // DB에 저장
+                // categoryDB에서 categoryId에 해당하는 데이터 조회
+                CategoryEntity category = categoryRepository.findById(categoryId);
+
+                if (null != category) {
+                    product.setCategorynumber(category);
+                    System.out.println("if 조건 안 null이 아닌 경우 :  " + category.getCategorynumber());
+                    productList.add(product);
+                    productRepository.save(product); // DB에 저장
+
+                }
+                //System.out.println("if 조건 밖 null인 경우 :  "+ category.getCategorynumber());
+
             }
         }
     }

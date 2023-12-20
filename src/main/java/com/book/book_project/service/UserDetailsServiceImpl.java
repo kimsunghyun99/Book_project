@@ -27,7 +27,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	public UserDetails loadUserByUsername(String userid) throws UsernameNotFoundException {
 	
 		
-		// username은 스프링 시큐리티가 필터로 작동하면서 로그인 요청에서 가로채온 userid임
+		// userid은 스프링 시큐리티가 필터로 작동하면서 로그인 요청에서 가로채온 userid임
 		MemberEntity memberInfo  = memberRepository.findById(userid).get();
 		
 		if(memberInfo == null) {
