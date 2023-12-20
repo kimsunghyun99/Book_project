@@ -18,7 +18,17 @@ public class CartDTO {
     private MemberEntity userid;
     private ProductEntity bookid;
     private int cartvolume;
-    private Timestamp cartregdate; // 생일
+    private Timestamp cartregdate;
+
+    private String stock;
+    private String cover;
+    private String bookname;
+    private String publisher;
+    private int pricesales;
+    private int cart_amount;
+
+
+
 
 //Entity --> DTO
 

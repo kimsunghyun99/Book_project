@@ -353,13 +353,53 @@ const count = (type) =>  {
     document.getElementById('total_price').innerHTML = totalPrice.toLocaleString('ko-KR');
 }
 
+        //장바구니에 상품 담기
+        const cart = async (userid,bookid,bCartQuantity) => {
+
+            number += bCartQuantity; //선택한 상품 갯수에다가 기존 장바구니에 담겨져 있는 이 상품의 갯수를 더한다
+
+            // if(email === '' || email === null) {
+            //     alert("로그인 이후 이용할 수 있는 서비스입니다.");
+            //     return;
+            // }
+
+            await fetch('/product/shoppingBasket',{
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  //  userid: userid,
+                    bookid: bookid,
+                    cartvolume: number
+                }),
+            }).then((response)=> response.text())
+                .then((data) => {
+                    if(data != '' || data != null || data != 0){
+                        alert("장바구니에 상품을 넣어 두었습니다.");
+                        document.location.href="/product/shoppingBasket"
+                    //    document.getElementById('bCartCount').innerHTML = data;   // -> 왜쓰는지 이해안감
+                    } else {
+                        alert("시스템 장애로 장바구니 담기가 실패했습니다.");
+                    }
+                }).catch((error)=> {
+                    console.log("error = " + error);
+                });
+
+        }
+
+
+
+
+
+
 
 
     </script>
 </head>
 <body>
 <header>
-    <h1>교보문고</h1>
+    <h1>IT커넥션</h1>
 </header>
 
 <nav>
@@ -372,7 +412,7 @@ const count = (type) =>  {
 <br><br><br>
 <div class="book-details">
     <div class="book-image-container"><br><br>
-        <img class="book-image" src="book.jpg" alt="책 이미지">
+        <img class="book-image" src="/images/book.jpg" alt="책 이미지">
         <div class="likes-reviews">
             <p class="book-likes">좋아요: 00</p>
             <p class="book-reviews">후기: 00</p>
@@ -398,8 +438,8 @@ const count = (type) =>  {
         <br>
 
         <div class="book-actions">
-            <a href="shoppingBasket.html" class="book-cart">장바구니</a>
-            <a href="shoppingBasket.html" class="book-buy">구매하기</a>
+            <a href="shoppingBasket.html" class="book-cart">구매하기</a>
+            <input type="button" id="btn_cart" class="btn_cart" value="장바구니 담기" th:onclick="cart([[${session.userid}]],[[${view.bookid}]],[[${bCartQuantity}]])">
         </div>
     </div>
 
