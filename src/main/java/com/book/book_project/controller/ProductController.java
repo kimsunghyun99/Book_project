@@ -25,7 +25,9 @@ public class ProductController {
 
     // main화면 보기
     @GetMapping("/product/main")
-    public void getMain() {}
+    public void getMain(HttpSession session) {
+        String userid = (String)session.getAttribute("userid");
+    }
 
     @GetMapping("/product/productInfo")
     public void getProductInfo(@RequestParam("bookid") String bookid, @RequestParam("page") int pageNum,

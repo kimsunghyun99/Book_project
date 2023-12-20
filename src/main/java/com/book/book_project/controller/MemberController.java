@@ -64,6 +64,7 @@ public class MemberController {
     private final BuyerInfoService buyerInfoService;
 
 
+
     //회원 등록 화면 보기
     @GetMapping("/member/signup")
     public void getSignup() {}
@@ -253,7 +254,7 @@ public class MemberController {
     //로그인 (23-12-11)
     @ResponseBody
     @PostMapping("/member/loginCheck")
-    public String postLogin(MemberDTO member, HttpSession session) {
+    public String postLogin(MemberDTO member) {
 
         //아이디 존재 여부 확인
         if(service.idCheck(member.getUserid()) == 0) {
@@ -330,15 +331,18 @@ public class MemberController {
     @ResponseBody
     @PostMapping("/member/unMemberLoginCheck")
     public String postUnMemberLogin(UnMemberDTO unMember) {
-        //구매번호 존재 여부 확인
-//        if() {
-//            return "{\"message\":\"ID_NOT_FOUND\"}";
-//        }
-
+        //전화번호 존재 여부 확인
+        if(unMemberService.unmemberInfo(unMember.getReceivertelno()).getUnmemberseq() == 0) {
+            return "{\"message\":\"receivertelno_NOT_FOUND\"}";
+        }
         //비밀번호가 올바르게 들어왔는지 정확도 여부 확인
-        if(!pwdEncoder.matches(unMember.getTemppassword(), unMemberService.unMemberInfo(unMember.getTemppassword()).getTemppassword())){
+        if(!pwdEncoder.matches(unMember.getTemppassword(), unMemberService.unmemberInfo(unMember.getReceivertelno()).getTemppassword())){
             //잘못된 패스워드 일 경우
             return "{\"message\":\"PASSWORD_NOT_FOUND\"}";
+        }
+        //구매번호 존재 여부 확인
+        if(unMemberService.unmemberpurchasenum(unMember.getUnmemberseq()) == 0) {
+            return "{\"message\":\"ID_NOT_FOUND\"}";
         }
 
         return "{\"message\":\"GOOD\"}";

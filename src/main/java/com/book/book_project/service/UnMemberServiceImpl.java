@@ -12,10 +12,15 @@ public class UnMemberServiceImpl implements UnMemberService{
 
     private final UnMemberRepository unMemberRepository;
 
-    //비회원 정보 조회
+    //비회원 정보 불러오기
     @Override
-    public UnMemberDTO unMemberInfo(String unmembertelno) {
-        return unMemberRepository.findById(unmembertelno).map(unmember -> new UnMemberDTO(unmember)).get();
+    public UnMemberDTO unmemberInfo(String temppassword) {
+        return unMemberRepository.findById(temppassword).map(unmember -> new UnMemberDTO(unmember)).get();
     }
 
+    //비회원 주문 번호 불러오기
+    @Override
+    public int unmemberpurchasenum(int unmemberseq) {
+        return unMemberRepository.findByUnmemberseq(unmemberseq);
+    }
 }
