@@ -42,6 +42,7 @@ public class MasterController {
         URL url = new URL("http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=" + key
                 + "&Query=" + URLEncoder.encode(title, "UTF-8") + "&QueryType=Title"
                 + "&MaxResults=50&start=1&output=js&Version=20131101");
+        //
 
 
 
