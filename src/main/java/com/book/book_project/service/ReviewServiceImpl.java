@@ -9,9 +9,7 @@ import com.book.book_project.entity.repository.MemberRepository;
 import com.book.book_project.entity.repository.ProductRepository;
 import com.book.book_project.entity.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,42 +25,13 @@ public class ReviewServiceImpl implements ReviewService{
     private final MemberRepository memberRepository;
     private final ProductRepository productRepository;
     private final ReviewRepository reviewRepository;
-//
-//    //리뷰 목록 보기
-//    @Override
-//    public List<ReviewInterface> reviewView(ReviewInterface review) throws Exception{
-//        return reviewRepository.reviewView(review.getBookid());
-//    }
-//
-//    //리뷰 등록
-//    @Override
-//    public void reviewRegistry(ReviewInterface review) throws Exception {
-//
-//        System.out.println("1. : " + review);
-//        ProductEntity productEntity = productRepository.findById(review.getBookid()).get();
-//        System.out.println("2. : " + review);
-//        MemberEntity memberEntity = memberRepository.findById(review.getUserid()).get();
-//        System.out.println("3. : " + review);
-//
-//        System.out.println(productEntity);
-//        System.out.println(memberEntity);
-//        System.out.println(review.getReviewseq());
-//
-//        ReviewEntity reviewEntity = ReviewEntity.builder()
-//                .bookid(productEntity)
-//                .userid(memberEntity)
-//                .reviewer(review.getReviewer())
-//                .reviewcontent(review.getReviewcontent())
-//                .reviewregdate(new Timestamp(System.currentTimeMillis()))
-//                .build();
-//        reviewRepository.save(reviewEntity);
-//    }
+
 
 
     @Override
-    public Page<ReviewEntity> list(int pageNum, int postNum) throws Exception {
+    public Page<ReviewEntity> list(ProductEntity bookid,int pageNum, int postNum) throws Exception {
         PageRequest pageRequest = PageRequest.of(pageNum - 1, postNum, Sort.by(Sort.Direction.DESC, "reviewseq"));
-        return reviewRepository.findAll(pageRequest);
+        return reviewRepository.findByBookid(bookid, pageRequest);
     }
 
         //리뷰 목록 보기
@@ -70,7 +39,6 @@ public class ReviewServiceImpl implements ReviewService{
     public List<ReviewInterface> reviewView(ReviewInterfaceImpl review) throws Exception{
         return reviewRepository.reviewView(review.getBookid());
     }
-
     // 리뷰 등록
     @Override
     public void reviewRegistry(ReviewInterfaceImpl review) throws Exception {

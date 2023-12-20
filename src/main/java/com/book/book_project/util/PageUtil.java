@@ -2,7 +2,7 @@ package com.book.book_project.util;
 
 public class PageUtil {
 	
-	public String getPageList(int pageNum, int postNum, int pageListCount, int totalCount) {
+	public String getPageList(int pageNum, int postNum, int pageListCount, int totalCount, String bookid) {
 		
 		//pageNum : 현재 페이지 번호
 		//postNum : 한 화면에 보여지는 게시물 행 갯수
@@ -25,13 +25,13 @@ public class PageUtil {
 					// - section 값이 1보다 커야함.
 					// - i == 1
 					if(section > 1 && i == 1)
-						pageList += " <a href=productInfo?page=" + Integer.toString((section-2)*pageListCount + pageListCount)
+						pageList += " <a href=productInfo?bookid=" + bookid + "&page=" + Integer.toString((section-2)*pageListCount + pageListCount)
 								+ ">◀</a>";
 					// 2. 페이지 출력 중단
 					if(totalPage < (section-1)*pageListCount+i) { break; }
 					// 3. 인자로 가져 온 페이지값과 계산해서 나온 페이지값이 같으면 링크를 안 붙이고 다르면 다른 페이지로 이동할수 있는 링크를 붙임.
 					if(pageNum != (section-1)*pageListCount + i)
-						pageList += " <a href=productInfo?page=" + Integer.toString((section-1)*pageListCount + i)
+						pageList += " <a href=productInfo?bookid=" + bookid + "&page=" + Integer.toString((section-1)*pageListCount + i)
 								+ ">" + Integer.toString((section-1)*pageListCount + i) + "</a>";
 					else
 						pageList += " <span style='font-weight: bold'>" + Integer.toString((section-1)*pageListCount + i) + "</span>";
@@ -40,7 +40,7 @@ public class PageUtil {
 					// totalSection > 1 --> section이 1개 이상 존재
 					// totalPage >= i+(section-1)*pageListCount+1 --> 아직까지 출력할 페이지가 남아 있음.
 					if(i==pageListCount && totalSection > 1 && totalPage >= i+(section-1)*pageListCount+1)
-						pageList += " <a href=productInfo?page=" + Integer.toString(section*pageListCount+1) + ">▶</a>";
+						pageList += " <a href=productInfo?bookid=" + bookid + "&page=" + Integer.toString(section*pageListCount+1) + ">▶</a>";
 				}
 			}
 			return pageList;

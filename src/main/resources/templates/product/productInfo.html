@@ -188,77 +188,77 @@ const reviewRegister = async () => {
 
 //리뷰 목록 가져 오기
 
-        const reviewList = (data) => {
-
-            var session_userid = '[[${session.userid}]]';
-            const jsonInfo = data;
-
-            let reviewList = document.querySelector('#reviewList');
-            reviewList.innerHTML = '';
-
-            var result = '';
-            for(const i in jsonInfo){
-
-                let elm = document.createElement('div'); //<div id='s3' style='font-size:0.8em'></div>
-                elm.setAttribute('id','s' + jsonInfo[i].reviewseq);
-                elm.setAttribute('style','font-size:0.8em');
-
-                let result = "";
-                result += "작성자 : " + jsonInfo[i].reviewer;
-
-                 if(jsonInfo[i].userid === session_userid){
-                     result += "[<a href=" + "'javascript:reviewModify(" + jsonInfo[i].reviewseq + ")' style='cursor:pointer'>수정</a> | ";
-                     result += "<a href=" + "'javascript:reviewDelete(" + jsonInfo[i].reviewseq + ")' style='cursor:pointer'>삭제</a>]";
-                }
-
-                let date = new Date(jsonInfo[i].reviewregdate);
-                let year = date.getFullYear();
-                let month = date.getMonth() + 1;
-                let day = date.getDate();
-                let hour = date.getHours();
-                let minute = date.getMinutes();
-                let second = date.getSeconds();
-
-                month = month >= 10 ? month : '0' + month;
-                day = day >= 10 ? day : '0' + day;
-                hour = hour >= 10 ? hour : '0' + hour;
-                minute = minute >= 10 ? minute : '0' + minute;
-                second = second >= 10 ? second : '0' + second;
-
-                let regdate = year + "-" + month + "-" + day + "-" + " " + hour + ":" + minute + ":" + second;
-
-                result += "&nbsp;&nbsp;";
-                result += "<div style='width:90%; height: auto; border-top: 1px solid; overflow: auto;'>";
-                result += "<pre id='c" + jsonInfo[i].reviewseq + "'>" + jsonInfo[i].reviewcontent + "</pre>";
-                result += "</div><br>";
-
-                elm.innerHTML = result;
-                reviewList.appendChild(elm);
-
-
-            }
-
-        }
+        // const reviewList = (data) => {
+        //
+        //     var session_userid = '[[${session.userid}]]';
+        //     const jsonInfo = data;
+        //
+        //     let reviewList = document.querySelector('#reviewList');
+        //     reviewList.innerHTML = '';
+        //
+        //     var result = '';
+        //     for(const i in jsonInfo){
+        //
+        //         let elm = document.createElement('div'); //<div id='s3' style='font-size:0.8em'></div>
+        //         elm.setAttribute('id','s' + jsonInfo[i].reviewseq);
+        //         elm.setAttribute('style','font-size:0.8em');
+        //
+        //         let result = "";
+        //         result += "작성자 : " + jsonInfo[i].reviewer;
+        //
+        //          if(jsonInfo[i].userid === session_userid){
+        //              result += "[<a href=" + "'javascript:reviewModify(" + jsonInfo[i].reviewseq + ")' style='cursor:pointer'>수정</a> | ";
+        //              result += "<a href=" + "'javascript:reviewDelete(" + jsonInfo[i].reviewseq + ")' style='cursor:pointer'>삭제</a>]";
+        //         }
+        //
+        //         let date = new Date(jsonInfo[i].reviewregdate);
+        //         let year = date.getFullYear();
+        //         let month = date.getMonth() + 1;
+        //         let day = date.getDate();
+        //         let hour = date.getHours();
+        //         let minute = date.getMinutes();
+        //         let second = date.getSeconds();
+        //
+        //         month = month >= 10 ? month : '0' + month;
+        //         day = day >= 10 ? day : '0' + day;
+        //         hour = hour >= 10 ? hour : '0' + hour;
+        //         minute = minute >= 10 ? minute : '0' + minute;
+        //         second = second >= 10 ? second : '0' + second;
+        //
+        //         let regdate = year + "-" + month + "-" + day + "-" + " " + hour + ":" + minute + ":" + second;
+        //
+        //         result += "&nbsp;&nbsp;";
+        //         result += "<div style='width:90%; height: auto; border-top: 1px solid; overflow: auto;'>";
+        //         result += "<pre id='c" + jsonInfo[i].reviewseq + "'>" + jsonInfo[i].reviewcontent + "</pre>";
+        //         result += "</div><br>";
+        //
+        //         elm.innerHTML = result;
+        //         reviewList.appendChild(elm);
+        //
+        //
+        //     }
+        //
+        // }
 
         // bookid 여기서 확인해봐야함
 
         //페이지 시작할 때 리뷰 목록 가져 오기
 
-const startupPage = async () => {
-            // let formData = new FormData();
-            // formData.append("bookid", "[[${view.bookid}]]")
-    const data = {bookid: parseInt('[[${view.bookid}]]')};
-            await fetch('/product/review?option=L',{
-                method: 'POST',
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(data)
-            }).then((response) => response.json())
-                .then((data) => reviewList(data))
-                .catch((error) => {
-                    console.log("error = " + error);
-                    alert("시스템 장애로 리뷰 가져 오기가 실패했습니다.")
-                });
-        }
+// const startupPage = async () => {
+//             // let formData = new FormData();
+//             // formData.append("bookid", "[[${view.bookid}]]")
+//     const data = {bookid: parseInt('[[${view.bookid}]]')};
+//             await fetch('/product/review?option=L',{
+//                 method: 'POST',
+//                 headers: {"Content-Type": "application/json"},
+//                 body: JSON.stringify(data)
+//             }).then((response) => response.json())
+//                 .then((data) => reviewList(data))
+//                 .catch((error) => {
+//                     console.log("error = " + error);
+//                     alert("시스템 장애로 리뷰 가져 오기가 실패했습니다.")
+//                 });
+//         }
 
         //리뷰 삭제
         const reviewDelete = async(reviewseq) => {
@@ -283,75 +283,75 @@ const startupPage = async () => {
         }
 
         //리뷰 수정하기
-        const reviewModify = (reviewseq) => {
+// const reviewModify = (reviewseq) => {
+//
+//     // 리뷰 내용 임시 저장
+//     const modifyreviewContent = document.querySelector('#c' + reviewseq);
+//     console.log("//////////////"+modifyreviewContent);
+//     const reviewContent = modifyreviewContent.textContent; // 수정된 부분
+//
+//     console.log(modifyreviewContent);
+//
+//     var strreviewList = "작성자 : [[${session.nickname}]]&nbsp;"
+//         + "<input type='button' id='btn_reviewModify' value='수정'>"
+//         + "<input type='button' id='btn_reviewModifyCancel' value='취소'>"
+//         + "<input type='hidden' name='reviewseq' value='" + reviewseq + "'>"
+//         + "<input type='hidden' name='bookid' value='[[${view.bookid}]]'>"
+//         + "<input type='hidden' id='reviewer' name='reviewer' value='[[${session.nickname}]]'>"
+//         + "<input type='hidden' id='userid' name='userid' value='[[${session.userid}]]'><br>"
+//         + "<textarea id='modify_reviewcontent' name='reviewcontent' cols='80' rows='5' maxlength='150' placeholder='글자수:150자 이내'>"
+//         + reviewContent + "</textarea><br>"; // 수정된 부분
+//
+//     let elm = document.createElement('div'); //<div></div>
+//     elm.innerHTML = strreviewList;
+//
+//     // 개별 리뷰 목록을 둘러싸고 있는 div
+//     let parentDiv = document.querySelector('#s' + reviewseq).parentNode;
+//     parentDiv.insertBefore(elm, document.querySelector('#s' + reviewseq));
+//     document.querySelector('#s' + reviewseq).style.display = 'none';
+//
+//     const btnreviewModify = document.querySelector('#btn_reviewModify');
+//     const btnreviewModifyCancel = document.querySelector('#btn_reviewModifyCancel');
+//
+//     btnreviewModify.addEventListener('click', async () => {
+//
+//         const data = {
+//             reviewseq: reviewseq,
+//             reviewcontent: document.querySelector('#modify_reviewcontent').value
+//         };
+//
+//         await fetch('/product/review?option=U', {
+//             method: 'POST',
+//             headers: { "Content-Type": "application/json" },
+//             body: JSON.stringify(data)
+//         }).catch((error) => {
+//             console.log("error = " + error);
+//             alert("서버 장애로 리뷰 수정이 실패했습니다.");
+//         });
+//
+//         document.querySelector('#reviewList').innerHTML = '';
+//         // startupPage();
+//
+//     });
+//
+//     btnreviewModifyCancel.addEventListener('click', () => {
+//         if (confirm('정말로 취소하시겠습니까?') == true) {
+//             document.querySelector('#reviewList').innerHTML = '';
+//             startupPage();
+//         }
+//     });
+// }
 
-            //리뷰 내용 임시 저장
-            const modifyreviewContent = document.querySelector('#c' + reviewseq);
+// 리뷰 등록 취소
+const reviewCancel = () => {
+    if (confirm('정말로 취소하시겠습니까?') == true) {
+        document.querySelector('#reviewcontent').value = '';
+        document.querySelector('#reviewcontent').focus();
+    }
+}
 
-            var strreviewList = "작성자 : [[${session.nickname}]]&nbsp;"
-                + "<input type='button' id='btn_reviewModify' value='수정'>"
-                + "<input type='button' id='btn_reviewModifyCancel' value='취소'>"
-                + "<input type='hidden' name='reviewseq' value='" + reviewseq + "'>"
-                + "<input type='hidden' name='bookid' value='[[${view.bookid}]]'>"
-                + "<input type='hidden' id='reviewer' name='reviewer' value='[[${session.nickname}]]'>"
-                + "<input type='hidden' id='userid' name='userid' value='[[${session.userid}]]'><br>"
-                + "<textarea id='modify_reviewcontent' name='reviewcontent' cols='80' rows='5' maxlength='150' placeholder='글자수:150자 이내'>"
-                + modifyreviewContent.innerHTML + "</textarea><br>";
 
-            let elm = document.createElement('div'); //<div></div>
-            elm.innerHTML = strreviewList;
-
-            //개별 리뷰 목록을 둘러 싸고 있는 div
-            let parentDiv = document.querySelector('#s' + reviewseq).parentNode;
-            parentDiv.insertBefore(elm,document.querySelector('#s' + reviewseq));
-            document.querySelector('#s' + reviewseq).style.display = 'none';
-
-            const btnreviewModify = document.querySelector('#btn_reviewModify');
-            const btnreviewModifyCancel = document.querySelector('#btn_reviewModifyCancel');
-
-            btnreviewModify.addEventListener('click', async ()=> {
-
-                // let formData = new FormData();
-                // formData.append("reviewseq", reviewseq);
-                // formData.append("reviewcontent", modify_reviewcontent.value);
-                const data = {
-                    reviewseq: reviewseq,
-                    reviewcontent: modify_reviewcontent.value
-                };
-
-                await fetch('/product/review?option=U',{
-
-                    method: 'POST',
-                    headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify(data)
-                }).catch((error) => {
-                    console.log("error = " + error);
-                    alert("서버 장애로 리뷰 수정이 실패했습니다.");
-                });
-
-                document.querySelector('#reviewList').innerHTML = '';
-                startupPage();
-
-            });
-
-            btnreviewModifyCancel.addEventListener('click',()=> {
-                if(confirm('정말로 취소하시겠습니까?')==true){
-                    document.querySelector('#reviewList').innerHTML = '';
-                    startupPage();
-                }
-            });
-        }
-
-        //리뷰 등록 취소
-        const reviewCancel = () => {
-            if(confirm('정말로 취소하시겠습니까?')==true){
-                reviewcontent.value = '';
-                reviewcontent.focus();
-            }
-
-        }
-
-        function checkAndAlert() {
+function checkAndAlert() {
             var reviewContentTextarea = document.getElementById("reviewcontent");
             var currentNickname =document.getElementById("reviewer");
             var currentUserid = '[[${session.userid}]]';
@@ -378,9 +378,9 @@ const startupPage = async () => {
     </script>
 </head>
 <body>
-<script>
-    startupPage();
-</script>
+<!--<script>-->
+<!--    startupPage();-->
+<!--</script>-->
 <header>
     <h1>교보문고</h1>
 </header>
@@ -395,10 +395,10 @@ const startupPage = async () => {
 <br><br><br>
 <div class="book-details">
     <div class="book-image-container"><br><br>
-        <img class="book-image" src="/images/Demian.jpg" alt="책 이미지">
+        <img class="book-image" src="/images/ITIT.jpg" alt="책 이미지">
         <div class="likes-reviews">
 <!--            <p class="book-likes">좋아요: 00</p>-->
-            <p class="book-reviews">후기: 00</p>
+<!--            <p class="book-reviews">후기: 00</p>-->
         </div>
     </div>
     <div class="book-info" th:if="${view != null}"><br><br>
@@ -422,26 +422,139 @@ const startupPage = async () => {
     <form id="reviewForm" name="reviewForm" method="POST">
         <input type="hidden" id="bookid" name="bookid" th:value="${view.bookid}">
         <input type="hidden" id="userid" name="userid" th:value="${session.userid}">
-    작성자: <input type="text" id="reviewer" name="reviewer" th:value="${nickname}" readonly>
+        작성자: <input type="text" id="reviewer" name="reviewer" th:value="${nickname}" readonly>
         <br><br>
 
-
-<!--        <label for="reviewcontent">리뷰 내용: </label>-->
+        <!-- 리뷰 내용 입력 폼 -->
         <textarea id="reviewcontent" name="reviewcontent" cols="80" rows="5" maxlength="150" placeholder="글자수: 150자 이내"
                   onfocus="checkAndAlert()"></textarea><br>
     </form>
 
+    <!-- 리뷰 등록 버튼 -->
     <input type="button" id="btn_review" value="리뷰 등록" onclick="reviewRegister()">
+
+    <!-- 리뷰 취소 버튼 -->
     <input type="button" id="btn_cancel" value="취소" onclick="reviewCancel()">
     <hr>
-    <div id="reviewList" style="width:100%; height:600px; overflow:auto;"></div>
-    <div>[(${pageList})]</div>
+
+    <!-- 리뷰 목록 테이블 -->
+    <table id="reviewList" style="width:100%; height:600px; overflow:auto;">
+        <tr>
+            <th>작성자</th>
+            <th>리뷰 내용</th>
+            <th>수정 및 삭제</th>
+        </tr>
+        <tr th:each="list, index: ${list}">
+            <td th:text="${list.reviewer}"></td>
+            <td th:text="${list.reviewcontent}"></td>
+            <td>
+                <!-- 리뷰 수정 버튼 -->
+                <a th:if="${session.userid}" th:href="'javascript:reviewModify(' + ${list.reviewseq} + ')'"
+                   style="cursor:pointer" id="btnReviewModify">수정</a>
+
+                <!-- 리뷰 삭제 버튼 -->
+                <a th:if="${list.userid == session.userid}" th:href="'javascript:reviewDelete(' + ${list.reviewseq} + ')'"
+                   style="cursor:pointer" id="btnReviewDelete">삭제</a>
+
+                <!-- 리뷰 수정 확인 버튼 -->
+                <input type="button" id="btnReviewModifyConfirm" value="수정 확인">
+
+                <!-- 리뷰 수정 취소 버튼 -->
+                <input type="button" id="btnReviewModifyCancel" value="수정 취소">
+
+            </td>
+        </tr>
+    </table>
+
+    <!-- 리뷰 수정 폼 -->
+    <div id="modifyReviewForm" style="display: none;">
+        <textarea id="modifyReviewContent" cols="80" rows="5" maxlength="150" placeholder="글자수: 150자 이내"></textarea><br>
+        <input type="button" id="btn_reviewModify" value="수정">
+        <input type="button" id="btn_reviewModifyCancel" value="취소">
+    </div>
+
+    <!-- 페이지 목록 출력 -->
+    <div th:utext="${pageList}"></div>
+
+    <script>
+        const reviewModify = (reviewseq, reviewcontent) => {
+            // 리뷰 내용을 수정 폼에 설정
+            document.getElementById('modifyReviewContent').value = reviewcontent;
+
+            // 수정 버튼 클릭 이벤트 설정
+            document.getElementById('btn_reviewModify').addEventListener('click', async () => {
+                const modifiedReviewContent = document.getElementById('modifyReviewContent').value;
+
+                // 리뷰 일련번호 가져오기
+                const reviewseq = reviewseq;
+
+                const data = { reviewseq, reviewcontent: modifiedReviewContent };
+
+                try {
+                    const response = await fetch('/product/review?option=U', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('리뷰 수정이 실패했습니다.');
+                    }
+
+                    // 수정이 완료되면 리뷰 목록을 갱신
+                    await refreshReviewList();
+
+                    // 수정 폼 숨기기
+                    document.getElementById('modifyReviewForm').style.display = 'none';
+                } catch (error) {
+                    console.error('리뷰 수정 오류:', error);
+                    alert('리뷰 수정이 실패했습니다.');
+                }
+            });
+
+            // 취소 버튼 클릭 이벤트 설정
+            document.getElementById('btn_reviewModifyCancel').addEventListener('click', () => {
+                // 수정 폼 숨기기
+                document.getElementById('modifyReviewForm').style.display = 'none';
+            });
+        };
+
+
+        const refreshReviewList = async () => {
+            // 리뷰 목록을 다시 불러오는 코드 작성
+
+            try {
+                // 서버에서 리뷰 목록을 가져오는 API 엔드포인트에 요청을 보냅니다.
+                const response = await fetch('/product/review?option=L', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    // 필요한 경우 요청에 필요한 데이터를 추가합니다.
+                    // 예: body: JSON.stringify({ bookid: ... }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('리뷰 목록을 가져오는데 실패했습니다.');
+                }
+
+                // 서버에서 받은 데이터를 JSON 형식으로 파싱합니다.
+                const data = await response.json();
+
+                // 가져온 리뷰 목록을 화면에 반영하는 로직을 호출합니다.
+                updateReviewList(data);
+            } catch (error) {
+                console.error('리뷰 목록 업데이트 오류:', error);
+                alert('리뷰 목록을 가져오는데 실패했습니다.');
+            }
+        };
+
+
+    </script>
+
+
+
+
+
 </div>
-
-
-
-
-
 
 </body>
 
