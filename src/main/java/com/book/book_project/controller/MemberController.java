@@ -1,20 +1,16 @@
 package com.book.book_project.controller;
 
 import com.book.book_project.dto.DeliverAddrDTO;
-import com.book.book_project.entity.DeliveryAddrEntity;
-import com.book.book_project.entity.PurchaseInfoEntity;
-import com.book.book_project.entity.MemberEntity;
+import com.book.book_project.entity.*;
 import com.book.book_project.service.AddressService;
 import com.book.book_project.service.DeliveryService;
 import com.book.book_project.dto.*;
-import com.book.book_project.entity.BuyerInfoEntity;
 import com.book.book_project.service.*;
 import com.nimbusds.openid.connect.sdk.claims.Address;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import com.book.book_project.entity.repository.UnMemberRepository;
-import com.book.book_project.entity.AddressEntity;
 import com.book.book_project.util.PageUtil;
 import jakarta.servlet.http.HttpSession;
 import com.book.book_project.dto.MemberDTO;
@@ -313,8 +309,20 @@ public class MemberController {
     }
 
     //비회원 구매내역 조회 화면
-    @GetMapping("/member/unMemberPurchaseList")
-    public void getUnMemberPurchasesList() {}
+//    @GetMapping("/member/unMemberPurchaseList")
+//    public void getUnMemberPurchaseList(Model model, HttpSession session,PurchaseInfoService purchaseInfoService) throws Exception {
+//        UnMemberEntity unmemberseq = (UnMemberEntity)
+//        List<UnMemberEntity> unMemberEntityList=unMemberService.unMemberInfo(unmembertelno);
+//
+//        List<PurchaseInfoEntity> purchaseInfoList = new ArrayList<>();
+//
+//        for(UnMemberEntity unMemberEntity:unMemberEntityList){
+//            UnMemberEntity unmembertelno = unMemberEntity;
+//            List<PurchaseInfoEntity> purchaseList = purchaseInfoService.unMemberPurchaseList(unmembertelno);
+//            purchaseInfoList.addAll(purchaseList);
+//            model.addAttribute("purchaseList",purchaseInfoList);
+//        }
+//    }
 
 
     //비회원 로그인 화면
