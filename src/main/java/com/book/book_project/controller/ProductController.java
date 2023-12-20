@@ -2,6 +2,7 @@ package com.book.book_project.controller;
 
 import com.book.book_project.dto.ProductDTO;
 import com.book.book_project.dto.ReviewInterface;
+import com.book.book_project.dto.ReviewInterfaceImpl;
 import com.book.book_project.entity.ProductEntity;
 import com.book.book_project.entity.ReviewEntity;
 import com.book.book_project.entity.repository.ProductRepository;
@@ -30,7 +31,6 @@ public class ProductController {
     private final ReviewService reviewService;
     private final ProductRepository productRepository;
 
-
     // main화면 보기
     @GetMapping("/product/main")
     public void getMain(Model model) {
@@ -50,23 +50,21 @@ public class ProductController {
         int pageListCount = 5; //화면 하단에 보여지는 페이지리스트의 페이지 갯수
 
         PageUtil page = new PageUtil();
-        Page<ReviewEntity> list = reviewService.reviewView(pageNum, postNum);
+        Page<ReviewEntity> list = reviewService.list(pageNum, postNum);
         int totalCount = (int)list.getTotalElements();
+        String userid = (String)session.getAttribute("userid");
+        String nickname = memberService.memberInfo(userid).getNickname();
 
 
-        if(session.getAttribute("userid")!=null){
-            String userid = (String)session.getAttribute("userid");
-            String nickname = memberService.memberInfo(userid).getNickname();
-            model.addAttribute("nickname", nickname);
-        }
-
-
+        model.addAttribute("nickname", nickname);
         model.addAttribute("view", service.view(bookid));
-        model.addAttribute("list", service.list(pageNum,postNum));
+        model.addAttribute("list", reviewService.list(pageNum,postNum));
         model.addAttribute("totalElement", totalCount);
         model.addAttribute("postNum", postNum);
         model.addAttribute("page", pageNum);
         model.addAttribute("pageList", page.getPageList(pageNum, postNum, pageListCount,totalCount));
+
+
 
     }
 
@@ -105,12 +103,9 @@ public class ProductController {
 
     //리뷰 처리
     @ResponseBody
-    @PostMapping("/product/review")
-    public List<ReviewInterface> postReview(@RequestBody ReviewInterface review, @RequestParam("option") String option) throws Exception {
+    @PostMapping(value = "/product/review")
+    public List<ReviewInterface> postReview(@RequestBody ReviewInterfaceImpl review, @RequestParam("option") String option) throws Exception {
 
-
-        System.out.println(review.getReviewer());
-        System.out.println(option);
         switch (option) {
 
             case "I":
@@ -121,10 +116,6 @@ public class ProductController {
                 break;
             case "D":
                 reviewService.reviewDelete(review); //리뷰 삭제
-                break;
-
-            case "L":
-                reviewService.reviewView(review); // 리뷰 목록 조회
                 break;
         }
 
