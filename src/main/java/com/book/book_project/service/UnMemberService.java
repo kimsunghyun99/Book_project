@@ -6,9 +6,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface UnMemberService {
 
-    //비회원 정보
-    public UnMemberDTO unMemberInfo(String unmembertelno);
+    public UnMemberDTO unmemberInfo(String temppassword);
 
-    //비회원 구매번호 조회
-    //public
+    public int unmemberpurchasenum(int unmemberseq);
 }
