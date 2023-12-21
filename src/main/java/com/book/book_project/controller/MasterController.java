@@ -38,62 +38,62 @@ public class MasterController {
     @GetMapping("/master/bookUpdate")
     public void getBookUpdate() throws Exception {
         String key = "ttbdpfwnl01191710001";
-        String title = "프로그래밍"; // 검색하려는 제목
-        URL url = new URL("http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=" + key
-                + "&Query=" + URLEncoder.encode(title, "UTF-8") + "&QueryType=Title"
-                + "&MaxResults=50&start=1&output=js&Version=20131101");
+        String [] title = {"데이터베이스구축","access","자바","Oracle","MS SQL Server"};// 검색하려는 제목
+        String [] categoryid={"1714","2065","2502","2509","2510"};
 
+         for(int i=0; i<title.length; i++){
+            URL url = new URL("http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=" + key
+                    + "&Query=" + URLEncoder.encode(title[i], "UTF-8") + "&QueryType=Title&CategoryId="+categoryid[i]
+                    + "&MaxResults=50&start=1&output=js&Version=20131101");
+            System.out.println(url);
 
+            BufferedReader bf = new BufferedReader(new InputStreamReader(url.openStream(),"UTF-8"));
+            String result = "";
+            String line;
+            while((line = bf.readLine()) != null) {
+                result = result.concat(line);
+            }
+            System.out.println(result);
 
-        System.out.println(url);
+            bf.close();
 
-        BufferedReader bf = new BufferedReader(new InputStreamReader(url.openStream(),"UTF-8"));
-        String result = "";
-        String line;
-        while((line = bf.readLine()) != null) {
-            result = result.concat(line);
-        }
-        System.out.println(result);
+            JSONParser jsonParser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
+            JSONArray itemArray = (JSONArray) jsonObject.get("item");
+            System.out.println(jsonObject);
+            List<ProductEntity> productList = new ArrayList<>();
 
-        bf.close();
+            if(itemArray != null) {
+                for(Object itemObj : itemArray) {
+                    JSONObject itemInfo = (JSONObject) itemObj;
+                    ProductEntity product = new ProductEntity();
 
-        JSONParser jsonParser = new JSONParser();
-        JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
-        JSONArray itemArray = (JSONArray) jsonObject.get("item");
-        System.out.println(jsonObject);
-        List<ProductEntity> productList = new ArrayList<>();
+                    product.setBookname((String) itemInfo.get("title"));
+                    product.setAuthor((String) itemInfo.get("author"));
+                    product.setPublisher((String) itemInfo.get("publisher"));
+                    product.setPrice((Integer) itemInfo.get("priceStandard"));
+                    product.setStock((String) itemInfo.get("stockStatus"));
+                    product.setDescription((String) itemInfo.get("description"));
+                    product.setCover((String) itemInfo.get("cover"));
+                    product.setRegdate(new Timestamp(System.currentTimeMillis()));
+                    product.setBookid((String) itemInfo.get("isbn"));
+                    product.setPublicationdate((String) itemInfo.get("pubDate"));
+                    product.setSalespoint((Integer) itemInfo.get("salesPoint"));
+                    // api에서 받아온 categoryId를 int로 변환하여 설정
+                    int categoryId = (Integer) itemInfo.get("categoryId");
 
-        if(itemArray != null) {
-            for(Object itemObj : itemArray) {
-                JSONObject itemInfo = (JSONObject) itemObj;
-                ProductEntity product = new ProductEntity();
+                    // categoryDB에서 categoryId에 해당하는 데이터 조회
+                    CategoryEntity category = categoryRepository.findById(categoryId);
 
-                product.setBookname((String) itemInfo.get("title"));
-                product.setAuthor((String) itemInfo.get("author"));
-                product.setPublisher((String) itemInfo.get("publisher"));
-                product.setPrice((Integer) itemInfo.get("priceStandard"));
-                product.setStock((String) itemInfo.get("stockStatus"));
-                product.setDescription((String) itemInfo.get("description"));
-                product.setCover((String) itemInfo.get("cover"));
-                product.setRegdate(new Timestamp(System.currentTimeMillis()));
-                product.setBookid((String) itemInfo.get("isbn"));
-                product.setPublicationdate((String) itemInfo.get("pubDate"));
-                product.setSalespoint((Integer) itemInfo.get("salesPoint"));
-                // api에서 받아온 categoryId를 int로 변환하여 설정
-                int categoryId = (Integer) itemInfo.get("categoryId");
+                    if (null != category) {
+                        product.setCategorynumber(category);
+                        System.out.println("if 조건 안 null이 아닌 경우 :  " + category.getCategorynumber());
+                        productList.add(product);
+                        productRepository.save(product); // DB에 저장
 
-                // categoryDB에서 categoryId에 해당하는 데이터 조회
-                CategoryEntity category = categoryRepository.findById(categoryId);
-
-                if (null != category) {
-                    product.setCategorynumber(category);
-                    System.out.println("if 조건 안 null이 아닌 경우 :  " + category.getCategorynumber());
-                    productList.add(product);
-                    productRepository.save(product); // DB에 저장
-
+                    }
+                    //System.out.println("if 조건 밖 null인 경우 :  "+ category.getCategorynumber());
                 }
-                //System.out.println("if 조건 밖 null인 경우 :  "+ category.getCategorynumber());
-
             }
         }
     }
