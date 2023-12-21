@@ -17,5 +17,7 @@ public interface ProductService {
     //상세 내용 보기
     public ProductDTO view(String bookid) throws Exception;
 
+    // bookname, cover 가져오기 -> 나중에 interests 토대로 가져올 예정
+    public List<ProductDTO> productlist() throws Exception;
 
 }
