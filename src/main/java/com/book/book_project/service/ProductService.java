@@ -11,8 +11,8 @@ import java.util.List;
 
 
 public interface ProductService {
-//
-//  //게시물 목록 보기
+
+  //게시물 목록 보기
 //    public Page<ReviewEntity> list(int pageNum, int postNum) throws Exception;
 
     //상세 내용 보기

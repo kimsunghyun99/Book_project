@@ -5,6 +5,7 @@ import com.book.book_project.dto.ProductDTO;
 import com.book.book_project.dto.ReviewInterface;
 import com.book.book_project.entity.CartEntity;
 import com.book.book_project.entity.MemberEntity;
+import com.book.book_project.dto.ReviewInterfaceImpl;
 import com.book.book_project.entity.ProductEntity;
 import com.book.book_project.entity.ReviewEntity;
 import com.book.book_project.entity.repository.MemberRepository;
@@ -44,7 +45,7 @@ public class ProductController {
 
     @GetMapping("/product/productInfo")
     public void getProductInfo(@RequestParam("page") int pageNum,
-                               @RequestParam("bookid") String bookid,
+                               @RequestParam("bookid") ProductEntity bookid,
                                Model model,
                                HttpSession session) throws Exception {
 
@@ -59,14 +60,29 @@ public class ProductController {
 
         int postNum = 5; //한 화면에 보여지는 게시물 행의 갯수
         int pageListCount = 5; //화면 하단에 보여지는 페이지리스트의 페이지 갯수
+        System.out.println("ProductEntity1: "+bookid.getClass().getName());
+        System.out.println("ProductEntity2: "+bookid.getBookid());
+        String bookId= String.valueOf(bookid.getBookid());
 
         PageUtil page = new PageUtil();
+        Page<ReviewEntity> list = reviewService.list(bookid, pageNum, postNum);
+        int totalCount = (int)list.getTotalElements();
+        String userid = (String)session.getAttribute("userid");
 //        Page<ReviewEntity> list = service.list(pageNum, postNum);
 //        int totalCount = (int)list.getTotalElements();
         String nickname = memberService.memberInfo(userid).getNickname();
 
 
+
         model.addAttribute("nickname", nickname);
+        model.addAttribute("view", service.view(bookId));
+        model.addAttribute("list", list);
+        model.addAttribute("totalElement", totalCount);
+        model.addAttribute("postNum", postNum);
+        model.addAttribute("page", pageNum);
+        model.addAttribute("pageList", page.getPageList(pageNum, postNum, pageListCount,totalCount, bookId));
+
+
         model.addAttribute("view", service.view(bookid));
         model.addAttribute("bCartQuantity", cartService.bCartQuantity(userid,bookid));  // 장바구니에 있는 해당 상품 개수 세기
      //   model.addAttribute("bCartCount", service.bCartCount)   // 안 만듬
@@ -150,12 +166,9 @@ public class ProductController {
 
     //리뷰 처리
     @ResponseBody
-    @PostMapping("/product/review")
-    public List<ReviewInterface> postReview(@RequestBody ReviewInterface review, @RequestParam("option") String option) throws Exception {
+    @PostMapping(value = "/product/review")
+    public List<ReviewInterface> postReview(@RequestBody ReviewInterfaceImpl review, @RequestParam("option") String option) throws Exception {
 
-
-        System.out.println(review.getReviewer());
-        System.out.println(option);
         switch (option) {
 
             case "I":
@@ -166,10 +179,6 @@ public class ProductController {
                 break;
             case "D":
                 reviewService.reviewDelete(review); //리뷰 삭제
-                break;
-
-            case "L":
-                reviewService.reviewView(review); // 리뷰 목록 조회
                 break;
         }
 

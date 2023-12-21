@@ -21,13 +21,15 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService{
 
     private final ProductRepository productRepository;
+    private final ReviewRepository reviewRepository;
 
-    //댓글 목록 보기
+//    댓글 목록 보기
 //    @Override
 //    public Page<ReviewEntity> list(int pageNum, int postNum) throws Exception {
-//        PageRequest pageRequest = PageRequest.of(pageNum - 1, postNum, Sort.by(Sort.Direction.DESC,"reviewseq"));
-//        return productRepository.findAll(bookid,  pageRequest);
+//        PageRequest pageRequest = PageRequest.of(pageNum - 1, postNum, Sort.by(Sort.Direction.DESC, "reviewseq"));
+//        return reviewRepository.findAll(pageRequest);
 //    }
+
 
     //책 내용 보기
     //
