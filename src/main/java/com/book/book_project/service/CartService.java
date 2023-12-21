@@ -2,6 +2,7 @@ package com.book.book_project.service;
 
 import com.book.book_project.dto.CartDTO;
 import com.book.book_project.entity.CartEntity;
+import com.book.book_project.entity.MemberEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public interface CartService {
     public int bCartCount(String userid);
 
     // 장바구니에 담긴 상품 목록보기
-    public List<CartDTO> bCartView(String userid);
+//    public List<CartDTO> bCartView(String userid);
 
 
 }

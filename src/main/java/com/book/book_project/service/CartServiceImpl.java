@@ -1,6 +1,7 @@
 package com.book.book_project.service;
 
 import com.book.book_project.dto.CartDTO;
+import com.book.book_project.dto.ReviewInterface;
 import com.book.book_project.entity.CartEntity;
 import com.book.book_project.entity.MemberEntity;
 import com.book.book_project.entity.ProductEntity;
@@ -10,6 +11,7 @@ import com.book.book_project.entity.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Member;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -44,6 +46,8 @@ class CartServiceImpl implements CartService {
         cartRepository.save(cartEntity);
 
     };
+
+    @Override
     // 장바구니 업뎃 // 있을 시
     public void bCartUpdate(String userid, String bookid, int cartvolume){
 
@@ -58,16 +62,20 @@ class CartServiceImpl implements CartService {
     };
 
 
+
     // 장바구니 몇개의 종류 있는지 세기
+    @Override
     public int bCartCount(String userid) {
        return cartRepository.bCartCount(userid);
     }
 
 
     // 장바구니에 담긴 상품 목록보기
-    public List<CartDTO> bCartView(String userid) {
-        return cartRepository.bCartView(userid);
-    };
+//    @Override
+//    public List<CartDTO> bCartView(String userid) {
+//       // MemberEntity memberEntity = new MemberEntity();
+//        return cartRepository.bCartView(userid);
+//    };
 
 
 

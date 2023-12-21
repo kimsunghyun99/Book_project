@@ -20,12 +20,6 @@ public class CartDTO {
     private int cartvolume;
     private Timestamp cartregdate;
 
-    private String stock;
-    private String cover;
-    private String bookname;
-    private String publisher;
-    private int pricesales;
-    private int cart_amount;
 
 
 
@@ -57,4 +51,6 @@ public class CartDTO {
 
 
     }
+
+
 }

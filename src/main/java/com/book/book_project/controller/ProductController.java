@@ -8,6 +8,7 @@ import com.book.book_project.entity.MemberEntity;
 import com.book.book_project.dto.ReviewInterfaceImpl;
 import com.book.book_project.entity.ProductEntity;
 import com.book.book_project.entity.ReviewEntity;
+import com.book.book_project.entity.repository.CartRepository;
 import com.book.book_project.entity.repository.MemberRepository;
 import com.book.book_project.entity.repository.ProductRepository;
 import com.book.book_project.service.*;
@@ -20,6 +21,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Member;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +36,7 @@ public class ProductController {
     private final ProductRepository productRepository;
     private final MemberRepository memberRepository;
     private final CartService cartService;
+    private  final CartRepository cartRepository;
 
     // main화면 보기
     @GetMapping("/product/main")
@@ -40,7 +44,7 @@ public class ProductController {
         List<ProductEntity> bookList=productRepository.getProductList();
         model.addAttribute("bookListId", bookList.get(0).getBookid()); // 이거 null -> 수ㅡ정필요
 
-        System.out.println(bookList.get(0).getBookid());
+        //System.out.println(bookList.get(0).getBookid());
     }
 
     @GetMapping("/product/productInfo")
@@ -53,6 +57,12 @@ public class ProductController {
 
         MemberEntity memberEntity = memberRepository.findById(userid).orElse(null);
         ProductEntity productEntity = productRepository.findById(bookid).orElse(null);;
+//
+//       List<CartEntity> cart_userid_List = cartRepository.getCartList();
+//        model.addAttribute("cart_userid_List", cart_userid_List.get(0));
+     //   System.out.println(cart_userid_List.size());
+
+
 
         CartDTO cartDTO = new CartDTO();
         cartDTO.setUserid(memberEntity);
@@ -117,11 +127,31 @@ public class ProductController {
 
 
         // 비회원일 경우 ( seession 이 존재하느냐를 따져서 해야함 -> 일단 회원만 되게 설정)
-        String userid = (String)session.getAttribute("userid")==null?"":(String)session.getAttribute("email");
 
+        String userid = (String)session.getAttribute("userid");
+        MemberEntity memberEntity = new MemberEntity();
+        memberEntity.setUserid(userid);
+        //System.out.println(userid);
+        List<CartDTO> cartList=cartRepository.findByUserid(userid);
+
+
+        System.out.println("cartList"+cartList.size());
+        // memberentitty형인 userid 는 cartdto 에서 밖에 못꺼낸다
+
+//        memberEntityCartDTO.getUserid(userid).getUserid());
+//        CartDTO cartDTO = new CartDTO();
+//  --> cartdto.get(기본키).getUserid
+
+        // 장바구니 몇개의 종류 있는지 세기
         model.addAttribute("pCartCount", cartService.bCartCount(userid));
-        model.addAttribute("list", cartService.bCartView(userid));
-        System.out.println(cartService.bCartView(userid).get(0)); // -> list 길이 0 나옴 -> 값 못가져온단소리
+        // cart 목록 불러오기
+//        model.addAttribute("list", );
+
+
+
+        //  System.out.println("list길이" + cartService.bCartView(userid).get(0)); // -> list 길이 0 나옴 -> 값 못가져온단소리
+        //System.out.println("pCartCount"+cartService.bCartCount(userid));
+
 
     }
 
