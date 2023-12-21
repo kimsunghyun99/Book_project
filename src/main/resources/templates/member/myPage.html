@@ -1,48 +1,32 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Title</title>
-<Style>
-
-        .book-list-control {
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
             display: flex;
-            justify-content: right;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
         }
 
-        .book-list-control button{
-            margin : 0 5px;
+        h2, h4 {
+            margin: 10px 0;
         }
-        .book-list {
-            display : flex;
-            justify-content : space-around;
-            flex-wrap: wrap;
-        }
-        .book-image {
-            width: 200px;
-            height: 300px;
-            border: 1px solid black;
-            object-fit: cover;
-        }
-        .book {
-            position: relative;
-            border : 1px solid black;
-            padding : 10px;
-            margin : 5px;
-            flex-basis: calc(25% - 1px);
-        }
-        .book-select {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-        }
+
         .table-container {
-            width: 80%;
-            margin: 0 auto;
+            width: 60%;
+            margin: 20px auto;
             display: grid;
-            grid-template-columns: 1fr; /* 1개의 컬럼 */
-            grid-row-gap: 20px; /* 행 간격 */
+            grid-template-columns: 1fr;
+            grid-row-gap: 20px;
         }
 
         table {
@@ -59,76 +43,64 @@
         th {
             background-color: #f2f2f2;
         }
-#qq {
-    display: flex;
-    justify-content: space-between;
 
-}
-        #qq span:last-child {
-            text-align: right; /* 더보기 오른쪽 정렬 */
+        #qq {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
         }
 
-    </Style>
+        .InfoTable th, .InfoTable td {
+            text-align: center;
+        }
+
+        a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #5a5a5a;
+        }
+
+        .InfoTable {
+            margin-top: -50px;
+        }
+    </style>
 </head>
 <body>
+<div class="table-container">
+    <div id="qq">
+        <h4>
+            <span th:text="${memberInfo.nickname}"></span> /
+            <a href="/member/memberInfoModify">정보수정</a>
+        </h4>
+    </div>[({
+    <h2>community</h2>
 
-<br><br>
-<h2 style="text-align:right" th:text="${memberInfo.username} + ' 님 등급 : vip'"> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <a href="/">장바구니</a></h2>
-<br><br>
-<h4 th:text="${memberInfo.username} + ' 님 등급 : vip'"><a href="/">정보수정</a></h4>
+    <ul>
+        <li>community </li>
+        <li>community </li>
+        <li>community </li>
+    </ul>
 
-<br><br><br><br>
+    <table class="InfoTable">
+
 <div class="table-container">
     <table class="InfoTable">
         <tr>
             <th>포인트</th>
-            <th>최근 로그인</th>
             <th>구매내역</th>
-            <th>내 후기</th>
-
+            <th>리뷰</th>
+            <th>장바구니</th>
         </tr>
         <tr>
-            <td>190</td>
-            <td>2023-12-04</td>
-            <td>2개</td>
-            <td>4개</td>
-
+            <td th:text="${memberInfo.point}"></td>
+            <td></td>
+            <td th:text="${countReviewsByUserId}"></td>
+            <td></td>
         </tr>
     </table>
-</div>
-
-
-<br><br><br><br>
-
-<div id="qq">
-즐겨찾기
-    더보기
-</div>
-<br><br>
-<div class = "book-list">
-    <div class = "book">
-        <input type="checkbox" class="book-select">
-        <img src="#" alt="book image" class="book-image">
-        <h2>책 제목1</h2>
-        <p>가격</p>
-    </div>
-
-    <div class = "book">
-        <input type="checkbox" class="book-select">
-        <img src="#" alt="book image" class="book-image">
-        <h2>책 제목2</h2>
-        <p>가격</p>
-    </div>
-
-    <div class = "book">
-        <input type="checkbox" class="book-select">
-        <img src="#" alt="book image" class="book-image">
-        <h2>책 제목3</h2>
-        <p>가격</p>
-    </div>
-
-
-
 </div>
 </body>
 </html>

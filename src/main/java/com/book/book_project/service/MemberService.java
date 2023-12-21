@@ -26,7 +26,11 @@ public interface MemberService {
     // 회원정보 수정
     public void modifyMember(String userid,String username, String nickname,String telno);
 
+    //마지막 로그인 날짜 기록
+    public void lastloginUpdate(MemberDTO member);
 
+    //마지막 로그아웃 날짜 기록
+    public void lastlogoutUpdate(MemberDTO member);
 
     //아이디 찾기
     public String idSearch(MemberDTO member);
@@ -40,17 +44,16 @@ public interface MemberService {
     //주소 검색
     public Page<AddressEntity> addrSearch(int pageNum, int postNum, String addrSearch);
 
-
-
     //아이디 중복 확인
     public int idCheck(String userid);
 
     //회원 구매, 주문 목록 갯수 구하기
     public Long countJoinedRecordsByUserId(String userid);
 
-    //즐겨찾기 정보 가져오기
-    public List<FavoritesEntity> findFavoritesByUserId(String userid);
 
+
+    //리뷰 갯수 가져오기
+    public long countReviewsByUserId(String userid);
 
 
 

@@ -26,7 +26,6 @@ public class ProductController {
     // main화면 보기
     @GetMapping("/product/main")
     public void getMain(HttpSession session) {
-        String userid = (String)session.getAttribute("userid");
     }
 
     @GetMapping("/product/productInfo")

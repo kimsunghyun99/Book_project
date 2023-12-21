@@ -48,8 +48,8 @@ public class MemberController {
     @Autowired
     DeliveryService deliveryService;
 
-    @Autowired
-    LikeService likeService;
+//    @Autowired
+//    LikeService likeService;
 
     @Autowired
     private BCryptPasswordEncoder pwdEncoder;
@@ -257,24 +257,40 @@ public class MemberController {
             return "{\"message\":\"ID_NOT_FOUND\"}";
         }
 
+        service.lastloginUpdate(member);
+
         //비밀번호가 올바르게 들어왔는지 정확도 여부 확인
         if(!pwdEncoder.matches(member.getPassword(), service.memberInfo(member.getUserid()).getPassword())){
             //잘못된 패스워드 일 경우
             return "{\"message\":\"PASSWORD_NOT_FOUND\"}";
         }
-
         return "{\"message\":\"GOOD\"}";
-
     }
+
+    //로그아웃
+//    @GetMapping("/member/beforeLogout")
+//    public String getBeforeLogout(HttpSession session) {
+//        String userid = (String)session.getAttribute("userid");
+//        String username= (String)session.getAttribute("username");
+//
+//        MemberDTO member = new MemberDTO();
+//        member.setUserid(userid);
+//
+//
+//        service.lastlogoutUpdate(member);
+//
+//        return "redirect:/member/logout";
+//    }
 
     //마이페이지 화면 (23-12-11)
     @GetMapping("/member/mypage")
     public void getMyPage(HttpSession session, Model model) {
         String userid = (String)session.getAttribute("userid");
         model.addAttribute("memberInfo", service.memberInfo(userid));//회원정보 불러오기
-//        model.addAttribute("favoriteInfo", service.findFavoritesByUserId(userid)); // 즐겨찾기 불러오기
-//        model.addAttribute("countJoinedRecordsByUserId", service.countJoinedRecordsByUserId(userid));//구매,주문 목록 갯수 구하기
+        model.addAttribute("countReviewsByUserId", service.countReviewsByUserId(userid));//리뷰 갯수 구하기
+
     }
+
 
     //아이디 찾기 화면
     @GetMapping("/member/idSearch")

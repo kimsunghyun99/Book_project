@@ -54,10 +54,10 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.countJoinedRecordsByUserId(userid);
     }
 
-    //즐겨찾기 정보 가져오기
+    //리뷰 갯수 가져오기
     @Override
-    public List<FavoritesEntity> findFavoritesByUserId(String userid) {
-        return memberRepository.findFavoritesByUserId(userid);
+    public long countReviewsByUserId(String userid){
+        return memberRepository.countReviewsByUserId(userid);
     }
 
     // update tbl_member set password = #{password}, lastpwdate= #{lastpwdate} where userid = #{userid}
@@ -68,9 +68,6 @@ public class MemberServiceImpl implements MemberService {
         memberEntity.setPassword(pwdEncoder.encode(member.getPassword()));
        memberRepository.save(memberEntity);
     }
-
-
-
 
     //회원정보 수정
     @Override
@@ -114,6 +111,27 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findById(member.getUserid())
                 .map(MemberEntity::getPassword).orElse("PW_NOT_FOUND");
     }
+
+    //마지막 로그인 날짜 기록
+    @Override
+    public void lastloginUpdate(MemberDTO member){
+        MemberEntity memberEntity = memberRepository.findById(member.getUserid()).get();
+        memberEntity.setLastlogindate(member.getLastlogindate());
+        memberRepository.save(memberEntity);
+    }
+    //마지막 로그아웃 날짜 기록
+    @Override
+    public void lastlogoutUpdate(MemberDTO member){
+        MemberEntity memberEntity = memberRepository.findById(member.getUserid()).get();
+        memberEntity.setLastlogoutdate(member.getLastlogoutdate());
+        memberRepository.save(memberEntity);
+    }
+
+
+
+
+
+
 
 //    @Override
 //    public BuyerInfoDTO buyerAndPurchaseInfo(String userid) {
