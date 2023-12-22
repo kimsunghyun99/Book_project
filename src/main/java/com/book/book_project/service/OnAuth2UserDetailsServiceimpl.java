@@ -46,16 +46,17 @@ public class OnAuth2UserDetailsServiceimpl extends DefaultOAuth2UserService {
 				Map<String, Object> response = (Map<String, Object>) attributes.get("response");
 				providerId = response.get("id").toString();
 				email = (String) response.get("email");
+				System.out.println(response);
 			} else if (provider.equals("google")) {  // 구글 로그인인 경우
 				providerId = oAuth2User.getAttribute("sub");
 				email = oAuth2User.getAttribute("email");
 			} else if (provider.equals("kakao")) { //카카오 로그인인 경우
 				Map<String, Object> attributes = oAuth2User.getAttributes();
 				Map<String, Object> response = (Map<String, Object>) attributes.get("kakao_account");
-				System.out.println(response);
 				providerId = response.get("profile").toString();
 				email = response.get("email").toString();
 			}
+
 
 		log.info("provider = {}", provider);
 		log.info("providerId = {}", providerId);
@@ -78,11 +79,11 @@ public class OnAuth2UserDetailsServiceimpl extends DefaultOAuth2UserService {
 		memberOAuth2DTO.setAuthorities(grantedAuthorities);
 		memberOAuth2DTO.setName(member.getUsername());
 
-		session.setAttribute("email", email);
+		session.setAttribute("userid", email);
 		session.setAttribute("username", member.getUsername());
 		session.setAttribute("role", member.getRole());
 		session.setAttribute("FromSocial","Y");
-
+		//log.info(session.getAttribute("userid"));
 			return memberOAuth2DTO;
 		}
 

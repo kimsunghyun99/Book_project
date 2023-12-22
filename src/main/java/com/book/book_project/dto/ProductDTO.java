@@ -20,13 +20,13 @@ public class ProductDTO {
     private String author;//작가
     private int price;  //원가
     private int pricesales;//할인가
-    private int stock;  //재고
+    private String stock;  //재고
     private String description; //설명
     private String cover;  //표지 이미지
     private Timestamp regdate;  //등록일
-    private String status;  //판매 상태
-    private Timestamp publicationdate;  //출판일
+    private String publicationdate;  //출판일
     private int salespoint;//판매지수
+
     private CategoryEntity categorynumber;    //분류 이름
 
 
@@ -41,7 +41,6 @@ public class ProductDTO {
         this.description = productEntity.getDescription();
         this.cover=productEntity.getCover();
         this.regdate = productEntity.getRegdate();
-        this.status = productEntity.getStatus();
         this.publicationdate = productEntity.getPublicationdate();
         this.salespoint =productEntity.getSalespoint();
         this.categorynumber = productEntity.getCategorynumber();
@@ -61,7 +60,6 @@ public class ProductDTO {
                 .description(dto.getDescription())
                 .cover(dto.getCover())
                 .regdate(dto.getRegdate())
-                .status(dto.getStatus())
                 .publicationdate(dto.getPublicationdate())
                 .salespoint(dto.getSalespoint())
                 .categorynumber(dto.getCategorynumber())
