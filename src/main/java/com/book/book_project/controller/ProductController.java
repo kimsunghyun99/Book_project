@@ -53,20 +53,6 @@ public class ProductController {
                                Model model,
                                HttpSession session) throws Exception {
 
-        String userid = (String)session.getAttribute("userid");
-
-        MemberEntity memberEntity = memberRepository.findById(userid).orElse(null);
-        ProductEntity productEntity = productRepository.findById(bookid).orElse(null);;
-//
-//       List<CartEntity> cart_userid_List = cartRepository.getCartList();
-//        model.addAttribute("cart_userid_List", cart_userid_List.get(0));
-     //   System.out.println(cart_userid_List.size());
-
-
-
-        CartDTO cartDTO = new CartDTO();
-        cartDTO.setUserid(memberEntity);
-        cartDTO.setBookid(productEntity);
 
         int postNum = 5; //한 화면에 보여지는 게시물 행의 갯수
         int pageListCount = 5; //화면 하단에 보여지는 페이지리스트의 페이지 갯수
@@ -92,17 +78,6 @@ public class ProductController {
         model.addAttribute("page", pageNum);
         model.addAttribute("pageList", page.getPageList(pageNum, postNum, pageListCount,totalCount, bookId));
 
-
-        model.addAttribute("view", service.view(bookid));
-        model.addAttribute("bCartQuantity", cartService.bCartQuantity(userid,bookid));  // 장바구니에 있는 해당 상품 개수 세기
-     //   model.addAttribute("bCartCount", service.bCartCount)   // 안 만듬
-
-
-//        model.addAttribute("list", service.list(pageNum,postNum));
-//        model.addAttribute("totalElement", totalCount);
-//        model.addAttribute("postNum", postNum);
-//        model.addAttribute("page", pageNum);
-//        model.addAttribute("pageList", page.getPageList(pageNum, postNum, pageListCount,totalCount));
 
     }
 
@@ -197,7 +172,9 @@ public class ProductController {
     //리뷰 처리
     @ResponseBody
     @PostMapping(value = "/product/review")
-    public List<ReviewInterface> postReview(@RequestBody ReviewInterfaceImpl review, @RequestParam("option") String option) throws Exception {
+    public List<ReviewInterface> postReview(@RequestBody ReviewInterfaceImpl review, @RequestParam("option") String option,@RequestParam("page") int pageNum,
+                                            @RequestParam("bookid")
+                                            ProductEntity bookid, Model model) throws Exception {
 
         switch (option) {
 
@@ -210,8 +187,24 @@ public class ProductController {
             case "D":
                 reviewService.reviewDelete(review); //리뷰 삭제
                 break;
+            case "L":
+//                // 페이지 처리 로직 추가
+////                List<ReviewInterface> pagedReviews = reviewService.getPagedReviews(page);
+////                return pagedReviews;
+  //              int postNum = 5; //한 화면에 보여지는 게시물 행의 갯수
+//                int pageListCount = 5; //화면 하단에 보여지는 페이지리스트의 페이지 갯수
+//
+                PageUtil page = new PageUtil();
+//                Page<ReviewEntity> pagedReviews = reviewService.list(bookid, pageNum, postNum);
+//
+//                // 모델에 페이징 결과를 추가
+//                model.addAttribute("list", pagedReviews.getContent());
+//                model.addAttribute("totalElement", pagedReviews.getTotalElements());
+     //           model.addAttribute("postNum", postNum);
+                model.addAttribute("page", pageNum);
+//                model.addAttribute("pageList", page.getPageList(pageNum, postNum, pageListCount, pagedReviews.getTotalPages(), String.valueOf(bookid.getBookid())));
+//                return reviewService.reviewView(review);
         }
-
-        return reviewService.reviewView(review);
+                return reviewService.reviewView(review);
     }
 }
