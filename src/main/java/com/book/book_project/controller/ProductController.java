@@ -53,24 +53,28 @@ public class ProductController {
                                Model model,
                                HttpSession session) throws Exception {
 
+        //상품정보를 불러와야함.
+        String bookId= String.valueOf(bookid.getBookid());
+        ProductEntity productEntity = productRepository.findById(bookId).orElse(null);
+
+        CartDTO cartDTO = new CartDTO();
+            cartDTO.setBookid(productEntity);
+
 
         int postNum = 5; //한 화면에 보여지는 게시물 행의 갯수
         int pageListCount = 5; //화면 하단에 보여지는 페이지리스트의 페이지 갯수
         System.out.println("ProductEntity1: "+bookid.getClass().getName());
         System.out.println("ProductEntity2: "+bookid.getBookid());
-        String bookId= String.valueOf(bookid.getBookid());
+
 
         PageUtil page = new PageUtil();
         Page<ReviewEntity> list = reviewService.list(bookid, pageNum, postNum);
         int totalCount = (int)list.getTotalElements();
-        String userid = (String)session.getAttribute("userid");
-//        Page<ReviewEntity> list = service.list(pageNum, postNum);
-//        int totalCount = (int)list.getTotalElements();
-        String nickname = memberService.memberInfo(userid).getNickname();
-
-
-
-        model.addAttribute("nickname", nickname);
+        if(session.getAttribute("userid")!=null){
+            String userid = (String) session.getAttribute("userid");
+            String nickname = memberService.memberInfo(userid).getNickname();
+            model.addAttribute("nickname", nickname);
+        }
         model.addAttribute("view", service.view(bookId));
         model.addAttribute("list", list);
         model.addAttribute("totalElement", totalCount);
@@ -205,6 +209,7 @@ public class ProductController {
 //                model.addAttribute("pageList", page.getPageList(pageNum, postNum, pageListCount, pagedReviews.getTotalPages(), String.valueOf(bookid.getBookid())));
 //                return reviewService.reviewView(review);
         }
-                return reviewService.reviewView(review);
+
+        return reviewService.reviewView(review);
     }
 }
