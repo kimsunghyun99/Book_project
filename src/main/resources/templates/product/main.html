@@ -35,7 +35,7 @@
             color: #FFF;
             text-align: center;
             padding: 10px;
-            position: absolute;
+            position: relative;
             bottom: 0;
             width: 100%;
         }
@@ -83,6 +83,17 @@
 <section>
     <h2>이벤트</h2>
     <p>현재 진행 중인 이벤트 정보를 여기에 추가하세요.</p>
+</section>
+<section>
+    <h2>IT New</h2>
+    <div th:each="news : ${newsList}">
+        <tr style="font-size: 10px">
+
+            <td>
+                <a th:href="${news.url}" th:text="${news.title}"></a>
+            </td>
+        </tr>
+    </div>
 </section>
 
 <footer>

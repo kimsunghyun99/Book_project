@@ -38,12 +38,25 @@ public class MasterController {
     @GetMapping("/master/bookUpdate")
     public void getBookUpdate() throws Exception {
         String key = "ttbdpfwnl01191710001";
-        String [] title = {"데이터베이스구축","access","자바","Oracle","MS SQL Server"};// 검색하려는 제목
-        String [] categoryid={"1714","2065","2502","2509","2510"};
+        String [] title = {
+//                "MS 오피스","워드","엑셀","파워포인트","액세스","한글(한글과컴퓨터)","그래픽 일반","포토샵","3ds max","Maya"
+//                ,"CAD","DTP","웹디자인 입문","웹기획","나모 웹에디터","드림위버","플래시","디렉터","프리미어/베가스","MySQL"
+//                ,"윈도우 프로그래밍","Perl","전산학개론","소프트웨어 공학","알고리즘","전산수학","컴퓨터 공학","SPSS","CGI","MATLAB"
+//                "네트워크","데이터 통신","마이크로프로세서","리눅스","유닉스","게임 프로그래밍","디지털문화","윈도우즈","매킨토시","Windows"
+//                ,"MCP","MCSE","SCJP","Oracle","OCA","OCP","정보기기","정보통신","전자상거래","정보통신공학"
+//                ,"CCNA","CCNP","일러스트레이터","포토샵","모바일","무선","임베디드","웹디자인","홈페이지","ASP"
+//                ,"PHP","Visual C++","Visual Basic","HTML","JavaScript",".NET","C#","ASP.NET","Visual C++.NET","VisualBasic.NET"
+//                ,".NET일반","네트워크 구축","리눅스","C","C++","MOS","MCAS","XML","객체지향 프로그래밍","UML"
+//                ,"SQL","웹서비스","웹프로그래밍","ITQ","프로그래밍 기초","개발 방법론","파이썬","데이터베이스 개론","컬러리스트","사무자동화"
+//                ,"델파이","정보처리기사","정보처리기능사","정보처리산업기사","프로그래밍 개발","방법론","JSP","네트워크 프로그래밍","코렐드로우","페인터"
+//                ,"웹디자인 기능사","Ajax","Ruby","Rails","애플","아이폰","안드로이드","Object C","애플 어플리케이션","GTQ"
+//                ,"Windows 7","Windows 8","스마트폰","태블릿","SNS","모바일 프로그래밍","아이폰","아이패드","안드로이드","모바일"
+//                ,"임베디드","DIAT"
+        };// 검색하려는 제목
 
          for(int i=0; i<title.length; i++){
             URL url = new URL("http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=" + key
-                    + "&Query=" + URLEncoder.encode(title[i], "UTF-8") + "&QueryType=Title&CategoryId="+categoryid[i]
+                    + "&Query=" + URLEncoder.encode(title[i], "UTF-8") + "&QueryType=Title&"
                     + "&MaxResults=50&start=1&output=js&Version=20131101");
             System.out.println(url);
 
