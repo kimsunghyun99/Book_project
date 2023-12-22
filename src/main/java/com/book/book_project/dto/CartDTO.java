@@ -18,7 +18,11 @@ public class CartDTO {
     private MemberEntity userid;
     private ProductEntity bookid;
     private int cartvolume;
-    private Timestamp cartregdate; // 생일
+    private Timestamp cartregdate;
+
+
+
+
 
 //Entity --> DTO
 
@@ -47,4 +51,6 @@ public class CartDTO {
 
 
     }
+
+
 }

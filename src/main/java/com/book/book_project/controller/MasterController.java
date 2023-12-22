@@ -1,7 +1,6 @@
 package com.book.book_project.controller;
 
 
-import com.book.book_project.dto.ProductDTO;
 import com.book.book_project.entity.CategoryEntity;
 import com.book.book_project.entity.ProductEntity;
 import com.book.book_project.entity.repository.CategoryRepository;
@@ -11,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -19,12 +17,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.sql.SQLOutput;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Optional;
 
 
 @Controller
