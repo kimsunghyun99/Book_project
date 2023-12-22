@@ -128,9 +128,12 @@
 <section>
     <h2>인기 도서</h2>
     <ul th:if="${productList.size() > 0}">
-        <li><a href="#">도서 제목 1</a></li>
-        <li><a href="#">도서 제목 2</a></li>
-        <li><a href="#">도서 제목 3</a></li>
+        <li th:each="product, stat : ${productList}" th:if="${stat.count <= 5}">
+            <a th:href="@{'/product/productInfo?bookid=' + ${product.bookid} + '&page=1'}">
+                <img th:src="${product.cover}" alt="책 표지 이미지">
+            </a>
+            <a th:href="@{'/product/productInfo?bookid=' + ${product.bookid} + '&page=1'}"th:text="${product.bookname}"></a>
+        </li>
     </ul>
 </section>
 

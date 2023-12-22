@@ -2,6 +2,7 @@ package com.book.book_project.controller;
 
 import com.book.book_project.dto.NewsDTO;
 import com.book.book_project.dto.ProductDTO;
+import com.book.book_project.entity.ProductEntity;
 import com.book.book_project.service.NewsService;
 import com.book.book_project.service.ProductService;
 import com.book.book_project.dto.CartDTO;
@@ -43,10 +44,11 @@ public class ProductController {
     // main화면 보기
     @GetMapping("/product/main")
     public void getMain(Model model) throws Exception {
-
-        // bookname, cover 가져오기 -> 나중에 interests 토대로 가져올 예정
-        List<ProductDTO> productDTOList = service.productlist();
+        System.out.println("시작");
+       //  bookid, bookname, cover 가져오기 -> 나중에 interests 토대로 가져올 예정
+        List<ProductEntity> productDTOList = service.productlist();
         model.addAttribute("productList", productDTOList);
+
 
 
 

@@ -46,7 +46,7 @@ public class ProductServiceImpl implements ProductService{
     }
     // bookname, cover 가져오기 -> 나중에 interests 토대로 가져올 예정
     @Override
-    public List<ProductDTO> productlist() throws Exception {
+    public List<ProductEntity> productlist() throws Exception {
         return productRepository.productlist();
     }
 
