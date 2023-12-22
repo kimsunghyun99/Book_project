@@ -274,7 +274,7 @@ const count = (type) =>  {
 </header>
 
 <nav>
-    <a href="#">홈</a> |
+    <a href="/product/main">홈</a> |
     <a href="#">도서</a> |
     <a href="#">이벤트</a> |
     <a href="#">마이페이지</a>
@@ -283,7 +283,7 @@ const count = (type) =>  {
 <br><br><br>
 <div class="book-details">
     <div class="book-image-container"><br><br>
-        <img class="book-image" src="/images/book.jpg" alt="책 이미지">
+        <img class="book-image" th:src="${view.cover}" alt="책 이미지">
         <div class="likes-reviews">
             <p class="book-likes">즐겨찾기: 00</p>
             <p class="book-reviews">후기: 00</p>
