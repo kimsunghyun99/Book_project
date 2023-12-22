@@ -1,16 +1,18 @@
 package com.book.book_project.controller;
 
+import com.book.book_project.dto.CartDTO;
 import com.book.book_project.dto.ProductDTO;
 import com.book.book_project.dto.ReviewInterface;
+import com.book.book_project.entity.CartEntity;
+import com.book.book_project.entity.MemberEntity;
 import com.book.book_project.dto.ReviewInterfaceImpl;
 import com.book.book_project.entity.ProductEntity;
 import com.book.book_project.entity.ReviewEntity;
+import com.book.book_project.entity.repository.CartRepository;
+import com.book.book_project.entity.repository.MemberRepository;
 import com.book.book_project.entity.repository.ProductRepository;
+import com.book.book_project.service.*;
 import com.book.book_project.service.FavoritesService;
-import com.book.book_project.service.FavoritesService;
-import com.book.book_project.service.MemberService;
-import com.book.book_project.service.ProductService;
-import com.book.book_project.service.ReviewService;
 import com.book.book_project.util.PageUtil;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Member;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +34,9 @@ public class ProductController {
     private final MemberService memberService;
     private final ReviewService reviewService;
     private final ProductRepository productRepository;
+    private final MemberRepository memberRepository;
+    private final CartService cartService;
+    private  final CartRepository cartRepository;
 
     // main화면 보기
     @GetMapping("/product/main")
@@ -37,34 +44,65 @@ public class ProductController {
         List<ProductEntity> bookList=productRepository.getProductList();
         model.addAttribute("bookListId", bookList.get(0).getBookid()); // 이거 null -> 수ㅡ정필요
 
-        System.out.println(bookList.get(0).getBookid());
+        //System.out.println(bookList.get(0).getBookid());
     }
 
     @GetMapping("/product/productInfo")
     public void getProductInfo(@RequestParam("page") int pageNum,
-                               @RequestParam("bookid") String bookid,
+                               @RequestParam("bookid") ProductEntity bookid,
                                Model model,
                                HttpSession session) throws Exception {
 
+        String userid = (String)session.getAttribute("userid");
+
+        MemberEntity memberEntity = memberRepository.findById(userid).orElse(null);
+        ProductEntity productEntity = productRepository.findById(bookid).orElse(null);;
+//
+//       List<CartEntity> cart_userid_List = cartRepository.getCartList();
+//        model.addAttribute("cart_userid_List", cart_userid_List.get(0));
+     //   System.out.println(cart_userid_List.size());
+
+
+
+        CartDTO cartDTO = new CartDTO();
+        cartDTO.setUserid(memberEntity);
+        cartDTO.setBookid(productEntity);
+
         int postNum = 5; //한 화면에 보여지는 게시물 행의 갯수
         int pageListCount = 5; //화면 하단에 보여지는 페이지리스트의 페이지 갯수
+        System.out.println("ProductEntity1: "+bookid.getClass().getName());
+        System.out.println("ProductEntity2: "+bookid.getBookid());
+        String bookId= String.valueOf(bookid.getBookid());
 
         PageUtil page = new PageUtil();
-        Page<ReviewEntity> list = reviewService.list(pageNum, postNum);
+        Page<ReviewEntity> list = reviewService.list(bookid, pageNum, postNum);
         int totalCount = (int)list.getTotalElements();
         String userid = (String)session.getAttribute("userid");
+//        Page<ReviewEntity> list = service.list(pageNum, postNum);
+//        int totalCount = (int)list.getTotalElements();
         String nickname = memberService.memberInfo(userid).getNickname();
 
 
+
         model.addAttribute("nickname", nickname);
-        model.addAttribute("view", service.view(bookid));
-        model.addAttribute("list", reviewService.list(pageNum,postNum));
+        model.addAttribute("view", service.view(bookId));
+        model.addAttribute("list", list);
         model.addAttribute("totalElement", totalCount);
         model.addAttribute("postNum", postNum);
         model.addAttribute("page", pageNum);
-        model.addAttribute("pageList", page.getPageList(pageNum, postNum, pageListCount,totalCount));
+        model.addAttribute("pageList", page.getPageList(pageNum, postNum, pageListCount,totalCount, bookId));
 
 
+        model.addAttribute("view", service.view(bookid));
+        model.addAttribute("bCartQuantity", cartService.bCartQuantity(userid,bookid));  // 장바구니에 있는 해당 상품 개수 세기
+     //   model.addAttribute("bCartCount", service.bCartCount)   // 안 만듬
+
+
+//        model.addAttribute("list", service.list(pageNum,postNum));
+//        model.addAttribute("totalElement", totalCount);
+//        model.addAttribute("postNum", postNum);
+//        model.addAttribute("page", pageNum);
+//        model.addAttribute("pageList", page.getPageList(pageNum, postNum, pageListCount,totalCount));
 
     }
 
@@ -80,8 +118,63 @@ public class ProductController {
         model.addAttribute("view", service.view(bookid));
     }
 
+
+
+    // 장바구니에 저장된 상품 보기
     @GetMapping("/product/shoppingBasket")
-    public void getShoppingBasket(){}
+    public void getShoppingBasket(Model model, HttpSession session) throws Exception{
+
+
+
+        // 비회원일 경우 ( seession 이 존재하느냐를 따져서 해야함 -> 일단 회원만 되게 설정)
+
+        String userid = (String)session.getAttribute("userid");
+        MemberEntity memberEntity = new MemberEntity();
+        memberEntity.setUserid(userid);
+        //System.out.println(userid);
+        List<CartDTO> cartList=cartRepository.findByUserid(userid);
+
+
+        System.out.println("cartList"+cartList.size());
+        // memberentitty형인 userid 는 cartdto 에서 밖에 못꺼낸다
+
+//        memberEntityCartDTO.getUserid(userid).getUserid());
+//        CartDTO cartDTO = new CartDTO();
+//  --> cartdto.get(기본키).getUserid
+
+        // 장바구니 몇개의 종류 있는지 세기
+        model.addAttribute("pCartCount", cartService.bCartCount(userid));
+        // cart 목록 불러오기
+//        model.addAttribute("list", );
+
+
+
+        //  System.out.println("list길이" + cartService.bCartView(userid).get(0)); // -> list 길이 0 나옴 -> 값 못가져온단소리
+        //System.out.println("pCartCount"+cartService.bCartCount(userid));
+
+
+    }
+
+
+    // 장바구니로 상품 이동
+    @ResponseBody
+    @PostMapping("/product/shoppingBasket")
+    public int postShoppingBasket(@RequestBody CartDTO cartDTO, HttpSession session) throws Exception{
+
+        String userid = (String)session.getAttribute("userid");
+        String bookid = cartDTO.getBookid().getIdAsString();
+        int cartvolume = cartDTO.getCartvolume();
+
+
+        if(cartService.bCartQuantity(userid,bookid) == 0 )
+            cartService.bCartInsert(userid,bookid,cartvolume);
+        else
+            cartService.bCartUpdate(userid,bookid,cartvolume);
+
+       return cartService.bCartCount(userid);
+
+
+    }
 
 
     //닉네임 창

@@ -2,6 +2,7 @@ package com.book.book_project.service;
 
 import com.book.book_project.dto.ReviewInterface;
 import com.book.book_project.dto.ReviewInterfaceImpl;
+import com.book.book_project.entity.ProductEntity;
 import com.book.book_project.entity.ReviewEntity;
 import org.springframework.data.domain.Page;
 
@@ -12,7 +13,7 @@ public interface ReviewService {
 
 
 
-    public Page<ReviewEntity> list(int pageNum, int postNum) throws Exception;
+  public Page<ReviewEntity> list(ProductEntity bookid, int pageNum, int postNum) throws Exception;
 
     //리뷰 목록 보기
     public List<ReviewInterface> reviewView(ReviewInterfaceImpl review) throws Exception;
