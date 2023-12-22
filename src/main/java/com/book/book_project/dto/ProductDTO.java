@@ -35,6 +35,7 @@ public class ProductDTO {
         this.bookid = productEntity.getBookid();
         this.bookname = productEntity.getBookname();
         this.publisher = productEntity.getPublisher();
+        this.pricesales = productEntity.getPricesales();
         this.author=productEntity.getAuthor();
         this.price = productEntity.getPrice();
         this.stock = productEntity.getStock();

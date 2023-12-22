@@ -1,6 +1,5 @@
 package com.book.book_project.entity;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -13,13 +12,12 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity(name="purchaseinfo")
-@Table(name="tbl_purchaseinfo")
-public class PurchaseInfoEntity {
-
+@Entity(name="unmemberpurchaseinfo")
+@Table(name="tbl_unmemberpurchaseinfo")
+public class UnMemberPurchaseInfoEntity {
     @Id
-    @Column(name="purchaseinfonumber", nullable=false)
-    private int purchaseinfonumber;
+    @Column(name="unmember_purseq", nullable=false)
+    private int unmemberpurchaseinfoseq;
 
     @Column(name="purchasedate", nullable=false)
     private Timestamp purchasedate;
@@ -37,11 +35,7 @@ public class PurchaseInfoEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action= OnDeleteAction.CASCADE)
-    @JoinColumn(name="buyerseq", nullable = false)
-    private BuyerInfoEntity buyerseq;
+    @JoinColumn(name="unmemberseq", nullable = false)
+    private UnMemberEntity unmemberseq;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @OnDelete(action= OnDeleteAction.CASCADE)
-    @JoinColumn(name="statusseq", nullable = false)
-    private PurchaseStatusEntity statusseq;
 }

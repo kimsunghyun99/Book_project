@@ -1,5 +1,9 @@
 package com.book.book_project.dto;
 
+import lombok.Setter;
+
+import java.sql.Timestamp;
+
 import java.sql.Timestamp;
 
 public interface ReviewInterface {
@@ -8,5 +12,5 @@ public interface ReviewInterface {
 	String getUserid();
 	String getReviewer();
 	String getReviewcontent();
-	Timestamp getReviewregdate();
+	String getReviewregdate();
 }

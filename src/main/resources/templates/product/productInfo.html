@@ -87,194 +87,202 @@
             padding: 10px;
             border: 50px;
         }
+
+        #volume input {
+            display: inline-block; /* 인라인 요소로 배치 */
+            font-size: 16px; /* 원하는 폰트 크기로 조절 */
+            margin: 0; /* 기본 마진 제거 */
+        }
+
+        #quantity {
+            display: inline-block; /* 인라인 요소로 배치 */
+            font-size: 16px; /* 원하는 폰트 크기로 조절 */
+            margin: 0 5px; /* 좌우 마진 추가하여 간격 조절 */
+        }
+
+        #volume br {
+            display: none; /* 줄바꿈 요소 숨김 */
+        }
+
     </style>
     <script>
-        //리뷰 등록
-        const reviewRegister = async () => {
+        var number = 1;
+        var totalPrice = parseInt('[[${view.pricesales}]]');
+        var price = parseInt('[[${view.pricesales}]]');
+//        const bookdiscount = document.querySelector('.book-discount').value;
+//        const bookprice = document.querySelector('.book-price').value;
+        //통화 적용임
+        document.addEventListener('DOMContentLoaded', function() {
+            // JavaScript 코드 작성
+            const price = [[${view.price}]];
+            const changePrice = price.toLocaleString('ko-KR');
+            document.querySelector('.book-price').textContent = '가격: ' + changePrice + '원';
+        });
 
-            const reviewcontent = document.querySelector('#reviewcontent');
+        //통화 적용임
+        document.addEventListener('DOMContentLoaded', function() {
+            // JavaScript 코드 작성
+            const DisCountPrice = [[${view.pricesales}]];
+            const changePrice = DisCountPrice.toLocaleString('ko-KR');
+            document.querySelector('.book-discount').textContent = '할인가: ' + changePrice + '원';
+        });
 
-            if(reviewcontent.value === ''){
-                alert('리뷰을 입력하세요.');
-                reviewcontent.focus();
-                return false;
+
+//리뷰 등록하기
+const reviewRegister = async () => {
+    const reviewcontent = document.querySelector('#reviewcontent');
+
+    if (reviewcontent.value === '') {
+        alert('댓글을 입력하세요.');
+        reviewcontent.focus();
+        return false;
+    }
+
+    const data = {
+        reviewer: reviewer.value,
+        reviewcontent: reviewcontent.value,
+        userid: userid.value,
+        bookid: bookid.value
+    };
+    //let formData = new FormData(reviewForm);
+
+    await fetch('/product/review?option=I', {
+        method: 'POST',
+        headers: {"Content-Type": "application/json"},
+       body: JSON.stringify(data)
+       //  body : formData
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            reviewList(data);
+            console.log("data = " + data);
+        })
+        .catch((error) => {
+            console.log("error = " + error);
+            alert("시스템 장애로 댓글 등록이 실패했습니다.");
+        });
+
+    reviewcontent.value = '';
+};
+
+
+
+//리뷰 삭제
+const reviewDelete = async(reviewseq) => {
+    if(confirm("정말로 삭제하시겠습니까?")) {
+        // let formData = new FormData();
+        // formData.append("reviewseq", reviewseq);
+        // formData.append("bookid", "[[${view.bookid}]]")
+        const data = { reviewseq: reviewseq, bookid: parseInt('[[${view.bookid}]]')};
+        await fetch('/product/review?option=D',{
+
+            method: 'POST',
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(data)
+            //body: formData
+        }).then((response) => response.json())
+            .then((data) => reviewList(data))
+            .catch((error) => {
+                console.log("error =" + error);
+                alert("서버 장애로 리뷰 삭제가 실패했습니다.");
+            });
+    }
+}
+
+// 리뷰 등록 취소
+const reviewCancel = () => {
+    if (confirm('정말로 취소하시겠습니까?') == true) {
+        document.querySelector('#reviewcontent').value = '';
+        document.querySelector('#reviewcontent').focus();
+    }
+}
+
+//닉네임 등록하기
+function checkAndAlert() {
+    var reviewContentTextarea = document.getElementById("reviewcontent");
+    var currentNickname =document.getElementById("reviewer");
+    var currentUserid = '[[${session.userid}]]';
+ //   var FromSocial = '[[${session.FromSocial}]]'; // 가정: socialfrom이 세션 속성으로 존재한다고 가정
+        console.log(currentNickname);
+    if (currentUserid) {
+        if (currentNickname.value == '') {
+            if (confirm("새로운 닉네임을 입력하세요. 계속하시겠습니까?")) {
+                reviewContentTextarea.blur(); // 리뷰 내용 입력 칸의 포커스 해제
+
+                // "확인"을 눌렀을 때 실행될 코드
+                window.open("nickname", "닉네임입력", "width=950, height=540, top=50, left=50"); // 새 창 열기
+            }
+            }else{
+                reviewContentTextarea.focus();
             }
 
-            let formData = new FormData(reviewForm)
-            await fetch('/product/review?option=I',{
-                method: 'POST',
-                body: formData
-            }).then((response)=> response.json())
-                .then((data)=> {
-                    reviewList(data);
-                    console.log("data = " + data);
-                }).catch((error) => {
-                    console.log("error = " + error);
-                    alert("시스템 장애로 리뷰 등록이 실패했습니다.");
-                });
 
-            reviewcontent.value = '';
-        }
+    }
+}
 
+const count = (type) =>  {
 
-        //리뷰 목록 가져 오기
+    number = parseInt(document.getElementById('quantity').innerHTML);
+    if(type === 'plus') {
+        number ++;
+        totalPrice += price;
+    }else if(type === 'minus' && number !==1 )  {
+        number --;
+        totalPrice -= price;
+    }
+    document.getElementById('quantity').innerHTML = number;
+    document.getElementById('total_price').innerHTML = totalPrice.toLocaleString('ko-KR');
+}
 
-        const reviewList = (data) => {
+        //장바구니에 상품 담기
+        const cart = async (bookid) => {
 
-            var session_userid = '[[${session.userid}]]';
-            const jsonInfo = data;
+            //선택한 상품 갯수에다가 기존 장바구니에 담겨져 있는 이 상품의 갯수를 더한다
+            number += '[[$(bCartQuantity)]]';
 
-            let reviewList = document.querySelector('#reviewList');
-            reviewList.innerHTML = '';
-
-            var result = '';
-            for(const i in jsonInfo){
-
-                let elm = document.createElement('div'); //<div id='s3' style='font-size:0.8em'></div>
-                elm.setAttribute('id','s' + jsonInfo[i].reviewseq);
-                elm.setAttribute('style','font-size:0.8em');
-
-                let result = "";
-                result += "작성자 : " + jsonInfo[i].reviewer;
-
-                // if(jsonInfo[i].userid === session_userid){
-                //     result += "[<a href=" + "'javascript:reviewModify(" + jsonInfo[i].reviewseq + ")' style='cursor:pointer'>수정</a> | ";
-                //     result += "<a href=" + "'javascript:reviewDelete(" + jsonInfo[i].reviewseq + ")' style='cursor:pointer'>삭제</a>]";
-                // }
-
-                let date = new Date(jsonInfo[i].reviewregdate);
-                let year = date.getFullYear();
-                let month = date.getMonth() + 1;
-                let day = date.getDate();
-                let hour = date.getHours();
-                let minute = date.getMinutes();
-                let second = date.getSeconds();
-
-                month = month >= 10 ? month : '0' + month;
-                day = day >= 10 ? day : '0' + day;
-                hour = hour >= 10 ? hour : '0' + hour;
-                minute = minute >= 10 ? minute : '0' + minute;
-                second = second >= 10 ? second : '0' + second;
-
-                let regdate = year + "-" + month + "-" + day + "-" + " " + hour + ":" + minute + ":" + second;
-
-                result += "&nbsp;&nbsp;";
-                result += "<div style='width:90%; height: auto; border-top: 1px solid; overflow: auto;'>";
-                result += "<pre id='c" + jsonInfo[i].reviewseq + "'>" + jsonInfo[i].reviewcontent + "</pre>";
-                result += "</div><br>";
-
-                elm.innerHTML = result;
-                reviewList.appendChild(elm);
-
-
+            if('[[$(session.userid]]'===null){
+                alert("로그인이 필요합니다.")
+                document.location.href="/member/login";
             }
 
-        }
-
-        //페이지 시작할 때 리뷰 목록 가져 오기
-        const startupPage = async () => {
-            let formData = new FormData();
-            formData.append("bookid", "[[${view.bookid}]]")
-
-            await fetch('/board/review?option=L',{
-                method: 'POST',
-                body: formData
-            }).then((response) => response.json())
-                .then((data) => reviewList(data))
-                .catch((error) => {
-                    console.log("error = " + error);
-                    alert("시스템 장애로 리뷰 가져 오기가 실패했습니다.")
-                });
-        }
-
-        //리뷰 삭제
-        const reviewDelete = async(reviewseq) => {
-            if(confirm("정말로 삭제하시겠습니까?")) {
-                let formData = new FormData();
-                formData.append("reviewseq", reviewseq);
-                formData.append("bookid", "[[${view.bookid}]]")
-                await fetch('/board/review?option=D',{
-
-                    method: 'POST',
-                    body: formData
-                }).then((response) => response.json())
-                    .then((data) => reviewList(data))
-                    .catch((error) => {
-                        console.log("error =" + error);
-                        alert("서버 장애로 리뷰 삭제가 실패했습니다.");
+            else{
+                await fetch('/product/shoppingBasket',{
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        userid: '[[$(session.userid)]]',
+                        bookid: bookid,
+                        cartvolume: number
+                    }),
+                }).then((response)=> response.text())
+                    .then((data) => {
+                        if(data != '' || data != null || data != 0){
+                            alert("장바구니에 상품을 넣어 두었습니다.");
+                            if(confirm("장바구니로 이동하시겠습니까?")){
+                                document.location.href="/product/shoppingBasket"
+                            }
+                        } else {
+                            alert("시스템 장애로 장바구니 담기가 실패했습니다.");
+                        }
+                    }).catch((error)=> {
+                        console.log("error = " + error);
                     });
             }
-        }
-
-        //리뷰 수정하기
-        const reviewModify = (reviewseq) => {
-
-            //리뷰 내용 임시 저장
-            const modifyreviewContent = document.querySelector('#c' + reviewseq);
-
-            var strreviewList = "작성자 : [[${session.username}]]&nbsp;"
-                + "<input type='button' id='btn_reviewModify' value='수정'>"
-                + "<input type='button' id='btn_reviewModifyCancel' value='취소'>"
-                + "<input type='hidden' name='reviewseq' value='" + reviewseq + "'>"
-                + "<input type='hidden' name='bookid' value='[[${view.bookid}]]'>"
-                + "<input type='hidden' id='reviewer' name='reviewer' value='[[${session.username}]]'>"
-                + "<input type='hidden' id='userid' name='userid' value='[[${session.userid}]]'><br>"
-                + "<textarea id='modify_reviewcontent' name='reviewcontent' cols='80' rows='5' maxlength='150' placeholder='글자수:150자 이내'>"
-                + modifyreviewContent.innerHTML + "</textarea><br>";
-
-            let elm = document.createElement('div'); //<div></div>
-            elm.innerHTML = strreviewList;
-
-            //개별 리뷰 목록을 둘러 싸고 있는 div
-            let parentDiv = document.querySelector('#s' + reviewseq).parentNode;
-            parentDiv.insertBefore(elm,document.querySelector('#s' + reviewseq));
-            document.querySelector('#s' + reviewseq).style.display = 'none';
-
-            const btnreviewModify = document.querySelector('#btn_reviewModify');
-            const btnreviewModifyCancel = document.querySelector('#btn_reviewModifyCancel');
-
-            btnreviewModify.addEventListener('click', async ()=> {
-
-                let formData = new FormData();
-                formData.append("reviewseq", reviewseq);
-                formData.append("reviewcontent", modify_reviewcontent.value);
-
-                await fetch('/board/review?option=U',{
-
-                    method: 'POST',
-                    body: formData
-                }).catch((error) => {
-                    console.log("error = " + error);
-                    alert("서버 장애로 리뷰 수정이 실패했습니다.");
-                });
-
-                document.querySelector('#reviewList').innerHTML = '';
-                startupPage();
-
-            });
-
-            btnreviewModifyCancel.addEventListener('click',()=> {
-                if(confirm('정말로 취소하시겠습니까?')==true){
-                    document.querySelector('#reviewList').innerHTML = '';
-                    startupPage();
-                }
-            });
-        }
-
-        //리뷰 등록 취소
-        const reviewCancel = () => {
-            if(confirm('정말로 취소하시겠습니까?')==true){
-                reviewcontent.value = '';
-                reviewcontent.focus();
-            }
 
         }
 
-    </script>script>
+
+
+
+
+
+    </script>
 </head>
 <body>
 <header>
-    <h1>교보문고</h1>
+    <h1>IT커넥션</h1>
 </header>
 
 <nav>
@@ -287,9 +295,9 @@
 <br><br><br>
 <div class="book-details">
     <div class="book-image-container"><br><br>
-        <img class="book-image" src="book.jpg" alt="책 이미지">
+        <img class="book-image" src="/images/book.jpg" alt="책 이미지">
         <div class="likes-reviews">
-            <p class="book-likes">좋아요: 00</p>
+            <p class="book-likes">즐겨찾기: 00</p>
             <p class="book-reviews">후기: 00</p>
         </div>
     </div>
@@ -297,28 +305,293 @@
         <p class="book-title" th:text="${view.bookname}"></p>
         <p class="book-author" th:text="'작가: ' + ${view.author}"></p>
         <p class="book-price" th:text="'가격: ' + ${view.price} + '원'"></p>
-        <p class="book-discount" th:text="'할인율: ' + ${view.sale} + '%'"></p>
-        <p class="book-point" th:text="'포인트적립: ' + ${view.sale} + '%'"></p>
+        <p class="book-discount" th:text="'할인가: ' + ${view.pricesales} + '%'"></p>
+        <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.pricesales * 0.05, 3, 'COMMA')} + '원'"></p>
+
+        <div id="volume">
+        <input type='button' onclick='count("plus")' value='+'/>
+        <span id="quantity">1</span>
+        <input type='button' onclick='count("minus")' value='-'/><br><br>
+        </div>
+        <br>
+        <div style="text-align:right;font-size:30px;font-weight:bold;">
+            <span>상품 금액 : </span>&nbsp;
+            <span id="total_price">[[${#numbers.formatInteger(view.pricesales,3,'COMMA')}]] 원</span>
+        </div><br>
+        <br>
+
         <div class="book-actions">
-            <a href="shoppingBasket.html" class="book-cart">장바구니</a>
-            <a href="shoppingBasket.html" class="book-buy">구매하기</a>
+            <a href="shoppingBasket.html" class="book-cart">구매하기</a>
+            <input type="button" id="btn_cart" class="btn_cart" value="장바구니 담기" th:onclick="cart([${view.bookid}])">
         </div>
     </div>
 
+
 </div>
 <div class="reviewDiv" style="width:60%;height:300px;margin:auto;text-align:left;">
+
     <p id="reviewNotice">리뷰을 작성해 주세요.</p>
     <form id="reviewForm" name="reviewForm" method="POST">
-        작성자 : <input type="text" id="reviewer" name="reviewer" th:value="${session.username}" readonly><br>
-        <textarea id="reviewcontent" name="reviewcontent" cols="80" rows="5" maxlength="150" placeholder="글자수:150자 이내">
-				</textarea><br>
         <input type="hidden" id="bookid" name="bookid" th:value="${view.bookid}">
         <input type="hidden" id="userid" name="userid" th:value="${session.userid}">
+        작성자: <input type="text" id="reviewer" name="reviewer" th:value="${nickname}" readonly>
+        <br><br>
+
+        <!-- 리뷰 내용 입력 폼 -->
+        <textarea id="reviewcontent" name="reviewcontent" cols="80" rows="5" maxlength="150" placeholder="글자수: 150자 이내"
+                  onfocus="checkAndAlert()"></textarea><br>
     </form>
-    <input type="button" id="btn_review" value="리뷰등록" onclick="reviewRegister()">
+
+    <!-- 리뷰 등록 버튼 -->
+    <input type="button" id="btn_review" value="리뷰 등록" onclick="reviewRegister()">
+
+    <!-- 리뷰 취소 버튼 -->
     <input type="button" id="btn_cancel" value="취소" onclick="reviewCancel()">
     <hr>
-    <div id="reviewList" style="width:100%; height:600px; overflow:auto;"></div>
+
+    <!-- 리뷰 목록 테이블 -->
+    <table id="reviewList" style="width:100%; height:600px; overflow:auto;">
+        <tr>
+            <th>작성자</th>
+            <th>리뷰 내용</th>
+            <th>수정 및 삭제</th>
+        </tr>
+        <tr th:each="list, index: ${list}">
+            <td th:text="${list.reviewer}"></td>
+            <td th:text="${list.reviewcontent}"></td>
+            <td>
+                <!-- 리뷰 수정 버튼 -->
+                <a th:if="${session.userid}" th:data-reviewseq="${list.reviewseq}" th:data-reviewcontent="${list.reviewcontent}"
+                   style="cursor:pointer" class="btnReviewModify">수정</a>
+
+                <!-- 리뷰 삭제 버튼 -->
+                <a th:if="${list.userid == session.userid}" th:data-reviewseq="${list.reviewseq}"
+                   style="cursor:pointer" class="btnReviewDelete">삭제</a>
+
+            </td>
+        </tr>
+    </table>
+
+    <!-- 리뷰 수정 폼 -->
+    <div id="modifyReviewForm" style="display: none;">
+        <textarea id="modifyReviewContent" cols="80" rows="5" maxlength="150" placeholder="글자수: 150자 이내"></textarea><br>
+        <input type="button" id="btnReviewModify" value="수정">
+        <input type="button" id="btnReviewModifyCancel" value="취소">
+    </div>
+
+
+    <script>
+        // 리뷰 목록을 출력하는 함수
+        const reviewList = (data) => {
+            var session_email = '[[${session.email}]]';
+            const jsonInfo = data;
+
+            let reviewList = document.querySelector('#reviewList');
+            reviewList.innerHTML = '';
+
+            var result = '';
+            for (const i in jsonInfo) {
+                let tr = document.createElement('tr');
+
+                let tdReviewer = document.createElement('td');
+                tdReviewer.innerText = jsonInfo[i].reviewer;
+
+                let tdReviewContent = document.createElement('td');
+                tdReviewContent.innerText = jsonInfo[i].reviewcontent;
+
+                let tdActions = document.createElement('td');
+
+                // 리뷰 수정 버튼
+                let btnReviewModify = document.createElement('a');
+                btnReviewModify.innerText = '수정';
+                btnReviewModify.setAttribute('style', 'cursor:pointer');
+                btnReviewModify.addEventListener('click', function () {
+                    reviewModify(jsonInfo[i].reviewseq, jsonInfo[i].reviewcontent);
+                });
+
+                // 리뷰 삭제 버튼
+                let btnReviewDelete = document.createElement('a');
+                btnReviewDelete.innerText = '삭제';
+                btnReviewDelete.setAttribute('style', 'cursor:pointer');
+                btnReviewDelete.addEventListener('click', function () {
+                    reviewDelete(jsonInfo[i].reviewseq);
+                });
+
+                tdActions.appendChild(btnReviewModify);
+                tdActions.appendChild(document.createTextNode(' '));  // 공백 추가
+                tdActions.appendChild(btnReviewDelete);
+
+                tr.appendChild(tdReviewer);
+                tr.appendChild(tdReviewContent);
+                tr.appendChild(tdActions);
+
+                reviewList.appendChild(tr);
+            }
+        };
+
+        // 페이징 처리를 위한 함수
+        const displayPageButtons = (currentPage, totalPage) => {
+            let pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+
+            const buttonCount = 5; // 표시할 페이지 버튼 수
+            const startPage = Math.max(1, currentPage - Math.floor(buttonCount / 2));
+            const endPage = Math.min(totalPage, startPage + buttonCount - 1);
+
+            if (startPage > 1) {
+                addPageButton('<<', 1); // 처음 페이지로 가는 버튼
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                addPageButton(i, i);
+            }
+
+            if (endPage < totalPage) {
+                addPageButton('>>', totalPage); // 마지막 페이지로 가는 버튼
+            }
+        };
+
+        const addPageButton = (label, page) => {
+            let button = document.createElement('button');
+            button.innerText = label;
+            button.addEventListener('click', () => {
+                goToPage(page);
+            });
+
+            let pagination = document.getElementById('pagination');
+            pagination.appendChild(button);
+        };
+
+        const goToPage = (page) => {
+            fetch(`/product/review`, {
+                method: 'POST',
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({option: 'L', page: page})
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    reviewList(data); // 해당 페이지의 리뷰 목록만 전달하여 갱신
+                    displayPageButtons(page, data.totalPage); // 페이징 버튼 갱신
+                })
+                .catch((error) => {
+                    console.error('페이지 이동 오류:', error);
+                    alert('페이지 이동 중 오류가 발생했습니다.');
+                });
+        };
+
+
+        <!-- ... (이전의 코드) -->
+
+
+
+
+
+    // 수정 버튼 클릭 이벤트 설정
+        document.querySelectorAll('.btnReviewModify').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const reviewSeq = this.getAttribute('data-reviewseq');
+                const reviewContent = this.getAttribute('data-reviewcontent');
+                reviewModify(reviewSeq, reviewContent);
+            });
+        });
+        // 취소 버튼 클릭 이벤트 설정
+        document.getElementById('btnReviewModifyCancel').addEventListener('click', () => {
+            // 수정 폼 숨기기
+            document.getElementById('modifyReviewForm').style.display = 'none';
+        });
+
+
+
+        const clearModifyReviewForm = () => {
+            document.getElementById('modifyReviewContent').value = '';
+        };
+
+        const reviewModify = async (reviewseq, reviewcontent) => {
+            clearModifyReviewForm();  // 리뷰 수정 폼 초기화
+
+            // 리뷰 내용을 수정 폼에 설정
+            document.getElementById('modifyReviewContent').value = reviewcontent;
+
+            // 수정 버튼 클릭 이벤트 설정
+            document.getElementById('btnReviewModify').addEventListener('click', async () => {
+                const modifiedReviewContent = document.getElementById('modifyReviewContent').value;
+                const data = { reviewseq, reviewcontent: modifiedReviewContent };
+                try {
+                    const response = await fetch('/product/review?option=U', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('리뷰 수정이 실패했습니다.');
+                    }
+
+                    // 수정이 완료되면 리뷰 목록을 갱신
+                    await refreshReviewList();
+
+                    // 수정 폼 숨기기
+                    document.getElementById('modifyReviewForm').style.display = 'none';
+                } catch (error) {
+                    console.error('리뷰 수정 오류:', error);
+                    alert('리뷰 수정이 실패했습니다.');
+                }
+            });
+
+            // 수정 폼 보이기
+            document.getElementById('modifyReviewForm').style.display = 'block';
+        };
+
+
+        const refreshReviewList = async () => {
+            const data = {
+                reviewer: reviewer.value,
+                reviewcontent: reviewcontent.value,
+                userid: userid.value,
+                bookid: bookid.value
+            };
+            try {
+                const response = await fetch('/product/review?option=L', {
+                    method: 'POST',
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(data)
+                });
+                if (!response.ok) {
+                    throw new Error('리뷰 목록을 불러오는데 실패했습니다.');
+                }
+                const responseData = await response.json();
+
+                // 리뷰 목록 갱신
+                reviewList(responseData);
+            } catch (error) {
+                console.error('리뷰 목록 업데이트 오류:', error);
+                alert('리뷰 목록을 가져오는데 실패했습니다.');
+            }
+        };
+
+
+
+
+
+
+
+    </script>
+
+
+    <div>[(${pageList})]</div>
+
+    <div id="pagination" style="margin-top: 10px;"></div>
 </div>
+
+
+
+
+
+
 </body>
+
+
+
+
+
 </html>
