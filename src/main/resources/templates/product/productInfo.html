@@ -235,37 +235,41 @@ const count = (type) =>  {
 }
 
         //장바구니에 상품 담기
-        const cart = async (userid,bookid,bCartQuantity) => {
+        const cart = async (bookid) => {
 
-            number += bCartQuantity; //선택한 상품 갯수에다가 기존 장바구니에 담겨져 있는 이 상품의 갯수를 더한다
+            //선택한 상품 갯수에다가 기존 장바구니에 담겨져 있는 이 상품의 갯수를 더한다
+            number += '[[$(bCartQuantity)]]';
 
-            // if(email === '' || email === null) {
-            //     alert("로그인 이후 이용할 수 있는 서비스입니다.");
-            //     return;
-            // }
+            if('[[$(session.userid]]'===null){
+                alert("로그인이 필요합니다.")
+                document.location.href="/member/login";
+            }
 
-            await fetch('/product/shoppingBasket',{
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  //  userid: userid,
-                    bookid: bookid,
-                    cartvolume: number
-                }),
-            }).then((response)=> response.text())
-                .then((data) => {
-                    if(data != '' || data != null || data != 0){
-                        alert("장바구니에 상품을 넣어 두었습니다.");
-                        document.location.href="/product/shoppingBasket"
-                    //    document.getElementById('bCartCount').innerHTML = data;   // -> 왜쓰는지 이해안감
-                    } else {
-                        alert("시스템 장애로 장바구니 담기가 실패했습니다.");
-                    }
-                }).catch((error)=> {
-                    console.log("error = " + error);
-                });
+            else{
+                await fetch('/product/shoppingBasket',{
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        userid: '[[$(session.userid)]]',
+                        bookid: bookid,
+                        cartvolume: number
+                    }),
+                }).then((response)=> response.text())
+                    .then((data) => {
+                        if(data != '' || data != null || data != 0){
+                            alert("장바구니에 상품을 넣어 두었습니다.");
+                            if(confirm("장바구니로 이동하시겠습니까?")){
+                                document.location.href="/product/shoppingBasket"
+                            }
+                        } else {
+                            alert("시스템 장애로 장바구니 담기가 실패했습니다.");
+                        }
+                    }).catch((error)=> {
+                        console.log("error = " + error);
+                    });
+            }
 
         }
 
@@ -293,7 +297,7 @@ const count = (type) =>  {
     <div class="book-image-container"><br><br>
         <img class="book-image" src="/images/book.jpg" alt="책 이미지">
         <div class="likes-reviews">
-            <p class="book-likes">좋아요: 00</p>
+            <p class="book-likes">즐겨찾기: 00</p>
             <p class="book-reviews">후기: 00</p>
         </div>
     </div>
@@ -312,13 +316,13 @@ const count = (type) =>  {
         <br>
         <div style="text-align:right;font-size:30px;font-weight:bold;">
             <span>상품 금액 : </span>&nbsp;
-            <span id="total_price">[[${#numbers.formatInteger(view.pricesales,3,'COMMA')}]]</span><span>원</span>
+            <span id="total_price">[[${#numbers.formatInteger(view.pricesales,3,'COMMA')}]] 원</span>
         </div><br>
         <br>
 
         <div class="book-actions">
             <a href="shoppingBasket.html" class="book-cart">구매하기</a>
-            <input type="button" id="btn_cart" class="btn_cart" value="장바구니 담기" th:onclick="cart([[${session.userid}]],[[${view.bookid}]],[[${bCartQuantity}]])">
+            <input type="button" id="btn_cart" class="btn_cart" value="장바구니 담기" th:onclick="cart([${view.bookid}])">
         </div>
     </div>
 

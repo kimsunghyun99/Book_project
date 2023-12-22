@@ -53,64 +53,36 @@ public class ProductController {
                                Model model,
                                HttpSession session) throws Exception {
 
-        String userid = (String)session.getAttribute("userid");
-
-        MemberEntity memberEntity = memberRepository.findById(userid).orElse(null);
-        ProductEntity productEntity = productRepository.findById(bookid).orElse(null);;
-//
-//       List<CartEntity> cart_userid_List = cartRepository.getCartList();
-//        model.addAttribute("cart_userid_List", cart_userid_List.get(0));
-     //   System.out.println(cart_userid_List.size());
-
-
+        //상품정보를 불러와야함.
+        String bookId= String.valueOf(bookid.getBookid());
+        ProductEntity productEntity = productRepository.findById(bookId).orElse(null);
 
         CartDTO cartDTO = new CartDTO();
-        cartDTO.setUserid(memberEntity);
-        cartDTO.setBookid(productEntity);
+            cartDTO.setBookid(productEntity);
+
 
         int postNum = 5; //한 화면에 보여지는 게시물 행의 갯수
         int pageListCount = 5; //화면 하단에 보여지는 페이지리스트의 페이지 갯수
         System.out.println("ProductEntity1: "+bookid.getClass().getName());
         System.out.println("ProductEntity2: "+bookid.getBookid());
-        String bookId= String.valueOf(bookid.getBookid());
+
 
         PageUtil page = new PageUtil();
         Page<ReviewEntity> list = reviewService.list(bookid, pageNum, postNum);
         int totalCount = (int)list.getTotalElements();
-        String userid = (String)session.getAttribute("userid");
-//        Page<ReviewEntity> list = service.list(pageNum, postNum);
-//        int totalCount = (int)list.getTotalElements();
-        String nickname = memberService.memberInfo(userid).getNickname();
-
-
-
-        model.addAttribute("nickname", nickname);
+        if(session.getAttribute("userid")!=null){
+            String userid = (String) session.getAttribute("userid");
+            String nickname = memberService.memberInfo(userid).getNickname();
+            model.addAttribute("nickname", nickname);
+        }
         model.addAttribute("view", service.view(bookId));
         model.addAttribute("list", list);
         model.addAttribute("totalElement", totalCount);
         model.addAttribute("postNum", postNum);
         model.addAttribute("page", pageNum);
         model.addAttribute("pageList", page.getPageList(pageNum, postNum, pageListCount,totalCount, bookId));
-
-
-        model.addAttribute("view", service.view(bookid));
-        model.addAttribute("bCartQuantity", cartService.bCartQuantity(userid,bookid));  // 장바구니에 있는 해당 상품 개수 세기
-     //   model.addAttribute("bCartCount", service.bCartCount)   // 안 만듬
-
-
-//        model.addAttribute("list", service.list(pageNum,postNum));
-//        model.addAttribute("totalElement", totalCount);
-//        model.addAttribute("postNum", postNum);
-//        model.addAttribute("page", pageNum);
-//        model.addAttribute("pageList", page.getPageList(pageNum, postNum, pageListCount,totalCount));
-
     }
 
-    @GetMapping("/product/favoritesList")
-    public void getFavoritesList(HttpSession session, Model model) throws Exception {
-        String userid = (String)session.getAttribute("userid");
-
-    }
 
     @GetMapping("/product/productList")
     public void getProductList(HttpSession session, Model model) throws Exception{

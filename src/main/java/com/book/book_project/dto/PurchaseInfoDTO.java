@@ -16,8 +16,6 @@ public class PurchaseInfoDTO {
     private ProductEntity bookid;
     private PurchaseStatusEntity statusseq;
     private BuyerInfoEntity buyerseq;
-    private UnMemberEntity unmemberseq;
-    private String status;
     private Timestamp purchasedate;
     private int volume;
     private int totalprice;
@@ -27,11 +25,9 @@ public class PurchaseInfoDTO {
         this.bookid=purchaseInfoEntity.getBookid();
         this.statusseq=purchaseInfoEntity.getStatusseq();
         this.buyerseq=purchaseInfoEntity.getBuyerseq();
-        this.status=purchaseInfoEntity.getStatus();
         this.purchasedate=purchaseInfoEntity.getPurchasedate();
         this.volume=purchaseInfoEntity.getVolume();
         this.totalprice=purchaseInfoEntity.getTotalprice();
-        this.unmemberseq=purchaseInfoEntity.getUnmemberseq();
     }
 
 
@@ -43,11 +39,9 @@ public class PurchaseInfoDTO {
                 .bookid(dto.getBookid())
                 .statusseq(dto.getStatusseq())
                 .buyerseq(dto.getBuyerseq())
-                .status(dto.getStatus())
                 .purchasedate(dto.getPurchasedate())
                 .volume(dto.getVolume())
                 .totalprice(dto.getTotalprice())
-                .unmemberseq(dto.getUnmemberseq())
                 .build();
     }
 
