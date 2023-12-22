@@ -4,9 +4,7 @@ import com.book.book_project.dto.NewsDTO;
 import com.book.book_project.service.NewsService;
 import com.book.book_project.service.ProductService;
 import com.book.book_project.dto.CartDTO;
-import com.book.book_project.dto.ProductDTO;
 import com.book.book_project.dto.ReviewInterface;
-import com.book.book_project.entity.CartEntity;
 import com.book.book_project.entity.MemberEntity;
 import com.book.book_project.dto.ReviewInterfaceImpl;
 import com.book.book_project.entity.ProductEntity;
@@ -15,25 +13,18 @@ import com.book.book_project.entity.repository.CartRepository;
 import com.book.book_project.entity.repository.MemberRepository;
 import com.book.book_project.entity.repository.ProductRepository;
 import com.book.book_project.service.*;
-import com.book.book_project.service.FavoritesService;
 import com.book.book_project.util.PageUtil;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import java.io.IOException;
+
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Member;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -52,13 +43,9 @@ public class ProductController {
     @GetMapping("/product/main")
     public void getMain(Model model) {
         List<NewsDTO> newsDTOList = newsService.crawlNews();
-        model.addAttribute("newsList", newsDTOList);
-    }
-    public void getMain(Model model) {
         List<ProductEntity> bookList=productRepository.getProductList();
         model.addAttribute("bookListId", bookList.get(0).getBookid()); // 이거 null -> 수ㅡ정필요
-
-        //System.out.println(bookList.get(0).getBookid());
+        model.addAttribute("newsList", newsDTOList);
     }
 
     @GetMapping("/product/productInfo")
@@ -117,26 +104,13 @@ public class ProductController {
         String userid = (String)session.getAttribute("userid");
         MemberEntity memberEntity = new MemberEntity();
         memberEntity.setUserid(userid);
-        //System.out.println(userid);
         List<CartDTO> cartList=cartRepository.findByUserid(userid);
 
-
         System.out.println("cartList"+cartList.size());
-        // memberentitty형인 userid 는 cartdto 에서 밖에 못꺼낸다
-
-//        memberEntityCartDTO.getUserid(userid).getUserid());
-//        CartDTO cartDTO = new CartDTO();
-//  --> cartdto.get(기본키).getUserid
 
         // 장바구니 몇개의 종류 있는지 세기
         model.addAttribute("pCartCount", cartService.bCartCount(userid));
-        // cart 목록 불러오기
-//        model.addAttribute("list", );
 
-
-
-        //  System.out.println("list길이" + cartService.bCartView(userid).get(0)); // -> list 길이 0 나옴 -> 값 못가져온단소리
-        //System.out.println("pCartCount"+cartService.bCartCount(userid));
 
 
     }

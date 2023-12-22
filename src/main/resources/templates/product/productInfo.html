@@ -237,24 +237,14 @@ const count = (type) =>  {
         //장바구니에 상품 담기
         const cart = async (bookid) => {
 
-            //선택한 상품 갯수에다가 기존 장바구니에 담겨져 있는 이 상품의 갯수를 더한다
-            number += '[[$(bCartQuantity)]]';
-
-            if('[[$(session.userid]]'===null){
-                alert("로그인이 필요합니다.")
-                document.location.href="/member/login";
-            }
-
-            else{
                 await fetch('/product/shoppingBasket',{
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                        userid: '[[$(session.userid)]]',
                         bookid: bookid,
-                        cartvolume: number
+                        volume: number
                     }),
                 }).then((response)=> response.text())
                     .then((data) => {
@@ -269,8 +259,6 @@ const count = (type) =>  {
                     }).catch((error)=> {
                         console.log("error = " + error);
                     });
-            }
-
         }
 
 
@@ -322,7 +310,7 @@ const count = (type) =>  {
 
         <div class="book-actions">
             <a href="shoppingBasket.html" class="book-cart">구매하기</a>
-            <input type="button" id="btn_cart" class="btn_cart" value="장바구니 담기" th:onclick="cart([${view.bookid}])">
+            <input type="button" id="btn_cart" class="btn_cart" value="장바구니 담기" th:onclick="cart()">
         </div>
     </div>
 

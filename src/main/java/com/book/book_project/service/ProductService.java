@@ -18,6 +18,8 @@ public interface ProductService {
     //상세 내용 보기
     public ProductDTO view(String bookid) throws Exception;
 
+    public Page<ProductEntity> list(int pageNum, int postNum, String keyword)  throws Exception;
+
 //    // bookid 모두 가져오기
 //    public List<ProductEntity> productAll throws Exception;
 //
