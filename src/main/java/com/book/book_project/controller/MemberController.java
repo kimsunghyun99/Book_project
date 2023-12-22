@@ -2,36 +2,24 @@ package com.book.book_project.controller;
 
 import com.book.book_project.dto.DeliverAddrDTO;
 import com.book.book_project.entity.*;
-import com.book.book_project.service.AddressService;
 import com.book.book_project.service.DeliveryService;
 import com.book.book_project.dto.*;
 import com.book.book_project.service.*;
-import com.nimbusds.openid.connect.sdk.claims.Address;
-import org.springframework.data.repository.query.Param;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import com.book.book_project.entity.repository.UnMemberRepository;
 import com.book.book_project.util.PageUtil;
 import jakarta.servlet.http.HttpSession;
 import com.book.book_project.dto.MemberDTO;
 import com.book.book_project.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Member;
 import java.net.URLEncoder;
-import java.sql.SQLOutput;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,8 +36,8 @@ public class MemberController {
     @Autowired
     DeliveryService deliveryService;
 
-//    @Autowired
-//    LikeService likeService;
+    @Autowired
+    LikeService likeService;
 
     @Autowired
     private BCryptPasswordEncoder pwdEncoder;
@@ -264,23 +252,10 @@ public class MemberController {
             //잘못된 패스워드 일 경우
             return "{\"message\":\"PASSWORD_NOT_FOUND\"}";
         }
-        return "{\"message\":\"GOOD\"}";
-    }
 
-    //로그아웃
-//    @GetMapping("/member/beforeLogout")
-//    public String getBeforeLogout(HttpSession session) {
-//        String userid = (String)session.getAttribute("userid");
-//        String username= (String)session.getAttribute("username");
-//
-//        MemberDTO member = new MemberDTO();
-//        member.setUserid(userid);
-//
-//
-//        service.lastlogoutUpdate(member);
-//
-//        return "redirect:/member/logout";
-//    }
+        return "{\"message\":\"GOOD\"}";
+
+    }
 
     //마이페이지 화면 (23-12-11)
     @GetMapping("/member/mypage")
@@ -290,7 +265,6 @@ public class MemberController {
         model.addAttribute("countReviewsByUserId", service.countReviewsByUserId(userid));//리뷰 갯수 구하기
 
     }
-
 
     //아이디 찾기 화면
     @GetMapping("/member/idSearch")
@@ -310,20 +284,20 @@ public class MemberController {
 
 
     //회원 구매내역 조회 화면
-    @GetMapping("/member/memberPurchaseList")
-    public void getMemberPurchaseList(Model model, HttpSession session,PurchaseInfoService purchaseInfoService) throws Exception {
-        MemberEntity userid = (MemberEntity) session.getAttribute("userid");
-        List<BuyerInfoEntity> buyerInfo=buyerInfoService.buyerInfo(userid);
-
-        List<PurchaseInfoEntity> purchaseInfoList = new ArrayList<>();
-
-        for(BuyerInfoEntity buyerInfoEntity:buyerInfo){
-            BuyerInfoEntity buyerseq = buyerInfoEntity;
-            List<PurchaseInfoEntity> purchaseList = purchaseInfoService.purchaseList(buyerseq);
-            purchaseInfoList.addAll(purchaseList);
-            model.addAttribute("purchaseList",purchaseInfoList);
-        }
-    }
+//    @GetMapping("/member/memberPurchaseList")
+//    public void getMemberPurchaseList(Model model, HttpSession session,PurchaseInfoService purchaseInfoService) throws Exception {
+//        MemberEntity userid = (MemberEntity) session.getAttribute("userid");
+//        List<BuyerInfoEntity> buyerInfo=buyerInfoService.buyerInfo(userid);
+//
+//        List<PurchaseInfoEntity> purchaseInfoList = new ArrayList<>();
+//
+//        for(BuyerInfoEntity buyerInfoEntity:buyerInfo){
+//            BuyerInfoEntity buyerseq = buyerInfoEntity;
+//            List<PurchaseInfoEntity> purchaseList = purchaseInfoService.purchaseList(buyerseq);
+//            purchaseInfoList.addAll(purchaseList);
+//            model.addAttribute("purchaseList",purchaseInfoList);
+//        }
+//    }
 
     //비회원 구매내역 조회 화면
 //    @GetMapping("/member/unMemberPurchaseList")

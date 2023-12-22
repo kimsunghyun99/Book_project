@@ -70,6 +70,37 @@
         cursor: pointer;
     }
 </style>
+
+    <script>
+
+        //상품 갯수 변경 업데이트
+        const quantityUpdate = async (p_id,quantity) => {
+
+            await fetch('/shop/pCart',{
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    cart_email: email,
+                    p_id: p_id,
+                    cart_quantity: quantity
+                }),
+            }).then((response) => response.text())
+                .then((data) => {
+                    if(data == null || data == '')
+                        alert("시스템 장애로 상품 수량변경이 실패했습니다.");
+                }).catch((error) => console.log("error = " + error));
+
+        }
+
+
+
+    </script>
+
+
+
+
 </head>
 <body>
 <header>
@@ -88,50 +119,44 @@
 <table>
     <tr>
         <th><input type="checkbox"></th>
-        <th></th>
-        <th></th>
+        <th>책</th>
+        <th>가격</th>
     </tr>
 
     <tr>
-        <td><input type="checkbox"></td>
+        <th:block th:if="${list != null}">
+            <tr th:each="list:${list}">
+
+            <td><input type="checkbox"></td>
         <td>
-            <img src="book1.jpg" alt="책 이미지1">
-            <p>책 제목1</p>
+            <p class="book-price" th:text="'이미지: ' + ${list.cover} + "></p>
+            <p class="book-price" th:text="'이미지: ' + ${list.bookname} + "></p>
         </td>
+
         <td>
-            <p>원가: 00</p>
-            <p>할인율: 00</p>
-            <p>포인트 적립: 00</p>
-            <p>결제금액: 00000원</p>
+            <p class="book-price" th:text="'가격: ' + ${list.pricesales} + '원'"></p>
+            <p class="book-price" th:text="'수: ' + ${list.cartvolume} + '개'"></p>
         </td>
+
     </tr>
-    <tr>
-        <td><input type="checkbox"></td>
-        <td>
-            <img src="book1.jpg" alt="책 이미지1">
-            <p>책 제목2</p>
-        </td>
-        <td>
-            <p>원가: 00</p>
-            <p>할인율: 00</p>
-            <p>포인트 적립: 00</p>
-            <p>결제금액: 00000원</p>
-        </td>
-    </tr>
-    <tr>
-        <td><input type="checkbox"></td>
-        <td>
-            <img src="book1.jpg" alt="책 이미지1">
-            <p>책 제목3</p>
-        </td>
-        <td>
-            <p>원가: 00</p>
-            <p>할인율: 00</p>
-            <p>포인트 적립: 00</p>
-            <p>결제금액: 00000원</p>
-        </td>
-    </tr>
+
+    </th:block>
 </table>
+
+    <th:block th:if="${list == null}">
+        <td colspan="5">장바구니에 등록된 상품이 없습니다.</td>
+    </th:block>
+
+
+
+
+
+<!--            <p class="book-discount" th:text="'할인가: ' + ${view.pricesales} + '%'"></p>-->
+<!--            <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.pricesales * 0.05, 3, 'COMMA')} + '원'"></p>-->
+
+
+
+
 <div class="total-payment">
     <button class="delete-button">삭제</button>
     <p>총 결제금액: 00000 원</p>
