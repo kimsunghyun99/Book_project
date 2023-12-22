@@ -21,9 +21,6 @@ public class PurchaseInfoEntity {
     @Column(name="purchaseinfonumber", nullable=false)
     private int purchaseinfonumber;
 
-    @Column(name="status",length =200, nullable=false)
-    private String status;
-
     @Column(name="purchasedate", nullable=false)
     private Timestamp purchasedate;
 
@@ -47,14 +44,5 @@ public class PurchaseInfoEntity {
     @OnDelete(action= OnDeleteAction.CASCADE)
     @JoinColumn(name="statusseq", nullable = false)
     private PurchaseStatusEntity statusseq;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action=OnDeleteAction.CASCADE)
-    @JoinColumn(name = "unmemberseq", nullable = false)
-    private UnMemberEntity unmemberseq;
-
-
-
-
 
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>비회원로그인</title>
@@ -69,6 +70,46 @@
         }
     </style>
 <script>
+    //로그인 처리
+    const unMemberLoginCheck = async () => {
+
+        const temppassword = document.querySelector('#temppassword');
+        const receivertelno = document.querySelector('#receivertelno');
+
+        if(temppassword.value === ''){
+            alert("비밀번호를 입력하세요")
+            temppassword.focus();
+            return false;
+        }
+        if(receivertelno.value === ''){
+            alert("전화번호를 입력하세요")
+            receivertelno.focus();
+            return false;
+        }
+
+        let formData = new FormData();
+        formData.append("temppassword", temppassword.value);
+        formData.append("receivertelno", receivertelno.value);
+
+        await fetch('/member/unMemberLoginCheck',{
+            method: "POST",
+            body: formData
+        }).then((response) => response.json())
+            .then((data) => {
+                if(data.message === 'GOOD'){
+                    document.location.href="/member/unMemberPurchaseList";
+                }else if(data.message === 'PASSWORD_NOT_FOUND'){
+                    msg.innerHTML = '잘못된 비밀번호입니다';
+                }else if(data.message ==='receivertelno_NOT_FOUND'){
+                    msg.innerHTML = '잘못된 전화번호입니다';
+                }else{
+                    alert("시스템 장애로 로그인이 실패했습니다");
+                }
+            }).catch((error) => {
+                console.log("error =" + error);
+            })
+    }
+
     window.onload = async() => {
 
         const unMemberlogin = () => {
@@ -76,58 +117,10 @@
             document.loginForm.submit();
         }
 
-        //로그인 처리
-        const unMemberLoginCheck = async () => {
 
-            const purchaseinfoseq = document.querySelector('#purchaseinfoseq');
-            const temppassword = document.querySelector('#temppassword');
-            const receivertelno = document.querySelector('#receivertelno');
-
-            if(purchaseinfoseq.value === ''){
-                alert("구매 번호를 입력하세요")
-                purchaseinfoseq.focus();
-                return false;
-            }
-            if(temppassword.value === ''){
-                alert("비밀번호를 입력하세요")
-                temppassword.focus();
-                return false;
-            }
-            if(receivertelno.value === ''){
-                alert("전화번호를 입력하세요")
-                receivertelno.focus();
-                return false;
-            }
-
-
-            let formData = new FormData();
-            formData.append("purchaseinfoseq", purchaseinfoseq.value);
-            formData.append("temppassword", temppassword.value);
-            formData.append("receivertelno", receivertelno.value);
-
-            await fetch('/member/unMemberLoginCheck',{
-                method: "POST",
-                body: formData
-            }).then((response) => response.json())
-                .then((data) => {
-                    if(data.message === 'GOOD'){
-                        unMemberlogin();
-                    }else if(data.message === 'ID_NOT_FOUND'){
-                        msg.innerHTML = '존재하지 않는 구매번호입니다';
-                    }else if(data.message === 'PASSWORD_NOT_FOUND'){
-                        msg.innerHTML = '잘못된 비밀번호입니다';
-                    }else if(data.message ==='receivertelno_NOT_FOUND'){
-                        msg.innerHTML = '잘못된 전화번호입니다';
-                    }else{
-                        alert("시스템 장애로 로그인이 실패했습니다");
-                    }
-                }).catch((error) => {
-                    console.log("error =" + error);
-                })
+        const press = () => {
+            if(event.keyCode === 13) unMemberLoginCheck();
         }
-        // const press = () => {
-        //     if(event.keyCode == 13) unMemberLoginCheck();
-        // }
     }
 </script>
 </head>
@@ -138,18 +131,14 @@
 
     <form name="loginForm" id="loginForm" method="post">
 
-        <input type="text" name="purchaseinfoseq" class="purchaseinfoseq" id="purchaseinfoseq" placeholder="구매 번호를 입력하세요">
         <input type="text" name="receivertelno" class="receivertelno" id="receivertelno" placeholder="전화 전호를 입력하세요">
-        <input type="password" name="temppassword" class="temppassword" id="temppassword" placeholder="패스워드를 입력해주세요"  onkeydown="press()">
+        </label><input type="password" name="temppassword" class="temppassword" id="temppassword" placeholder="패스워드를 입력해주세요"  onkeydown="press()">
         <input type="button" id="btn_login" class="btn_login" value="로그인" onclick="unMemberLoginCheck()">
         <p id="msg" style="color:red; text-align:center"></p>
         <br>
         <div class="remember">
             <br><br>
 
-            <div class="oauth-link">
-                <a href="/oauth2/authorization/google">구글계정으로 로그인</a>
-            </div>
         </div>
     </form>
     <br><br>
