@@ -16,11 +16,11 @@ public interface CartService {
 
 
     // 장바구니 추가 // 아무것도 없을 시
-    public void bCartInsert(String userid, String bookid, int cartvolume);
+    public void bCartInsert(String userid, String bookid);
 
 
     // 장바구니 업뎃 // 있을 시
-    public void bCartUpdate(String userid, String bookid, int cartvolume);
+    public void bCartUpdate(String userid, String bookid);
 
 
     // 장바구니 몇개의 종류 있는지 세기
