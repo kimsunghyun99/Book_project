@@ -7,7 +7,6 @@ import com.book.book_project.entity.ProductEntity;
 import com.book.book_project.entity.repository.CategoryRepository;
 import com.book.book_project.entity.repository.MemberRepository;
 import com.book.book_project.entity.repository.ProductRepository;
-import com.book.book_project.service.MemberService;
 import com.book.book_project.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONArray;
@@ -15,9 +14,12 @@ import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -35,7 +37,7 @@ public class MasterController {
     private final ProductService productService;
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
-    private final MemberService memberService;
+    private final MemberRepository memberRepository;
 
     @GetMapping("/master/bookUpdate")
     public void getBookUpdate() throws Exception {
@@ -123,11 +125,14 @@ public class MasterController {
 
     // 회원 관리
     @GetMapping("/master/memberManage")
-    public void getMemberManage(Model model) {
-        List<MemberEntity> MList = memberService.findByRole();
+    public String findAll(Model model, @PageableDefault(size = 5) Pageable pageable, @RequestParam(value = "page", defaultValue = "1") int page) {
+        Pageable adjustedPageable = PageRequest.of(page, 5);
+        Page<MemberEntity> members = memberRepository.findAll(adjustedPageable);
+        model.addAttribute("members", members);
+        return "/master/memberManage";
 
-        model.addAttribute("MList", MList);
-
+//        List<MemberEntity> MList = memberService.findByRole();
+//        model.addAttribute("MList", MList);
     }
 
     // 주문 확인

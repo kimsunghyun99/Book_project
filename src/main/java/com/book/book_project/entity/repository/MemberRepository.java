@@ -37,9 +37,16 @@ public interface MemberRepository extends JpaRepository<MemberEntity, String> {
     @Query(value="update tbl_member set username = :username, nickname = :nickname, telno = :telno where userid = :userid",nativeQuery = true)
     public void membermodify(@Param("userid") String userid, @Param("username") String username, @Param("nickname") String nickname, @Param("telno") String telno);
 
-    // 전체 회원 정보 불러오기
-    @Query(value = "select ROW_NUMBER() OVER (ORDER BY username) AS rnum, t.* from tbl_member as t where role = 'USER'", nativeQuery = true)
-    List<MemberEntity> findByRole();
+//    // 전체 회원 정보 불러오기
+//    @Query(value = "select ROW_NUMBER() OVER (ORDER BY username) AS rnum, t.* from tbl_member as t where role = 'USER'", nativeQuery = true)
+//    List<MemberEntity> findByRole();
+
+//    //전체회원 목록보기
+//    public Page<MemberEntity> findByNicknameContainingOrUsernameContainingOrinterestContainingOrRegdateContaining
+//    (String keyword1, String keyword2, String keyword3, String keyword4, Pageable pageable);
+
+    //전체 회원 목록 불러오기
+    public Page<MemberEntity> findAll(Pageable pageable);
 
 
 }

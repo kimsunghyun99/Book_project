@@ -27,7 +27,6 @@ public class CartDTO {
         this.cartregdate =cartEntity.getCartregdate();
     }
 
-
     //DTO --> Entity
 
     public CartEntity dtoToEntity(CartDTO dto)  {

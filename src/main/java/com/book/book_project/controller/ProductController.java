@@ -56,11 +56,6 @@ public class ProductController {
         model.addAttribute("bookListId", bookList.get(0).getBookid()); // 이거 null -> 수ㅡ정필요
         model.addAttribute("newsList", newsDTOList);
 
-
-
-
-
-
     }
 
     @GetMapping("/product/productInfo")

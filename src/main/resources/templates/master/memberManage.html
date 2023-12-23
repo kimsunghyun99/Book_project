@@ -55,7 +55,7 @@
                 <th>총 결제 금액</th>
                 <th>성별/선호장르</th>
             </tr>
-            <tr th:each="member, stat : ${MList}">
+            <tr th:each="member, stat : ${members.content}">
                 <td><input type="checkbox"></td>
                 <td th:text="${stat.count}"></td> <!-- 순번 -->
                 <td th:text="${member.nickname}"></td><!-- 회원 아이디 -->
@@ -65,6 +65,13 @@
                 <td th:text="${member.interest}"></td><!-- 선호장르 -->
             </tr>
         </table>
+        <div>
+            <a th:if="${members.first}" disabled="disabled">첫 페이지</a>
+            <a th:if="${!members.first}" th:href="@{'/master/memberManage?page=' + (members.number - 1)}">이전 페이지</a>
+            <a th:each="page : ${#numbers.sequence(0, members.totalPages + 1)}" th:href="@{'/master/memberManage?page=' + page}" th:text="${page + 1}"></a>
+            <a th:if="${!members.last}" th:href="@{'/master/memberManage?page=' + (members.number + 1)}">다음 페이지</a>
+            <a th:if="${members.last}" disabled="disabled">마지막 페이지</a>
+        </div>
         <div class="bottom_menu">
             <button>회원삭제</button>&nbsp;&nbsp;
         </div>
@@ -77,32 +84,6 @@
             <td>1</td>
         </tr>
     </table>
-    </div>
-    <h1>휴먼계정</h1>
-    <div class="table-container">
-        <table class="SecondTable">
-            <tr>
-                <th>선택</th>
-                <th>순번</th>
-                <th>회원 아이디</th>
-                <th>회원명</th>
-                <th>마지막 로그인 날짜</th>
-                <th>총 결제 금액</th>
-                <th>성별/선호장르</th>
-            </tr>
-            <tr>
-                <td><input type="checkbox"></td>
-                <td>1</td>
-                <td>ponyo</td>
-                <td>송포뇨</td>
-                <td>2023-12-09</td>
-                <td>18,000원</td>
-                <td>소설</td>
-            </tr>
-        </table>
-        <div class="bottom_menu">
-            <button>회원삭제</button>&nbsp;&nbsp;
-        </div>
     </div>
 </div>
 </body>

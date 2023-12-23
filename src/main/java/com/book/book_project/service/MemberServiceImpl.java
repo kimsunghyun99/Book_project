@@ -146,10 +146,16 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.save(memberEntity);
     }
 
+//    //전체 회원 정보 불러오기
+//    @Override
+//    public List<MemberEntity> findByRole(){
+//        return memberRepository.findByRole();
+//    }
+
     //전체 회원 정보 불러오기
     @Override
-    public List<MemberEntity> findByRole(){
-        return memberRepository.findByRole();
+    public Page<MemberEntity> findAll(Pageable pageable){
+        return memberRepository.findAll(pageable);
     }
 
 }
