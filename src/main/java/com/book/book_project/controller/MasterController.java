@@ -10,8 +10,10 @@ import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -33,6 +35,60 @@ public class MasterController {
 
     @GetMapping("/master/bookUpdate")
     public void getBookUpdate() throws Exception {
+//        String key = "ttbdpfwnl01191710001";
+//        String title = "자바"; // 검색하려는 제목
+//        URL url = new URL("http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=" + key
+//                + "&Query=" + URLEncoder.encode(title, "UTF-8") + "&QueryType=Title"
+//                + "&MaxResults=50&start=1&output=js&Version=20131101");
+//
+//        System.out.println(url);
+//
+//        BufferedReader bf = new BufferedReader(new InputStreamReader(url.openStream(),"UTF-8"));
+//        String result = "";
+//        String line;
+//        while((line = bf.readLine()) != null) {
+//            result = result.concat(line);
+//        }
+//        System.out.println(result);
+//
+//        bf.close();
+//
+//        JSONParser jsonParser = new JSONParser();
+//        JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
+//        JSONArray itemArray = (JSONArray) jsonObject.get("item");
+//        System.out.println(jsonObject);
+//        List<ProductEntity> productList = new ArrayList<>();
+//
+//        if(itemArray != null) {
+//            for(Object itemObj : itemArray) {
+//                JSONObject itemInfo = (JSONObject) itemObj;
+//                ProductEntity product = new ProductEntity();
+//
+//                product.setBookname((String) itemInfo.get("title"));
+//                product.setAuthor((String) itemInfo.get("author"));
+//                product.setPublisher((String) itemInfo.get("publisher"));
+//                product.setPrice((Integer) itemInfo.get("priceStandard"));
+//                product.setStock((String) itemInfo.get("stockStatus "));
+//                product.setDescription((String) itemInfo.get("description"));
+//                product.setCover((String) itemInfo.get("cover"));
+//                product.setRegdate(new Timestamp(System.currentTimeMillis()));
+//                product.setBookid((String) itemInfo.get("isbn"));
+//                product.setPublicationdate((String) itemInfo.get("pubDate"));
+//                product.setSalespoint((Integer) itemInfo.get("salesPoint"));
+//                // categoryId를 int로 변환하여 설정
+//                int categoryId = (Integer) itemInfo.get("categoryId");
+//                CategoryEntity category = new CategoryEntity();
+//                category.setCategorynumber(categoryId);
+//                product.setCategorynumber(category);
+//
+//                productList.add(product);
+//                productRepository.save(product); // DB에 저장
+//            }
+//        }
+    }
+
+    @PostMapping("/master/bookUpdate")
+    public String postBookUpdate(@Param("titleValue")String titleValue) throws Exception {
         String key = "ttbdpfwnl01191710001";
         String [] title = {
 //                "MS 오피스","워드","엑셀","파워포인트","액세스","한글(한글과컴퓨터)","그래픽 일반","포토샵","3ds max","Maya"
@@ -105,7 +161,9 @@ public class MasterController {
                 }
             }
         }
+        return "{\"data\":\"GOOD\"}";
     }
+
     // 나이대별 통계
     @GetMapping("/master/ageStatistics")
     public void getAgeStatistics() {}
