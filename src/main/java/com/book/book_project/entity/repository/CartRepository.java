@@ -36,22 +36,4 @@ public interface CartRepository extends JpaRepository<CartEntity,Integer> {
     @Query(value = "select count(*) from tbl_cart where userid = :userid", nativeQuery = true)
     int bCartCount(@Param("userid") String userid);
 
-
-    // 장바구니 안에 목록 뽑아오기
-//    @Query(value = "select b.cartid, a.bookid, a.stock, a.cover, a.bookname, a.publisher,a.pricesales, b.cartvolume " +
-//            "from tbl_product as a,tbl_cart as b where a.stock>0 and a.bookid=b.bookid and b.userid=:userid order by b.cartid desc", nativeQuery = true)
-//    List<CartDTO> bCartView(@Param("userid") String userid);
-
-
-
-
-////
-//    // 장바구니 상품 추가
-//    @Modifying
-//    @Query(value= "INSERT INTO tbl_cart (cartvolume,userid,bookid) values(:cartvolume,:userid,:bookid)")
-//    public void bCartInsert(@Param("userid") String userid,
-//                            @Param("bookid") String bookid,
-//                            @Param("cartvolume") int cartvolume);
-//
-
 }

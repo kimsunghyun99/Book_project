@@ -32,7 +32,7 @@ class CartServiceImpl implements CartService {
     }
     @Override
     // 장바구니 추가 // 아무것도 없을 시
-    public void bCartInsert(String userid, String bookid, int cartvolume){
+    public void bCartInsert(String userid, String bookid){
 
         ProductEntity productEntity =productRepository.findById(bookid).get();
         MemberEntity memberEntity = memberRepository.findById(userid).get();
@@ -40,7 +40,6 @@ class CartServiceImpl implements CartService {
         CartEntity cartEntity = CartEntity.builder()
                 .userid(memberEntity)
                 .bookid(productEntity)
-                .cartvolume(cartvolume)
                 .cartregdate((Timestamp.valueOf(LocalDateTime.now())))
                 .build();
         cartRepository.save(cartEntity);
@@ -49,13 +48,12 @@ class CartServiceImpl implements CartService {
 
     @Override
     // 장바구니 업뎃 // 있을 시
-    public void bCartUpdate(String userid, String bookid, int cartvolume){
+    public void bCartUpdate(String userid, String bookid){
 
         ProductEntity productEntity =productRepository.findById(bookid).get();
         MemberEntity memberEntity = memberRepository.findById(userid).get();
         CartEntity cartEntity = cartRepository.findByBookidAndUserid(productEntity, memberEntity);
 
-        cartEntity.setCartvolume(cartvolume);
         cartEntity.setCartregdate((Timestamp.valueOf(LocalDateTime.now())));
 
         cartRepository.save(cartEntity);

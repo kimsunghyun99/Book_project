@@ -2,15 +2,13 @@ package com.book.book_project.controller;
 
 import com.book.book_project.dto.NewsDTO;
 import com.book.book_project.dto.ProductDTO;
-import com.book.book_project.entity.ProductEntity;
+import com.book.book_project.entity.*;
 import com.book.book_project.service.NewsService;
 import com.book.book_project.service.ProductService;
 import com.book.book_project.dto.CartDTO;
 import com.book.book_project.dto.ReviewInterface;
-import com.book.book_project.entity.MemberEntity;
 import com.book.book_project.dto.ReviewInterfaceImpl;
 import com.book.book_project.entity.ProductEntity;
-import com.book.book_project.entity.ReviewEntity;
 import com.book.book_project.entity.repository.CartRepository;
 import com.book.book_project.entity.repository.MemberRepository;
 import com.book.book_project.entity.repository.ProductRepository;
@@ -109,16 +107,11 @@ public class ProductController {
     public void getShoppingBasket(Model model, HttpSession session) throws Exception{
 
         String userid = (String)session.getAttribute("userid");
-        MemberEntity memberEntity = new MemberEntity();
-        memberEntity.setUserid(userid);
-        List<CartDTO> cartList=cartRepository.findByUserid(userid);
+        if(userid!=null){
+            List<CartDTO> cartList=cartRepository.findByUserid(userid);
 
-        System.out.println("cartList"+cartList.size());
-
-        // 장바구니 몇개의 종류 있는지 세기
-        model.addAttribute("pCartCount", cartService.bCartCount(userid));
-
-
+            model.addAttribute("list",cartList);
+        }
 
     }
 
@@ -126,18 +119,17 @@ public class ProductController {
     // 장바구니로 상품 이동
     @ResponseBody
     @PostMapping("/product/shoppingBasket")
-    public int postShoppingBasket(@RequestBody CartDTO cartDTO, HttpSession session) throws Exception{
+    public int postShoppingBasket(@RequestBody CartEntity cartEntity, HttpSession session) throws Exception{
 
         String userid = (String)session.getAttribute("userid");
-        String bookid = cartDTO.getBookid().getIdAsString();
-        int cartvolume = cartDTO.getCartvolume();
+        String bookid = cartEntity.getBookid().getBookid();
 
 
         if(cartService.bCartQuantity(userid,bookid) == 0 ){
-            cartService.bCartInsert(userid,bookid,cartvolume);
+            cartService.bCartInsert(userid,bookid);
         }
         else{
-            cartService.bCartUpdate(userid,bookid,cartvolume);
+            cartService.bCartUpdate(userid,bookid);
         }
         return cartService.bCartCount(userid);
 
