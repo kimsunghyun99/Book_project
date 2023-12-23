@@ -110,6 +110,10 @@
         var totalPrice = parseInt('[[${view.pricesales}]]');
         var price = parseInt('[[${view.pricesales}]]');
 
+        var totalPrice = parseInt('[[${view.price}]]');
+        var price = parseInt('[[${view.price}]]');
+//        const bookdiscount = document.querySelector('.book-discount').value;
+//        const bookprice = document.querySelector('.book-price').value;
         //통화 적용임
         document.addEventListener('DOMContentLoaded', function() {
             // JavaScript 코드 작성
@@ -121,9 +125,9 @@
         //통화 적용임
         document.addEventListener('DOMContentLoaded', function() {
             // JavaScript 코드 작성
-            const DisCountPrice = [[${view.pricesales}]];
+            const DisCountPrice = [[${view.price}]];
             const changePrice = DisCountPrice.toLocaleString('ko-KR');
-            document.querySelector('.book-discount').textContent = '할인가: ' + changePrice + '원';
+            document.querySelector('.book-price').textContent = '가격: ' + changePrice + '원';
         });
 
 
@@ -230,7 +234,7 @@ const count = (type) =>  {
         totalPrice -= price;
     }
     document.getElementById('quantity').innerHTML = number;
-    document.getElementById('total_price').innerHTML = totalPrice.toLocaleString('ko-KR');
+    document.getElementById('total_price').innerHTML = totalPrice.toLocaleString('ko-KR') + '원';
 }
 
         //장바구니에 상품 담기
@@ -299,6 +303,10 @@ const count = (type) =>  {
             }
         };
 
+        const GoPayment = (bookid) => {
+            document.location.href=`/product/payment?bookid=${bookid}`
+        }
+
     </script>
 </head>
 <body>
@@ -316,7 +324,7 @@ const count = (type) =>  {
         <p class="book-title" id="bookname" th:text="${view.bookname}"></p>
         <p class="book-author" id="author" th:text="'작가: ' + ${view.author}"></p>
         <p class="book-price" id="price" th:text="'가격: ' + ${view.price} + '원'"></p>
-        <p class="book-discount" id="pricesales" th:text="'할인가: ' + ${view.pricesales} + '%'"></p>
+<!--        <p class="book-discount" id="pricesales" th:text="'할인가: ' + ${view.pricesales} + '%'"></p>-->
         <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.pricesales * 0.05, 3, 'COMMA')} + '원'"></p>
 
 
@@ -328,18 +336,20 @@ const count = (type) =>  {
         <br>
         <div style="text-align:right;font-size:30px;font-weight:bold;">
             <span>상품 금액 : </span>&nbsp;
-            <span id="total_price">[[${#numbers.formatInteger(view.pricesales,3,'COMMA')}]] 원</span>
+            <span id="total_price">[[${#numbers.formatInteger(view.price,3,'COMMA')}]] 원</span>
         </div><br>
         <br>
 
         <div class="book-actions">
-            <a href="shoppingBasket.html" class="book-cart">구매하기</a>
+
             <div th:if="${session.userid==null}">
                 <input type="button" id="btn_unmembercart" class="btn_cart" value="장바구니 담기" th:onclick="unMemberCart()">
             </div>
             <div th:if="${session.userid!=null}">
                 <input type="button" id="btn_cart" class="btn_cart" value="장바구니 담기" th:onclick="cart()">
             </div>
+
+            <input type="button" value="구매하기" th:onclick="GoPayment([[${view.bookid}]])">
 
         </div>
     </div>
@@ -656,5 +666,16 @@ const count = (type) =>  {
 
 <!--    <div id="pagination" style="margin-top: 10px;"></div>-->
 </div>
+
+
+
+
+
+
 </body>
+
+
+
+
+
 </html>
