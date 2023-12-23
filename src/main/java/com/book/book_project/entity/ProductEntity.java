@@ -57,16 +57,4 @@ public class ProductEntity  {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="categorynumber" ,nullable = false)
     private CategoryEntity categorynumber;
-
-
-
-    public String getIdAsString() {
-        return String.valueOf(this.getBookid());
-    }
-
-    public ProductEntity(String bookid) {
-        this.bookid = bookid;
-    }
-
-
 }

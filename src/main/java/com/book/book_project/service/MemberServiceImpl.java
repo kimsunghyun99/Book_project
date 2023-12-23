@@ -1,15 +1,10 @@
 package com.book.book_project.service;
 
-import com.book.book_project.controller.MemberController;
-import com.book.book_project.dto.BuyerInfoDTO;
 import com.book.book_project.dto.MemberDTO;
-import com.book.book_project.dto.PurchaseInfoDTO;
 import com.book.book_project.entity.*;
 import com.book.book_project.entity.repository.AddresRepository;
-import com.book.book_project.entity.repository.DeliveryRepository;
 import com.book.book_project.entity.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.repository.query.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -17,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Member;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -54,11 +50,7 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.countJoinedRecordsByUserId(userid);
     }
 
-    //즐겨찾기 정보 가져오기
-    @Override
-    public List<FavoritesEntity> findFavoritesByUserId(String userid) {
-        return memberRepository.findFavoritesByUserId(userid);
-    }
+
     //닉네임
     @Override
     @Transactional

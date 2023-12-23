@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Controller
@@ -106,9 +108,9 @@ public class ProductController {
     @GetMapping("/product/shoppingBasket")
     public void getShoppingBasket(Model model, HttpSession session) throws Exception{
 
-        String userid = (String)session.getAttribute("userid");
+        String userid = (String) session.getAttribute("userid");
         if(userid!=null){
-            List<CartDTO> cartList=cartRepository.findByUserid(userid);
+            List<CartEntity> cartList=cartService.cartList(userid);
 
             model.addAttribute("list",cartList);
         }
@@ -119,20 +121,24 @@ public class ProductController {
     // 장바구니로 상품 이동
     @ResponseBody
     @PostMapping("/product/shoppingBasket")
-    public int postShoppingBasket(@RequestBody CartEntity cartEntity, HttpSession session) throws Exception{
+    public String postShoppingBasket(@RequestParam("bookid") String bookid, HttpSession session) throws Exception{
+        CartEntity cartEntity=new CartEntity();
+        ProductEntity productEntity = new ProductEntity();
+        productEntity.setBookid(bookid);
+        String userid = (String) session.getAttribute("userid");
+        MemberEntity memberEntity = memberRepository.findById(userid).orElse(null);
 
-        String userid = (String)session.getAttribute("userid");
-        String bookid = cartEntity.getBookid().getBookid();
+        Timestamp cartregdate = new Timestamp(System.currentTimeMillis());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
 
-        if(cartService.bCartQuantity(userid,bookid) == 0 ){
-            cartService.bCartInsert(userid,bookid);
-        }
-        else{
-            cartService.bCartUpdate(userid,bookid);
-        }
-        return cartService.bCartCount(userid);
 
+        cartEntity.setUserid(memberEntity);
+        cartEntity.setBookid(productEntity);
+        cartEntity.setCartregdate(Timestamp.valueOf(sdf.format(cartregdate)));
+
+        cartService.cartRegistry(cartEntity);
+        return "{\"data\":\"GOOD\"}";
     }
 
 
@@ -144,10 +150,11 @@ public class ProductController {
     @PostMapping("/product/nickname")
     public String postNickname(HttpSession session, @RequestParam("nickname") String nickname, Model model) throws Exception {
         String userid = (String)session.getAttribute("userid");
+        System.out.println("userid = "+ userid);
         session.setAttribute("nickname", nickname);
         memberService.nickname(userid,nickname);
         model.addAttribute("nicknameview" + memberService.nickname(userid,nickname));
-        return "{\"message\":\"GOOD\"}";
+        return "{\"data\":\"GOOD\"}";
     }
 
 

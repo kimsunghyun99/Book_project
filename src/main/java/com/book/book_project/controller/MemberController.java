@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequiredArgsConstructor
 public class MemberController {
 
-
     @Autowired
     MemberService service;
 

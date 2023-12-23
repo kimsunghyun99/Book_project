@@ -234,6 +234,8 @@ const count = (type) =>  {
     document.getElementById('total_price').innerHTML = totalPrice.toLocaleString('ko-KR');
 }
 
+
+
         //장바구니에 상품 담기
         const cart = async (bookid) => {
                     await fetch('/product/shoppingBasket',{
@@ -242,12 +244,11 @@ const count = (type) =>  {
                             "Content-Type": "application/json",
                         },
                         body: JSON.stringify({
-                            bookid: bookid,
-                            volume: number
+                            bookid: bookid
                         }),
                     }).then((response)=> response.text())
                         .then((data) => {
-                            if(data != '' || data != null || data != 0){
+                            if(data ==='GOOD'){
                                 if(confirm("장바구니로 이동하시겠습니까?")){
                                     document.location.href="/product/shoppingBasket"
                                 }
