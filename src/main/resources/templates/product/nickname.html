@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>닉네임 입력</title>
+</head>
+<script>
+
+    // const nicknameCheck = (nickname) => {
+    //
+    //     window.opener.document.getElementById('reviewer').value = nickname;
+    //     window.close();
+    //
+    // }
+
+    const nicknameRegister = async () => {
+        const nickname = document.querySelector('#nicknameInput');
+        if(nickname.value === '') {
+            alert("닉네임을 입력하세요");
+            nicknameInput.focus();
+            return false;
+        }
+
+        const formData = new URLSearchParams();
+        formData.append("nickname", nickname.value);
+        console.log("nickname" + nickname);
+        await fetch('/product/nickname',{
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded' // URL 인코딩된 폼 데이터
+            }
+        }).then((response)=> response.json())
+            .then((data)=> {
+                if(data.message === 'GOOD'){
+                    alert('닉네임이 등록되었습니다.');
+                    window.opener.document.getElementById('reviewer').value = nickname.value;
+                    setTimeout(function() {
+                        window.close(); // 현재 창을 닫을 경우
+                    }, 2000);
+                } else {
+                    alert('닉네임 등록에 실패했습니다.');
+                }
+            }).catch((error) => {
+                console.log("error = " + error);
+                alert("시스템 장애로 닉네임 등록이 실패했습니다.");
+            });
+
+    }
+
+</script>
+<body>
+    <form id="nicknameForm" name="nicknameForm" method="POST">
+    닉네임: <input type="text" id="nicknameInput" name="nicknameInput">
+        <input type="hidden" id="userid" name="userid" th:value="${session.userid}">
+        <input type="button" id="btn_nickname" value="등록" onclick="nicknameRegister()">
+
+
+    </form>
+</body>
+</html>

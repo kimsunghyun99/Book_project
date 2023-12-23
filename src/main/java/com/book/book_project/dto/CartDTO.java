@@ -14,20 +14,20 @@ import java.sql.Timestamp;
 @Builder
 public class CartDTO {
 
-    private int cartid;
     private MemberEntity userid;
     private ProductEntity bookid;
-    private int cartvolume;
-    private Timestamp cartregdate; // 생일
+    private Timestamp cartregdate;
+
+
+
+
 
 //Entity --> DTO
 
     public CartDTO(CartEntity cartEntity) {
 
-        this.cartid =cartEntity.getCartid();
         this.userid =cartEntity.getUserid();
         this.bookid =cartEntity.getBookid();
-        this.cartvolume =cartEntity.getCartvolume();
         this.cartregdate =cartEntity.getCartregdate();
     }
 
@@ -37,14 +37,14 @@ public class CartDTO {
     public CartEntity dtoToEntity(CartDTO dto)  {
 
         CartEntity cartEntity = CartEntity.builder()
-                .cartid(dto.getCartid())
                 .userid(dto.getUserid())
                 .bookid(dto.getBookid())
-                .cartvolume(dto.getCartvolume())
                 .cartregdate(dto.getCartregdate())
                 .build();
         return cartEntity;
 
 
     }
+
+
 }

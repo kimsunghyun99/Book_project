@@ -26,6 +26,7 @@ public class ProductDTO {
     private Timestamp regdate;  //등록일
     private String publicationdate;  //출판일
     private int salespoint;//판매지수
+
     private CategoryEntity categorynumber;    //분류 이름
 
 
@@ -34,6 +35,7 @@ public class ProductDTO {
         this.bookid = productEntity.getBookid();
         this.bookname = productEntity.getBookname();
         this.publisher = productEntity.getPublisher();
+        this.pricesales = productEntity.getPricesales();
         this.author=productEntity.getAuthor();
         this.price = productEntity.getPrice();
         this.stock = productEntity.getStock();
@@ -64,5 +66,7 @@ public class ProductDTO {
                 .categorynumber(dto.getCategorynumber())
                 .build();
     }
+
+
 
 }

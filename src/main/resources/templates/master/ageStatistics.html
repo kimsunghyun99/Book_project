@@ -4,9 +4,47 @@
     <meta charset="UTF-8">
     <title>순위와 막대 그래프</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // 데이터
+        var data = {
+            labels: ["항목 1", "항목 2", "항목 3", "항목 4", "항목 5"],
+            datasets: [{
+                label: '데이터셋',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+                data: [12, 19, 3, 5, 2],
+            }]
+        };
+
+        // 옵션
+        var options = {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        };
+
+        // 차트 생성
+        var ctx = document.getElementById('myBarChart').getContext('2d');
+        var myBarChart = new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: options
+        });
+
+        // 순위 표시
+        var rankingDiv = document.getElementById('ranking');
+        var rankingData = data.datasets[0].data.slice().sort(function (a, b) { return b - a });
+        for (var i = 0; i < rankingData.length; i++) {
+            var index = data.datasets[0].data.indexOf(rankingData[i]);
+            rankingDiv.innerHTML += '<p>' + (i + 1) + '위: ' + data.labels[index] + '</p>';
+        }
+    </script>
 </head>
 <body>
-
+<div th:include="/etc/header.html :: banner"></div>
 <div style="width: 400px; margin: auto;">
     <h2>순위와 막대 그래프</h2>
     <div style="width:80%; text-align:right; position:relative; left: 35px; margin:10px; padding: 10px;">
@@ -21,44 +59,7 @@
     <div id="ranking"></div>
 </div>
 
-<script>
-    // 데이터
-    var data = {
-        labels: ["항목 1", "항목 2", "항목 3", "항목 4", "항목 5"],
-        datasets: [{
-            label: '데이터셋',
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1,
-            data: [12, 19, 3, 5, 2],
-        }]
-    };
 
-    // 옵션
-    var options = {
-        scales: {
-            y: {
-                beginAtZero: true
-            }
-        }
-    };
-
-    // 차트 생성
-    var ctx = document.getElementById('myBarChart').getContext('2d');
-    var myBarChart = new Chart(ctx, {
-        type: 'bar',
-        data: data,
-        options: options
-    });
-
-    // 순위 표시
-    var rankingDiv = document.getElementById('ranking');
-    var rankingData = data.datasets[0].data.slice().sort(function (a, b) { return b - a });
-    for (var i = 0; i < rankingData.length; i++) {
-        var index = data.datasets[0].data.indexOf(rankingData[i]);
-        rankingDiv.innerHTML += '<p>' + (i + 1) + '위: ' + data.labels[index] + '</p>';
-    }
-</script>
 
 </body>
 </html>

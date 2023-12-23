@@ -1,10 +1,10 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-
-    <Style>
+<meta charset="UTF-8">
+<title>Title</title>
+<Style>
 
         .book-list-control {
             display: flex;
@@ -71,11 +71,11 @@
     </Style>
 </head>
 <body>
-
+<div th:include="/etc/header.html"></div>
 <br><br>
-<h2 style="text-align:right">홍길동님 등급 : vip &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <a href="/">장바구니</a></h2>
+<h2 style="text-align:right" th:text="${memberInfo.username} + ' 님 등급 : vip'"> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <a href="/">장바구니</a></h2>
 <br><br>
-<h4>홍길동 님     <a href="/">정보수정</a></h4>
+<h4 th:text="${memberInfo.username} + ' 님 등급 : vip'"><a href="/">정보수정</a></h4>
 
 <br><br><br><br>
 <div class="table-container">
@@ -129,6 +129,6 @@
 
 
 
-
+</div>
 </body>
 </html>

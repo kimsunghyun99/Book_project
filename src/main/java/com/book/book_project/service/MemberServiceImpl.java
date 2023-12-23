@@ -1,24 +1,22 @@
 package com.book.book_project.service;
 
-import com.book.book_project.controller.MemberController;
-import com.book.book_project.dto.BuyerInfoDTO;
 import com.book.book_project.dto.MemberDTO;
-import com.book.book_project.dto.PurchaseInfoDTO;
 import com.book.book_project.entity.*;
 import com.book.book_project.entity.repository.AddresRepository;
-import com.book.book_project.entity.repository.DeliveryRepository;
 import com.book.book_project.entity.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.repository.query.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Member;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,8 +31,6 @@ public class MemberServiceImpl implements MemberService {
     public void memberInfoRegistry(MemberDTO member) {
         member.setRegdate(Timestamp.valueOf(LocalDateTime.now()));
         member.setLastpwdate(Timestamp.valueOf(LocalDateTime.now()));
-        member.setMemberclass("bronze");
-        member.setRole("USER");
         member.setPwcheck(1);
         member.setFromSocial("N");
         memberRepository.save(member.dtoToEntity(member));
@@ -54,11 +50,25 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.countJoinedRecordsByUserId(userid);
     }
 
-    //즐겨찾기 정보 가져오기
+
+    //닉네임
     @Override
-    public List<FavoritesEntity> findFavoritesByUserId(String userid) {
-        return memberRepository.findFavoritesByUserId(userid);
+    @Transactional
+    public MemberDTO nickname(String userid, String nickname) throws Exception {
+        Optional<MemberEntity> optionalMember = memberRepository.findById(userid);
+
+        System.out.println("impl" + optionalMember);
+
+        if (optionalMember.isPresent()) {
+            MemberEntity member = optionalMember.get();
+            member.setNickname(nickname); // 닉네임 설정
+            memberRepository.save(member); // 변경된 회원 정보 저장
+            return new MemberDTO(member);
+        } else {
+            return null;
+        }
     }
+
 
     // update tbl_member set password = #{password}, lastpwdate= #{lastpwdate} where userid = #{userid}
     //패스워드 수정
