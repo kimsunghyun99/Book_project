@@ -134,6 +134,14 @@
             padding: 5px;
         }
 
+        #pay {
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          /*//  height: 70vh; !* 화면의 100% 높이로 설정하여 가운데 정렬 *!*/
+        }
+
     </style>
 
     <script>
@@ -176,11 +184,10 @@
             finaladdr.innerText = "배송될 주소 : " + original_addr;
         }
 
-        const finaldelivery1 = () => {
-           const addr1 = document.getElementById(addr1).innerText;
-           const detailaddr = document.getElementById(detailaddr).innerText;
+        const finaldelivery1 = (addr1, detailaddr) => {
+
             const finaladdr = document.getElementById("finaladdr");
-            finaladdr.innerText = "배송될 주소 : " + addr1 + detailaddr;
+            finaladdr.innerText = "배송될 주소 : " + addr1 + "" + detailaddr;
         }
 
 
@@ -200,7 +207,11 @@
         <div class="tableDiv">
             <table class="InfoTable">
                 <tr>
-                    <th colspan="6"><span>주문상품</span></th>
+                    <th>주문상품</th>
+                    <th>책 이름</th>
+                    <th>저자</th>
+                    <th>책 가격</th>
+                    <th>수량</th>
                 </tr>
 
                 <tbody>
@@ -209,6 +220,7 @@
                     <td><span th:text="${view.bookname}"></span></td>
                     <td><span th:text="${view.author}"></span></td>
                     <td><span th:text="${#numbers.formatInteger(view.price,3,'COMMA')+'원'}"></span></td>
+<!--                    <td>1</td>-->
 <!--                    <td><span th:text="${view.order_quantity}"></span></td>-->
 <!--                    <td><span class="invoiceAmount" th:text="${#numbers.formatInteger(list.order_amount,3,'COMMA')+'원'}"></span></td>-->
                 </tr>
@@ -258,19 +270,19 @@
             <input type="text" id="detailaddr" class="input_field" name="detailaddr" placeholder="상세 주소를 입력하세요">
             <input type="text" id="receiver" class="input_field" name="receiver" placeholder="받는사람 이름을 입력하세요">
             <input type="text" id="receivertelno" class="input_field" name="receivertelno" placeholder="받는사람 번호를 입력하세요">
-            <input type="button" id="newdelivery" class="input_field" value="선택" onclick="finaldelivery1()">
+            <input type="button" id="newdelivery" class="input_field" value="선택" onclick="finaldelivery1(document.getElementById('addr1').value, document.getElementById('detailaddr').value)">
         </div>
         <br><br><br>
 
         <span id="finaladdr">배송될 주소 : </span>
 
 
-        <br><br>
-<!--        <th:block th:if="${type == '00'}">-->
-<!--            <div>-->
-<!--                <input type="button" class="btn_order" value="결제하기" th:onclick="order([[${session.email}]],[[${invoice}]]);">-->
-<!--            </div>-->
-<!--        </th:block>-->
+        <br><br><br><br>
+
+            <div id="pay">
+                <input type="button" style="text-align: center" class="btn_order" value="결제하기">
+            </div>
+
     </div>
 </div>
 <br><br><br><br>

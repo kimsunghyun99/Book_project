@@ -293,17 +293,16 @@ const count = (type) =>  {
             if(!isExists){
                 cart.push(data);
                 localStorage.setItem("cart", JSON.stringify(cart));
-        const GoPayment = (bookid) => {
-
-    document.location.href=`/product/payment?bookid=${bookid}`
-        }
-
 
                 if(confirm("장바구니로 이동하시겠습니까?")){
                     document.location.href="/product/shoppingBasket"
                 }
             }
         };
+
+        const GoPayment = (bookid) => {
+            document.location.href=`/product/payment?bookid=${bookid}`
+        }
 
     </script>
 </head>
