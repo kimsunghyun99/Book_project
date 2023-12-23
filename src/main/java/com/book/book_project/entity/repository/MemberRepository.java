@@ -3,6 +3,8 @@ package com.book.book_project.entity.repository;
 import com.book.book_project.entity.FavoritesEntity;
 import com.book.book_project.entity.MemberEntity;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -34,5 +36,10 @@ public interface MemberRepository extends JpaRepository<MemberEntity, String> {
     @Modifying //  테이블에 DML ( insert, update, delete) 을 실행 시켜 변화를 주었을 경우 테이블에 반영된 내용을 엔티티 클래스에 반영
     @Query(value="update tbl_member set username = :username, nickname = :nickname, telno = :telno where userid = :userid",nativeQuery = true)
     public void membermodify(@Param("userid") String userid, @Param("username") String username, @Param("nickname") String nickname, @Param("telno") String telno);
-//// interests =:interests
+
+    // 전체 회원 정보 불러오기
+    @Query(value = "select ROW_NUMBER() OVER (ORDER BY username) AS rnum, t.* from tbl_member as t where role = 'USER'", nativeQuery = true)
+    List<MemberEntity> findByRole();
+
+
 }

@@ -9,6 +9,7 @@ import com.book.book_project.entity.repository.AddresRepository;
 import com.book.book_project.entity.repository.DeliveryRepository;
 import com.book.book_project.entity.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -145,15 +146,10 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.save(memberEntity);
     }
 
+    //전체 회원 정보 불러오기
+    @Override
+    public List<MemberEntity> findByRole(){
+        return memberRepository.findByRole();
+    }
 
-
-
-
-
-
-//    @Override
-//    public BuyerInfoDTO buyerAndPurchaseInfo(String userid) {
-//        BuyerInfoEntity buyerInfoEntity = memberRepository.
-//        return null;
-//    }
 }

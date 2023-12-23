@@ -4,12 +4,15 @@ import com.book.book_project.dto.BuyerInfoDTO;
 import com.book.book_project.dto.MemberDTO;
 import com.book.book_project.dto.PurchaseInfoDTO;
 import com.book.book_project.entity.AddressEntity;
+import com.book.book_project.entity.MemberEntity;
 import org.springframework.data.domain.Page;
 import com.book.book_project.entity.FavoritesEntity;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface MemberService {
@@ -40,9 +43,6 @@ public interface MemberService {
     //비밀번호 찾기
     String pwSearch(MemberDTO member);
 
-//    //구매자정보 가져오기
-//    BuyerInfoDTO buyerAndPurchaseInfo(String userid);
-
     //주소 검색
     public Page<AddressEntity> addrSearch(int pageNum, int postNum, String addrSearch);
 
@@ -52,12 +52,11 @@ public interface MemberService {
     //회원 구매, 주문 목록 갯수 구하기
     public Long countJoinedRecordsByUserId(String userid);
 
-
-
     //리뷰 갯수 가져오기
     public long countReviewsByUserId(String userid);
 
-
+    //전체 회원 정보 불러오기
+    public List<MemberEntity> findByRole();
 
 
 }

@@ -1,44 +1,45 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>회원 관리</title>
-    <style>
-        .main {
-            text-align: center;
-        }
+<meta charset="UTF-8">
+<title>회원 관리</title>
+<style>
+    .main {
+        text-align: center;
+    }
 
-        .table-container {
-            width: 80%;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr; /* 1개의 컬럼 */
-            grid-row-gap: 20px; /* 행 간격 */
-        }
+    .table-container {
+        width: 80%;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr; /* 1개의 컬럼 */
+        grid-row-gap: 20px; /* 행 간격 */
+        text-align: center;
+    }
 
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
 
-        th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
+    th, td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
 
-        th {
-            background-color: #f2f2f2;
-        }
+    th {
+        background-color: #f2f2f2;
+    }
 
-        .bottom_menu {
-            text-align: left;
-            margin-top: 10px;
-            margin-bottom: 10px;
-        }
-    </style>
+    .bottom_menu {
+        text-align: left;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+</style>
 </head>
-
 <body>
 <div class="main">
     <h1>회원</h1>
@@ -53,14 +54,14 @@
                 <th>총 결제 금액</th>
                 <th>성별/선호장르</th>
             </tr>
-            <tr>
+            <tr th:each="member, stat : ${MList}">
                 <td><input type="checkbox"></td>
-                <td>1</td>
-                <td>ponyo</td>
-                <td>송포뇨</td>
-                <td>2023-12-09</td>
-                <td>18,000원</td>
-                <td>소설</td>
+                <td th:text="${stat.count}"></td> <!-- 순번 -->
+                <td th:text="${member.nickname}"></td><!-- 회원 아이디 -->
+                <td th:text="${member.username}"></td><!-- 회원명 -->
+                <td th:text="${#dates.format(member.regdate, 'yyyy-MM-dd')}"></td><!-- 가입일 -->
+                <td>18,000원</td><!-- 총 결제금액 -->
+                <td th:text="${member.interest}"></td><!-- 선호장르 -->
             </tr>
         </table>
         <div class="bottom_menu">

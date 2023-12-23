@@ -35,12 +35,13 @@ public class MemberDTO {
     private Timestamp lastpwdate;  // 초기값 regdate와 동일
     private String fromSocial;    // 회원등록 시 초기값 N
     private String role;     // 초기값 USER
+    private String interest; //social 회원들은?
 
     // Entity -> DTO로 이동
 
     public MemberDTO(MemberEntity memberEntity) {
         this.userid = memberEntity.getUserid();
-
+        this.interest = memberEntity.getInterest();
         this.nickname = memberEntity.getNickname();
         this.username = memberEntity.getUsername();
         this.birthday = memberEntity.getBirthday();
@@ -80,6 +81,7 @@ public class MemberDTO {
                 .lastpwdate(member.getLastpwdate())
                 .fromSocial(member.getFromSocial())
                 .role(member.getRole())
+                .interest(member.getInterest())
                 .build();
 
 
@@ -105,6 +107,7 @@ public class MemberDTO {
                 ", lastpwdate=" + lastpwdate +
                 ", fromSocial='" + fromSocial + '\'' +
                 ", role='" + role + '\'' +
+                ", interest'" + interest + '\'' +
                 '}';
     }
 }
