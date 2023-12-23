@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
 <head>
     <meta charset="UTF-8">
     <title>쇼핑몰</title>
@@ -143,8 +144,12 @@
         }
 
     </style>
+<!--    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>-->
+<!--    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>-->
+    <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
 
     <script>
+
 
         let addplusVisible = false;
         const AddAddr = () => {
@@ -191,6 +196,70 @@
         }
 
 
+        // const KGpay = () => {
+        //     const data = {
+        //         pg: 'html5_inicis',
+        //         pay_method: 'card',
+        //         merchant_uid: this.userid + '_' + new Date().getTime(),
+        //         name: '주문명:결제테스트',
+        //         amount: this.price,
+        //         buyer_email: this.userid,
+        //         buyer_name: this.username,
+        //         buyer_tel: this.telno,
+        //         buyer_addr: '주소',
+        //         buyer_postcode: '우편번호'
+        //     }
+        // };
+        function KGpay() {
+            // IMP 객체가 전역 범위에 정의되어 있다고 가정합니다.
+            IMP.init("imp61517557");
+
+            // 각 요소에 대한 참조를 가져오기 전에 변수로 선언해보세요.
+            var buyerName = document.getElementById("buyerName");
+            var deliveryName = document.getElementById("deliveryname");
+            var totalInvoiceAmount = '1';
+            var buyerEmail = document.getElementById("buyerEmail");
+            var receiver = document.getElementById("receiver");
+            var receiverTelNo = document.getElementById("receivertelno");
+            var addr1 = document.getElementById("addr1");
+            var detailAddr = document.getElementById("detailaddr");
+            var zipcode = document.getElementById("zipcode");
+
+            // 참조를 가져온 후에 값을 읽어보세요.
+            var merchantUid = buyerName ? buyerName.value + new Date().getTime() : null;
+            var name = deliveryName ? deliveryName.value : null;
+            var amount = '1';
+            var email = buyerEmail ? buyerEmail.value : null;
+            var buyer = receiver ? receiver.value : null;
+            var telNo = receiverTelNo ? receiverTelNo.value : null;
+            var address = addr1 && detailAddr ? addr1.value + " " + detailAddr.value : null;
+            var postcode = zipcode ? zipcode.value : null;
+
+            IMP.request_pay({
+                pg: "html5_inicis",
+                pay_method: "card",
+                merchant_uid: merchantUid,
+                name: '책',
+                amount: '1',
+                buyer_email: email,
+                buyer_name: buyer,
+                buyer_tel: telNo,
+                buyer_addr: address,
+                buyer_postcode: postcode
+            }, function (rsp) {
+                if (rsp.success) {
+                    // 결제 성공 시 처리 로직
+                    console.log("Payment success:", rsp);
+                    // 여기에 결제 성공 시 수행할 로직을 추가하세요.
+                } else {
+                    // 결제 실패 시 처리 로직
+                    alert("결재 실패");
+                    alert(rsp.error_msg);
+                    console.log(rsp);
+                }
+            });
+        }
+
 
 
     </script>
@@ -219,14 +288,14 @@
                     <td><img class="p_image" th:src="${view.cover}" alt="책 표지 이미지" style="width:300px; height: auto"></td>
                     <td><span th:text="${view.bookname}"></span></td>
                     <td><span th:text="${view.author}"></span></td>
-                    <td><span th:text="${#numbers.formatInteger(view.price,3,'COMMA')+'원'}"></span></td>
+                    <td><span th:id="price" th:text="${#numbers.formatInteger(view.price,3,'COMMA')+'원'}"></span></td>
 <!--                    <td>1</td>-->
 <!--                    <td><span th:text="${view.order_quantity}"></span></td>-->
 <!--                    <td><span class="invoiceAmount" th:text="${#numbers.formatInteger(list.order_amount,3,'COMMA')+'원'}"></span></td>-->
                 </tr>
                 <tr>
                     <td colspan="3"></td>
-                    <td colspan="3"><span style="text-align:right"><h2>합계 : <span id="totalInvoiceAmount" style="text-align:right"></span>원</h2></span></td>
+                    <td colspan="3"><span style="text-align:right"><h2>합계 : <span id="totalInvoiceAmount" style="text-align:right"></span>1원</h2></span></td>
                 </tr>
                 </tbody>
             </table>
@@ -250,7 +319,7 @@
             <tbody>
             <th:block th:if="${delverylist != null}">
                 <tr th:each="delivery, stat :${delverylist}">
-                    <td th:text="${delivery.name}"></td>
+                    <td th:id="deliveryname" th:text="${delivery.name}"></td>
                     <td th:id="'original_addr' + ${stat.index}" th:text="${delivery.addr} + ' ' + ${delivery.detailaddr}"></td>
                     <td th:text="${delivery.zipcode}"></td>
                     <td th:text="${delivery.telno}"></td>
@@ -279,8 +348,9 @@
 
         <br><br><br><br>
 
+
             <div id="pay">
-                <input type="button" style="text-align: center" class="btn_order" value="결제하기">
+                <input type="button" style="text-align: center" class="btn_order" value="결제하기" onclick="KGpay()">
             </div>
 
     </div>
