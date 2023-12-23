@@ -264,6 +264,11 @@ const count = (type) =>  {
 
 
 
+        const GoPayment = (bookid) => {
+
+    document.location.href=`/product/payment?bookid=${bookid}`
+        }
+
 
 
     </script>
@@ -309,7 +314,7 @@ const count = (type) =>  {
         <br>
 
         <div class="book-actions">
-            <a href="shoppingBasket.html" class="book-cart">구매하기</a>
+            <input type="button" value="구매하기" th:onclick="GoPayment([[${view.bookid}]])">
             <input type="button" id="btn_cart" class="btn_cart" value="장바구니 담기" th:onclick="cart()">
         </div>
     </div>

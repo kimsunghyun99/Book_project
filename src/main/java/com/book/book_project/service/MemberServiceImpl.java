@@ -36,6 +36,7 @@ public class MemberServiceImpl implements MemberService {
         member.setRegdate(Timestamp.valueOf(LocalDateTime.now()));
         member.setLastpwdate(Timestamp.valueOf(LocalDateTime.now()));
         member.setPwcheck(1);
+        member.setRole("user");
         member.setFromSocial("N");
         memberRepository.save(member.dtoToEntity(member));
     }
