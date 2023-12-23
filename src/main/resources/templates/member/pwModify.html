@@ -3,7 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <title>패스워드 변경</title>
+    <style>
+        .input_field {
+            display: block;
+            margin: 0 auto;
+            width: 80%; /* 원하는 폭으로 조절하세요 */
+            font-size: 16px; /* 원하는 폰트 크기로 조절하세요 */
+            padding: 10px;
+            box-sizing: border-box;
+        }
 
+        #aa {
+            margin: 0 auto;
+
+            text-align:center;
+
+        }
+
+        .btn_write {
+            display:inline-block;
+            width: 20%; /* 원하는 폭으로 조절하세요 */
+            font-size: 18px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .btn_cancel {
+            display:inline-block;
+            width: 20%; /* 원하는 폭으로 조절하세요 */
+            font-size: 18px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+    </style>
 
     <script>
 
@@ -74,40 +106,10 @@
 
 </head>
 <body>
-<style>
-    .input_field {
-        display: block;
-        margin: 0 auto;
-        width: 80%; /* 원하는 폭으로 조절하세요 */
-        font-size: 16px; /* 원하는 폰트 크기로 조절하세요 */
-        padding: 10px;
-        box-sizing: border-box;
-    }
 
-        #aa {
-            margin: 0 auto;
-
-            text-align:center;
-
-        }
-
-        .btn_write {
-            display:inline-block;
-            width: 20%; /* 원하는 폭으로 조절하세요 */
-            font-size: 18px;
-            padding: 10px;
-            box-sizing: border-box;
-        }
-        .btn_cancel {
-            display:inline-block;
-            width: 20%; /* 원하는 폭으로 조절하세요 */
-            font-size: 18px;
-            padding: 10px;
-            box-sizing: border-box;
-        }
-
-</style>
 <div class="main">
+    <div th:include="/etc/header.html :: banner"></div>
+    <br><br><br>
     <div class="ModifyForm">
         <hr>
         <h1 style="text-align:center">소중한 개인정보 보호를 변경을 위해 비밀번호를 변경해주세요.</h1>

@@ -38,4 +38,9 @@ public class UnMemberPurchaseInfoEntity {
     @JoinColumn(name="unmemberseq", nullable = false)
     private UnMemberEntity unmemberseq;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @OnDelete(action= OnDeleteAction.CASCADE)
+    @JoinColumn(name="statusseq", nullable = false)
+    private PurchaseStatusEntity statusseq;
+
 }

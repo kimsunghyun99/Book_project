@@ -72,70 +72,63 @@
 </style>
 
     <script>
+        const count = (type) =>  {
 
-        //상품 갯수 변경 업데이트
-        const quantityUpdate = async (p_id,quantity) => {
-
-            await fetch('/shop/pCart',{
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    cart_email: email,
-                    p_id: p_id,
-                    cart_quantity: quantity
-                }),
-            }).then((response) => response.text())
-                .then((data) => {
-                    if(data == null || data == '')
-                        alert("시스템 장애로 상품 수량변경이 실패했습니다.");
-                }).catch((error) => console.log("error = " + error));
-
+            number = parseInt(document.getElementById('quantity').innerHTML);
+            if(type === 'plus') {
+                number ++;
+                totalPrice += price;
+            }else if(type === 'minus' && number !==1 )  {
+                number --;
+                totalPrice -= price;
+            }
+            document.getElementById('quantity').innerHTML = number;
+            document.getElementById('total_price').innerHTML = totalPrice.toLocaleString('ko-KR');
         }
 
 
 
+
     </script>
-
-
-
-
 </head>
 <body>
-<header>
-    <h1>교보문고</h1>
-</header>
-
-<nav>
-    <a href="#">홈</a> |
-    <a href="#">도서</a> |
-    <a href="#">이벤트</a> |
-    <a href="#">마이페이지</a>
-    <a href="/member/signup">회원가입</a>
-</nav>
+<div th:include="/etc/header.html"></div>
 
 <h1>장바구니</h1>
 <table>
     <tr>
         <th><input type="checkbox"></th>
         <th>책</th>
+        <th>수량</th>
         <th>가격</th>
+        <th>총 금액</th>
     </tr>
 
     <tr>
         <th:block th:if="${list != null}">
             <tr th:each="list:${list}">
 
-            <td><input type="checkbox"></td>
         <td>
-            <p class="book-price" th:text="'이미지: ' + ${list.cover} + "></p>
-            <p class="book-price" th:text="'이미지: ' + ${list.bookname} + "></p>
+            <input type="checkbox">
+        </td>
+        <td>
+            <p class="book-price" th:text="${list.cover} + "></p>
+            <p class="book-price" th:text="${list.bookname} + "></p>
         </td>
 
         <td>
-            <p class="book-price" th:text="'가격: ' + ${list.pricesales} + '원'"></p>
-            <p class="book-price" th:text="'수: ' + ${list.cartvolume} + '개'"></p>
+            <div id="volume">
+                <input type='button' onclick='count("plus")' value='+'/>
+                <span id="quantity">1</span>
+                <input type='button' onclick='count("minus")' value='-'/><br><br>
+            </div>
+        </td>
+        <td>
+            <p class="book-price" th:text="${list.pricesales} + '원'"></p>
+        </td>
+        <td>
+            <span>상품 금액 : </span>&nbsp;
+            <span id="total_price">[[${#numbers.formatInteger(view.pricesales,3,'COMMA')}]] 원</span>
         </td>
 
     </tr>
