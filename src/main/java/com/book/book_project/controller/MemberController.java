@@ -36,8 +36,8 @@ public class MemberController {
     @Autowired
     DeliveryService deliveryService;
 
-    @Autowired
-    LikeService likeService;
+//    @Autowired
+//    LikeService likeService;
 
     @Autowired
     private BCryptPasswordEncoder pwdEncoder;
@@ -329,16 +329,18 @@ public class MemberController {
     @ResponseBody
     @PostMapping("/member/unMemberLoginCheck")
     public String postUnMemberLogin(UnMemberDTO unMember) {
-        //전화번호 존재 여부 확인
-        if(unMemberService.loginCheck(unMember.getReceivertelno()).getUnmemberseq() == 0) {
+        //아이디 존재 여부 확인
+        if(unMemberService.findByTemppassword(unMember.getTemppassword()) == null) {
             return "{\"message\":\"receivertelno_NOT_FOUND\"}";
         }
+
         //비밀번호가 올바르게 들어왔는지 정확도 여부 확인
-        if(!pwdEncoder.matches(unMember.getTemppassword(), unMemberService.loginCheck(unMember.getReceivertelno()).getTemppassword())){
-            //잘못된 패스워드 일 경우
+        if (unMemberService.findByTemppassword(unMember.getTemppassword()) == null) {
             return "{\"message\":\"PASSWORD_NOT_FOUND\"}";
         }
+
         return "{\"message\":\"GOOD\"}";
+
     }
 
 }

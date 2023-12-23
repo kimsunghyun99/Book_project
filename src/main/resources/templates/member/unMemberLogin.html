@@ -90,7 +90,8 @@
         let formData = new FormData();
         formData.append("temppassword", temppassword.value);
         formData.append("receivertelno", receivertelno.value);
-
+        console.log(temppassword.value);
+        console.log(receivertelno.value);
         await fetch('/member/unMemberLoginCheck',{
             method: "POST",
             body: formData
@@ -118,9 +119,9 @@
         }
 
 
-        const press = () => {
-            if(event.keyCode === 13) unMemberLoginCheck();
-        }
+        // const press = () => {
+        //     if(event.keyCode === 13) unMemberLoginCheck();
+        // }
     }
 </script>
 </head>
@@ -132,7 +133,7 @@
     <form name="loginForm" id="loginForm" method="post">
 
         <input type="text" name="receivertelno" class="receivertelno" id="receivertelno" placeholder="전화 전호를 입력하세요">
-        </label><input type="password" name="temppassword" class="temppassword" id="temppassword" placeholder="패스워드를 입력해주세요"  onkeydown="press()">
+        </label><input type="password" name="temppassword" class="temppassword" id="temppassword" placeholder="패스워드를 입력해주세요">
         <input type="button" id="btn_login" class="btn_login" value="로그인" onclick="unMemberLoginCheck()">
         <p id="msg" style="color:red; text-align:center"></p>
         <br>

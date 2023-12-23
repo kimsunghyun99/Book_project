@@ -50,7 +50,7 @@
 <nav>
     <!-- 세션 값이 없을 경우 로그인 및 회원가입 버튼 표시 -->
     <div th:if="${session.userid == null}">
-        <a href="#">홈</a> |
+        <a href="/product/main">홈</a> |
         <a href="/product/productInfo">도서</a> |
         <a href="#">이벤트</a> |
         <a href="/member/login">로그인</a>
@@ -58,7 +58,7 @@
     </div>
     <!-- 세션 값이 있을 경우 로그아웃 및 마이페이지 버튼 표시 -->
     <div th:if="${session.userid != null}">
-        <a href="#">홈</a> |
+        <a href="/product/main">홈</a> |
         <a href="/product/productInfo">도서</a> |
         <a href="#">이벤트</a> |
         <a href="/member/mypage">마이페이지</a>
