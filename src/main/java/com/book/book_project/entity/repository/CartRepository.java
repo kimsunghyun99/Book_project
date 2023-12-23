@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public interface CartRepository extends JpaRepository<CartEntity,MemberEntity> {
+public interface CartRepository extends JpaRepository<CartEntity,Integer> {
 
 
 
