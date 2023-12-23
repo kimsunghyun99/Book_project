@@ -178,11 +178,14 @@ public class ProductController {
 
     // 결제화면
     @GetMapping("/product/payment")
-    public void getPayment(@RequestParam("bookid") String bookid, Model model, HttpSession session) throws Exception {
+    public void getPayment(@RequestParam("bookid") String bookid, @RequestParam("quantity") int quantity,  Model model, HttpSession session) throws Exception {
 
 
         String userid = (String)session.getAttribute("userid");
 
+
+        model.addAttribute("memberInfo", memberService.memberInfo(userid));
+        model.addAttribute("quantity", quantity);
         // userid에 대한 주소지 다 꺼내기
         model.addAttribute("delverylist", deliveryService.list(userid));
         //bookid 에 대한 정보

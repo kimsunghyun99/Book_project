@@ -142,9 +142,35 @@
           /*//  height: 70vh; !* 화면의 100% 높이로 설정하여 가운데 정렬 *!*/
         }
 
+        #RequestText1 {
+            display:none;
+        }
+
     </style>
 
     <script>
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const price = parseInt([[${view.price}]]);
+            const quantity = parseInt([[${quantity}]]);
+            const totalAmount = price * quantity;
+
+            const totalInvoiceAmountElement = document.getElementById('totalInvoiceAmount');
+            totalInvoiceAmountElement.innerText = totalAmount.toLocaleString('ko-KR') + '원';
+
+
+        });
+
+
+
+
+
+
+
+
+
 
         let addplusVisible = false;
         const AddAddr = () => {
@@ -190,6 +216,23 @@
             finaladdr.innerText = "배송될 주소 : " + addr1 + "" + detailaddr;
         }
 
+        // select 변경 시 호출되는 함수
+        function handleRequestChange() {
+            var selectElement = document.getElementById('RequestText');
+            var inputElement = document.getElementById('RequestText1');
+
+            if (selectElement.value === 'INPUT') {
+                inputElement.style.display = 'block';
+            } else {
+                inputElement.style.display = 'none';
+            }
+
+        }
+
+
+
+
+
 
 
 
@@ -215,23 +258,30 @@
                 </tr>
 
                 <tbody>
-                <tr th:each="view : ${view}">
+                <tr>
                     <td><img class="p_image" th:src="${view.cover}" alt="책 표지 이미지" style="width:300px; height: auto"></td>
                     <td><span th:text="${view.bookname}"></span></td>
                     <td><span th:text="${view.author}"></span></td>
                     <td><span th:text="${#numbers.formatInteger(view.price,3,'COMMA')+'원'}"></span></td>
-<!--                    <td>1</td>-->
+                    <td><span th:text="${quantity}"></span></td>
 <!--                    <td><span th:text="${view.order_quantity}"></span></td>-->
 <!--                    <td><span class="invoiceAmount" th:text="${#numbers.formatInteger(list.order_amount,3,'COMMA')+'원'}"></span></td>-->
                 </tr>
                 <tr>
                     <td colspan="3"></td>
-                    <td colspan="3"><span style="text-align:right"><h2>합계 : <span id="totalInvoiceAmount" style="text-align:right"></span>원</h2></span></td>
+                    <td colspan="3"><span style="text-align:right"><h2>합계 : <span id="totalInvoiceAmount" style="text-align:right"></span></h2></span></td>
                 </tr>
                 </tbody>
             </table>
         </div>
-        <br>
+        <br><br>
+        <p th:text="'나의 포인트 : ' + ${memberInfo.point}"></p>
+        <input type="text" style="width:11%" id="point" placeholder="사용할 포인트를 입력해주세요">
+        <input type="button" style="width:5%" value="사용하기" onclick="UsePoint()">
+
+        <p>최종결제금액 : <span id="FinalPay"></span></p>
+        <br><br>
+
         <h4 style="display: inline-block;">배송지 목록</h4>
         <div id="ADDorDelete" style="display: inline-block;">
             <input type="button" id="add" value="새로운 배송지" onclick="AddAddr()" style="width:120%;">
@@ -275,6 +325,19 @@
         <br><br><br>
 
         <span id="finaladdr">배송될 주소 : </span>
+        <br><br>
+        배송 요청사항 :
+        <select id="RequestText" name="RequestText" onchange="handleRequestChange()">
+            <option value="all" disabled selected>배송 시 요청사항을 선택해주세요 ▼</option>
+            <option value="1">부재 시 경비실에 맡겨주세요 </option>
+            <option value="2">부재 시 택배함에 맡겨주세요</option>
+            <option value="3">부재 시 집 앞에 맡겨주세요</option>
+            <option value="3">배송 전 연락 바랍니다</option>
+            <option value="3">파손의 위험이 있는 상품입니다. 배송 시 주의해 주세요.</option>
+            <option value="INPUT">직접 입력</option>
+        </select>
+        <br><br>
+        <input type="text" id="RequestText1" class="input_field" name="RequestText1" placeholder="직접입력">
 
 
         <br><br><br><br>

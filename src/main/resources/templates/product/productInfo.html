@@ -300,8 +300,8 @@ const count = (type) =>  {
             }
         };
 
-        const GoPayment = (bookid) => {
-            document.location.href=`/product/payment?bookid=${bookid}`
+        const GoPayment = (bookid, quantity) => {
+            document.location.href=`/product/payment?bookid=${bookid}&quantity=${quantity}`
         }
 
     </script>
@@ -313,7 +313,7 @@ const count = (type) =>  {
     <div class="book-image-container"><br><br>
         <img class="book-image" id="cover" th:src="${view.cover}" alt="책 이미지">
         <div class="likes-reviews">
-            <p class="book-likes">즐겨찾기: 00</p>
+
             <p class="book-reviews">후기: 00</p>
         </div>
     </div>
@@ -322,7 +322,7 @@ const count = (type) =>  {
         <p class="book-author" id="author" th:text="'작가: ' + ${view.author}"></p>
         <p class="book-price" id="price" th:text="'가격: ' + ${view.price} + '원'"></p>
 <!--        <p class="book-discount" id="pricesales" th:text="'할인가: ' + ${view.pricesales} + '%'"></p>-->
-        <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.pricesales * 0.05, 3, 'COMMA')} + '원'"></p>
+        <p class="book-price" th:text="'포인트 적립: ' + ${view.salespoint} + '원'"></p>
 
 
         <div id="volume">
@@ -346,7 +346,7 @@ const count = (type) =>  {
                 <input type="button" id="btn_cart" class="btn_cart" value="장바구니 담기" th:onclick="cart()">
             </div>
 
-            <input type="button" value="구매하기" th:onclick="GoPayment([[${view.bookid}]])">
+            <input type="button" value="구매하기" th:onclick="GoPayment([[${view.bookid}]],document.getElementById('quantity').innerHTML)">
 
         </div>
     </div>
