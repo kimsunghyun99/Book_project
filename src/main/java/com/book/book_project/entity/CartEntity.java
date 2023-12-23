@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @Builder
 @Entity(name="cart")
 @Table(name="tbl_cart")
+@IdClass(CartEntityID.class)
 public class CartEntity {
     // FK 만들기
     // FK 읽어올 때 Eager, lazy 두가지 타입이 있음
@@ -26,6 +27,7 @@ public class CartEntity {
     @JoinColumn(name="userid", nullable=false)
     private MemberEntity userid;
 
+    @Id
     @ManyToOne(fetch =FetchType.LAZY)
     @JoinColumn(name="bookid", nullable=false)
     private ProductEntity bookid;

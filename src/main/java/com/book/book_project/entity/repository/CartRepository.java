@@ -2,6 +2,7 @@ package com.book.book_project.entity.repository;
 
 import com.book.book_project.dto.CartDTO;
 import com.book.book_project.entity.CartEntity;
+import com.book.book_project.entity.CartEntityID;
 import com.book.book_project.entity.MemberEntity;
 import com.book.book_project.entity.ProductEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public interface CartRepository extends JpaRepository<CartEntity,Integer> {
+public interface CartRepository extends JpaRepository<CartEntity, CartEntityID> {
 
 
 
