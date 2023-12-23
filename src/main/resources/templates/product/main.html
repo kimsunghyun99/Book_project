@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+<html lang="ko">
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>교보문고</title>
-    <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>교보문고</title>
+<style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -29,39 +30,82 @@
             padding: 20px;
         }
 
+        #recentlyViewed {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 200px; /* 원하는 너비로 조정 */
+            height: auto;
+            overflow: auto; /* 내용이 넘치면 스크롤바 추가 */
+            background-color: #f8f8f8; /* 배경색을 원하는대로 조정 */
+            padding: 10px;
+        }
+
         footer {
             background-color: #007ACC;
             color: #FFF;
             text-align: center;
             padding: 10px;
-            position: absolute;
+            position: relative;
             bottom: 0;
             width: 100%;
         }
-    </style>
+
+
+</style>
+
+    <script>
+        var product = {
+            bookid: "1125409924",
+            bookname: "2015 꽃보다 비자 F4 취득을 위한 정보기기운용기능사 필기 총정리 - 상시검정 맞춤수험서",
+            cover: "https://image.aladin.co.kr/product/5124/68/coversum/1125409924_1.jpg"
+        };
+
+        var recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed')) || [];
+        recentlyViewed.push(product);
+        localStorage.setItem('recentlyViewed', JSON.stringify(recentlyViewed));
+
+
+        window.onload = function () {
+            var recentlyViewedDiv = document.getElementById('recentlyViewed');
+
+            var lastThreeProducts = recentlyViewed.slice(-3);
+
+            lastThreeProducts.forEach(function (product) {
+                var productElement = document.createElement('div');
+                productElement.innerHTML = '<h3>' + product.bookname + '</h3><img src="' + product.cover + '">';
+                recentlyViewedDiv.appendChild(productElement);
+            });
+        }
+
+
+
+
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
 </head>
 <body>
-
-<header>
-    <h1>교보문고</h1>
-</header>
-
-<nav>
-    <a href="/product/main">홈</a> |
-    <a href="#">도서</a> |
-    <a href="#">이벤트</a> |
-    <a href="/member/mypage">마이페이지</a>
-    <a href="/member/login">로그인</a>
-    <a href="/member/signup">회원가입</a>
-</nav>
-
+<div th:include="/etc/header.html"></div>
 <section>
     <h2>인기 도서</h2>
-    <ul>
-        <li><a th:href="@{'/product/productInfo?bookid=' + ${bookListId} + '&page=1'}">도서 제목 1</a></li>
-
-        <li><a href="#">도서 제목 2</a></li>
-        <li><a href="#">도서 제목 3</a></li>
+    <ul th:if="${productList.size() > 0}">
+        <li th:each="product, stat : ${productList}" th:if="${stat.count <= 5}">
+            <a th:href="@{'/product/productInfo?bookid=' + ${product.bookid} + '&page=1'}">
+                <img th:src="${product.cover}" alt="책 표지 이미지">
+            </a>
+            <a th:href="@{'/product/productInfo?bookid=' + ${product.bookid} + '&page=1'}"th:text="${product.bookname}"></a>
+        </li>
     </ul>
 </section>
 
@@ -69,6 +113,26 @@
     <h2>이벤트</h2>
     <p>현재 진행 중인 이벤트 정보를 여기에 추가하세요.</p>
 </section>
+<section>
+    <h2>IT New</h2>
+    <div th:each="news : ${newsList}">
+        <tr style="font-size: 10px">
+
+            <td>
+                <a th:href="${news.url}" th:text="${news.title}"></a>
+            </td>
+        </tr>
+    </div>
+</section>
+
+
+<section style="top: 0;right: 0; position: fixed;">
+    <h2>최근 본 상품</h2>
+    <div id="recentlyViewed" >
+        <!-- 이 부분에 최근 본 상품 정보를 동적으로 추가 -->
+    </div>
+</section>
+
 
 <footer>
     <p>&copy; 2023 교보문고. All rights reserved.</p>

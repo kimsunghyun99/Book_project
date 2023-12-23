@@ -5,26 +5,32 @@
     <title>비회원 구매내역 조회</title>
 </head>
 <body>
-<header>
-    <h1>교보문고</h1>
-</header>
+<div th:include="/etc/header.html"></div>
 <h2>비회원 구매내역조회</h2>
 <div>
-    <table>
+    <table border="1px">
         <tr>
             <th>주문일자</th>
             <th>주문번호</th>
             <th>상품명</th>
             <th>주문상태</th>
             <th>결제금액</th>
+            <th rowspan="2"> <a href="/product/productInfo" onMouseover="this.style.background='pink'; this.style.textDecoration='underline';"
+                                onmouseout="this.style.background='white'; this.style.textDecoration='none';">리뷰작성</a></th>
         </tr>
-        <tr>
-            <td>2023.12.01</td>
-            <td>23120101</td>
-            <td>책제목</td>
-            <td>배송완료</td>
-            <td>00000원</td>
+        <<th:block th:if="${purchaseList != null}">
+        <tr th:each="list:${purchaseList}"
+            onMouseover="this.style.background='#46D2D2'"
+            onMouseout="this.style.background='white'">
+            <td th:text="${purchaseList.purchasedate}"></td>
+            <td th:text="${purchaseList.purchaseinfonumber}"></td>
+            <td th:text="${purchaseList.status}"></td>
+            <td th:text="${purchaseList.totalprice}"></td>
         </tr>
+    </th:block>
+        <th:block th:if="${purchaseList == null}">
+            <td colspan="5">구매목록이 없습니다.</td>
+        </th:block>
     </table>
 </div>
 <div class="bottomText">

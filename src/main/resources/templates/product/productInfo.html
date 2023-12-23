@@ -197,7 +197,7 @@ const reviewCancel = () => {
 }
 
 //닉네임 등록하기
-function checkAndAlert() {
+const checkAndAlert=()=> {
     var reviewContentTextarea = document.getElementById("reviewcontent");
     var currentNickname =document.getElementById("reviewer");
     var currentUserid = '[[${session.userid}]]';
@@ -235,77 +235,90 @@ const count = (type) =>  {
 
         //장바구니에 상품 담기
         const cart = async (bookid) => {
-
-            //선택한 상품 갯수에다가 기존 장바구니에 담겨져 있는 이 상품의 갯수를 더한다
-            number += '[[$(bCartQuantity)]]';
-
-            if('[[$(session.userid]]'===null){
-                alert("로그인이 필요합니다.")
-                document.location.href="/member/login";
-            }
-
-            else{
-                await fetch('/product/shoppingBasket',{
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        userid: '[[$(session.userid)]]',
-                        bookid: bookid,
-                        cartvolume: number
-                    }),
-                }).then((response)=> response.text())
-                    .then((data) => {
-                        if(data != '' || data != null || data != 0){
-                            alert("장바구니에 상품을 넣어 두었습니다.");
-                            if(confirm("장바구니로 이동하시겠습니까?")){
-                                document.location.href="/product/shoppingBasket"
+                    await fetch('/product/shoppingBasket',{
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            bookid: bookid,
+                            volume: number
+                        }),
+                    }).then((response)=> response.text())
+                        .then((data) => {
+                            if(data != '' || data != null || data != 0){
+                                if(confirm("장바구니로 이동하시겠습니까?")){
+                                    document.location.href="/product/shoppingBasket"
+                                }
+                            } else {
+                                alert("시스템 장애로 장바구니 담기가 실패했습니다.");
                             }
-                        } else {
-                            alert("시스템 장애로 장바구니 담기가 실패했습니다.");
-                        }
-                    }).catch((error)=> {
-                        console.log("error = " + error);
-                    });
-            }
+                        }).catch((error)=> {
+                            console.log("error = " + error);
+                        });
 
         }
 
+        const unMemberCart = () => {
 
+            var bookid = document.getElementById("bookid").value;
+            var bookname = document.getElementById("bookname").innerText;
+            var cover = document.getElementById("cover").getAttribute('src');
+            var author = document.getElementById("author").innerText.replace('작가: ', '');
+            var price = document.getElementById("price").innerText.replace('가격: ', '').replace('원', '');
+            var volume = document.getElementById("quantity").value;
 
+            const data = {
+                bookid: bookid,
+                bookname: bookname,
+                cover: cover,
+                author: author,
+                price: price,
+                volume: volume
+            };
 
+            const cart = JSON.parse(localStorage.getItem("cart"))||[];
 
+            var isExists = false;
+            cart.forEach((cart)=>{
+                if(data.bookid===cart.bookid){
+                    isExists=true
+                }
+                if(isExists){
+                    alert("이미 장바구니에 담겨있습니다.");
+                    return;
+                }
+            })
+            if(!isExists){
+                cart.push(data);
+                localStorage.setItem("cart", JSON.stringify(cart));
+
+                if(confirm("장바구니로 이동하시겠습니까?")){
+                    document.location.href="/product/shoppingBasket"
+                }
+            }
+        };
 
     </script>
 </head>
 <body>
-<header>
-    <h1>IT커넥션</h1>
-</header>
-
-<nav>
-    <a href="#">홈</a> |
-    <a href="#">도서</a> |
-    <a href="#">이벤트</a> |
-    <a href="#">마이페이지</a>
-    <a href="/member/signup">회원가입</a>
-</nav>
+<div th:include="/etc/header.html"></div>
 <br><br><br>
 <div class="book-details">
     <div class="book-image-container"><br><br>
-        <img class="book-image" src="/images/book.jpg" alt="책 이미지">
+        <img class="book-image" id="cover" th:src="${view.cover}" alt="책 이미지">
         <div class="likes-reviews">
             <p class="book-likes">즐겨찾기: 00</p>
             <p class="book-reviews">후기: 00</p>
         </div>
     </div>
     <div class="book-info" th:if="${view != null}"><br><br>
-        <p class="book-title" th:text="${view.bookname}"></p>
-        <p class="book-author" th:text="'작가: ' + ${view.author}"></p>
-        <p class="book-price" th:text="'가격: ' + ${view.price} + '원'"></p>
-        <p class="book-discount" th:text="'할인가: ' + ${view.pricesales} + '%'"></p>
+        <p class="book-title" id="bookname" th:text="${view.bookname}"></p>
+        <p class="book-author" id="author" th:text="'작가: ' + ${view.author}"></p>
+        <p class="book-price" id="price" th:text="'가격: ' + ${view.price} + '원'"></p>
+        <p class="book-discount" id="pricesales" th:text="'할인가: ' + ${view.pricesales} + '%'"></p>
         <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.pricesales * 0.05, 3, 'COMMA')} + '원'"></p>
+
 
         <div id="volume">
         <input type='button' onclick='count("plus")' value='+'/>
@@ -321,7 +334,13 @@ const count = (type) =>  {
 
         <div class="book-actions">
             <a href="shoppingBasket.html" class="book-cart">구매하기</a>
-            <input type="button" id="btn_cart" class="btn_cart" value="장바구니 담기" th:onclick="cart([${view.bookid}])">
+            <div th:if="${session.userid==null}">
+                <input type="button" id="btn_unmembercart" class="btn_cart" value="장바구니 담기" th:onclick="unMemberCart()">
+            </div>
+            <div th:if="${session.userid!=null}">
+                <input type="button" id="btn_cart" class="btn_cart" value="장바구니 담기" th:onclick="cart()">
+            </div>
+
         </div>
     </div>
 

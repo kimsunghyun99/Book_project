@@ -3,9 +3,6 @@ package com.book.book_project.dto;
 
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 import com.book.book_project.entity.MemberEntity;
 
@@ -87,27 +84,5 @@ public class MemberDTO {
 
 
         return memberEntity;
-    }
-
-    @Override
-    public String toString() {
-        return "MemberDTO{" +
-                "userid='" + userid + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", username='" + username + '\'' +
-                ", birthday='" + birthday + '\'' +
-                ", gender='" + gender + '\'' +
-                ", telno='" + telno + '\'' +
-                ", password='" + password + '\'' +
-                ", regdate=" + regdate +
-                ", point=" + point +
-                ", memberclass='" + memberclass + '\'' +
-                ", pwcheck=" + pwcheck +
-                ", lastlogindate=" + lastlogindate +
-                ", lastlogoutdate=" + lastlogoutdate +
-                ", lastpwdate=" + lastpwdate +
-                ", fromSocial='" + fromSocial + '\'' +
-                ", role='" + role + '\'' +
-                '}';
     }
 }

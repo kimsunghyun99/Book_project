@@ -1,5 +1,6 @@
 package com.book.book_project.entity.repository;
 
+import com.book.book_project.dto.UnMemberDTO;
 import com.book.book_project.entity.UnMemberEntity;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,7 +14,7 @@ import java.util.Optional;
 @Repository
 public interface UnMemberRepository extends JpaRepository<UnMemberEntity, String> {
 
-    //unmembertelno와 purchaseinfoseq를 이용하여 비회원 정보를 조회
-    @Query(value = "SELECT * FROM tbl_unmember u JOIN tbl_buyerInfo b ON u.unmembertelno = b.unmembertelno JOIN tbl_purchaseInfo p ON b.buyerseq = p.buyerseq WHERE u.temppassword = :temppassword AND p.purchaseinfoseq = :purchaseinfoseq", nativeQuery = true)
-    Optional<UnMemberEntity> findByTemppasswordAndPurchaseinfoseq(@Param("temppassword") String temppassword, @Param("purchaseinfoseq") int purchaseinfoseq);
+    //비회원 주문 번호 가져오기
+    @Query(value = "select purchaseinfonumber from tbl_purchaseinfo p join tbl_unmember u on p.unmemberseq = u.unmemberseq where u.unmemberseq = :unmemberseq", nativeQuery = true)
+    public Integer findByUnmemberseq(int unmemberseq);
 }
