@@ -30,6 +30,17 @@
             padding: 20px;
         }
 
+        #recentlyViewed {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 200px; /* 원하는 너비로 조정 */
+            height: auto;
+            overflow: auto; /* 내용이 넘치면 스크롤바 추가 */
+            background-color: #f8f8f8; /* 배경색을 원하는대로 조정 */
+            padding: 10px;
+        }
+
         footer {
             background-color: #007ACC;
             color: #FFF;
@@ -42,42 +53,16 @@
 </style>
 </head>
 <body>
-
-<header>
-    <h1>교보문고</h1>
-</header>
-
-<nav>
-    <!-- 세션 값이 없을 경우 로그인 및 회원가입 버튼 표시 -->
-    <div th:if="${session.userid == null}">
-        <a href="/product/main">홈</a> |
-        <a href="/product/productInfo">도서</a> |
-        <a href="#">이벤트</a> |
-        <a href="/member/login">로그인</a>
-        <a href="/member/signup">회원가입</a>
-    </div>
-    <!-- 세션 값이 있을 경우 로그아웃 및 마이페이지 버튼 표시 -->
-    <div th:if="${session.userid != null}">
-        <a href="/product/main">홈</a> |
-        <a href="/product/productInfo">도서</a> |
-        <a href="#">이벤트</a> |
-        <a href="/member/mypage">마이페이지</a>
-        <th:block th:if="${session.isNaverLogin}">
-            <a href="https://nid.naver.com/oauth2.0/token?grant_type=delete&client_id="+XByAHVwF8T8HXlkMwWvc+"&client_secret="+ZzilCSao94+"&access_token="+token.replaceAll("'", "")+"&service_provider=NAVER">로그아웃</a>
-        </th:block>
-        <th:block th:unless="${session.isNaverLogin}">
-        <a href="/member/logout">로그아웃</a>
-        </th:block>
-    </div>
-</nav>
-
+<div th:include="/etc/header.html"></div>
 <section>
     <h2>인기 도서</h2>
-    <ul>
-        <li><a th:href="@{'/product/productInfo?bookid=' + ${bookListId} + '&page=1'}">도서 제목 1</a></li>
-
-        <li><a href="#">도서 제목 2</a></li>
-        <li><a href="#">도서 제목 3</a></li>
+    <ul th:if="${productList.size() > 0}">
+        <li th:each="product, stat : ${productList}" th:if="${stat.count <= 5}">
+            <a th:href="@{'/product/productInfo?bookid=' + ${product.bookid} + '&page=1'}">
+                <img th:src="${product.cover}" alt="책 표지 이미지">
+            </a>
+            <a th:href="@{'/product/productInfo?bookid=' + ${product.bookid} + '&page=1'}"th:text="${product.bookname}"></a>
+        </li>
     </ul>
 </section>
 
@@ -96,6 +81,15 @@
         </tr>
     </div>
 </section>
+
+
+<section style="top: 0;right: 0; position: fixed;">
+    <h2>최근 본 상품</h2>
+    <div id="recentlyViewed" >
+        <!-- 이 부분에 최근 본 상품 정보를 동적으로 추가 -->
+    </div>
+</section>
+
 
 <footer>
     <p>&copy; 2023 교보문고. All rights reserved.</p>

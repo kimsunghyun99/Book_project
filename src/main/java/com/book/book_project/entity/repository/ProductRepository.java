@@ -1,5 +1,6 @@
 package com.book.book_project.entity.repository;
 
+import com.book.book_project.dto.ProductDTO;
 import com.book.book_project.entity.ProductEntity;
 import org.hibernate.sql.Insert;
 import org.springframework.data.domain.Page;
@@ -34,5 +35,10 @@ public interface ProductRepository extends JpaRepository<ProductEntity, String> 
 
 
 
+
+
+    // bookname, cover 가져오기 -> 나중에 interests 토대로 가져올 예정
+    @Query(value="select * from tbl_product", nativeQuery = true)
+    List<ProductEntity> productlist();
 
 }
