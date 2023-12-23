@@ -19,6 +19,7 @@ import com.book.book_project.util.PageUtil;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -72,17 +73,11 @@ public class ProductController {
 
         //상품정보를 불러와야함.
         String bookId= String.valueOf(bookid.getBookid());
-        ProductEntity productEntity = productRepository.findById(bookId).orElse(null);
 
-        CartDTO cartDTO = new CartDTO();
-            cartDTO.setBookid(productEntity);
-
-
-        int postNum = 5; //한 화면에 보여지는 게시물 행의 갯수
+        int postNum = 10; //한 화면에 보여지는 게시물 행의 갯수
         int pageListCount = 5; //화면 하단에 보여지는 페이지리스트의 페이지 갯수
         System.out.println("ProductEntity1: "+bookid.getClass().getName());
         System.out.println("ProductEntity2: "+bookid.getBookid());
-
 
         PageUtil page = new PageUtil();
         Page<ReviewEntity> list = reviewService.list(bookid, pageNum, postNum);
@@ -113,10 +108,6 @@ public class ProductController {
     @GetMapping("/product/shoppingBasket")
     public void getShoppingBasket(Model model, HttpSession session) throws Exception{
 
-
-
-        // 비회원일 경우 ( seession 이 존재하느냐를 따져서 해야함 -> 일단 회원만 되게 설정)
-
         String userid = (String)session.getAttribute("userid");
         MemberEntity memberEntity = new MemberEntity();
         memberEntity.setUserid(userid);
@@ -142,13 +133,13 @@ public class ProductController {
         int cartvolume = cartDTO.getCartvolume();
 
 
-        if(cartService.bCartQuantity(userid,bookid) == 0 )
+        if(cartService.bCartQuantity(userid,bookid) == 0 ){
             cartService.bCartInsert(userid,bookid,cartvolume);
-        else
+        }
+        else{
             cartService.bCartUpdate(userid,bookid,cartvolume);
-
-       return cartService.bCartCount(userid);
-
+        }
+        return cartService.bCartCount(userid);
 
     }
 
