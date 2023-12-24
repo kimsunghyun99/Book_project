@@ -236,19 +236,21 @@ const count = (type) =>  {
 
 
 
+
         //장바구니에 상품 담기
-        const cart = async (bookid) => {
+        const cart = async () => {
+            var bookid = document.getElementById("bookid").value;
+            console.log("bookid = "+bookid);
+
                     await fetch('/product/shoppingBasket',{
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
                         },
-                        body: JSON.stringify({
-                            bookid: bookid
-                        }),
-                    }).then((response)=> response.text())
+                        body: JSON.stringify({ bookid: bookid}),
+                    }).then((response)=> response.json())
                         .then((data) => {
-                            if(data ==='GOOD'){
+                            if(data.message ==='GOOD'){
                                 if(confirm("장바구니로 이동하시겠습니까?")){
                                     document.location.href="/product/shoppingBasket"
                                 }
@@ -318,8 +320,7 @@ const count = (type) =>  {
         <p class="book-title" id="bookname" th:text="${view.bookname}"></p>
         <p class="book-author" id="author" th:text="'작가: ' + ${view.author}"></p>
         <p class="book-price" id="price" th:text="'가격: ' + ${view.price} + '원'"></p>
-        <p class="book-discount" id="pricesales" th:text="'할인가: ' + ${view.pricesales} + '%'"></p>
-        <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.pricesales * 0.05, 3, 'COMMA')} + '원'"></p>
+        <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.price * 0.05, 3, 'COMMA')} + '원'"></p>
 
 
         <div id="volume">

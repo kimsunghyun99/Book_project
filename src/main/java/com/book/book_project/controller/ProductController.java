@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Controller
 @RequiredArgsConstructor
@@ -121,24 +123,24 @@ public class ProductController {
     // 장바구니로 상품 이동
     @ResponseBody
     @PostMapping("/product/shoppingBasket")
-    public String postShoppingBasket(@RequestParam("bookid") String bookid, HttpSession session) throws Exception{
+    public String postShoppingBasket(@RequestBody Map<String, String> bookid, HttpSession session) throws Exception{
         CartEntity cartEntity=new CartEntity();
-        ProductEntity productEntity = new ProductEntity();
-        productEntity.setBookid(bookid);
+
         String userid = (String) session.getAttribute("userid");
         MemberEntity memberEntity = memberRepository.findById(userid).orElse(null);
+        ProductEntity productEntity = productRepository.findById(bookid.get("bookid")).orElse(null);
 
         Timestamp cartregdate = new Timestamp(System.currentTimeMillis());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
-
+        System.out.println(productEntity.getBookid());
 
         cartEntity.setUserid(memberEntity);
         cartEntity.setBookid(productEntity);
         cartEntity.setCartregdate(Timestamp.valueOf(sdf.format(cartregdate)));
 
         cartService.cartRegistry(cartEntity);
-        return "{\"data\":\"GOOD\"}";
+        return "{\"message\":\"GOOD\"}";
     }
 
 
