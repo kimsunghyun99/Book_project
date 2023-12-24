@@ -41,11 +41,12 @@ public class ProductController {
     private final MemberRepository memberRepository;
     private final CartService cartService;
     private  final CartRepository cartRepository;
+    private final DeliveryService deliveryService;
 
     // main화면 보기
     @GetMapping("/product/main")
     public void getMain(Model model) throws Exception {
-        System.out.println("시작");
+       // System.out.println("시작");
        //  bookid, bookname, cover 가져오기 -> 나중에 interests 토대로 가져올 예정
         List<ProductEntity> productDTOList = service.productlist();
         model.addAttribute("productList", productDTOList);
@@ -180,4 +181,33 @@ public class ProductController {
 
         return reviewService.reviewView(review);
     }
+
+
+    // 결제화면
+    @GetMapping("/product/payment")
+    public void getPayment(@RequestParam("bookid") String bookid, @RequestParam("quantity") int quantity,  Model model, HttpSession session) throws Exception {
+
+
+        String userid = (String)session.getAttribute("userid");
+
+
+        model.addAttribute("memberInfo", memberService.memberInfo(userid));
+        model.addAttribute("quantity", quantity);
+        // userid에 대한 주소지 다 꺼내기
+        model.addAttribute("delverylist", deliveryService.list(userid));
+        //bookid 에 대한 정보
+        model.addAttribute("view", service.view(bookid));
+
+
+
+
+
+    }
+
+
+
+
+
+
+
 }

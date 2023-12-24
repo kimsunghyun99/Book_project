@@ -215,6 +215,7 @@
             <th>받는사람</th>
             <th>주소</th>
             <th>우편번호</th>
+            <th>연락처</th>
             <th>삭제</th>
         </tr>
         </thead>
@@ -226,6 +227,7 @@
                 <td th:text="${list.name}"></td>
                 <td th:text="${list.addr} + ' ' + ${list.detailaddr}" ></td>
                 <td th:text="${list.zipcode}"></td>
+                <td th:text="${list.telno}"></td>
                 <td ><input type="button" style="text-align: center;" value="삭제" onclick="DeleteAddr(this)"></td>
                 <input type="hidden" id="deleteseqno" th:value="${list.deliveryseq}">
 <!--                <span style="display: none" id="deleteseqno" th:value="${list.deliveryseq}"></span>-->
@@ -242,6 +244,7 @@
         <input type="text" id="addr1" class="input_field" name="addr1" placeholder="주소가 검색되어 입력됩니다." readonly>
         <input type="text" id="detailaddr" class="input_field" name="detailaddr" placeholder="상세 주소를 입력하세요">
         <input type="text" id="receiver" class="input_field" name="receiver" placeholder="받는사람 이름을 입력하세요">
+        <input type="text" id="receivertelno" class="input_field" name="receivertelno" placeholder="받는사람 번호를 입력하세요">
         <input type="button" id="realAddADDR" class="input_field" name="realAddADDR" value="배송지 추가" onclick="realAddADDR()">
     </div>
     <br><br><br>
@@ -326,7 +329,7 @@
                detailaddr: detailaddr.value,
                zipcode: zipcode.value,
                name: receiver.value,
-               telno: telno.value
+               telno: receivertelno.value
            }
            console.log(data);
             await fetch('/member/memberInfoModify?option=I', {

@@ -55,31 +55,61 @@
 </style>
 
     <script>
-        var product = {
-            bookid: "1125409924",
-            bookname: "2015 꽃보다 비자 F4 취득을 위한 정보기기운용기능사 필기 총정리 - 상시검정 맞춤수험서",
-            cover: "https://image.aladin.co.kr/product/5124/68/coversum/1125409924_1.jpg"
-        };
-
-        var recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed')) || [];
-        recentlyViewed.push(product);
-        localStorage.setItem('recentlyViewed', JSON.stringify(recentlyViewed));
 
 
-        window.onload = function () {
-            var recentlyViewedDiv = document.getElementById('recentlyViewed');
+        function addProductToRecentlyViewed(bookid, bookname, cover) {
+            console.log(bookid);
+            console.log(cover);
+            console.log(bookname);
+            var product = {
+                bookid: bookid,
+                bookname: bookname,
+                cover: cover
+            };
+            // 처음에 빈배열됨
+            var recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed')) || [];
 
-            var lastThreeProducts = recentlyViewed.slice(-3);
-
-            lastThreeProducts.forEach(function (product) {
-                var productElement = document.createElement('div');
-                productElement.innerHTML = '<h3>' + product.bookname + '</h3><img src="' + product.cover + '">';
-                recentlyViewedDiv.appendChild(productElement);
+            // 이미 저장된 상품인지 확인 후 중복 방지
+            var existingProduct = recentlyViewed.findIndex(function (item) {
+                return item.bookid === product.bookid;     // 이게 true면 있다는거
             });
+
+
+            // 중복인 경우 , 해당 값 배열에서 삭제하기
+            if(existingProduct != -1) {
+                recentlyViewed.splice(existingProduct, 1);
+                recentlyViewed.push(product);
+            }
+
+            if (existingProduct == -1) {
+                // 새로운 상품을 추가
+                recentlyViewed.push(product);
+
+                // 최근 본 상품 목록을 로컬 스토리지에 저장
+
+            }
+
+            localStorage.setItem('recentlyViewed', JSON.stringify(recentlyViewed));
         }
 
 
 
+        window.onload = () =>  {
+            var recentlyViewedDiv = document.getElementById('recentlyViewed');
+            var recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed')) || [];
+            var lastThreeProducts = recentlyViewed.slice(-3);
+
+            lastThreeProducts.forEach(function (product) {
+                var productElement = document.createElement('div');
+                productElement.innerHTML =  '<img src=' + product.cover + ' style="width:200px;height:200px;">';
+                productElement.innerHTML =  productElement.innerHTML + '<h3>' + product.bookname + '</h3>';
+                recentlyViewedDiv.appendChild(productElement);
+                // 안쪽
+            });
+        }
+
+
+      //  localStorage.clear();
 
     </script>
 
@@ -97,16 +127,52 @@
 </head>
 <body>
 <div th:include="/etc/header.html"></div>
+
+<header>
+    <h1>교보문고</h1>
+</header>
+
+<nav>
+    <!-- 세션 값이 없을 경우 로그인 및 회원가입 버튼 표시 -->
+    <div th:if="${session.userid == null}">
+        <a href="/product/main">홈</a> |
+        <a href="/product/productInfo">도서</a> |
+        <a href="#">이벤트</a> |
+        <a href="/member/login">로그인</a>
+        <a href="/member/signup">회원가입</a>
+    </div>
+    <!-- 세션 값이 있을 경우 로그아웃 및 마이페이지 버튼 표시 -->
+    <div th:if="${session.userid != null}">
+        <a href="#">홈</a> |
+        <a href="/product/productInfo">도서</a> |
+        <a href="#">이벤트</a> |
+        <a href="/member/mypage">마이페이지</a>
+        <th:block th:if="${session.isNaverLogin}">
+            <a href="https://nid.naver.com/oauth2.0/token?grant_type=delete&client_id="+XByAHVwF8T8HXlkMwWvc+"&client_secret="+ZzilCSao94+"&access_token="+token.replaceAll("'", "")+"&service_provider=NAVER">로그아웃</a>
+        </th:block>
+        <th:block th:unless="${session.isNaverLogin}">
+        <a href="/member/logout">로그아웃</a>
+        </th:block>
+    </div>
+</nav>
+
 <section>
-    <h2>인기 도서</h2>
-    <ul th:if="${productList.size() > 0}">
-        <li th:each="product, stat : ${productList}" th:if="${stat.count <= 5}">
-            <a th:href="@{'/product/productInfo?bookid=' + ${product.bookid} + '&page=1'}">
-                <img th:src="${product.cover}" alt="책 표지 이미지">
-            </a>
-            <a th:href="@{'/product/productInfo?bookid=' + ${product.bookid} + '&page=1'}"th:text="${product.bookname}"></a>
-        </li>
-    </ul>
+    <h2>추천 도서</h2>
+    <table th:if="${productList.size() > 0}">
+        <tr th:each="product, stat : ${productList}" th:if="${stat.count <= 9}">
+            <td>
+                <a th:href="@{'/product/productInfo?bookid=' + ${product.bookid} + '&page=1'}"
+                   th:onclick="addProductToRecentlyViewed('[[${product.bookid}]]', '[[${product.bookname}]]', '[[${product.cover}]]')">
+                    <img th:src="${product.cover}" alt="책 표지 이미지" style="width: 100px; height: 150px;">
+                </a>
+
+                <a th:href="@{'/product/productInfo?bookid=' + ${product.bookid} + '&page=1'}"
+                   th:onclick="addProductToRecentlyViewed('[[${product.bookid}]]', '[[${product.bookname}]]', '[[${product.cover}]]')"
+                   th:text="${product.bookname}">
+                </a>
+            </td>
+        </tr>
+    </table>
 </section>
 
 <section>
