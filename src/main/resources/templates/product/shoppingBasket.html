@@ -74,9 +74,9 @@
     <script>
 
 
-        const count = (type) =>  {
+        const count = (type, bookid) =>  {
 
-            number = parseInt(document.getElementById('quantity').innerHTML);
+            number = parseInt(document.getElementById('quantity'+bookid).innerHTML);
             if(type === 'plus') {
                 number ++;
                 totalPrice += price;
@@ -84,11 +84,11 @@
                 number --;
                 totalPrice -= price;
             }
-            document.getElementById('quantity').innerHTML = number;
-            document.getElementById('total_price').innerHTML = totalPrice.toLocaleString('ko-KR');
+            document.getElementById('quantity'+bookid).innerHTML = number;
+            document.getElementById('total_price'+bookid).innerHTML = totalPrice.toLocaleString('ko-KR');
         }
-        const GoPayment = (bookid, quantity) => {
-            document.location.href=`/product/payment?bookid=${bookid}&quantity=${quantity}`
+        const GoPayment = () => {
+
         }
 
 
@@ -115,14 +115,14 @@
             <input type="checkbox">
         </td>
         <td>
-            <img class="book-image" id="cover" th:src="${booklist.cover}">
-            <p class="book-name" th:value="${booklist.bookname}"></p>
+            <img class="book-image" id="cover" th:src="${booklist.cover}"><br>
+            <span class="book-name" th:text="${booklist.bookname}"></span>
         </td>
         <td>
-            <p class="book-price" th:text="${booklist.price} + '원'"></p>
+            <p class="book-price" id="price${booklist.bookid}" th:text="${#numbers.formatInteger(booklist.price,3,'COMMA')}"></p>
             <div id="volume">
-                <input type='button' onclick='count("plus")' value='+'/>
-                <span id="quantity">1</span>
+                <input type='button' onclick='count("plus",`${booklist.bookid}`)' value='+'/>
+                <span id="quantity${booklist.bookid}">1</span>
                 <input type='button' onclick='count("minus")' value='-'/><br><br>
             </div>
         </td>
@@ -146,7 +146,7 @@
 <div class="total-payment">
     <button class="delete-button">삭제</button>
     <p>총 결제금액: 00000 원</p>
-    <input type="button" value="구매하기" th:onclick="GoPayment([[${view.bookid}]],document.getElementById('quantity').innerHTML)">
+    <input type="button" value="구매하기" th:onclick="GoPayment()">
 </div>
 </body>
 </html>

@@ -122,16 +122,16 @@ public class ProductController {
                 String  bookid = String.valueOf(cartEntity.get(i).getBookid().getBookid());
                 System.out.println("bookid = "+bookid);
                 productEntity = service.findById(bookid);
-//                System.out.println("bookname = "+productEntity.getBookname());
-//                System.out.println("cover = "+productEntity.getCover());
-//                System.out.println("author = "+productEntity.getAuthor());
-//                System.out.println("price = "+productEntity.getPrice());
+                System.out.println("bookname = "+productEntity.getBookname());
+                System.out.println("cover = "+productEntity.getCover());
+                System.out.println("author = "+productEntity.getAuthor());
+                System.out.println("price = "+productEntity.getPrice());
                 list.add(productEntity);
-//                System.out.println("listsize = "+ list.size());
-//                System.out.println("list.bookname = "+list.get(0).getBookname());
-//                System.out.println("list.cover = "+list.get(0).getCover());
-//                System.out.println("list.author = "+list.get(0).getAuthor());
-//                System.out.println("list.price = "+list.get(0).getPrice());
+                System.out.println("listsize = "+ list.size());
+                System.out.println("list.bookname = "+list.get(0).getBookname());
+                System.out.println("list.cover = "+list.get(0).getCover());
+                System.out.println("list.author = "+list.get(0).getAuthor());
+                System.out.println("list.price = "+list.get(0).getPrice());
             }
             model.addAttribute("list",list);
         }
