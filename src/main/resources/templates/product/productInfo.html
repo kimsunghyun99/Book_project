@@ -64,28 +64,16 @@
 
         .book-actions {
             display: flex;
+            text-align: center;
             gap: 10px;
+            margin: auto;
         }
 
-        .book-actions button {
-            padding: 100px;
-            font-size: 2em;
+        .book-actions input {
+
             margin: 20px;
             cursor: pointer;
-        }
 
-        .book-cart {
-            background-color: #f0ad4e;
-            color: white;
-            padding: 10px;
-            border: 50px;
-        }
-
-        .book-buy {
-            background-color: #5cb85c;
-            color: white;
-            padding: 10px;
-            border: 50px;
         }
 
         #volume input {
@@ -350,13 +338,6 @@ const count = (type) =>  {
         <div>
         <span>적립 포인트 : </span> <span id="total_salespoint">[[${#numbers.formatInteger(view.salespoint,3,'COMMA')}]] 원</span>
         </div>
-<!--        <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.salespoint,3,'COMMA')} + '원'"></p>-->
-        <br>
-            <span id="total_price">[[${#numbers.formatInteger(view.price,3,'COMMA')}]] 원</span>
-            <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.price * 0.05, 3, 'COMMA')} + '원'"></p>
-        </div><br>
-        <br>
-
         <div class="book-actions">
 
             <div th:if="${session.userid==null}">
@@ -369,10 +350,18 @@ const count = (type) =>  {
             <input type="button" value="구매하기" th:onclick="GoPayment([[${view.bookid}]],document.getElementById('quantity').innerHTML)">
 
         </div>
-    </div>
-
+<!--        <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.salespoint,3,'COMMA')} + '원'"></p>-->
+        <br>
+<!--            <span id="total_price">[[${#numbers.formatInteger(view.price,3,'COMMA')}]] 원</span>-->
+<!--            <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.price * 0.05, 3, 'COMMA')} + '원'"></p>-->
+        </div><br>
+        <br>
+</div>
 
 </div>
+
+
+
 <div class="reviewDiv" style="width:60%;height:300px;margin:auto;text-align:left;">
 
     <p id="reviewNotice">리뷰을 작성해 주세요.</p>

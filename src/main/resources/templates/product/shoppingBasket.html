@@ -87,7 +87,9 @@
             document.getElementById('quantity').innerHTML = number;
             document.getElementById('total_price').innerHTML = totalPrice.toLocaleString('ko-KR');
         }
-
+        const GoPayment = (bookid, quantity) => {
+            document.location.href=`/product/payment?bookid=${bookid}&quantity=${quantity}`
+        }
 
 
 
@@ -144,7 +146,7 @@
 <div class="total-payment">
     <button class="delete-button">삭제</button>
     <p>총 결제금액: 00000 원</p>
-    <button class="payment-button">결제하기</button>
+    <input type="button" value="구매하기" th:onclick="GoPayment([[${view.bookid}]],document.getElementById('quantity').innerHTML)">
 </div>
 </body>
 </html>
