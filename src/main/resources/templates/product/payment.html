@@ -151,6 +151,9 @@
     <script>
 
 
+
+
+
         document.addEventListener('DOMContentLoaded', function() {
 
             const price = parseInt([[${view.price}]]);
@@ -159,13 +162,63 @@
 
             const totalAmount = price * quantity;
             const totalSalespoint = salespoint * quantity;
+            const InvoiceAmountElement = document.getElementById('InvoiceAmount');
             const totalInvoiceAmountElement = document.getElementById('totalInvoiceAmount');
             const totalSalesAmountElement = document.getElementById('totalSalesAmount');
 
             totalInvoiceAmountElement.innerText = totalAmount.toLocaleString('ko-KR') + '원';
             totalSalesAmountElement.innerText = totalSalespoint.toLocaleString('ko-KR') + '원';
+            InvoiceAmountElement.innerText = totalAmount.toLocaleString('ko-KR') + '원';
 
+
+
+
+            var pointInput = document.getElementById('point');
+            if(pointInput=== null || pointInput.value === '' ) {
+                var FinalPay = document.getElementById('FinalPay');
+                FinalPay.innerHTML = '최종 결제금액 ' + totalAmount.toLocaleString('ko-KR') + '원';
+            }
         });
+
+
+        const count = (type) =>  {
+
+            // let price = parseInt(document.getElementById('totalInvoiceAmount').value);
+            // let salespoint = parseInt(document.getElementById('totalSalesAmount').value);
+
+            const OriginalPrice = parseInt([[${view.price}]]);
+            const OriginalSalespoint = parseInt([[${view.salespoint}]]);
+            let price = parseInt(document.getElementById('totalInvoiceAmount').innerText.replace(/,/g, '').replace('원',''), 10);
+            let salespoint = parseInt(document.getElementById('totalSalesAmount').innerText.replace(/,/g, '').replace('원',''), 10);
+            let FinalPay =  parseInt(document.getElementById('FinalPay').innerText.replace(/,/g, '').replace('원',''), 10);
+
+          //  const quantity = parseInt(document.getElementById('quantity').value);
+
+
+
+            // let totalAmount = price * quantity;
+            // let totalSalespoint = salespoint * quantity;
+            number = parseInt(document.getElementById('quantity').innerHTML);
+            if(type === 'plus') {
+                number ++;
+                price += OriginalPrice;
+                salespoint += OriginalSalespoint;
+            }else if(type === 'minus' && number !==1 )  {
+                number --;
+                price -= OriginalPrice;
+                salespoint -= OriginalSalespoint;
+            }
+            document.getElementById('quantity').innerHTML = number;
+            document.getElementById('InvoiceAmount').innerHTML = price.toLocaleString('ko-KR') + '원';
+            document.getElementById('totalInvoiceAmount').innerHTML = price.toLocaleString('ko-KR') + '원';
+            document.getElementById('totalSalesAmount').innerHTML = salespoint.toLocaleString('ko-KR') + '원';
+            document.getElementById('FinalPay').innerHTML = '최종 결제금액 ' + price.toLocaleString('KO-KR') + '원';
+
+            // document.getElementById('total_price').innerHTML = totalPrice.toLocaleString('ko-KR') + '원';
+            // document.getElementById('total_salespoint').innerHTML = totalsalespoint.toLocaleString('ko-KR') + '원';
+        }
+
+
 
 
         let addplusVisible = false;
@@ -225,6 +278,15 @@
 
         }
 
+
+        // var pointInput = document.getElementById('point');
+        // if(pointInput=== null || pointInput.value === '' ) {
+        //
+        //     var FinalPay = document.getElementById('FinalPay');
+        //     var totalInvoiceAmount = parseInt(totalInvoiceAmountElement.innerText.replace(/,/g, '').replace('원',''), 10);
+        //     FinalPay.innerHTML = '최종 결제금액 ' + (totalInvoiceAmount) + '원';
+        // }
+
         // point 사용
         function UsePoint() {
             var pointInput = document.getElementById('point');
@@ -242,12 +304,28 @@
         }
 
         else {
-            FinalPay.innerHTML = '최종 결제금액 ' + (totalInvoiceAmount - point) + '원';
+            FinalPay.innerHTML = '최종 결제금액 ' + (totalInvoiceAmount - point).toLocaleString('ko-KR') + '원';
         }
         }
 
 
 
+        // const count = (type) =>  {
+        //
+        //     number = parseInt(document.getElementById('quantity').innerHTML);
+        //     if(type === 'plus') {
+        //         number ++;
+        //         // totalPrice += price;
+        //         // totalsalespoint += salespoint;
+        //     }else if(type === 'minus' && number !==1 )  {
+        //         number --;
+        //         // totalPrice -= price;
+        //         // totalsalespoint -= salespoint;
+        //     }
+        //      document.getElementById('quantity').innerHTML = number;
+        //     // document.getElementById('total_price').innerHTML = totalPrice.toLocaleString('ko-KR') + '원';
+        //     // document.getElementById('total_salespoint').innerHTML = totalsalespoint.toLocaleString('ko-KR') + '원';
+        // }
 
 
 
@@ -343,9 +421,15 @@
                         <span th:text="${view.author}"></span>
                     </td>
                     <td><span th:text="${#numbers.formatInteger(view.price,3,'COMMA')+'원'}"></span></td>
-                    <td><span th:text="${quantity}"></span></td>
+                    <td>
+                            <div>
+                        <input type='button' style="width:25%"; onclick='count("plus")' value='+'/>
+                        <span id="quantity" th:text="${quantity}"></span>
+                        <input type='button' style="width:25%"; onclick='count("minus")' value='-'/>
+                            </div>
+                    </td>
                     <td colspan="3">
-                        <span style="text-align:right"><h2>합계 : <span id="totalInvoiceAmount" style="text-align:right"></span></h2></span>
+                        <span style="text-align:right"><h2>합계 : <span id="InvoiceAmount" style="text-align:right"></span></h2></span>
                         <span style="text-align:right"><h2>적립 포인트 : <span id="totalSalesAmount" style="text-align:right"></span></h2></span>
                     </td>
 
@@ -354,7 +438,7 @@
                 </tr>
                 <tr>
                     <td colspan="3"></td>
-                    <td colspan="3"><span style="text-align:right"><h2>총 합계 : <span style="text-align:right"></span></h2></span></td>
+                    <td colspan="3"><span style="text-align:right"><h2>총 합계 : <span id="totalInvoiceAmount" style="text-align:right"></span></h2></span>
                 </tr>
                 </tbody>
             </table>
@@ -364,7 +448,7 @@
         <input type="text" style="width:11%" id="point" placeholder="사용할 포인트를 입력해주세요">
         <input type="button" style="width:7%" value="사용하기" onclick="UsePoint()">
 
-        <p id="FinalPay"></p>
+        <p id="FinalPay" style="font-weight: bold; font-size:40px;"></p>
         <br><br>
             <div id="pay">
                 <input type="button" style="text-align: center" class="btn_order" value="결제하기">
