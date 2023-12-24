@@ -109,6 +109,11 @@
         var number = 1;
         var totalPrice = parseInt('[[${view.price}]]');
         var price = parseInt('[[${view.price}]]');
+
+        var totalsalespoint = parseInt(`[[${view.salespoint}]]`);
+        var salespoint = parseInt(`[[${view.salespoint}]]`);
+
+
 //        const bookdiscount = document.querySelector('.book-discount').value;
 //        const bookprice = document.querySelector('.book-price').value;
         //통화 적용임
@@ -226,13 +231,20 @@ const count = (type) =>  {
     if(type === 'plus') {
         number ++;
         totalPrice += price;
+        totalsalespoint += salespoint;
     }else if(type === 'minus' && number !==1 )  {
         number --;
         totalPrice -= price;
+        totalsalespoint -= salespoint;
     }
     document.getElementById('quantity').innerHTML = number;
     document.getElementById('total_price').innerHTML = totalPrice.toLocaleString('ko-KR') + '원';
+    document.getElementById('total_salespoint').innerHTML = totalsalespoint.toLocaleString('ko-KR') + '원';
 }
+
+
+
+
 
         //장바구니에 상품 담기
         const cart = async (bookid) => {
@@ -317,12 +329,11 @@ const count = (type) =>  {
             <p class="book-reviews">후기: 00</p>
         </div>
     </div>
-    <div class="book-info" th:if="${view != null}"><br><br>
+    <div class="book-info"><br><br>
         <p class="book-title" id="bookname" th:text="${view.bookname}"></p>
         <p class="book-author" id="author" th:text="'작가: ' + ${view.author}"></p>
         <p class="book-price" id="price" th:text="'가격: ' + ${view.price} + '원'"></p>
 <!--        <p class="book-discount" id="pricesales" th:text="'할인가: ' + ${view.pricesales} + '%'"></p>-->
-        <p class="book-price" th:text="'포인트 적립: ' + ${view.salespoint} + '원'"></p>
 
 
         <div id="volume">
@@ -334,7 +345,13 @@ const count = (type) =>  {
         <div style="text-align:right;font-size:30px;font-weight:bold;">
             <span>상품 금액 : </span>&nbsp;
             <span id="total_price">[[${#numbers.formatInteger(view.price,3,'COMMA')}]] 원</span>
-        </div><br>
+        </div>
+        <br>
+        <div>
+        <span>적립 포인트 : </span> <span id="total_salespoint">[[${#numbers.formatInteger(view.salespoint,3,'COMMA')}]] 원</span>
+        </div>
+<!--        <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.salespoint,3,'COMMA')} + '원'"></p>-->
+        <br>
         <br>
 
         <div class="book-actions">

@@ -154,22 +154,18 @@
         document.addEventListener('DOMContentLoaded', function() {
 
             const price = parseInt([[${view.price}]]);
+            const salespoint = parseInt([[${view.salespoint}]]);
             const quantity = parseInt([[${quantity}]]);
+
             const totalAmount = price * quantity;
-
+            const totalSalespoint = salespoint * quantity;
             const totalInvoiceAmountElement = document.getElementById('totalInvoiceAmount');
-            totalInvoiceAmountElement.innerText = totalAmount.toLocaleString('ko-KR') + '원';
+            const totalSalesAmountElement = document.getElementById('totalSalesAmount');
 
+            totalInvoiceAmountElement.innerText = totalAmount.toLocaleString('ko-KR') + '원';
+            totalSalesAmountElement.innerText = totalSalespoint.toLocaleString('ko-KR') + '원';
 
         });
-
-
-
-
-
-
-
-
 
 
         let addplusVisible = false;
@@ -229,7 +225,26 @@
 
         }
 
+        // point 사용
+        function UsePoint() {
+            var pointInput = document.getElementById('point');
+            var totalInvoiceAmountElement = document.getElementById('totalInvoiceAmount');
 
+            var point = parseInt(pointInput.value, 10);
+            var totalInvoiceAmount = parseInt(totalInvoiceAmountElement.innerText.replace(/,/g, '').replace('원',''), 10);
+            var FinalPay = document.getElementById('FinalPay');
+
+
+        if(point > [[${memberInfo.point}]]) {
+            alert("나의 포인트를 확인해주세요");
+            document.getElementById('point').focus();
+            return false;
+        }
+
+        else {
+            FinalPay.innerHTML = '최종 결제금액 ' + (totalInvoiceAmount - point) + '원';
+        }
+        }
 
 
 
@@ -247,40 +262,6 @@
     <div class="main_shop">
 
         <h1>주문서</h1><br>
-        <div class="tableDiv">
-            <table class="InfoTable">
-                <tr>
-                    <th>주문상품</th>
-                    <th>책 이름</th>
-                    <th>저자</th>
-                    <th>책 가격</th>
-                    <th>수량</th>
-                </tr>
-
-                <tbody>
-                <tr>
-                    <td><img class="p_image" th:src="${view.cover}" alt="책 표지 이미지" style="width:300px; height: auto"></td>
-                    <td><span th:text="${view.bookname}"></span></td>
-                    <td><span th:text="${view.author}"></span></td>
-                    <td><span th:text="${#numbers.formatInteger(view.price,3,'COMMA')+'원'}"></span></td>
-                    <td><span th:text="${quantity}"></span></td>
-<!--                    <td><span th:text="${view.order_quantity}"></span></td>-->
-<!--                    <td><span class="invoiceAmount" th:text="${#numbers.formatInteger(list.order_amount,3,'COMMA')+'원'}"></span></td>-->
-                </tr>
-                <tr>
-                    <td colspan="3"></td>
-                    <td colspan="3"><span style="text-align:right"><h2>합계 : <span id="totalInvoiceAmount" style="text-align:right"></span></h2></span></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <br><br>
-        <p th:text="'나의 포인트 : ' + ${memberInfo.point}"></p>
-        <input type="text" style="width:11%" id="point" placeholder="사용할 포인트를 입력해주세요">
-        <input type="button" style="width:5%" value="사용하기" onclick="UsePoint()">
-
-        <p>최종결제금액 : <span id="FinalPay"></span></p>
-        <br><br>
 
         <h4 style="display: inline-block;">배송지 목록</h4>
         <div id="ADDorDelete" style="display: inline-block;">
@@ -338,10 +319,53 @@
         </select>
         <br><br>
         <input type="text" id="RequestText1" class="input_field" name="RequestText1" placeholder="직접입력">
+        <br><br><br>
 
 
-        <br><br><br><br>
 
+
+
+        <div class="tableDiv">
+            <table class="InfoTable">
+                <tr>
+                    <th>주문상품</th>
+                    <th>책 이름 / 저자</th>
+                    <th>책 가격</th>
+                    <th>수량</th>
+                    <th>금액(적립 포인트)</th>
+
+                </tr>
+                <tbody>
+                <tr>
+                    <td><img class="p_image" th:src="${view.cover}" alt="책 표지 이미지" style="width:300px; height: auto"></td>
+                    <td>
+                        <span th:text="${view.bookname}"></span><br>/
+                        <span th:text="${view.author}"></span>
+                    </td>
+                    <td><span th:text="${#numbers.formatInteger(view.price,3,'COMMA')+'원'}"></span></td>
+                    <td><span th:text="${quantity}"></span></td>
+                    <td colspan="3">
+                        <span style="text-align:right"><h2>합계 : <span id="totalInvoiceAmount" style="text-align:right"></span></h2></span>
+                        <span style="text-align:right"><h2>적립 포인트 : <span id="totalSalesAmount" style="text-align:right"></span></h2></span>
+                    </td>
+
+<!--                    <td><span th:text="${view.order_quantity}"></span></td>-->
+<!--                    <td><span class="invoiceAmount" th:text="${#numbers.formatInteger(list.order_amount,3,'COMMA')+'원'}"></span></td>-->
+                </tr>
+                <tr>
+                    <td colspan="3"></td>
+                    <td colspan="3"><span style="text-align:right"><h2>총 합계 : <span style="text-align:right"></span></h2></span></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <br><br>
+        <p th:text="'나의 포인트 : ' + ${memberInfo.point}"></p>
+        <input type="text" style="width:11%" id="point" placeholder="사용할 포인트를 입력해주세요">
+        <input type="button" style="width:7%" value="사용하기" onclick="UsePoint()">
+
+        <p id="FinalPay"></p>
+        <br><br>
             <div id="pay">
                 <input type="button" style="text-align: center" class="btn_order" value="결제하기">
             </div>
