@@ -97,7 +97,7 @@
         window.onload = () =>  {
             var recentlyViewedDiv = document.getElementById('recentlyViewed');
             var recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed')) || [];
-            var lastThreeProducts = recentlyViewed.slice(-3);
+            var lastThreeProducts = recentlyViewed.slice(-3).reverse();
 
             lastThreeProducts.forEach(function (product) {
                 var productElement = document.createElement('div');
@@ -109,7 +109,7 @@
         }
 
 
-      //  localStorage.clear();
+       // localStorage.clear();
 
     </script>
 
