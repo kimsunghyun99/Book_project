@@ -107,8 +107,8 @@
     </style>
     <script>
         var number = 1;
-        var totalPrice = parseInt('[[${view.pricesales}]]');
-        var price = parseInt('[[${view.pricesales}]]');
+        var totalPrice = parseInt('[[${view.price}]]');
+        var price = parseInt('[[${view.price}]]');
 //        const bookdiscount = document.querySelector('.book-discount').value;
 //        const bookprice = document.querySelector('.book-price').value;
         //통화 적용임
@@ -122,7 +122,7 @@
         //통화 적용임
         document.addEventListener('DOMContentLoaded', function() {
             // JavaScript 코드 작성
-            const DisCountPrice = [[${view.pricesales}]];
+            const DisCountPrice = [[${view.price}]];
             const changePrice = DisCountPrice.toLocaleString('ko-KR');
             document.querySelector('.book-discount').textContent = '할인가: ' + changePrice + '원';
         });

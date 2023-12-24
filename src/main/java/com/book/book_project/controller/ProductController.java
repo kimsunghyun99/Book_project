@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -111,12 +112,28 @@ public class ProductController {
     public void getShoppingBasket(Model model, HttpSession session) throws Exception{
 
         String userid = (String) session.getAttribute("userid");
+        System.out.println("userid = "+userid);
         if(userid!=null){
-            List<CartEntity> cartList=cartService.cartList(userid);
-
-            model.addAttribute("list",cartList);
+            List<CartEntity> cartEntity=cartService.cartList(userid);
+            List<ProductEntity> list = new ArrayList<>();
+            for(int i=0; i<cartEntity.size(); i++){
+                ProductEntity productEntity=new ProductEntity();
+                String  bookid = String.valueOf(cartEntity.get(i).getBookid().getBookid());
+                System.out.println("bookid = "+bookid);
+                productEntity = service.findById(bookid);
+//                System.out.println("bookname = "+productEntity.getBookname());
+//                System.out.println("cover = "+productEntity.getCover());
+//                System.out.println("author = "+productEntity.getAuthor());
+//                System.out.println("price = "+productEntity.getPrice());
+                list.add(productEntity);
+//                System.out.println("listsize = "+ list.size());
+//                System.out.println("list.bookname = "+list.get(0).getBookname());
+//                System.out.println("list.cover = "+list.get(0).getCover());
+//                System.out.println("list.author = "+list.get(0).getAuthor());
+//                System.out.println("list.price = "+list.get(0).getPrice());
+            }
+            model.addAttribute("list",list);
         }
-
     }
 
 
