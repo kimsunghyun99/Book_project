@@ -55,10 +55,10 @@ public interface MemberService {
     //리뷰 갯수 가져오기
     public long countReviewsByUserId(String userid);
 
-//    //전체 회원 정보 불러오기
-//    public List<MemberEntity> findByRole();
-
     //전체 회원 목록 불러오기
     public Page<MemberEntity> findAll(Pageable pageable);
+
+    //회원 정지
+    public void stop(List<String> userids);
 
 }

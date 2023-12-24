@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -146,16 +147,19 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.save(memberEntity);
     }
 
-//    //전체 회원 정보 불러오기
-//    @Override
-//    public List<MemberEntity> findByRole(){
-//        return memberRepository.findByRole();
-//    }
-
     //전체 회원 정보 불러오기
     @Override
     public Page<MemberEntity> findAll(Pageable pageable){
         return memberRepository.findAll(pageable);
     }
 
+    //회원 정지
+    @Override
+    public void stop(List<String> userids) {
+        for(String userid : userids){
+        MemberEntity memberEntity = memberRepository.findById(userid).get();
+            memberEntity.setSuspend("Y");
+        memberRepository.save(memberEntity);
+        }
+    }
 }

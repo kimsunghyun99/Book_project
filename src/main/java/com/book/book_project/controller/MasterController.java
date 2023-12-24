@@ -7,7 +7,10 @@ import com.book.book_project.entity.ProductEntity;
 import com.book.book_project.entity.repository.CategoryRepository;
 import com.book.book_project.entity.repository.MemberRepository;
 import com.book.book_project.entity.repository.ProductRepository;
+import com.book.book_project.service.MemberService;
 import com.book.book_project.service.ProductService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
@@ -19,6 +22,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.BufferedReader;
@@ -38,6 +42,7 @@ public class MasterController {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
     @GetMapping("/master/bookUpdate")
     public void getBookUpdate() throws Exception {
@@ -125,14 +130,22 @@ public class MasterController {
 
     // 회원 관리
     @GetMapping("/master/memberManage")
-    public String findAll(Model model, @PageableDefault(size = 5) Pageable pageable, @RequestParam(value = "page", defaultValue = "1") int page) {
+    public String findAll(Model model, @PageableDefault(size = 5) Pageable pageable, @RequestParam(value = "page", defaultValue = "0") int page) {
         Pageable adjustedPageable = PageRequest.of(page, 5);
-        Page<MemberEntity> members = memberRepository.findAll(adjustedPageable);
+        Page<MemberEntity> members = memberRepository.findByRole("USER", adjustedPageable);
         model.addAttribute("members", members);
         return "/master/memberManage";
 
-//        List<MemberEntity> MList = memberService.findByRole();
-//        model.addAttribute("MList", MList);
+    }
+
+    //회원 정지
+    @PostMapping("/master/suspend")
+    public String suspendMembers(@RequestParam("suspendMembers") String suspendMembers) throws Exception{
+        // JSON 형태의 문자열을 List<String>으로 변환
+        List<String> userids = new ObjectMapper().readValue(suspendMembers, new TypeReference<List<String>>(){});
+        System.out.println(userids);
+        memberService.stop(userids);
+        return "redirect:/master/memberManage?page=0";
     }
 
     // 주문 확인

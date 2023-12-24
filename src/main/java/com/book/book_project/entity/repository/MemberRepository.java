@@ -46,7 +46,7 @@ public interface MemberRepository extends JpaRepository<MemberEntity, String> {
 //    (String keyword1, String keyword2, String keyword3, String keyword4, Pageable pageable);
 
     //전체 회원 목록 불러오기
-    public Page<MemberEntity> findAll(Pageable pageable);
+    public Page<MemberEntity> findByRole(String role, Pageable pageable);
 
 
 }

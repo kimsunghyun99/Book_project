@@ -39,9 +39,37 @@
         margin-bottom: 10px;
     }
 </style>
+<script>
+    function suspendSelectedMembers() {
+    // 체크된 체크박스에서 회원 아이디를 가져와 배열 생성
+    var selectedMembers = [];
+    var checkboxes = document.querySelectorAll('.member-checkbox:checked');
+    checkboxes.forEach(function(checkbox) {
+    selectedMembers.push(checkbox.value);
+});
+
+    // 선택된 회원이 없는 경우 경고 메시지 출력
+    if (selectedMembers.length === 0) {
+    alert('정지할 회원을 선택해주세요.');
+    return;
+}
+
+    // 선택된 회원이 있는 경우 정지 진행
+    if (confirm('선택한 회원을 정지하시겠습니까?')) {
+    // JSON 데이터를 hidden input field에 설정
+    document.getElementById('suspendMembers').value = JSON.stringify(selectedMembers);
+
+    // form 제출
+    document.getElementById('memberSuspendForm').submit();
+}
+}
+window.onload = () => {
+
+}
+</script>
 </head>
 <body>
-<div th:include="/etc/header.html :: banner"></div>
+<div th:replace="~{/etc/header.html :: banner}"></div>
 <div class="main">
     <h1>회원</h1>
     <div class="table-container">
@@ -55,10 +83,10 @@
                 <th>총 결제 금액</th>
                 <th>성별/선호장르</th>
             </tr>
-            <tr th:each="member, stat : ${members.content}">
-                <td><input type="checkbox"></td>
-                <td th:text="${stat.count}"></td> <!-- 순번 -->
-                <td th:text="${member.nickname}"></td><!-- 회원 아이디 -->
+            <tr th:each="member, stat : ${members.content}" th:with="pageNum=${members.number}, pageSize=${members.size}, rowNum=${pageNum*pageSize + stat.index + 1}">
+                <td><input type="checkbox" class="member-checkbox" th:value="${member.userid}"></td>
+                <td th:text="${rowNum}"></td> <!-- 순번 -->
+                <td th:text="${member.nickname}"></td><!-- 회원 nickname -->
                 <td th:text="${member.username}"></td><!-- 회원명 -->
                 <td th:text="${#dates.format(member.regdate, 'yyyy-MM-dd')}"></td><!-- 가입일 -->
                 <td>18,000원</td><!-- 총 결제금액 -->
@@ -66,14 +94,17 @@
             </tr>
         </table>
         <div>
-            <a th:if="${members.first}" disabled="disabled">첫 페이지</a>
-            <a th:if="${!members.first}" th:href="@{'/master/memberManage?page=' + (members.number - 1)}">이전 페이지</a>
-            <a th:each="page : ${#numbers.sequence(0, members.totalPages + 1)}" th:href="@{'/master/memberManage?page=' + page}" th:text="${page + 1}"></a>
-            <a th:if="${!members.last}" th:href="@{'/master/memberManage?page=' + (members.number + 1)}">다음 페이지</a>
-            <a th:if="${members.last}" disabled="disabled">마지막 페이지</a>
+            <a th:if="${members.first}" disabled="disabled"> 첫 페이지 </a>
+            <a th:if="${!members.first}" th:with="prevPage=${members.number - 1}" th:href="@{'/master/memberManage?page=' + ${prevPage}}"> 이전 페이지 </a>
+            <a th:each="page : ${#numbers.sequence(0, members.totalPages)}" th:with="displayPage=${page.intValue() + 1}, intPage=${page.intValue()}" th:href="@{'/master/memberManage?page=' + ${intPage}}" th:text="${displayPage}"></a>
+            <a th:if="${!members.last}" th:with="nextPage=${members.number + 1}" th:href="@{'/master/memberManage?page=' + ${nextPage}}"> 다음 페이지 </a>
+            <a th:if="${members.last}" disabled="disabled"> 마지막 페이지 </a>
         </div>
         <div class="bottom_menu">
-            <button>회원삭제</button>&nbsp;&nbsp;
+            <form id="memberSuspendForm" method="POST" action="/master/suspend">
+                <input type="hidden" id="suspendMembers" name="suspendMembers">
+                <a href="javascript:suspendSelectedMembers()">회원 정지</a>
+            </form>
         </div>
     </div>
 
