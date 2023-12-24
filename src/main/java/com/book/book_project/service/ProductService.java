@@ -22,4 +22,5 @@ public interface ProductService {
     // bookname, cover 가져오기 -> 나중에 interests 토대로 가져올 예정
     public List<ProductEntity> productlist() throws Exception;
 
+    ProductEntity findById(String bookid);
 }

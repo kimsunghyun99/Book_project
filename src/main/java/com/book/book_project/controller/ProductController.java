@@ -27,7 +27,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Controller
 @RequiredArgsConstructor
@@ -110,36 +113,52 @@ public class ProductController {
     public void getShoppingBasket(Model model, HttpSession session) throws Exception{
 
         String userid = (String) session.getAttribute("userid");
+        System.out.println("userid = "+userid);
         if(userid!=null){
-            List<CartEntity> cartList=cartService.cartList(userid);
-
-            model.addAttribute("list",cartList);
+            List<CartEntity> cartEntity=cartService.cartList(userid);
+            List<ProductEntity> list = new ArrayList<>();
+            for(int i=0; i<cartEntity.size(); i++){
+                ProductEntity productEntity=new ProductEntity();
+                String  bookid = String.valueOf(cartEntity.get(i).getBookid().getBookid());
+                System.out.println("bookid = "+bookid);
+                productEntity = service.findById(bookid);
+//                System.out.println("bookname = "+productEntity.getBookname());
+//                System.out.println("cover = "+productEntity.getCover());
+//                System.out.println("author = "+productEntity.getAuthor());
+//                System.out.println("price = "+productEntity.getPrice());
+                list.add(productEntity);
+//                System.out.println("listsize = "+ list.size());
+//                System.out.println("list.bookname = "+list.get(0).getBookname());
+//                System.out.println("list.cover = "+list.get(0).getCover());
+//                System.out.println("list.author = "+list.get(0).getAuthor());
+//                System.out.println("list.price = "+list.get(0).getPrice());
+            }
+            model.addAttribute("list",list);
         }
-
     }
 
 
     // 장바구니로 상품 이동
     @ResponseBody
     @PostMapping("/product/shoppingBasket")
-    public String postShoppingBasket(@RequestParam("bookid") String bookid, HttpSession session) throws Exception{
+    public String postShoppingBasket(@RequestBody Map<String, String> bookid, HttpSession session) throws Exception{
         CartEntity cartEntity=new CartEntity();
-        ProductEntity productEntity = new ProductEntity();
-        productEntity.setBookid(bookid);
+
         String userid = (String) session.getAttribute("userid");
         MemberEntity memberEntity = memberRepository.findById(userid).orElse(null);
+        ProductEntity productEntity = productRepository.findById(bookid.get("bookid")).orElse(null);
 
         Timestamp cartregdate = new Timestamp(System.currentTimeMillis());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
-
+        System.out.println(productEntity.getBookid());
 
         cartEntity.setUserid(memberEntity);
         cartEntity.setBookid(productEntity);
         cartEntity.setCartregdate(Timestamp.valueOf(sdf.format(cartregdate)));
 
         cartService.cartRegistry(cartEntity);
-        return "{\"data\":\"GOOD\"}";
+        return "{\"message\":\"GOOD\"}";
     }
 
 
