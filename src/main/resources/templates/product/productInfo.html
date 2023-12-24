@@ -320,7 +320,6 @@ const count = (type) =>  {
         <p class="book-title" id="bookname" th:text="${view.bookname}"></p>
         <p class="book-author" id="author" th:text="'작가: ' + ${view.author}"></p>
         <p class="book-price" id="price" th:text="'가격: ' + ${view.price} + '원'"></p>
-        <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.price * 0.05, 3, 'COMMA')} + '원'"></p>
 
 
         <div id="volume">
@@ -331,7 +330,8 @@ const count = (type) =>  {
         <br>
         <div style="text-align:right;font-size:30px;font-weight:bold;">
             <span>상품 금액 : </span>&nbsp;
-            <span id="total_price">[[${#numbers.formatInteger(view.pricesales,3,'COMMA')}]] 원</span>
+            <span id="total_price">[[${#numbers.formatInteger(view.price,3,'COMMA')}]] 원</span>
+            <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.price * 0.05, 3, 'COMMA')} + '원'"></p>
         </div><br>
         <br>
 
