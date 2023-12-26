@@ -40,6 +40,7 @@
     }
 </style>
 <script>
+    //회원 정지
     function suspendSelectedMembers() {
     // 체크된 체크박스에서 회원 아이디를 가져와 배열 생성
     var selectedMembers = [];
@@ -50,19 +51,23 @@
 
     // 선택된 회원이 없는 경우 경고 메시지 출력
     if (selectedMembers.length === 0) {
-    alert('정지할 회원을 선택해주세요.');
+    alert('정지/해제할 회원을 선택해주세요.');
     return;
 }
+    // 회원의 현재 상태 확인
+    var sus = document.getElementById('member-' + selectedMembers[0]).getAttribute('data-is-suspended') === 'Y';
 
-    // 선택된 회원이 있는 경우 정지 진행
-    if (confirm('선택한 회원을 정지하시겠습니까?')) {
+    // 선택된 회원이 Y 경우 해제 진행
+    if (sus && confirm('선택한 회원의 정지를 해제하시겠습니까?')) {
     // JSON 데이터를 hidden input field에 설정
-    document.getElementById('suspendMembers').value = JSON.stringify(selectedMembers);
+    document.getElementById('unSuspendMembers').value = JSON.stringify(selectedMembers);
+
 
     // form 제출
     document.getElementById('memberSuspendForm').submit();
 }
 }
+
 window.onload = () => {
 
 }
@@ -84,7 +89,7 @@ window.onload = () => {
                 <th>성별/선호장르</th>
             </tr>
             <tr th:each="member, stat : ${members.content}" th:with="pageNum=${members.number}, pageSize=${members.size}, rowNum=${pageNum*pageSize + stat.index + 1}">
-                <td><input type="checkbox" class="member-checkbox" th:value="${member.userid}"></td>
+                <td><input type="checkbox" class="member-checkbox" th:value="${member.userid}" id="member-${member.userid}" data-is-suspended="${member.suspend}"></td>
                 <td th:text="${rowNum}"></td> <!-- 순번 -->
                 <td th:text="${member.nickname}"></td><!-- 회원 nickname -->
                 <td th:text="${member.username}"></td><!-- 회원명 -->

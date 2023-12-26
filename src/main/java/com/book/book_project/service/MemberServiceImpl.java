@@ -158,8 +158,23 @@ public class MemberServiceImpl implements MemberService {
     public void stop(List<String> userids) {
         for(String userid : userids){
         MemberEntity memberEntity = memberRepository.findById(userid).get();
-            memberEntity.setSuspend("Y");
+            if(memberEntity.getSuspend().equals("Y")){
+                memberEntity.setSuspend("N");
+            }else if(memberEntity.getSuspend().equals("N")){
+                memberEntity.setSuspend("Y");
+            }
+
         memberRepository.save(memberEntity);
+        }
+    }
+
+    //회원 정지 해제
+    @Override
+    public void unstop(List<String> userids){
+        for(String userid : userids){
+            MemberEntity memberEntity = memberRepository.findById(userid).get();
+            memberEntity.setSuspend("N");
+            memberRepository.save(memberEntity);
         }
     }
 }

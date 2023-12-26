@@ -247,15 +247,14 @@ public class MemberController {
             return "{\"message\":\"ID_NOT_FOUND\"}";
         }
 
-        service.lastloginUpdate(member);
-
         //비밀번호가 올바르게 들어왔는지 정확도 여부 확인
         if(!pwdEncoder.matches(member.getPassword(), service.memberInfo(member.getUserid()).getPassword())){
             //잘못된 패스워드 일 경우
             return "{\"message\":\"PASSWORD_NOT_FOUND\"}";
         }
-
+        service.lastloginUpdate(member);
         return "{\"message\":\"GOOD\"}";
+
 
     }
 

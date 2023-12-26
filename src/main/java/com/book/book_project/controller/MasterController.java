@@ -143,10 +143,17 @@ public class MasterController {
     public String suspendMembers(@RequestParam("suspendMembers") String suspendMembers) throws Exception{
         // JSON 형태의 문자열을 List<String>으로 변환
         List<String> userids = new ObjectMapper().readValue(suspendMembers, new TypeReference<List<String>>(){});
-        System.out.println(userids);
+
         memberService.stop(userids);
+
         return "redirect:/master/memberManage?page=0";
     }
+
+//    //회원 정지 해제
+//    @PostMapping("/master/unsuspend")
+//    public String unSuspendMembers(@RequestParam("unSuspendMembers") String unSuspendMembers) throws Exception {
+//        List<String> userids = new ObjectMapper().readValue(unSuspendMembers, new TypeReference<List<String>>() {});
+//    }
 
     // 주문 확인
     @GetMapping("/master/purchaseManage")
