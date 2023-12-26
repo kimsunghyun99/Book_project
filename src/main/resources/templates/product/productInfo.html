@@ -316,6 +316,15 @@ const count = (type) =>  {
             document.location.href=`/product/payment?bookid=${bookid}&quantity=${quantity}`
         }
 
+        window.onload = function() {
+            var urlParams = new URLSearchParams('?bookid=123&page=1&focus=true');
+            var focus = urlParams.get('focus');
+
+            if (focus === 'true') {
+                document.getElementById("reviewcontent").focus();
+            }
+        };
+
     </script>
 </head>
 <body>

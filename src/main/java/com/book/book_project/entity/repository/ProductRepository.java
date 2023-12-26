@@ -33,6 +33,8 @@ public interface ProductRepository extends JpaRepository<ProductEntity, String> 
 
 
 
+    @Query(value="select bookname from tbl_product where bookid = :bookid", nativeQuery = true)
+    String getBookName(@Param("bookid") String bookid);
 
 
 

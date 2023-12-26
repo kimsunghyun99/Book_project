@@ -10,7 +10,13 @@ public interface PurchaseInfoService {
 
     //회원 구매 번호 조회
     //public
-    List<PurchaseInfoEntity> purchaseList(BuyerInfoEntity buyerseq) throws Exception;
+//    List<PurchaseInfoEntity> purchaseList(BuyerInfoEntity buyerseq) throws Exception;
+   PurchaseInfoEntity purchaseList( BuyerInfoEntity buyerseq) throws Exception;
 
     List<PurchaseInfoEntity> unMemberPurchaseList(UnMemberEntity unmembertelno) throws Exception;
+
+
+
+
+//    String repository(String statusseq) throws Exception;
 }

@@ -16,20 +16,25 @@
                 <th>상품명</th>
                 <th>주문상태</th>
                 <th>결제금액</th>
-                <th rowspan="2"> <a href="/product/productInfo" onMouseover="this.style.background='pink'; this.style.textDecoration='underline';"
-                                    onmouseout="this.style.background='white'; this.style.textDecoration='none';">리뷰작성</a></th>
+                <th>리뷰작성</th>
+<!--                <th rowspan="2"> <a href="/product/productInfo" onMouseover="this.style.background='pink'; this.style.textDecoration='underline';"-->
+<!--                                    onmouseout="this.style.background='white'; this.style.textDecoration='none';">리뷰작성</a></th>-->
             </tr>
-            <<th:block th:if="${purchaseList != null}">
-            <tr th:each="list:${purchaseList}"
+            <<th:block th:if="${purchaseInfo != null}">
+            <tr th:each="list, stat :${purchaseInfo}"
                 onMouseover="this.style.background='#46D2D2'"
                 onMouseout="this.style.background='white'">
-                <td th:text="${purchaseList.purchasedate}"></td>
-                <td th:text="${purchaseList.purchaseinfonumber}"></td>
-                <td th:text="${purchaseList.status}"></td>
-                <td th:text="${purchaseList.totalprice}"></td>
+                <td th:text="${list.purchasedate}"></td>
+                <td th:text="${list.purchaseinfonumber}"></td>
+                <td th:text="${booknames[stat.index]}"></td>
+                <td th:text="${statusList[stat.index]}"></td>
+                <td th:text="${list.totalprice}"></td>
+                <td> <a th:href="@{'/product/productInfo?bookid='+ ${bookids[stat.index]} + '&page=1'  + '&focus=true'}">리뷰작성</a>
+
+                </td>
             </tr>
             </th:block>
-            <th:block th:if="${purchaseList == null}">
+            <th:block th:if="${purchaseInfo == null}">
                 <td colspan="5">구매목록이 없습니다.</td>
             </th:block>
         </table>
