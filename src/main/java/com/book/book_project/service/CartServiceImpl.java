@@ -25,11 +25,11 @@ class CartServiceImpl implements CartService {
     private final MemberRepository memberRepository;
     private final ProductRepository productRepository;
 
-    @Override
-    //// 장바구니에 있는 해당 상품 개수 세기 1개의 상품이 몇개있는지
-    public int bCartQuantity(String userid,String bookid) {
-        return cartRepository.bCartQuantity(userid, bookid);
-    }
+//    @Override
+//    //// 장바구니에 있는 해당 상품 개수 세기 1개의 상품이 몇개있는지
+//    public int bCartQuantity(String userid,String bookid) {
+//        return cartRepository.bCartQuantity(userid, bookid);
+//    }
     @Override
     // 장바구니 추가 // 아무것도 없을 시
     public void bCartInsert(String userid, String bookid){

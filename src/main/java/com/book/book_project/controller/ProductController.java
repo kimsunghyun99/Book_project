@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -70,23 +72,47 @@ public class ProductController {
                                Model model,
                                HttpSession session) throws Exception {
 
+        // page 어디서 받아오는지 ?
+
+
         //상품정보를 불러와야함.
         String bookId= String.valueOf(bookid.getBookid());
 
-        int postNum = 10; //한 화면에 보여지는 게시물 행의 갯수
+        int postNum = 5; //한 화면에 보여지는 게시물 행의 갯수
         int pageListCount = 5; //화면 하단에 보여지는 페이지리스트의 페이지 갯수
-        System.out.println("ProductEntity1: "+bookid.getClass().getName());
-        System.out.println("ProductEntity2: "+bookid.getBookid());
+       // System.out.println("ProductEntity1: "+bookid.getClass().getName());
+       // System.out.println("ProductEntity2: "+bookid.getBookid());
 
         PageUtil page = new PageUtil();
-        Page<ReviewEntity> list = reviewService.list(bookid, pageNum, postNum);
-        int totalCount = (int)list.getTotalElements();
+       Page<ReviewEntity> list = reviewService.list(bookid, pageNum, postNum);
+       int totalCount = (int)list.getTotalElements();
+
         if(session.getAttribute("userid")!=null){
             String userid = (String) session.getAttribute("userid");
             String nickname = memberService.memberInfo(userid).getNickname();
             model.addAttribute("nickname", nickname);
         }
+
+        //ReviewInterfaceImpl review = new ReviewInterfaceImpl(bookId);
+        //List<ReviewInterface> reviews =  reviewService.reviewView(review);
+
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedNow = now.format(formatter);
+
+
+        int count = reviewService.countreview(bookId);
+
+        model.addAttribute("count", count);
+
+        model.addAttribute("currentDateTime", formattedNow);
+
+//        model.addAttribute("")
+
         model.addAttribute("view", service.view(bookId));
+
+
+
         model.addAttribute("list", list);
         model.addAttribute("totalElement", totalCount);
         model.addAttribute("postNum", postNum);
@@ -116,9 +142,9 @@ public class ProductController {
 
         String userid = (String)session.getAttribute("userid");
         if(userid!=null){
-            List<CartDTO> cartList=cartRepository.findByUserid(userid);
+        //    List<CartDTO> cartList=cartRepository.findByUserid(userid);
 
-            model.addAttribute("list",cartList);
+         //   model.addAttribute("list",cartList);
         }
 
     }
@@ -127,27 +153,30 @@ public class ProductController {
     // 장바구니로 상품 이동
     @ResponseBody
     @PostMapping("/product/shoppingBasket")
-    public int postShoppingBasket(@RequestBody CartEntity cartEntity, HttpSession session) throws Exception{
+    public int postShoppingBasket(@RequestBody CartEntity cartEntity, HttpSession session) throws Exception {
 
-        String userid = (String)session.getAttribute("userid");
+        String userid = (String) session.getAttribute("userid");
         String bookid = cartEntity.getBookid().getBookid();
 
-
-        if(cartService.bCartQuantity(userid,bookid) == 0 ){
-            cartService.bCartInsert(userid,bookid);
-        }
-        else{
-            cartService.bCartUpdate(userid,bookid);
-        }
+//
+//        if(cartService.bCartQuantity(userid,bookid) == 0 ){
+//            cartService.bCartInsert(userid,bookid);
+//        }
+//        else{
+//            cartService.bCartUpdate(userid,bookid);
+//        }
         return cartService.bCartCount(userid);
-
+//
+//    }
     }
-
 
     //닉네임 창
 
     @GetMapping("/product/nickname")
-    public void getNickname(){}
+    public void getNickname() {}
+
+
+
     @ResponseBody
     @PostMapping("/product/nickname")
     public String postNickname(HttpSession session, @RequestParam("nickname") String nickname, Model model) throws Exception {
@@ -164,9 +193,7 @@ public class ProductController {
     //리뷰 처리
     @ResponseBody
     @PostMapping(value = "/product/review")
-    public List<ReviewInterface> postReview(@RequestBody ReviewInterfaceImpl review, @RequestParam("option") String option,@RequestParam("page") int pageNum,
-                                            @RequestParam("bookid")
-                                            ProductEntity bookid, Model model) throws Exception {
+    public List<ReviewInterface> postReview(@RequestBody ReviewInterfaceImpl review, @RequestParam("option") String option) throws Exception {
 
         switch (option) {
 
@@ -193,7 +220,7 @@ public class ProductController {
 //                model.addAttribute("list", pagedReviews.getContent());
 //                model.addAttribute("totalElement", pagedReviews.getTotalElements());
      //           model.addAttribute("postNum", postNum);
-                model.addAttribute("page", pageNum);
+               // model.addAttribute("page", pageNum);
 //                model.addAttribute("pageList", page.getPageList(pageNum, postNum, pageListCount, pagedReviews.getTotalPages(), String.valueOf(bookid.getBookid())));
 //                return reviewService.reviewView(review);
         }

@@ -27,5 +27,7 @@ public interface ReviewService {
     //리뷰 삭제
     public void reviewDelete(ReviewInterfaceImpl review) throws Exception;
 
+    // 리뷰 숫자 세기
+    public int countreview(String bookid) throws Exception;
 
 }

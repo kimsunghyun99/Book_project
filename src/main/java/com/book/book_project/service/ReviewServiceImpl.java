@@ -78,4 +78,13 @@ public class ReviewServiceImpl implements ReviewService{
         ReviewEntity reviewEntity = reviewRepository.findById(review.getReviewseq()).get();
         reviewRepository.delete(reviewEntity);
     }
+
+
+
+    //리뷰 수 세기
+    @Override
+    public int countreview(String bookid) throws Exception{
+        return reviewRepository.countreview(bookid);
+    }
+
 }

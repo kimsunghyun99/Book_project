@@ -144,6 +144,7 @@ const reviewRegister = async () => {
     const data = {
         reviewer: reviewer.value,
         reviewcontent: reviewcontent.value,
+        reviewregdate: reviewregdate.value,
         userid: userid.value,
         bookid: bookid.value
     };
@@ -157,7 +158,7 @@ const reviewRegister = async () => {
     })
         .then((response) => response.json())
         .then((data) => {
-            reviewList(data);
+            window.location.reload()
             console.log("data = " + data);
         })
         .catch((error) => {
@@ -170,27 +171,29 @@ const reviewRegister = async () => {
 
 
 
-//리뷰 삭제
-const reviewDelete = async(reviewseq) => {
-    if(confirm("정말로 삭제하시겠습니까?")) {
-        // let formData = new FormData();
-        // formData.append("reviewseq", reviewseq);
-        // formData.append("bookid", "[[${view.bookid}]]")
-        const data = { reviewseq: reviewseq, bookid: parseInt('[[${view.bookid}]]')};
-        await fetch('/product/review?option=D',{
 
-            method: 'POST',
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(data)
-            //body: formData
-        }).then((response) => response.json())
-            .then((data) => reviewList(data))
-            .catch((error) => {
-                console.log("error =" + error);
-                alert("서버 장애로 리뷰 삭제가 실패했습니다.");
+// 댓글삭제
+
+        document.querySelectorAll('.btnReviewDelete').forEach(btn => {
+            btn.addEventListener('click', async function() {
+                const reviewSeq = this.getAttribute('data-reviewseq');
+                const data = { reviewseq: reviewSeq };
+
+                const response = await fetch('/product/review?option=D', {
+                    method: 'POST',
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                }).then((response) => response.json())
+                    .then((data) => reviewList(data))
+                    .catch((error) => {
+                        console.log("error =" + error);
+                        alert("서버 장애로 리뷰 삭제가 실패했습니다.");
+                    });
             });
-    }
-}
+        });
+
+
+
 
 // 리뷰 등록 취소
 const reviewCancel = () => {
@@ -307,6 +310,10 @@ const count = (type) =>  {
             document.location.href=`/product/payment?bookid=${bookid}`
         }
 
+        // var dt = new Date();
+        // document.getElementById("datetime" + i).innerText = dt.toLocaleString();
+
+
     </script>
 </head>
 <body>
@@ -316,8 +323,7 @@ const count = (type) =>  {
     <div class="book-image-container"><br><br>
         <img class="book-image" id="cover" th:src="${view.cover}" alt="책 이미지">
         <div class="likes-reviews">
-            <p class="book-likes">즐겨찾기: 00</p>
-            <p class="book-reviews">후기: 00</p>
+            <p class="book-reviews" th:text="'후기: ' + ${count}"></p>
         </div>
     </div>
     <div class="book-info" th:if="${view != null}"><br><br>
@@ -364,6 +370,7 @@ const count = (type) =>  {
         <input type="hidden" id="userid" name="userid" th:value="${session.userid}">
         작성자: <input type="text" id="reviewer" name="reviewer" th:value="${nickname}" readonly>
         <br><br>
+        <input type="hidden" id="reviewregdate" name="reviewregdate" th:value="${currentDateTime}">
 
         <!-- 리뷰 내용 입력 폼 -->
         <textarea id="reviewcontent" name="reviewcontent" cols="80" rows="5" maxlength="150" placeholder="글자수: 150자 이내"
@@ -382,21 +389,26 @@ const count = (type) =>  {
         <tr>
             <th>작성자</th>
             <th>리뷰 내용</th>
-            <th>수정 및 삭제</th>
+            <th>작성 시간</th>
+            <th>수정</th>
+            <th>삭제</th>
         </tr>
         <tr th:each="list, index: ${list}">
             <td th:text="${list.reviewer}"></td>
             <td th:text="${list.reviewcontent}"></td>
+<!--            <td th:id="'datetime' +  ${index.index}"></td>-->
+            <td th:text="${list.reviewregdate}"></td>
             <td>
                 <!-- 리뷰 수정 버튼 -->
                 <a th:if="${session.userid}" th:data-reviewseq="${list.reviewseq}" th:data-reviewcontent="${list.reviewcontent}"
                    style="cursor:pointer" class="btnReviewModify">수정</a>
-
+            </td>
+            <td>
                 <!-- 리뷰 삭제 버튼 -->
                 <a th:if="${session.userid}" th:data-reviewseq="${list.reviewseq}"
                    style="cursor:pointer" class="btnReviewDelete">삭제</a>
-
             </td>
+
              <!--리뷰 수정 폼-->
             <div id="modifyReviewForm" style="display: none;">
                 <textarea id="modifyReviewContent" cols="80" rows="5" maxlength="150" placeholder="글자수: 150자 이내"></textarea><br>
@@ -424,6 +436,9 @@ const count = (type) =>  {
                     let tdReviewer = document.createElement('td');
                     tdReviewer.innerText = jsonInfo[i].reviewer;
 
+                    let tdRegDate = document.createElement('td');
+                    tdRegDate.innerText = jsonInfo[i].reviewregdate;
+
                     let tdReviewContent = document.createElement('td');
                     tdReviewContent.innerText = jsonInfo[i].reviewcontent;
 
@@ -442,6 +457,7 @@ const count = (type) =>  {
                     btnReviewDelete.innerText = '삭제';
                     btnReviewDelete.setAttribute('style', 'cursor:pointer');
                     btnReviewDelete.addEventListener('click', function () {
+                        console.log('삭제버튼 눌렀는데?')
                         reviewDelete(jsonInfo[i].reviewseq);
                     });
 
@@ -451,6 +467,7 @@ const count = (type) =>  {
 
                     tr.appendChild(tdReviewer);
                     tr.appendChild(tdReviewContent);
+                    tr.appendChild(tdRegDate);
                     tr.appendChild(tdActions);
 
                     reviewList.appendChild(tr);
@@ -552,7 +569,8 @@ const count = (type) =>  {
                         }
 
                         // 수정이 완료되면 리뷰 목록을 갱신
-                        await refreshReviewList();
+                        // await refreshReviewList();
+                        window.location.reload()
 
                         // 수정 폼 숨기기
                         document.getElementById('modifyReviewForm').style.display = 'none';
@@ -591,6 +609,24 @@ const count = (type) =>  {
                 //         alert('리뷰 목록을 가져오는데 실패했습니다.');
                 //     }
                 // };
+
+                document.getElementById('btnReviewDelete').addEventListener('click', async () => {
+                console.log('1111');
+                    const data = { reviewseq: data-reviewseq};
+
+                    const response = await fetch('/product/review?option=D', {
+                        method: 'POST',
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify(data)
+                        //body: formData
+                    }).then((response) => response.json())
+                        .then((data) => reviewList(data))
+                        .catch((error) => {
+                            console.log("error =" + error);
+                            alert("서버 장애로 리뷰 삭제가 실패했습니다.");
+                        });
+                });
+
 
 
                 const goToPage = async (page) => {
@@ -637,6 +673,7 @@ const count = (type) =>  {
                         }
 
                         const responseData = await response.json();
+
                         reviewList(responseData);
 
                         // 페이징 버튼 갱신

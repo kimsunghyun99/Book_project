@@ -12,7 +12,7 @@ public interface CartService {
 
 
     // 장바구니에 있는 해당 상품 개수 세기
-    public int bCartQuantity(String userid,String bookid);
+//    public int bCartQuantity(String userid,String bookid);
 
 
     // 장바구니 추가 // 아무것도 없을 시
