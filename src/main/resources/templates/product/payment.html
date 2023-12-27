@@ -144,9 +144,11 @@
         }
 
     </style>
-<!--    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>-->
-<!--    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>-->
-    <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
+<!--&lt;!&ndash;    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>&ndash;&gt;-->
+<!--&lt;!&ndash;    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>&ndash;&gt;-->
+    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+<!--&lt;!&ndash;    <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>&ndash;&gt;-->
+
 
     <script>
 
@@ -238,26 +240,181 @@
             IMP.request_pay({
                 pg: "html5_inicis",
                 pay_method: "card",
-                merchant_uid: merchantUid,
+                merchant_uid: 'order_no_0001',
                 name: '책',
                 amount: '1',
-                buyer_email: email,
-                buyer_name: buyer,
-                buyer_tel: telNo,
-                buyer_addr: address,
-                buyer_postcode: postcode
+                buyer_email: 'ponyodevdev@gmail.com',
+                buyer_name: '포뇨',
+                buyer_tel: '010-1234-5678',
+                buyer_addr: '서울특별시 강남구 삼성동',
+                buyer_postcode:  '123-456'
             }, function (rsp) {
-                if (rsp.success) {
-                    // 결제 성공 시 처리 로직
-                    console.log("Payment success:", rsp);
-                    // 여기에 결제 성공 시 수행할 로직을 추가하세요.
-                } else {
-                    // 결제 실패 시 처리 로직
-                    alert("결재 실패");
-                    alert(rsp.error_msg);
-                    console.log(rsp);
+                // if (rsp.success) {
+                //     // 결제 성공 시 처리 로직
+                //     console.log("Payment success:", rsp);
+                //     // 여기에 결제 성공 시 수행할 로직을 추가하세요.
+                // } else {
+                //     // 결제 실패 시 처리 로직
+                //     alert("결재 실패");
+                //     alert(rsp.error_msg);
+                //     console.log(rsp);
+                // }
+
+                // });
+                if (rsp.success) { // 결제 성공 시: 결제 승인 또는 가상계좌 발급에 성공한 경우
+                    // jQuery로 HTTP 요청
+                    jQuery.ajax({
+                        url: "/api/order/payment/complete", // 가맹점 서버
+                        method: "POST",
+                        headers: {"Content-Type": "application/json"},
+                        data: {
+                            imp_uid: rsp.imp_uid,
+                            merchant_uid: rsp.merchant_uid
+                            //기타 필요한 데이터가 있으면 추가 전달
+                        }
+                    }).done(function (data) {
+                        // 가맹점 서버 결제 API 성공시 로직
+                        swal({
+                            text: data,  // 서버로부터의 결과 메시지
+                            closeOnClickOutside: false
+                        })
+                            .then(function () {
+                                // "/orderList" 페이지로 리디렉션
+                                location.replace("/main");
+                            });
+                    })
+                        .fail(function () {
+                            // 이 블록은 AJAX 요청이 실패할 때 실행됩니다.
+
+                            // 에러를 나타내는 경고 표시
+                            alert("에러");
+
+                            // 루트("/") 페이지로 리디렉션
+                            // location.replace("/");
+                        });
+                    //         })
+                    //     } else {
+                    //         alert("결제에 실패하였습니다. 에러 내용: " +  rsp.error_msg);
+                    //     }
+                    // });
                 }
             });
+        }
+        // function paymentComplete(data) {
+        //
+        //     $.ajax({
+        //         url: "/api/order/payment/complete",
+        //         method: "POST",
+        //         data: data,
+        //     })
+        //         .done(function(result) {
+        //             messageSend();
+        //             swal({
+        //                 text: result,
+        //                 closeOnClickOutside : false
+        //             })
+        //                 .then(function(){
+        //                     location.replace("/orderList");
+        //                 })
+        //         }) // done
+        //         .fail(function() {
+        //             alert("에러");
+        //             location.replace("/");
+        //         })
+        // }
+
+        const requestData = {
+            merchant_uid: "order_no_0001", // 가맹점 주문번호
+            amount: 1, // 결제 예정금액
+        };
+
+        fetch("https://api.iamport.kr/payments/prepare", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestData),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                // 성공적인 응답 처리
+                console.log(data);
+            })
+            .catch((error) => {
+                // 오류 처리
+                console.error("Error:", error);
+            });
+
+
+        async function completePayment() {
+            try {
+                // req의 body에서 imp_uid, merchant_uid 추출
+                const imp_uid = 'imp61517557'; // 여기에 실제 값 입력
+                const merchant_uid = 'order_no_0001'; // 여기에 실제 값 입력
+
+                // 액세스 토큰(access token) 발급 받기
+                const getToken = await fetch("https://api.iamport.kr/users/getToken", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        imp_key: "3557360680577444", // REST API 키
+                        imp_secret: "X1zURcFH3XOO3Uy6B4aB5cdUAEQ0sZRG9ui7jvPerNWKfD1ELpw2v20afZGurR2njETUGylUME6eiC38" // REST API Secret
+                    })
+                });
+                const { access_token } = await getToken.json(); // 인증 토큰
+
+                // imp_uid로 포트원 서버에서 결제 정보 조회
+                const getPaymentData = await fetch(`https://api.iamport.kr/payments/${imp_uid}`, {
+                    method: "GET",
+                    headers: { "Authorization": access_token }
+                });
+                const paymentData = await getPaymentData.json(); // 조회한 결제 정보
+
+                // 나머지 로직 추가
+
+                console.log("Payment complete");
+            } catch (e) {
+                console.error(e.message);
+            }
+        }
+
+        // 호출 예시
+        completePayment();
+
+        function requestPayment() {
+            // 결제에 필요한 정보를 수집합니다.
+            var paymentInfo = {
+                // 여기에 결제에 필요한 정보를 추가하세요
+            };
+
+            // 서버로 결제 요청을 전송합니다.
+            fetch("/api/order/payment/complete", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(paymentInfo)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // 서버로부터의 응답을 처리합니다.
+                    console.log(data);
+
+                    // 응답에 따른 클라이언트의 동작을 수행하세요.
+                    if (data.status === "success") {
+                        // 결제가 성공적으로 처리되었을 때의 동작
+                        alert("결제가 성공적으로 완료되었습니다.");
+                        // 원하는 동작 수행
+                    } else {
+                        // 결제가 실패했을 때의 동작
+                        alert("결제에 실패했습니다.");
+                        // 원하는 동작 수행
+                    }
+                })
+                .catch(error => {
+                    // 오류 처리
+                    console.error("Error:", error);
+                });
         }
 
 

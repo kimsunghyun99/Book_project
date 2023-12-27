@@ -1,13 +1,9 @@
 package com.book.book_project.controller;
 
-import com.book.book_project.dto.NewsDTO;
-import com.book.book_project.dto.ProductDTO;
+import com.book.book_project.dto.*;
 import com.book.book_project.entity.*;
 import com.book.book_project.service.NewsService;
 import com.book.book_project.service.ProductService;
-import com.book.book_project.dto.CartDTO;
-import com.book.book_project.dto.ReviewInterface;
-import com.book.book_project.dto.ReviewInterfaceImpl;
 import com.book.book_project.entity.ProductEntity;
 import com.book.book_project.entity.repository.CartRepository;
 import com.book.book_project.entity.repository.MemberRepository;
@@ -16,8 +12,12 @@ import com.book.book_project.service.*;
 import com.book.book_project.util.PageUtil;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.security.core.parameters.P;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +30,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
+@Slf4j
 @RequiredArgsConstructor
 public class ProductController {
 
@@ -42,6 +43,8 @@ public class ProductController {
     private final CartService cartService;
     private  final CartRepository cartRepository;
     private final DeliveryService deliveryService;
+    private final PurchaseInfoService purchaseInfoService;
+
 
     // main화면 보기
     @GetMapping("/product/main")
@@ -114,6 +117,7 @@ public class ProductController {
 
 
         model.addAttribute("list", list);
+        System.out.println("......." +list);
         model.addAttribute("totalElement", totalCount);
         model.addAttribute("postNum", postNum);
         model.addAttribute("page", pageNum);
@@ -140,43 +144,40 @@ public class ProductController {
     @GetMapping("/product/shoppingBasket")
     public void getShoppingBasket(Model model, HttpSession session) throws Exception{
 
-        String userid = (String)session.getAttribute("userid");
-        if(userid!=null){
-        //    List<CartDTO> cartList=cartRepository.findByUserid(userid);
-
-         //   model.addAttribute("list",cartList);
-        }
+//        String userid = (String)session.getAttribute("userid");
+//        if(userid!=null){
+//            List<CartDTO> cartList=cartRepository.findByUserid(userid);
+//
+//            model.addAttribute("list",cartList);
+//        }
 
     }
 
 
     // 장바구니로 상품 이동
-    @ResponseBody
-    @PostMapping("/product/shoppingBasket")
-    public int postShoppingBasket(@RequestBody CartEntity cartEntity, HttpSession session) throws Exception {
+//    @ResponseBody
+//    @PostMapping("/product/shoppingBasket")
+//    public int postShoppingBasket(@RequestBody CartEntity cartEntity, HttpSession session) throws Exception{
 
-        String userid = (String) session.getAttribute("userid");
-        String bookid = cartEntity.getBookid().getBookid();
+//        String userid = (String)session.getAttribute("userid");
+//        String bookid = cartEntity.getBookid().getBookid();
 
-//
+
 //        if(cartService.bCartQuantity(userid,bookid) == 0 ){
 //            cartService.bCartInsert(userid,bookid);
 //        }
 //        else{
 //            cartService.bCartUpdate(userid,bookid);
 //        }
-        return cartService.bCartCount(userid);
-//
-//    }
-    }
+//        return cartService.bCartCount(userid);
+
+ //}
+
 
     //닉네임 창
 
     @GetMapping("/product/nickname")
-    public void getNickname() {}
-
-
-
+    public void getNickname(){}
     @ResponseBody
     @PostMapping("/product/nickname")
     public String postNickname(HttpSession session, @RequestParam("nickname") String nickname, Model model) throws Exception {
@@ -193,7 +194,9 @@ public class ProductController {
     //리뷰 처리
     @ResponseBody
     @PostMapping(value = "/product/review")
-    public List<ReviewInterface> postReview(@RequestBody ReviewInterfaceImpl review, @RequestParam("option") String option) throws Exception {
+    public List<ReviewInterface> postReview(@RequestBody ReviewInterfaceImpl review, @RequestParam("option") String option,@RequestParam("page") int pageNum,
+                                            @RequestParam("bookid")
+                                            ProductEntity bookid, Model model) throws Exception {
 
         switch (option) {
 
@@ -220,7 +223,7 @@ public class ProductController {
 //                model.addAttribute("list", pagedReviews.getContent());
 //                model.addAttribute("totalElement", pagedReviews.getTotalElements());
      //           model.addAttribute("postNum", postNum);
-               // model.addAttribute("page", pageNum);
+                model.addAttribute("page", pageNum);
 //                model.addAttribute("pageList", page.getPageList(pageNum, postNum, pageListCount, pagedReviews.getTotalPages(), String.valueOf(bookid.getBookid())));
 //                return reviewService.reviewView(review);
         }

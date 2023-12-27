@@ -14,7 +14,6 @@ import java.util.List;
 public class PurchaseInfoServiceImpl implements PurchaseInfoService {
     private final PurchaseInfoRepository repository;
 
-
     @Override
     public List<PurchaseInfoEntity> purchaseList(BuyerInfoEntity buyerseq){
 
@@ -27,4 +26,9 @@ public class PurchaseInfoServiceImpl implements PurchaseInfoService {
         return null;
     }
 
+    @Override
+    public void processPayment(PurchaseInfoEntity paymentInfo) throws Exception {
+
+
+    }
 }
