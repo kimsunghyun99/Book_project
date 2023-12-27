@@ -17,6 +17,7 @@ import com.book.book_project.util.PageUtil;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,13 +25,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -156,6 +155,26 @@ public class ProductController {
         return "{\"message\":\"GOOD\"}";
     }
 
+    //장바구니에서 상품 삭제
+    @ResponseBody
+    @PostMapping("/product/delete")
+    public boolean postDelete(@RequestBody Map<String, Object> bookids, HttpSession session){
+        List<String> bookidList = (List<String>) bookids.get("bookids");
+        String userid = (String) session.getAttribute("userid");
+        CartEntity cartEntity = new CartEntity();
+        MemberEntity memberEntity = new MemberEntity();
+        ProductEntity productEntity = new ProductEntity();
+        memberEntity.setUserid(userid);
+        cartEntity.setUserid(memberEntity);
+        for(int i=0; i<bookidList.size(); i++){
+            productEntity.setBookid(bookidList.get(i));
+            cartEntity.setBookid(productEntity);
+            cartService.delete(cartEntity);
+        }
+
+        return true;
+    }
+
 
     //닉네임 창
 
@@ -199,27 +218,70 @@ public class ProductController {
 
     // 결제화면
     @GetMapping("/product/payment")
-    public void getPayment(@RequestParam("bookid") String bookid, @RequestParam("quantity") int quantity,  Model model, HttpSession session) throws Exception {
-
+    public void getPayment(
+            @RequestParam(value = "bookid", required = false) String bookid,
+            @RequestParam(value = "quantity", required = false) Integer  quantity,
+            Model model, HttpSession session) throws Exception {
 
         String userid = (String)session.getAttribute("userid");
 
+        if(session.getAttribute("productDTOList")!=null) {
+            List<ProductDTO> productlist = (List<ProductDTO>) session.getAttribute("productDTOList");
+            model.addAttribute("view", productlist);
+        }
+        // 모델에 productDTOList 추가
+        else {
+            List<ProductDTO> productlist = new ArrayList<>();
+
+            ProductDTO productDTO = new ProductDTO();
+            ProductEntity productEntity = service.findById(bookid);
+            productDTO.setQuantity(quantity);
+            productDTO.setBookname(productEntity.getBookname());
+            productDTO.setSalespoint(productEntity.getSalespoint());
+            productDTO.setBookid(productEntity.getBookid());
+            productDTO.setAuthor(productEntity.getAuthor());
+            productDTO.setPrice(productEntity.getPrice());
+            productDTO.setCover(productEntity.getCover());
+            productlist.add(productDTO);
+            model.addAttribute("view", productlist);
+        }
 
         model.addAttribute("memberInfo", memberService.memberInfo(userid));
-        model.addAttribute("quantity", quantity);
         // userid에 대한 주소지 다 꺼내기
-        model.addAttribute("delverylist", deliveryService.list(userid));
+        model.addAttribute("deliverylist", deliveryService.list(userid));
         //bookid 에 대한 정보
-        model.addAttribute("view", service.view(bookid));
-
-
-
-
-
     }
 
+    @PostMapping("/product/payment")
+    public ResponseEntity<?> postPayment(@RequestBody Map<String, List<Map<String, Object>>> payload, HttpSession session) {
+        List<Map<String, Object>> items = payload.get("items");
+        List<ProductDTO> productDTOList = new ArrayList<>();
 
+        for (Map<String, Object> item : items) {
+            String bookid = (String) item.get("bookid");
+            int quantity = (Integer) item.get("quantity");
 
+            ProductEntity productEntity = service.findById(bookid);
+            if (productEntity != null) {
+                ProductDTO productDTO = new ProductDTO();
+                productDTO.setAuthor(productEntity.getAuthor());
+                productDTO.setSalespoint(productEntity.getSalespoint());
+                productDTO.setCover(productEntity.getCover());
+                productDTO.setBookname(productEntity.getBookname());
+                productDTO.setPrice(productEntity.getPrice());
+                productDTO.setBookid(productEntity.getBookid());
+                productDTO.setQuantity(quantity);
+
+                productDTOList.add(productDTO);
+            }
+        }
+
+        // 여기서 적절한 리다이렉트 경로를 설정하세요.
+        session.setAttribute("productDTOList", productDTOList);
+
+        // 클라이언트에 리다이렉션 URL 전송
+        return ResponseEntity.ok(Map.of("redirectUrl", "/product/payment"));
+    }
 
 
 

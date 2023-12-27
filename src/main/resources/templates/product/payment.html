@@ -150,21 +150,30 @@
 
     <script>
 
-
         document.addEventListener('DOMContentLoaded', function() {
+            var productList = [[${view}]];
 
-            const price = parseInt([[${view.price}]]);
-            const salespoint = parseInt([[${view.salespoint}]]);
-            const quantity = parseInt([[${quantity}]]);
+            var totalAmount = 0;
+            var totalSalespoint = 0;
 
-            const totalAmount = price * quantity;
-            const totalSalespoint = salespoint * quantity;
-            const totalInvoiceAmountElement = document.getElementById('totalInvoiceAmount');
-            const totalSalesAmountElement = document.getElementById('totalSalesAmount');
+            productList.forEach(function(product) {
+                var price = parseInt(product.price);
+                var salespoint = parseInt(product.salespoint);
+                var quantity = parseInt(product.quantity);
+                console.log("price = "+price);
+                console.log("salespoint = "+salespoint);
+                console.log("quantity = "+quantity);
+
+
+                totalAmount += price * quantity;
+                totalSalespoint += salespoint * quantity;
+            });
+
+            var totalInvoiceAmountElement = document.getElementById('totalInvoiceAmount');
+            var totalSalesAmountElement = document.getElementById('totalSalesAmount');
 
             totalInvoiceAmountElement.innerText = totalAmount.toLocaleString('ko-KR') + '원';
             totalSalesAmountElement.innerText = totalSalespoint.toLocaleString('ko-KR') + '원';
-
         });
 
 
@@ -181,7 +190,7 @@
         }
 
 
-        const searchAddr = () => {
+            const searchAddr = () => {
 
             if(addrSearch.value == '') {
                 alert("검색할 주소를 입력하세요");
@@ -257,7 +266,7 @@
 </head>
 
 <body>
-
+<div th:insert="~{/etc/header.html}"></div>
 <div class="mall">
     <div class="main_shop">
 
@@ -279,8 +288,8 @@
             </tr>
             </thead>
             <tbody>
-            <th:block th:if="${delverylist != null}">
-                <tr th:each="delivery, stat :${delverylist}">
+            <th:block>
+                <tr th:each="delivery, stat :${deliverylist}" th:if="${deliverylist != null}">
                     <td th:text="${delivery.name}"></td>
                     <td th:id="'original_addr' + ${stat.index}" th:text="${delivery.addr} + ' ' + ${delivery.detailaddr}"></td>
                     <td th:text="${delivery.zipcode}"></td>
@@ -337,24 +346,29 @@
                 </tr>
                 <tbody>
                 <tr>
-                    <td><img class="p_image" th:src="${view.cover}" alt="책 표지 이미지" style="width:300px; height: auto"></td>
-                    <td>
-                        <span th:text="${view.bookname}"></span><br>/
-                        <span th:text="${view.author}"></span>
-                    </td>
-                    <td><span th:text="${#numbers.formatInteger(view.price,3,'COMMA')+'원'}"></span></td>
-                    <td><span th:text="${quantity}"></span></td>
-                    <td colspan="3">
-                        <span style="text-align:right"><h2>합계 : <span id="totalInvoiceAmount" style="text-align:right"></span></h2></span>
-                        <span style="text-align:right"><h2>적립 포인트 : <span id="totalSalesAmount" style="text-align:right"></span></h2></span>
-                    </td>
+                    <th:block>
+                        <tr th:each="product:${view}" th:if="${view != null}">
+                            <td><img class="p_image" th:src="${product.cover}" alt="책 표지 이미지" style="width:300px; height: auto"></td>
+                            <td>
+                                <span th:text="${product.bookname}"></span><br>/
+                                <span th:text="${product.author}"></span>
+                            </td>
+                            <td><span th:text="${#numbers.formatInteger(product.price,3,'COMMA')+'원'}"></span></td>
+                            <td><span th:text="${product.quantity}"></span></td>
+                            <td colspan="3">
+                                <span style="text-align:right"><h3>합계 : <span id="totalInvoiceAmount" style="text-align:right"></span></h3></span>
+                                <span style="text-align:right"><h3>적립 포인트 : <span id="totalSalesAmount" style="text-align:right"></span></h3></span>
+                            </td>
 
-<!--                    <td><span th:text="${view.order_quantity}"></span></td>-->
-<!--                    <td><span class="invoiceAmount" th:text="${#numbers.formatInteger(list.order_amount,3,'COMMA')+'원'}"></span></td>-->
-                </tr>
+        <!--                    <td><span th:text="${view.order_quantity}"></span></td>-->
+        <!--                    <td><span class="invoiceAmount" th:text="${#numbers.formatInteger(list.order_amount,3,'COMMA')+'원'}"></span></td>-->
+                        </tr>
+                    </th:block>
                 <tr>
                     <td colspan="3"></td>
                     <td colspan="3"><span style="text-align:right"><h2>총 합계 : <span style="text-align:right"></span></h2></span></td>
+                </tr>
+
                 </tr>
                 </tbody>
             </table>
