@@ -36,6 +36,7 @@ public class MemberDTO {
     private String fromSocial;    // 회원등록 시 초기값 N
     private String role;     // 초기값 USER
 
+
     // Entity -> DTO로 이동
 
     public MemberDTO(MemberEntity memberEntity) {

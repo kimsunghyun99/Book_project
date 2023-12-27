@@ -73,4 +73,7 @@ public class MemberEntity {
     @Column(name="role", length=50, nullable=false)
     private String role;
 
+
+
+
 }

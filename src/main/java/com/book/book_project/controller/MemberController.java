@@ -313,7 +313,7 @@ public class MemberController {
 
             String bookid  = String.valueOf(purchaseInfoEntity.getBookid().getIdAsString());
             String bookname = productRepository.getBookName(bookid);
-            String statusseq =  String.valueOf(purchaseInfoEntity.getStatusseq());
+            String statusseq =  String.valueOf(purchaseInfoEntity.getStatusseq().getStatusseq());
            String statusname = purchaseStatusService.getStatusName(statusseq);
             System.out.println(statusname);
 
