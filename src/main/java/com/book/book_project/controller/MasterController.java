@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,11 +28,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.math.BigInteger;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -119,9 +123,31 @@ public class MasterController {
             }
         }
     }
-    // 나이대별 통계
+    // 회원 통계
     @GetMapping("/master/ageStatistics")
-    public void getAgeStatistics() {}
+    public String socialcount(Model model){
+        //소셜 / 일반 회원 통계
+        int social = memberRepository.socialcount();
+        int normal = memberRepository.normalcount();
+
+        model.addAttribute("social", social);
+        model.addAttribute("normal", normal);
+        List<Map<String, Integer>> list = memberRepository.memberage();
+
+        //일반 회원 가입연령 별 통계
+        for (Map<String, Integer> map : list) {
+
+            String ageGroup = String.valueOf(map.get("age_group"));
+            Integer count = ((Number)map.get("count")).intValue();
+            System.out.println(ageGroup);
+            model.addAttribute(ageGroup, count);
+            System.out.println(count);
+
+        }
+
+        return "/master/ageStatistics";
+
+    }
 
 
     // 장르별 통계

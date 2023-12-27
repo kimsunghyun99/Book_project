@@ -95,7 +95,7 @@ public class OnAuth2UserDetailsServiceimpl extends DefaultOAuth2UserService {
 		if(result.isPresent()) {
 			MemberEntity member = result.get();
 			if("Y".equals(member.getSuspend())){
-				throw new OAuth2AuthenticationException("정지된 아이디입니다");
+				throw new RuntimeException("정지된 아이디입니다");
 			}
 			return member;
 		}

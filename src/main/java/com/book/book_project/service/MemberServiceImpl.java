@@ -18,11 +18,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -176,5 +175,42 @@ public class MemberServiceImpl implements MemberService {
             memberEntity.setSuspend("N");
             memberRepository.save(memberEntity);
         }
+    }
+
+    //회원 통계
+//    @Override
+//    public Map<String, Integer> countMembers() {
+//        Map<String, Integer> counts = memberRepository.countmember();
+//        int countFromSocialY = counts.get(countMembers().get(0));
+//        int countFromSocialN = counts.get(countMembers().get(1));
+//
+//        Map<String, Integer> result = new HashMap<>();
+//        result.put("countFromSocialY", countFromSocialY);
+//        result.put("countFromSocialN", countFromSocialN);
+//
+//        return result;
+//    }
+
+    //social 회원 수
+    @Override
+    public int socialcount() {
+        int social = socialcount();
+        System.out.println(social);
+        return memberRepository.socialcount();
+    }
+
+    //일반 회원 수 불러오기
+    @Override
+    public int normalcount(){
+        int normal = normalcount();
+        return memberRepository.normalcount();
+    }
+
+    //일반 회원 나이대 별 수 불러오기
+    @Override
+    public List<Map<String, Integer>> memberage(){
+        List<Map<String, Integer>> list = memberRepository.memberage();
+
+        return list;
     }
 }

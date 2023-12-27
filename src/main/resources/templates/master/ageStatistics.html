@@ -1,65 +1,128 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>순위와 막대 그래프</title>
+    <title>회원 통계</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // 데이터
-        var data = {
-            labels: ["항목 1", "항목 2", "항목 3", "항목 4", "항목 5"],
-            datasets: [{
-                label: '데이터셋',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1,
-                data: [12, 19, 3, 5, 2],
-            }]
-        };
+        window.onload = () => {
+            var ageChart;
+            var userTypeChart;
 
-        // 옵션
-        var options = {
-            scales: {
-                y: {
-                    beginAtZero: true
+            // Default chart (연령대)
+            var ageData = {
+                labels: ["10대", "20대", "30대", "40대", "50대"],
+                datasets: [
+                    {
+                        label: '가입 연령',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1,
+                        data: [`[[${cnt10}]]`, `[[${cnt20}]]`, `[[${cnt30}]]`, `[[${cnt40}]]`, `[[${cnt50}]]`],
+                    }]
+            };
+
+            var ageOptions = {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                    }
                 }
+            };
+
+            var ageChartCtx = document.getElementById('myBarChart').getContext('2d');
+            ageChart = new Chart(ageChartCtx, {
+                type: 'bar',
+                data: ageData,
+                options: ageOptions
+            });
+
+            // 순위 표시
+            var rankingDiv = document.getElementById('ranking');
+            var rankingData = ageData.datasets[0].data.slice().sort(function (a, b) { return b - a });
+            for (var i = 0; i < rankingData.length; i++) {
+                var index = ageData.datasets[0].data.indexOf(rankingData[i]);
+                rankingDiv.innerHTML += '<p>' + (i + 1) + '위: ' + ageData.labels[index] + '</p>';
             }
-        };
 
-        // 차트 생성
-        var ctx = document.getElementById('myBarChart').getContext('2d');
-        var myBarChart = new Chart(ctx, {
-            type: 'bar',
-            data: data,
-            options: options
-        });
+            // 선택 시 차트 보여주기
+            document.getElementById('chartType').addEventListener('change', function () {
+                var selectedChartType = this.value;
+                if (selectedChartType === '연령대(일반회원)') {
+                    // 이용자 구분 차트 파괴
+                    if (userTypeChart) userTypeChart.destroy();
 
-        // 순위 표시
-        var rankingDiv = document.getElementById('ranking');
-        var rankingData = data.datasets[0].data.slice().sort(function (a, b) { return b - a });
-        for (var i = 0; i < rankingData.length; i++) {
-            var index = data.datasets[0].data.indexOf(rankingData[i]);
-            rankingDiv.innerHTML += '<p>' + (i + 1) + '위: ' + data.labels[index] + '</p>';
+                    document.getElementById('secondBarChart').style.display = 'none';  //  이용자 구분 차트 숨김
+                    document.getElementById('myBarChart').style.display = 'block';  // 연령대 차트 보여줌
+                    rankingDiv.innerHTML = '';  // 랭킹차트 생성
+
+                    ageChart = new Chart(ageChartCtx, {
+                        type: 'bar',
+                        data: ageData,
+                        options: ageOptions
+                    });
+
+                    // 랭크 표시
+                    var ageRankingData = ageData.datasets[0].data.slice().sort(function (a, b) { return b - a });
+                    for (var i = 0; i < ageRankingData.length; i++) {
+                        var index = ageData.datasets[0].data.indexOf(ageRankingData[i]);
+                        rankingDiv.innerHTML += '<p>' + (i + 1) + '위: ' + ageData.labels[index] + '</p>';
+                    }
+                } else if (selectedChartType === '이용자 구분') {
+                    // 연령대 차트 파괴
+                    if (ageChart) ageChart.destroy();
+
+                    document.getElementById('myBarChart').style.display = 'none';  // 연령대 차트 숨김
+                    document.getElementById('secondBarChart').style.display = 'block';  // 이용자 구분 차트 보여줌
+                    rankingDiv.innerHTML = '';  // Clear rankingDiv content
+
+                    // 이용자 구분 차트 생성 후 보여주기
+                    var userTypeData = {
+                        labels: ["일반 회원", "소셜 회원"],
+                        datasets: [
+                            {
+                                label: '이용자 구분',
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1,
+                                data: [`[[${normal}]]`, `[[${social}]]`],
+                            }]
+                    };
+
+                    var userTypeOptions = {
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                            }
+                        }
+                    };
+
+                    var userTypeChartCtx = document.getElementById('secondBarChart').getContext('2d');
+                    userTypeChart = new Chart(userTypeChartCtx, {
+                        type: 'bar',
+                        data: userTypeData,
+                        options: userTypeOptions
+                    });
+                }
+            });
         }
     </script>
 </head>
 <body>
 <div th:include="/etc/header.html :: banner"></div>
 <div style="width: 400px; margin: auto;">
-    <h2>순위와 막대 그래프</h2>
+    <h2>회원 통계</h2>
     <div style="width:80%; text-align:right; position:relative; left: 35px; margin:10px; padding: 10px;">
-        <select name="job">
+        <select name="job" id="chartType">
             <option value="all" disabled selected>선택</option>
-            <option value="일">일</option>
-            <option value="월">월</option>
-            <option value="년도">년도</option>
+            <option value="연령대(일반회원)">연령대(일반회원)</option>
+            <option value="이용자 구분">이용자 구분</option>
         </select>
-      </div>
-    <canvas id="myBarChart" width="400" height="200"></canvas>
+    </div>
+    <canvas id="myBarChart" th:context="2d" width="400" height="200"></canvas>
+    <canvas id="secondBarChart" th:context="2d" width="400" height="200" style="display: none;"></canvas>
     <div id="ranking"></div>
 </div>
-
-
-
 </body>
 </html>
