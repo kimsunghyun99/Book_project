@@ -7,6 +7,7 @@ import com.book.book_project.entity.ProductEntity;
 import com.book.book_project.entity.repository.CategoryRepository;
 import com.book.book_project.entity.repository.MemberRepository;
 import com.book.book_project.entity.repository.ProductRepository;
+import com.book.book_project.entity.repository.PurchaseInfoRepository;
 import com.book.book_project.service.MemberService;
 import com.book.book_project.service.ProductService;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -47,6 +48,7 @@ public class MasterController {
     private final CategoryRepository categoryRepository;
     private final MemberRepository memberRepository;
     private final MemberService memberService;
+    private final PurchaseInfoRepository purchaseInfoRepository;
 
     @GetMapping("/master/bookUpdate")
     public void getBookUpdate() throws Exception {
@@ -132,6 +134,7 @@ public class MasterController {
 
         model.addAttribute("social", social);
         model.addAttribute("normal", normal);
+
         List<Map<String, Integer>> list = memberRepository.memberage();
 
         //일반 회원 가입연령 별 통계
@@ -183,7 +186,15 @@ public class MasterController {
 
     // 주문 확인
     @GetMapping("/master/purchaseManage")
-    public void getPurchaseManage() {}
+    public void purchaselist(Model model) {
+        //회원 / 비회원 주문 관리
+        List<ProductEntity> list = purchaseInfoRepository.purchaselist();
+        System.out.println(list.get(0).getBookname());
+        for(ProductEntity product : list){
+        product.getBookname();
+        }
+
+    }
 
 
     // 매출 내역
