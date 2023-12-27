@@ -33,4 +33,9 @@ class CartServiceImpl implements CartService {
     public List<CartEntity> cartList(String userid) {
         return cartRepository.findByUserid(userid);
     }
+
+    @Override
+    public void delete(CartEntity cartEntity) {
+        cartRepository.delete(cartEntity);
+    }
 }

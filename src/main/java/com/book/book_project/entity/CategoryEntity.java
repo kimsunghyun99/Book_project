@@ -21,6 +21,15 @@ public class CategoryEntity {
     @Column(name = "categoryname", length = 200, nullable = false)
     private String categoryname;
 
-    @Column(name = "parent", nullable = true)
-    private String parent;
+    @Column(name = "depth1", length = 200, nullable = true)
+    private String depth1;
+
+    @Column(name = "depth2", length = 200,nullable = true)
+    private String depth2;
+
+    @Column(name = "depth3", length = 200, nullable = true)
+    private String depth3;
+
+    @Column(name = "depth4", length = 200, nullable = true)
+    private String depth4;
 }
