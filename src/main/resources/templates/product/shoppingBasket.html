@@ -72,9 +72,11 @@
 </style>
 
     <script>
-        const count = (type) =>  {
 
-            number = parseInt(document.getElementById('quantity').innerHTML);
+
+        const count = (type, bookid) =>  {
+
+            number = parseInt(document.getElementById('quantity'+bookid).innerHTML);
             if(type === 'plus') {
                 number ++;
                 totalPrice += price;
@@ -82,10 +84,12 @@
                 number --;
                 totalPrice -= price;
             }
-            document.getElementById('quantity').innerHTML = number;
-            document.getElementById('total_price').innerHTML = totalPrice.toLocaleString('ko-KR');
+            document.getElementById('quantity'+bookid).innerHTML = number;
+            document.getElementById('total_price'+bookid).innerHTML = totalPrice.toLocaleString('ko-KR');
         }
+        const GoPayment = () => {
 
+        }
 
 
 
@@ -99,61 +103,50 @@
     <tr>
         <th><input type="checkbox"></th>
         <th>책</th>
-        <th>수량</th>
         <th>가격</th>
         <th>총 금액</th>
     </tr>
 
     <tr>
         <th:block th:if="${list != null}">
-            <tr th:each="list:${list}">
+            <tr th:each="booklist:${list}">
 
         <td>
             <input type="checkbox">
         </td>
         <td>
-            <p class="book-price" th:text="${list.cover} + "></p>
-            <p class="book-price" th:text="${list.bookname} + "></p>
+            <img class="book-image" id="cover" th:src="${booklist.cover}"><br>
+            <span class="book-name" th:text="${booklist.bookname}"></span>
         </td>
-
         <td>
+            <p class="book-price" id="price${booklist.bookid}" th:text="${#numbers.formatInteger(booklist.price,3,'COMMA')}"></p>
             <div id="volume">
-                <input type='button' onclick='count("plus")' value='+'/>
-                <span id="quantity">1</span>
+                <input type='button' onclick='count("plus",`${booklist.bookid}`)' value='+'/>
+                <span id="quantity${booklist.bookid}">1</span>
                 <input type='button' onclick='count("minus")' value='-'/><br><br>
             </div>
         </td>
         <td>
-            <p class="book-price" th:text="${list.pricesales} + '원'"></p>
-        </td>
-        <td>
-            <span>상품 금액 : </span>&nbsp;
-            <span id="total_price">[[${#numbers.formatInteger(view.pricesales,3,'COMMA')}]] 원</span>
+            <span id="total_price">[[${#numbers.formatInteger(booklist.price,3,'COMMA')}]] 원</span>
         </td>
 
     </tr>
 
     </th:block>
-</table>
-
+    </tr>
+    <tr>
     <th:block th:if="${list == null}">
         <td colspan="5">장바구니에 등록된 상품이 없습니다.</td>
     </th:block>
-
-
-
-
-
+    </tr>
+</table>
 <!--            <p class="book-discount" th:text="'할인가: ' + ${view.pricesales} + '%'"></p>-->
 <!--            <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.pricesales * 0.05, 3, 'COMMA')} + '원'"></p>-->
-
-
-
 
 <div class="total-payment">
     <button class="delete-button">삭제</button>
     <p>총 결제금액: 00000 원</p>
-    <button class="payment-button">결제하기</button>
+    <input type="button" value="구매하기" th:onclick="GoPayment()">
 </div>
 </body>
 </html>

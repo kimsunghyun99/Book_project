@@ -1,8 +1,6 @@
 package com.book.book_project.entity.repository;
 
 import com.book.book_project.entity.DeliveryAddrEntity;
-import com.book.book_project.entity.FavoritesEntity;
-import com.book.book_project.entity.MemberEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

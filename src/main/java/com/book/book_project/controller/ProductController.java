@@ -25,7 +25,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Controller
 @RequiredArgsConstructor
@@ -39,11 +44,12 @@ public class ProductController {
     private final MemberRepository memberRepository;
     private final CartService cartService;
     private  final CartRepository cartRepository;
+    private final DeliveryService deliveryService;
 
     // main화면 보기
     @GetMapping("/product/main")
     public void getMain(Model model) throws Exception {
-        System.out.println("시작");
+       // System.out.println("시작");
        //  bookid, bookname, cover 가져오기 -> 나중에 interests 토대로 가져올 예정
         List<ProductEntity> productDTOList = service.productlist();
         model.addAttribute("productList", productDTOList);
@@ -106,33 +112,53 @@ public class ProductController {
     @GetMapping("/product/shoppingBasket")
     public void getShoppingBasket(Model model, HttpSession session) throws Exception{
 
-        String userid = (String)session.getAttribute("userid");
+        String userid = (String) session.getAttribute("userid");
+        System.out.println("userid = "+userid);
         if(userid!=null){
-            List<CartDTO> cartList=cartRepository.findByUserid(userid);
-
-            model.addAttribute("list",cartList);
+            List<CartEntity> cartEntity=cartService.cartList(userid);
+            List<ProductEntity> list = new ArrayList<>();
+            for(int i=0; i<cartEntity.size(); i++){
+                ProductEntity productEntity=new ProductEntity();
+                String  bookid = String.valueOf(cartEntity.get(i).getBookid().getBookid());
+                System.out.println("bookid = "+bookid);
+                productEntity = service.findById(bookid);
+                System.out.println("bookname = "+productEntity.getBookname());
+                System.out.println("cover = "+productEntity.getCover());
+                System.out.println("author = "+productEntity.getAuthor());
+                System.out.println("price = "+productEntity.getPrice());
+                list.add(productEntity);
+                System.out.println("listsize = "+ list.size());
+                System.out.println("list.bookname = "+list.get(0).getBookname());
+                System.out.println("list.cover = "+list.get(0).getCover());
+                System.out.println("list.author = "+list.get(0).getAuthor());
+                System.out.println("list.price = "+list.get(0).getPrice());
+            }
+            model.addAttribute("list",list);
         }
-
     }
 
 
     // 장바구니로 상품 이동
     @ResponseBody
     @PostMapping("/product/shoppingBasket")
-    public int postShoppingBasket(@RequestBody CartEntity cartEntity, HttpSession session) throws Exception{
+    public String postShoppingBasket(@RequestBody Map<String, String> bookid, HttpSession session) throws Exception{
+        CartEntity cartEntity=new CartEntity();
 
-        String userid = (String)session.getAttribute("userid");
-        String bookid = cartEntity.getBookid().getBookid();
+        String userid = (String) session.getAttribute("userid");
+        MemberEntity memberEntity = memberRepository.findById(userid).orElse(null);
+        ProductEntity productEntity = productRepository.findById(bookid.get("bookid")).orElse(null);
 
+        Timestamp cartregdate = new Timestamp(System.currentTimeMillis());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
-        if(cartService.bCartQuantity(userid,bookid) == 0 ){
-            cartService.bCartInsert(userid,bookid);
-        }
-        else{
-            cartService.bCartUpdate(userid,bookid);
-        }
-        return cartService.bCartCount(userid);
+        System.out.println(productEntity.getBookid());
 
+        cartEntity.setUserid(memberEntity);
+        cartEntity.setBookid(productEntity);
+        cartEntity.setCartregdate(Timestamp.valueOf(sdf.format(cartregdate)));
+
+        cartService.cartRegistry(cartEntity);
+        return "{\"message\":\"GOOD\"}";
     }
 
 
@@ -144,10 +170,11 @@ public class ProductController {
     @PostMapping("/product/nickname")
     public String postNickname(HttpSession session, @RequestParam("nickname") String nickname, Model model) throws Exception {
         String userid = (String)session.getAttribute("userid");
+        System.out.println("userid = "+ userid);
         session.setAttribute("nickname", nickname);
         memberService.nickname(userid,nickname);
         model.addAttribute("nicknameview" + memberService.nickname(userid,nickname));
-        return "{\"message\":\"GOOD\"}";
+        return "{\"data\":\"GOOD\"}";
     }
 
 
@@ -173,4 +200,33 @@ public class ProductController {
 
         return reviewService.reviewView(review);
     }
+
+
+    // 결제화면
+    @GetMapping("/product/payment")
+    public void getPayment(@RequestParam("bookid") String bookid, @RequestParam("quantity") int quantity,  Model model, HttpSession session) throws Exception {
+
+
+        String userid = (String)session.getAttribute("userid");
+
+
+        model.addAttribute("memberInfo", memberService.memberInfo(userid));
+        model.addAttribute("quantity", quantity);
+        // userid에 대한 주소지 다 꺼내기
+        model.addAttribute("delverylist", deliveryService.list(userid));
+        //bookid 에 대한 정보
+        model.addAttribute("view", service.view(bookid));
+
+
+
+
+
+    }
+
+
+
+
+
+
+
 }

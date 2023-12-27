@@ -1,8 +1,6 @@
 package com.book.book_project.service;
 
-import com.book.book_project.dto.BuyerInfoDTO;
 import com.book.book_project.dto.MemberDTO;
-import com.book.book_project.dto.PurchaseInfoDTO;
 import com.book.book_project.entity.AddressEntity;
 import com.book.book_project.entity.MemberEntity;
 import org.springframework.data.domain.Page;
@@ -52,11 +50,7 @@ public interface MemberService {
     //회원 구매, 주문 목록 갯수 구하기
     public Long countJoinedRecordsByUserId(String userid);
 
-    //리뷰 갯수 가져오기
-    public long countReviewsByUserId(String userid);
 
-    //전체 회원 정보 불러오기
-    public List<MemberEntity> findByRole();
 
 
 }
