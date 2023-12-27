@@ -1,62 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>주문 관리 화면</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
+<meta charset="UTF-8">
+<title>주문 관리 화면</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
 
-        .container {
-            display: flex;
-            flex-direction: row; /* 수평으로 정렬 */
-            align-items: center;
-            border: 1px solid #ddd;
-            padding: 50px;
-            margin-top: 60px; /* 상단 여백 추가 */
-            width: 50%; /* 가로폭을 조절하여 중앙으로 정렬 */
-        }
+    .container {
+        display: flex;
+        flex-direction: row; /* 수평으로 정렬 */
+        align-items: center;
+        border: 1px solid #ddd;
+        padding: 50px;
+        margin-top: 60px; /* 상단 여백 추가 */
+        width: 50%; /* 가로폭을 조절하여 중앙으로 정렬 */
+    }
 
-        .info-container {
-            display: flex;
-            flex-direction: column; /* 세로로 정렬 */
-            align-items: center;
-            margin-left: 100px; /* 오른쪽 여백 추가 */
-        }
+    .info-container {
+        display: flex;
+        flex-direction: column; /* 세로로 정렬 */
+        align-items: center;
+        margin-left: 100px; /* 오른쪽 여백 추가 */
+    }
 
-        .book-image img {
-            width: 150px;
-            height: auto;
-            margin-bottom: 20px; /* 아래 여백 추가 */
-        }
+    .book-image img {
+        width: 150px;
+        height: auto;
+        margin-bottom: 20px; /* 아래 여백 추가 */
+    }
 
-        .book-info,
-        .buyer-info {
-            text-align: left;
-            margin-top: 20px; /* 상단 여백 추가 */
-        }
+    .book-info,
+    .buyer-info {
+        text-align: left;
+        margin-top: 20px; /* 상단 여백 추가 */
+    }
 
-        select {
-            width: 100%;
-            padding: 8px;
-            margin-top: 10px;
-        }
+    select {
+        width: 100%;
+        padding: 8px;
+        margin-top: 10px;
+    }
 
-        header input[type="text"] {
-            width: 200px; /* 검색바 너비 조절 */
-            padding: 5px; /* 내부 여백 추가 */
-            margin-left: auto; /* 검색바를 헤더 오른쪽에 위치시키기 */
-            margin-right: 10px; /* 오른쪽 여백 추가 */
-        }
-    </style>
+    header input[type="text"] {
+        width: 200px; /* 검색바 너비 조절 */
+        padding: 5px; /* 내부 여백 추가 */
+        margin-left: auto; /* 검색바를 헤더 오른쪽에 위치시키기 */
+        margin-right: 10px; /* 오른쪽 여백 추가 */
+    }
+</style>
 </head>
 <body>
 <div th:include="/etc/header.html :: banner"></div>
@@ -82,9 +82,11 @@
             <p>출간일: 2023-12-09</p>
 
             <select>
-                <option value="구매완료">구매완료</option>
-                <option value="배송중">배송중</option>
-                <option value="배송완료">배송완료</option>
+                <option value="주문 완료">주문 완료</option>
+                <option value="출고 처리 중">출고 처리 중</option>
+                <option value="배송 준비">배송 준비</option>
+                <option value="배송 중">배송 중</option>
+                <option value="배송 완료">배송 완료</option>
             </select>
         </div>
     </div>

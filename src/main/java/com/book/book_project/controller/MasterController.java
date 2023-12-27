@@ -136,13 +136,10 @@ public class MasterController {
 
         //일반 회원 가입연령 별 통계
         for (Map<String, Integer> map : list) {
-
             String ageGroup = String.valueOf(map.get("age_group"));
             Integer count = ((Number)map.get("count")).intValue();
-            System.out.println(ageGroup);
-            model.addAttribute(ageGroup, count);
-            System.out.println(count);
 
+            model.addAttribute(ageGroup, count);
         }
 
         return "/master/ageStatistics";
