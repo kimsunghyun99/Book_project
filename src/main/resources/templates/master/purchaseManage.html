@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -69,17 +70,17 @@
 
     <div class="info-container">
         <div class="book-image">
-            <img src="/resources/static/images/book.jpg" alt="책 이미지">
+            <img th:src="${cover}" alt="책 이미지">
         </div>
     </div>
 
     <div class="info-container">
         <div class="book-info">
-            <h2>책 제목</h2>
-            <p>저자: 작가명</p>
-            <p>출판사: 출판사명</p>
-            <p>가격: 18,000원</p>
-            <p>출간일: 2023-12-09</p>
+            <h2 th:text="${bookname}"></h2>
+            <p th:text="${author}">저자: 작가명</p>
+            <p th:text="${publisher}">출판사: 출판사명</p>
+            <p th:text="${price}">가격: 18,000원</p>
+            <p th:text="${publicationdate}">출간일: 2023-12-09</p>
 
             <select>
                 <option value="주문 완료">주문 완료</option>

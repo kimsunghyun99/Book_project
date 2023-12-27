@@ -9,18 +9,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class PurchaseInfoServiceImpl implements PurchaseInfoService {
-    private final PurchaseInfoRepository repository;
+    private final PurchaseInfoRepository purchaseInfoRepository;
 
 
     @Override
     public List<PurchaseInfoEntity> purchaseList(BuyerInfoEntity buyerseq){
 
 
-        return repository.findByBuyerseq(buyerseq);
+        return purchaseInfoRepository.findByBuyerseq(buyerseq);
     }
 
     @Override
@@ -28,10 +29,17 @@ public class PurchaseInfoServiceImpl implements PurchaseInfoService {
         return null;
     }
 
-    //회원 비회원 주문 관리
-    @Override
-    public List<ProductEntity> purchaselist(){
-        List<ProductEntity> list = repository.purchaselist();
+//    //회원 비회원 주문 관리
+//    @Override
+//    public List<ProductEntity> purchaselist(){
+//        List<ProductEntity> list = purchaseInfoRepository.purchaselist();
+//        return list;
+//    }
+
+    //회원 주문 관리
+    public List<Map<String, String>> mempurchaseinfo(){
+        List<Map<String, String>> list = purchaseInfoRepository.mempurchaseinfo();
+
         return list;
     }
 }

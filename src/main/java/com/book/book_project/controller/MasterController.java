@@ -184,9 +184,31 @@ public class MasterController {
 
     // 주문 확인
     @GetMapping("/master/purchaseManage")
-    public void getPurchaseManage() {
-        List<ProductEntity> list = purchaseInfoRepository.purchaselist();
-        for(ProductEntity product : list){
+    public void purchaselist(Model model) {
+        List<Map<String, String>> list = purchaseInfoRepository.mempurchaseinfo();
+
+        for(Map<String, String> map : list){
+            //회원 주문 도서 정보
+            String bookname = String.valueOf(map.get("bookname"));
+            String author = String.valueOf(map.get("author"));
+            String publisher = String.valueOf(map.get("publisher"));
+            String publicationdate = String.valueOf(map.get("publicationdate"));
+            String price = String.valueOf(map.get("price"));
+            String cover = String.valueOf(map.get("cover"));
+            String username = String.valueOf(map.get("username"));
+            String userid = String.valueOf(map.get("userid"));
+            String addr1 = String.valueOf(map.get(""));
+
+
+            model.addAttribute("bookname", bookname);
+            model.addAttribute("author", author);
+            model.addAttribute("publisher", publisher);
+            model.addAttribute("publicationdate", publicationdate);
+            model.addAttribute("price", price);
+            model.addAttribute("cover", cover);
+
+
+
         }
     }
 
