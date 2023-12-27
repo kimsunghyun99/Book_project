@@ -10,6 +10,7 @@ import java.util.List;
 @Repository
 public interface PurchaseInfoRepository extends JpaRepository<PurchaseInfoEntity, Integer> {
 
-    List<PurchaseInfoEntity> findByBuyerseq(BuyerInfoEntity buyerseq);
+//    List<PurchaseInfoEntity> findByBuyerseq(BuyerInfoEntity buyerseq);
+PurchaseInfoEntity findByBuyerseq( BuyerInfoEntity buyerseq);
 
 }

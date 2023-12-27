@@ -156,8 +156,21 @@
                 }
 
 
+
+                const interests = document.getElementById('interests');
+                const selectedInterest = interests.value;
+                const interests1 = document.getElementById('interests1');
+                const customInterest = interests1.value;
                 const RegistryForm = document.getElementById('RegistryForm');
                 const formData = new FormData(RegistryForm);
+
+                if(customInterest == '') {
+                    formData.append("interest",selectedInterest);
+                }
+                else {
+                    formData.append("interest", customInterest);
+                }
+
 
                 await fetch('/member/signup', {
                     method: 'POST',
@@ -276,16 +289,23 @@
     관심분야 :
     <select id="interests" name="interests" onchange="handleInterestChange()">
         <option value="all" disabled selected>관심분야 ▼</option>
-        <option value="JAVA">JAVA</option>
-        <option value="PYTHON">PYTHON</option>
-        <option value="C">C</option>
-        <option value="C#">C#</option>
-        <option value="C++">C++</option>
-        <option value="PHP">PHP</option>
-        <option value="REACT">REACT</option>
-        <option value="VIEW">VIEW</option>
-        <option value="JS">JS</option>
-        <option value="ANDROID">ANDROID</option>
+        <option value="컴퓨터/모바일">컴퓨터/모바일 </option>
+        <option value="OS/Networking">OS/Networking</option>
+        <option value="프로그래밍 개발/방법론">프로그래밍 개발/방법론</option>
+        <option value="활용능력">활용능력</option>
+        <option value="데이터베이스 프로그래밍">데이터베이스 프로그래밍</option>
+        <option value="e비즈니스/창업">e비즈니스/창업</option>
+        <option value="프로그래밍 언어">프로그래밍 언어</option>
+        <option value="오피스(엑셀/파워포인트)">오피스(엑셀/파워포인트)</option>
+        <option value="그래픽/멀티미디어">그래픽/멀티미디어</option>
+        <option value="웹디자인/홈페이지">웹디자인/홈페이지</option>
+        <option value="컴퓨터 공학">컴퓨터 공학</option>
+        <option value="윈도우즈">윈도우즈</option>
+        <option value=".NET">.NET</option>
+        <option value="워드프로세서">워드프로세서</option>
+        <option value="컴퓨터활용능력">컴퓨터활용능력</option>
+        <option value="스마트폰/태블릿/SNS">스마트폰/태블릿/SNS</option>
+        <option value="모바일 프로그래밍">모바일 프로그래밍</option>
         <option value="INPUT">직접입력</option>
     </select>
 <br><br>
