@@ -133,6 +133,7 @@ public class MasterController {
 
         model.addAttribute("social", social);
         model.addAttribute("normal", normal);
+
         List<Map<String, Integer>> list = memberRepository.memberage();
 
         //일반 회원 가입연령 별 통계
