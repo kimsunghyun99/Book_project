@@ -17,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Member;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -45,6 +46,7 @@ public class MemberController {
     UnMemberService unMemberService;
 
     private final BuyerInfoService buyerInfoService;
+  
 
 
 
@@ -244,15 +246,14 @@ public class MemberController {
             return "{\"message\":\"ID_NOT_FOUND\"}";
         }
 
-        service.lastloginUpdate(member);
-
         //비밀번호가 올바르게 들어왔는지 정확도 여부 확인
         if(!pwdEncoder.matches(member.getPassword(), service.memberInfo(member.getUserid()).getPassword())){
             //잘못된 패스워드 일 경우
             return "{\"message\":\"PASSWORD_NOT_FOUND\"}";
         }
-
+        service.lastloginUpdate(member);
         return "{\"message\":\"GOOD\"}";
+
 
     }
 

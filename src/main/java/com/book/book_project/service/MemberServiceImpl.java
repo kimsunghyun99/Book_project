@@ -12,11 +12,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Member;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -140,8 +139,69 @@ public class MemberServiceImpl implements MemberService {
 
     //전체 회원 정보 불러오기
     @Override
-    public List<MemberEntity> findByRole(){
-        return memberRepository.findByRole();
+    public Page<MemberEntity> findAll(Pageable pageable){
+        return memberRepository.findAll(pageable);
     }
 
+    //회원 정지
+    @Override
+    public void stop(List<String> userids) {
+        for(String userid : userids){
+        MemberEntity memberEntity = memberRepository.findById(userid).get();
+            if(memberEntity.getSuspend().equals("Y")){
+                memberEntity.setSuspend("N");
+            }else if(memberEntity.getSuspend().equals("N")){
+                memberEntity.setSuspend("Y");
+            }
+
+        memberRepository.save(memberEntity);
+        }
+    }
+
+    //회원 정지 해제
+    @Override
+    public void unstop(List<String> userids){
+        for(String userid : userids){
+            MemberEntity memberEntity = memberRepository.findById(userid).get();
+            memberEntity.setSuspend("N");
+            memberRepository.save(memberEntity);
+        }
+    }
+
+    //회원 통계
+//    @Override
+//    public Map<String, Integer> countMembers() {
+//        Map<String, Integer> counts = memberRepository.countmember();
+//        int countFromSocialY = counts.get(countMembers().get(0));
+//        int countFromSocialN = counts.get(countMembers().get(1));
+//
+//        Map<String, Integer> result = new HashMap<>();
+//        result.put("countFromSocialY", countFromSocialY);
+//        result.put("countFromSocialN", countFromSocialN);
+//
+//        return result;
+//    }
+
+    //social 회원 수
+    @Override
+    public int socialcount() {
+        int social = socialcount();
+        System.out.println(social);
+        return memberRepository.socialcount();
+    }
+
+    //일반 회원 수 불러오기
+    @Override
+    public int normalcount(){
+        int normal = normalcount();
+        return memberRepository.normalcount();
+    }
+
+    //일반 회원 나이대 별 수 불러오기
+    @Override
+    public List<Map<String, Integer>> memberage(){
+        List<Map<String, Integer>> list = memberRepository.memberage();
+
+        return list;
+    }
 }

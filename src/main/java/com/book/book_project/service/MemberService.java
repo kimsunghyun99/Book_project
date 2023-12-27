@@ -4,12 +4,12 @@ import com.book.book_project.dto.MemberDTO;
 import com.book.book_project.entity.AddressEntity;
 import com.book.book_project.entity.MemberEntity;
 import org.springframework.data.domain.Page;
-import com.book.book_project.entity.FavoritesEntity;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -51,6 +51,24 @@ public interface MemberService {
     public Long countJoinedRecordsByUserId(String userid);
 
 
+    //전체 회원 목록 불러오기
+    public Page<MemberEntity> findAll(Pageable pageable);
 
+    //회원 정지
+    public void stop(List<String> userids);
 
+    //회원 정지 해제
+    public void unstop(List<String> userids);
+
+    //회원 통계
+//    public Map<String, Integer> countMembers();
+
+    //social 회원 수
+    public int socialcount();
+
+    //일반 회원 수
+    public int normalcount();
+
+    //일반 회원 나이대 별 회원 수 불러오기
+    public List<Map<String, Integer>> memberage();
 }

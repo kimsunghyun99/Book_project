@@ -39,9 +39,48 @@
         margin-bottom: 10px;
     }
 </style>
+<script>
+
+    //회원 정지
+    function suspendSelectedMembers() {
+    // 체크된 체크박스에서 회원 아이디를 가져와 배열 생성
+    var selectedMembers = [];
+    var checkboxes = document.querySelectorAll('.member-checkbox:checked');
+    checkboxes.forEach(function(checkbox) {
+    selectedMembers.push(checkbox.value);
+});
+
+    // 선택된 회원이 없는 경우 경고 메시지 출력
+    if (selectedMembers.length === 0) {
+    alert('정지/해제할 회원을 선택해주세요.');
+    return;
+}
+
+    for (var i = 0; i < selectedMembers.length; i++) {
+        console.log(selectedMembers[i]);
+        // 회원의 현재 상태 확인
+        var sus = checkboxes[i].getAttribute("data-suspend") === "Y";
+        console.log(checkboxes[i].getAttribute("data-suspend"));
+        // 선택된 회원이 Y 경우 해제 진행
+        if (sus && confirm('선택한 회원의 정지를 해제하시겠습니까?')) {
+            // JSON 데이터를 hidden input field에 설정
+            document.getElementById('unSuspendMembers').value = JSON.stringify([selectedMembers[i]]);
+            //form 제출
+            document.getElementById('unSuspendMembersForm').submit();
+        } else if (!sus && confirm('선택한 회원을 정지하시겠습니까?')) {
+            // JSON 데이터를 hidden input field에 설정
+            document.getElementById('suspendMembers').value = JSON.stringify([selectedMembers[i]]);
+            console.log(document.getElementById('suspendMembers').value);
+            //form 제출
+            document.getElementById('memberSuspendForm').submit();
+        }
+    }
+}
+
+</script>
 </head>
 <body>
-<div th:include="/etc/header.html :: banner"></div>
+<div th:replace="~{/etc/header.html :: banner}"></div>
 <div class="main">
     <h1>회원</h1>
     <div class="table-container">
@@ -54,19 +93,34 @@
                 <th>가입일</th>
                 <th>총 결제 금액</th>
                 <th>성별/선호장르</th>
+                <th>정지 상태</th>
             </tr>
-            <tr th:each="member, stat : ${MList}">
-                <td><input type="checkbox"></td>
-                <td th:text="${stat.count}"></td> <!-- 순번 -->
-                <td th:text="${member.nickname}"></td><!-- 회원 아이디 -->
+            <tr th:each="member, stat : ${members.content}" th:with="pageNum=${members.number}, pageSize=${members.size}, rowNum=${pageNum*pageSize + stat.index + 1}">
+                <td><input type="checkbox" class="member-checkbox" th:value="${member.userid}" th:data-suspend="${member.suspend}"></td>
+                <td th:text="${rowNum}"></td> <!-- 순번 -->
+                <td th:text="${member.nickname}"></td><!-- 회원 nickname -->
                 <td th:text="${member.username}"></td><!-- 회원명 -->
                 <td th:text="${#dates.format(member.regdate, 'yyyy-MM-dd')}"></td><!-- 가입일 -->
                 <td>18,000원</td><!-- 총 결제금액 -->
                 <td th:text="${member.interest}"></td><!-- 선호장르 -->
+                <td th:text="${member.suspend}"></td>
             </tr>
         </table>
+        <div>
+            <a th:if="${members.first}" disabled="disabled"> 첫 페이지 </a>
+            <a th:if="${!members.first}" th:with="prevPage=${members.number - 1}" th:href="@{'/master/memberManage?page=' + ${prevPage}}"> 이전 페이지 </a>
+            <a th:each="page : ${#numbers.sequence(0, members.totalPages)}" th:with="displayPage=${page.intValue() + 1}, intPage=${page.intValue()}" th:href="@{'/master/memberManage?page=' + ${intPage}}" th:text="${displayPage}"></a>
+            <a th:if="${!members.last}" th:with="nextPage=${members.number + 1}" th:href="@{'/master/memberManage?page=' + ${nextPage}}"> 다음 페이지 </a>
+            <a th:if="${members.last}" disabled="disabled"> 마지막 페이지 </a>
+        </div>
         <div class="bottom_menu">
-            <button>회원삭제</button>&nbsp;&nbsp;
+            <form id="memberSuspendForm" method="POST" action="/master/suspend">
+                <input type="hidden" id="suspendMembers" name="suspendMembers">
+                <a href="javascript:suspendSelectedMembers()">정지/해제</a>
+            </form>
+            <form id="unSuspendMembersForm" method="POST" action="/master/unsuspend">
+                <input type="hidden" id="unSuspendMembers" name="unSuspendMembers">
+            </form>
         </div>
     </div>
 
@@ -77,32 +131,6 @@
             <td>1</td>
         </tr>
     </table>
-    </div>
-    <h1>휴먼계정</h1>
-    <div class="table-container">
-        <table class="SecondTable">
-            <tr>
-                <th>선택</th>
-                <th>순번</th>
-                <th>회원 아이디</th>
-                <th>회원명</th>
-                <th>마지막 로그인 날짜</th>
-                <th>총 결제 금액</th>
-                <th>성별/선호장르</th>
-            </tr>
-            <tr>
-                <td><input type="checkbox"></td>
-                <td>1</td>
-                <td>ponyo</td>
-                <td>송포뇨</td>
-                <td>2023-12-09</td>
-                <td>18,000원</td>
-                <td>소설</td>
-            </tr>
-        </table>
-        <div class="bottom_menu">
-            <button>회원삭제</button>&nbsp;&nbsp;
-        </div>
     </div>
 </div>
 </body>

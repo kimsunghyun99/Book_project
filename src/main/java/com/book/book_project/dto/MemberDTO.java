@@ -36,6 +36,7 @@ public class MemberDTO {
     private String fromSocial;    // 회원등록 시 초기값 N
     private String role;     // 초기값 USER
     private String interest; //social 회원들은?
+    private String suspend;
 
     // Entity -> DTO로 이동
 
@@ -57,6 +58,7 @@ public class MemberDTO {
         this.lastpwdate = memberEntity.getLastpwdate();
         this.fromSocial = memberEntity.getFromSocial();
         this.role = memberEntity.getRole();
+        this.suspend =memberEntity.getSuspend();
 
 
     }
@@ -82,6 +84,7 @@ public class MemberDTO {
                 .fromSocial(member.getFromSocial())
                 .role(member.getRole())
                 .interest(member.getInterest())
+                .suspend(member.getSuspend())
                 .build();
 
 
@@ -108,6 +111,7 @@ public class MemberDTO {
                 ", fromSocial='" + fromSocial + '\'' +
                 ", role='" + role + '\'' +
                 ", interest'" + interest + '\'' +
+                ", suspend'" + suspend + '\'' +
                 '}';
     }
 }
