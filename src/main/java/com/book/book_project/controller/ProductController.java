@@ -46,6 +46,8 @@ public class ProductController {
     private final PurchaseInfoService purchaseInfoService;
 
 
+
+
     // main화면 보기
     @GetMapping("/product/main")
     public void getMain(Model model) throws Exception {
@@ -248,11 +250,37 @@ public class ProductController {
 
 
 
+
+
+    }
+    //결제 성공시
+    @GetMapping("/api/order/payment/complete")
+    public void getPaymentSC(@RequestParam("imp_uid") String imp_uid, @RequestParam("merchant_uid") String merchant_uid){
+
     }
 
 
+    @RequiredArgsConstructor
+    @RestController
+    @RequestMapping("/api/v1/payment")
+    public class PaymentApiController {
+
+        private final PurchaseInfoService purchaseInfoService;
 
 
+
+
+
+        @PostMapping("/complete")
+        public ResponseEntity<?> paymentResult(@RequestBody String imp_uid) throws Exception {
+            System.out.println("imp_uid : " + imp_uid);
+
+            String token = purchaseInfoService.getToken();
+            System.out.println("token : " + token);
+
+            return ResponseEntity.ok().build();
+        }
+    }
 
 
 

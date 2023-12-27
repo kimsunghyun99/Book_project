@@ -6,11 +6,14 @@ import com.book.book_project.entity.BuyerInfoEntity;
 import com.book.book_project.entity.PurchaseInfoEntity;
 import com.book.book_project.entity.UnMemberEntity;
 import jakarta.servlet.http.HttpSession;
+import lombok.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 
 public interface PurchaseInfoService {
+
+    
 
     //회원 구매 번호 조회
     //public
@@ -19,6 +22,10 @@ public interface PurchaseInfoService {
     List<PurchaseInfoEntity> unMemberPurchaseList(UnMemberEntity unmembertelno) throws Exception;
 
     public void processPayment(PurchaseInfoEntity paymentInfo) throws Exception;
+
+    String getToken() throws Exception;
+
+
 
 //    String getToken();
 //

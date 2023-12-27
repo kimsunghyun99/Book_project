@@ -198,6 +198,109 @@
         }
 
 
+        var IMP = window.IMP;
+
+        let pg;
+        let payMethod;
+        let buyerEmail;
+        let buyerName;
+        let buyerTel;
+        let buyerAddr;
+        let buyerPostcode;
+        let amount;
+        let merchantUid;
+        let name = document.getElementById('deliveryname');
+        function paymentRecord() {
+            pg = 'html5_inicis'
+            payMethod = 'card'
+            buyerEmail = document.getElementById('buyerEmail');
+            buyerName = document.getElementById('buyerName');
+            buyerTel = document.getElementById('receivertelno');
+            buyerAddr = document.getElementById('addr1');
+            buyerPostcode = document.getElementById('zipcode') ;
+
+            let data = {
+                method: 'POST',
+                body: JSON.stringify({
+                    pg,
+                    payMethod,
+                    buyerEmail,
+                    buyerName,
+                    buyerTel,
+                    buyerAddr,
+                    buyerPostcode
+                }),
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            };
+            const onSuccess = res => {
+                res.json()
+                    .then((json) => {
+                        amount = json.amount;
+                        merchantUid = json.merchantUid;
+                    })
+            }
+            const onFailure = res => {
+                return res.json()
+                    .then(json => {
+                        alert(json.message);
+                        preventDefault();
+                    })
+            }
+
+            fetch(`/api/v1/payment/record`, data)
+                .then(res => {
+                    if (!res.ok) {
+                        throw res;
+                    }
+                    return res
+                })
+                .then(onSuccess, onFailure)
+                .catch(err => {
+                    console.log(err.message);
+                });
+        };
+
+        function KGpay() {
+
+            IMP.init("본인 번호 작성");
+            // IMP.request_pay(param, callback) 결제창 호출
+
+            IMP.request_pay({ // param
+                pg: pg,
+                pay_method: payMethod,
+                merchant_uid: merchantUid,
+                amount: amount,
+                name: name,
+                buyer_email: buyerEmail,
+                buyer_name: buyerName,
+                buyer_tel: buyerTel,
+                buyer_addr: buyerAddr,
+                buyer_postcode: buyerPostcode,
+                m_redirect_url: "/order/payment-result"
+
+            }, function (rsp) { // callback
+                if (rsp.success) {
+
+                    jQuery.ajax({
+                        url: "/api/v1/payment/complete", // 예: https://www.myservice.com/payments/complete
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        data: {
+                            imp_uid: rsp.imp_uid,
+                            merchant_uid: rsp.merchant_uid
+                        }
+                    }).done(function (data) {
+                        location.replace('/order/payment-result');
+                    })
+                } else {
+                    alert("결제에 실패하였습니다. 에러 내용: " + rsp.error_msg);
+                }
+            });
+        }
+
+
         // const KGpay = () => {
         //     const data = {
         //         pg: 'html5_inicis',
@@ -212,95 +315,107 @@
         //         buyer_postcode: '우편번호'
         //     }
         // };
-        function KGpay() {
-            // IMP 객체가 전역 범위에 정의되어 있다고 가정합니다.
-            IMP.init("imp61517557");
 
-            // 각 요소에 대한 참조를 가져오기 전에 변수로 선언해보세요.
-            var buyerName = document.getElementById("buyerName");
-            var deliveryName = document.getElementById("deliveryname");
-            var totalInvoiceAmount = '1';
-            var buyerEmail = document.getElementById("buyerEmail");
-            var receiver = document.getElementById("receiver");
-            var receiverTelNo = document.getElementById("receivertelno");
-            var addr1 = document.getElementById("addr1");
-            var detailAddr = document.getElementById("detailaddr");
-            var zipcode = document.getElementById("zipcode");
-
-            // 참조를 가져온 후에 값을 읽어보세요.
-            var merchantUid = buyerName ? buyerName.value + new Date().getTime() : null;
-            var name = deliveryName ? deliveryName.value : null;
-            var amount = '1';
-            var email = buyerEmail ? buyerEmail.value : null;
-            var buyer = receiver ? receiver.value : null;
-            var telNo = receiverTelNo ? receiverTelNo.value : null;
-            var address = addr1 && detailAddr ? addr1.value + " " + detailAddr.value : null;
-            var postcode = zipcode ? zipcode.value : null;
-
-            IMP.request_pay({
-                pg: "html5_inicis",
-                pay_method: "card",
-                merchant_uid: 'order_no_0001',
-                name: '책',
-                amount: '1',
-                buyer_email: 'ponyodevdev@gmail.com',
-                buyer_name: '포뇨',
-                buyer_tel: '010-1234-5678',
-                buyer_addr: '서울특별시 강남구 삼성동',
-                buyer_postcode:  '123-456'
-            }, function (rsp) {
-                // if (rsp.success) {
-                //     // 결제 성공 시 처리 로직
-                //     console.log("Payment success:", rsp);
-                //     // 여기에 결제 성공 시 수행할 로직을 추가하세요.
-                // } else {
-                //     // 결제 실패 시 처리 로직
-                //     alert("결재 실패");
-                //     alert(rsp.error_msg);
-                //     console.log(rsp);
-                // }
-
-                // });
-                if (rsp.success) { // 결제 성공 시: 결제 승인 또는 가상계좌 발급에 성공한 경우
-                    // jQuery로 HTTP 요청
-                    jQuery.ajax({
-                        url: "/api/order/payment/complete", // 가맹점 서버
-                        method: "POST",
-                        headers: {"Content-Type": "application/json"},
-                        data: {
-                            imp_uid: rsp.imp_uid,
-                            merchant_uid: rsp.merchant_uid
-                            //기타 필요한 데이터가 있으면 추가 전달
-                        }
-                    }).done(function (data) {
-                        // 가맹점 서버 결제 API 성공시 로직
-                        swal({
-                            text: data,  // 서버로부터의 결과 메시지
-                            closeOnClickOutside: false
-                        })
-                            .then(function () {
-                                // "/orderList" 페이지로 리디렉션
-                                location.replace("/main");
-                            });
-                    })
-                        .fail(function () {
-                            // 이 블록은 AJAX 요청이 실패할 때 실행됩니다.
-
-                            // 에러를 나타내는 경고 표시
-                            alert("에러");
-
-                            // 루트("/") 페이지로 리디렉션
-                            // location.replace("/");
-                        });
-                    //         })
-                    //     } else {
-                    //         alert("결제에 실패하였습니다. 에러 내용: " +  rsp.error_msg);
-                    //     }
-                    // });
-                }
-            });
-        }
-        // function paymentComplete(data) {
+        ////////////////////////////////////////////////////////////////////
+        // function KGpay() {
+        //     // IMP 객체가 전역 범위에 정의되어 있다고 가정합니다.
+        //     IMP.init("imp61517557");
+        //
+        //     // 각 요소에 대한 참조를 가져오기 전에 변수로 선언해보세요.
+        //     var buyerName = document.getElementById("buyerName");
+        //     var deliveryName = document.getElementById("deliveryname");
+        //     var totalInvoiceAmount = document.getElementById("price");
+        //     var buyerEmail = document.getElementById("buyerEmail");
+        //     var receiver = document.getElementById("receiver");
+        //     var receiverTelNo = document.getElementById("receivertelno");
+        //     var addr1 = document.getElementById("addr1");
+        //     var detailAddr = document.getElementById("detailaddr");
+        //     var zipcode = document.getElementById("zipcode");
+        //
+        //
+        //     // 참조를 가져온 후에 값을 읽어보세요.
+        //     var merchant_uid = buyerName.value + new Date().getTime()
+        //     var name = deliveryName ? deliveryName.value : null;
+        //     var amount = totalInvoiceAmount ? totalInvoiceAmount.value : null;
+        //     var email = buyerEmail ? buyerEmail.value : null;
+        //     var buyer = receiver ? receiver.value : null;
+        //     var telNo = receiverTelNo ? receiverTelNo.value : null;
+        //     var address = addr1 && detailAddr ? addr1.value + " " + detailAddr.value : null;
+        //     var postcode = zipcode ? zipcode.value : null;
+        //
+        //     console.log("merchant_uid:", merchant_uid);
+        //
+        //
+        //     IMP.request_pay({
+        //         pg: "html5_inicis",
+        //         pay_method: "card",
+        //         merchant_uid: merchant_uid,
+        //         name: name,
+        //         amount: amount,
+        //         buyer_email: email,
+        //         buyer_name: buyer,
+        //         buyer_tel: telNo,
+        //         buyer_addr: address,
+        //         buyer_postcode:  postcode
+        //     }, function (rsp) {
+        //         // if (rsp.success) {
+        //         //     // 결제 성공 시 처리 로직
+        //         //     console.log("Payment success:", rsp);
+        //         //     // 여기에 결제 성공 시 수행할 로직을 추가하세요.
+        //         // } else {
+        //         //     // 결제 실패 시 처리 로직
+        //         //     alert("결재 실패");
+        //         //     alert(rsp.error_msg);
+        //         //     console.log(rsp);
+        //         // }
+        //
+        //         // });
+        //         if (rsp.success) { // 결제 성공 시: 결제 승인 또는 가상계좌 발급에 성공한 경우
+        //             // jQuery로 HTTP 요청
+        //             jQuery.ajax({
+        //                 url: "/api/order/payment/complete", // 가맹점 서버
+        //                 method: "POST",
+        //                 headers: {"Content-Type": "application/json"},
+        //                 data: {
+        //                     imp_uid: rsp.imp_uid,
+        //                     merchant_uid: rsp.merchant_uid
+        //                     //기타 필요한 데이터가 있으면 추가 전달
+        //                 }
+        //              }).done(function (data) {
+        //                 location.replace('/order/payment-result');
+        //             })
+        //         } else {
+        //             alert("결제에 실패하였습니다. 에러 내용: " + rsp.error_msg);
+        //         }
+        //                 // done(function (data) {
+        //             //     // 가맹점 서버 결제 API 성공시 로직
+        //             //     swal({
+        //             //         text: data,  // 서버로부터의 결과 메시지
+        //             //         closeOnClickOutside: false
+        //             //     })
+        //             //         .then(function () {
+        //             //             // "/orderList" 페이지로 리디렉션
+        //             //             location.replace("/main");
+        //             //         });
+        //             // })
+        //             //     .fail(function () {
+        //             //         // 이 블록은 AJAX 요청이 실패할 때 실행됩니다.
+        //             //
+        //             //         // 에러를 나타내는 경고 표시
+        //             //         alert("에러");
+        //
+        //                     // 루트("/") 페이지로 리디렉션
+        //                     // location.replace("/");
+        //                 });
+        //             //         })
+        //             //     } else {
+        //             //         alert("결제에 실패하였습니다. 에러 내용: " +  rsp.error_msg);
+        //             //     }
+        //             // });
+        //       //  }
+        //   //  });
+        // }
+        // // ///////////////////function paymentComplete(data) {
         //
         //     $.ajax({
         //         url: "/api/order/payment/complete",
@@ -324,8 +439,9 @@
         // }
 
         const requestData = {
-            merchant_uid: "order_no_0001", // 가맹점 주문번호
-            amount: 1, // 결제 예정금액
+            merchant_uid: merchant_uid, // 가맹점 주문번호
+            amount: amount, // 결제 예정금액
+
         };
 
         fetch("https://api.iamport.kr/payments/prepare", {
@@ -452,7 +568,7 @@
                 </tr>
                 <tr>
                     <td colspan="3"></td>
-                    <td colspan="3"><span style="text-align:right"><h2>합계 : <span id="totalInvoiceAmount" style="text-align:right"></span>1원</h2></span></td>
+                    <td colspan="3"><span style="text-align:right"><h2>합계 : <span id="totalInvoiceAmount" style="text-align:right" th:text="${#numbers.formatInteger(view.price,3,'COMMA')+'원'}"></span>  </h2></span></td>
                 </tr>
                 </tbody>
             </table>
@@ -507,7 +623,7 @@
 
 
             <div id="pay">
-                <input type="button" style="text-align: center" class="btn_order" value="결제하기" onclick="KGpay()">
+                <input type="button" style="text-align: center" class="btn_order" name="paymentButton" id="paymentButton" onmousedown="paymentRecord();" value="결제하기" onclick="KGpay()">
             </div>
 
     </div>
