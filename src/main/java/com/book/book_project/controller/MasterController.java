@@ -7,6 +7,7 @@ import com.book.book_project.entity.ProductEntity;
 import com.book.book_project.entity.repository.CategoryRepository;
 import com.book.book_project.entity.repository.MemberRepository;
 import com.book.book_project.entity.repository.ProductRepository;
+import com.book.book_project.entity.repository.PurchaseInfoRepository;
 import com.book.book_project.service.MemberService;
 import com.book.book_project.service.ProductService;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -47,7 +48,7 @@ public class MasterController {
     private final CategoryRepository categoryRepository;
     private final MemberRepository memberRepository;
     private final MemberService memberService;
-
+    private final PurchaseInfoRepository purchaseInfoRepository;
     @GetMapping("/master/bookUpdate")
     public void getBookUpdate() throws Exception {
         String key = "ttbdpfwnl01191710001";
@@ -158,7 +159,6 @@ public class MasterController {
         Page<MemberEntity> members = memberRepository.findByRole("USER", adjustedPageable);
         model.addAttribute("members", members);
         return "/master/memberManage";
-
     }
 
     //회원 정지
@@ -183,14 +183,15 @@ public class MasterController {
 
     // 주문 확인
     @GetMapping("/master/purchaseManage")
-    public void getPurchaseManage() {}
+    public void getPurchaseManage() {
+        List<ProductEntity> list = purchaseInfoRepository.purchaselist();
+        for(ProductEntity product : list){
 
+        }
+    }
 
     // 매출 내역
     @GetMapping("/master/salesInfo")
     public void getSalesInfo() {}
-
-
-
 
 }
