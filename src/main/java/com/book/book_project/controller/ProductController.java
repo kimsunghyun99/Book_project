@@ -47,14 +47,20 @@ public class ProductController {
 
     // main화면 보기
     @GetMapping("/product/main")
-    public void getMain(Model model) throws Exception {
-       // System.out.println("시작");
-       //  bookid, bookname, cover 가져오기 -> 나중에 interests 토대로 가져올 예정
-        List<ProductEntity> productDTOList = service.productlist();
-        model.addAttribute("productList", productDTOList);
+    public void getMain(Model model ,HttpSession session) throws Exception {
 
 
+        String userid = (String)session.getAttribute("userid") != null?  (String)session.getAttribute("userid") : "";
 
+        if(userid != "") {
+            String interest = memberService.memberInfo(userid).getInterest();
+            List<ProductEntity> productDTOList = service.productlist(interest);
+            model.addAttribute("productList", productDTOList);
+        } else {
+            List<ProductEntity> productDTOList1 = service.productlist1();
+            model.addAttribute("productList", productDTOList1);
+
+        }
 
         List<NewsDTO> newsDTOList = newsService.crawlNews();
         List<ProductEntity> bookList=productRepository.getProductList();

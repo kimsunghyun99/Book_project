@@ -52,6 +52,26 @@
         #interests1 {
             display:none;
         }
+
+        #subcategories {
+            display: none;
+            margin-top: 10px; /* 상단 여백 조절 */
+        }
+
+        #subcategories label {
+            display: inline-block;
+            /*margin-bottom: 5px; !* 각 라디오 버튼 아래 여백 조절 *!*/
+            margin-right: 10px;
+            /*vertical-align: middle;*/
+
+        }
+
+        #subcategories input[type="radio"] {
+            margin-right: 5px; /* 라디오 버튼 오른쪽 여백 조절 */
+            margin-top: 10px;
+        }
+
+
     </style>
 
     <script>
@@ -155,19 +175,23 @@
                     return false;
                 }
 
-
-
-                const interests = document.getElementById('interests');
-                const selectedInterest = interests.value;
-                const interests1 = document.getElementById('interests1');
-                const customInterest = interests1.value;
                 const RegistryForm = document.getElementById('RegistryForm');
                 const formData = new FormData(RegistryForm);
 
-                if(customInterest == '') {
-                    formData.append("interest",selectedInterest);
+
+
+                var selectedRadio = document.querySelector('input[name="subcategories"]:checked');
+                if (selectedRadio) {
+                    formData.append('interest', selectedRadio.value);
                 }
-                else {
+
+
+                //const interests = document.getElementById('subcategories');
+                //const selectedInterest = interests.value;
+                const interests1 = document.getElementById('interests1');
+                const customInterest = interests1.value;
+
+                if(customInterest !== '') {
                     formData.append("interest", customInterest);
                 }
 
@@ -229,19 +253,65 @@
                 }
 
 
+        var subcategories = {
+            'OS/Networking': ['네트워크 보안/해킹', '윈도우즈', '유닉스', '매킨토시','네트워크 구축','리눅스' ],
+            '프로그래밍 개발/방법론': ['데이터베이스 프로그래밍', '윈도우 프로그래밍','리눅스/유닉스 프로그래밍', '게임 프로그래밍', '모바일/무선/임베디드 프로그래밍', '객체지향 프로그래밍/UML', '웹 서비스/웹 프로그래밍', '프로그래밍 기초/개발 방법론', '네트워크 프로그래밍', '애플/아이폰/안드로이드 프로그래밍'],
+            '프로그래밍 언어': ['자바', 'PerI/CGI', 'ASP', 'PHP', 'Visual C++', 'Visual Basic', '.NET', '프로그래밍 언어 기타', 'C', 'C++', 'XML', '파이썬', '델파이', 'JSP', 'Ajax', 'Ruby/Rails', 'Objective C / 애플 어플리케이션'],
+            '활용능력' : ['컴퓨터그래픽스', '인터넷정보관리사', '컴퓨터활용능력', 'MSP/MCSE', '신규 자격증/자격증 기타', 'SCJP', 'Oracle OCA/OCP', '정보기기/정보통신', '전자상거래', 'CCNA/CCNP', 'MOS/MCAS', 'ITQ', '컬러리스트', '사무자동화', '워드프로세서', '정보처리기사', '정보처리기능사', '정보처리산업기사', '웹디자인 기능사', 'GTQ', 'DIAT'],
+            'e비즈니스/창업' : ['e-비즈니스/온라인 창업', '공공정책/자료', '디지털 문화'],
+            '오피스(엑셀/파워포인트)' : ['MS 오피스', '워드', '엑셀', '파워포인트', '엑세스', '한글(한글과컴퓨터)'],
+            '웹디자인/홈페이지' : ['웹디자인 입문', '웹기획', '나모 웹에디터', '드림위버', '플래시', '일러스트레이터', '포토샵', 'HTML/JavaScript', '웹디자인 기타'],
+            '그래픽/멀티미디어' : ['그래픽 일반', '포토샵', '3ds max', 'Maya', 'CAD', 'DTP', '멀티미디어 타이틀/컴퓨터 음악', '디렉터', '프리미어/베가스', '코렐드로우/페인터'],
+            '컴퓨터 공학' : ['컴퓨터공학/전산학 개론', '소프트웨어 공학', '자료구조/알고리즘', '전산수학(SPSS/MATLAB)','네트워크/데이터 통신', '마이크로프로세서', '정보통신공학', '데이터베이스 개론'],
+            '스마트폰/태블릿/SNS' : ['스마트폰/태블릿', 'SNS'],
+            '모바일 프로그래밍' : ['모바일/임베디드', '아이폰/아이패드', '안드로이드']
+        };
+
+
+
 
         // select 변경 시 호출되는 함수
-        function handleInterestChange() {
-            var selectElement = document.getElementById('interests');
+        function handleInterestChange(value) {
+            //var selectElement = document.getElementById('interests');
             var inputElement = document.getElementById('interests1');
+            var subcategoryContainer = document.getElementById('subcategories');
 
-            if (selectElement.value === 'INPUT') {
+            if (value === 'INPUT') {
                 inputElement.style.display = 'block';
+                subcategoryContainer.style.display = 'none'
             } else {
                 inputElement.style.display = 'none';
+
+                var subcategoryOptions = subcategories[value];
+
+                if (subcategoryOptions) {
+                    subcategoryContainer.innerHTML = '';
+
+                            for (var i = 0; i < subcategoryOptions.length; i++) {
+                                var radio = document.createElement('input');
+                                radio.type = 'radio'
+                                radio.name = 'subcategories'
+                                radio.value = subcategoryOptions[i];
+
+
+                                var label = document.createElement('label');
+                                label.appendChild(radio);
+                                label.appendChild(document.createTextNode(subcategoryOptions[i]));
+                                // 컨테이너에 라디오 박스 추가
+                                subcategoryContainer.appendChild(label);
+                            }
+                    subcategoryContainer.style.display = 'block';
+                        }else {
+                    subcategoryContainer.style.display = 'none';
+                        }
+
+
             }
 
         }
+
+
+
 
     </script>
 
@@ -287,27 +357,25 @@
 
 
     관심분야 :
-    <select id="interests" name="interests" onchange="handleInterestChange()">
+    <select id="interests" name="interests" onchange="handleInterestChange(this.value)">
         <option value="all" disabled selected>관심분야 ▼</option>
-        <option value="컴퓨터/모바일">컴퓨터/모바일 </option>
-        <option value="OS/Networking">OS/Networking</option>
+        <option value="OS/Networking">OS/Networking </option>
         <option value="프로그래밍 개발/방법론">프로그래밍 개발/방법론</option>
-        <option value="활용능력">활용능력</option>
-        <option value="데이터베이스 프로그래밍">데이터베이스 프로그래밍</option>
-        <option value="e비즈니스/창업">e비즈니스/창업</option>
         <option value="프로그래밍 언어">프로그래밍 언어</option>
+        <option value="활용능력">활용능력</option>
+        <option value="e비즈니스/창업">e비즈니스/창업</option>
         <option value="오피스(엑셀/파워포인트)">오피스(엑셀/파워포인트)</option>
-        <option value="그래픽/멀티미디어">그래픽/멀티미디어</option>
         <option value="웹디자인/홈페이지">웹디자인/홈페이지</option>
+        <option value="그래픽/멀티미디어">그래픽/멀티미디어</option>
         <option value="컴퓨터 공학">컴퓨터 공학</option>
-        <option value="윈도우즈">윈도우즈</option>
-        <option value=".NET">.NET</option>
-        <option value="워드프로세서">워드프로세서</option>
-        <option value="컴퓨터활용능력">컴퓨터활용능력</option>
         <option value="스마트폰/태블릿/SNS">스마트폰/태블릿/SNS</option>
         <option value="모바일 프로그래밍">모바일 프로그래밍</option>
         <option value="INPUT">직접입력</option>
     </select>
+
+    <div id="subcategories" name="subcategories" style="display:none;"></div>
+
+
 <br><br>
     <input type="text" id="interests1" class="input_field" name="interests1" placeholder="직접입력">
 

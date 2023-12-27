@@ -176,9 +176,9 @@ public class MemberController {
         String userid = (String)session.getAttribute("userid");
         member.setUserid(userid);
         //member.setPassword(service.memberInfo(userid).getPassword());
+        System.out.println("관심사 : " + member.getInterest());
 
-
-        System.out.println("컨트롤러1");
+//        System.out.println("컨트롤러1");
 
 //        System.out.println(member.getUsername());
 //        System.out.println(member.getNickname());
@@ -188,10 +188,11 @@ public class MemberController {
         String username = member.getUsername();
         String nickname = member.getNickname();
         String telno = member.getTelno();
+        String interest = member.getInterest();
 
 
         if ("U".equals(option)) {
-            service.modifyMember(userid,username, nickname,telno); // 회원 기본정보 수정
+            service.modifyMember(userid,username, nickname,telno,interest); // 회원 기본정보 수정
         }
 
         return "{\"message\":\"GOOD\"}";
@@ -310,7 +311,7 @@ public class MemberController {
 
 
 
-            String bookid  = String.valueOf(purchaseInfoEntity.getBookid().getIdAsString());
+            String bookid  = String.valueOf(purchaseInfoEntity.getBookid().getBookid());
             String bookname = productRepository.getBookName(bookid);
             String statusseq =  String.valueOf(purchaseInfoEntity.getStatusseq().getStatusseq());
            String statusname = purchaseStatusService.getStatusName(statusseq);
