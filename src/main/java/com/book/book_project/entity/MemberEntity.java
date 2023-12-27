@@ -73,6 +73,11 @@ public class MemberEntity {
     @Column(name="role", length=50, nullable=false)
     private String role;
 
+    @Column(name = "interest", length=50, nullable=true)
+    private String interest;
+
+    @Column(name = "suspend", length = 5, nullable = true)
+    private String suspend;
 
 
 
