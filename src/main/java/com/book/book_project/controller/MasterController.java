@@ -187,7 +187,6 @@ public class MasterController {
     public void getPurchaseManage() {
         List<ProductEntity> list = purchaseInfoRepository.purchaselist();
         for(ProductEntity product : list){
-
         }
     }
 
