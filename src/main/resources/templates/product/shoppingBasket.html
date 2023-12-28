@@ -74,10 +74,15 @@
 
     <script>
         window.onload=async function() {
-            const userid = /*[[${session.userid}]]*/ 'default';
+            var userid = /*[[${session.userid}]]*/ 'default';
+            if (userid === 'default') {
+                userid = 'null';
+            }
+
+            console.log("javascript userid = "+userid);
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-            if(userid !==null && cart.length >0){
+            if(userid !=='null' && cart.length >0){
                 if(confirm("로그인하지 않고 담아놓은 물건이 있습니다. 추가하시겠습니까?")){
 
                     for (const item of cart) {
@@ -274,6 +279,7 @@
             });
         });
 
+
         const GoPayment = async () => {
             const checkedCheckboxes = document.querySelectorAll('.checkbox:checked');
             if (checkedCheckboxes.length === 0) {
@@ -289,23 +295,45 @@
 
 
             try {
-                const response = await fetch('/product/payment', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ items }),
-                });
+                if(userid!=='null') {
+                    const response = await fetch('/product/payment', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({items}),
+                    });
 
-                if (!response.ok) {
-                    throw new Error('서버 응답이 OK가 아닙니다.');
+                    if (!response.ok) {
+                        throw new Error('서버 응답이 OK가 아닙니다.');
+                    }
+
+                    const data = await response.json();
+                    if (data.redirectUrl) {
+                        window.location.href = data.redirectUrl;
+                    } else {
+                        alert('구매 페이지로 이동하는 데 실패했습니다');
+                    }
                 }
+                else{
+                    const response = await fetch('/product/unMemberPayment', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({items}),
+                    });
 
-                const data = await response.json();
-                if (data.redirectUrl) {
-                    window.location.href = data.redirectUrl;
-                } else {
-                    alert('구매 페이지로 이동하는 데 실패했습니다');
+                    if (!response.ok) {
+                        throw new Error('서버 응답이 OK가 아닙니다.');
+                    }
+
+                    const data = await response.json();
+                    if (data.redirectUrl) {
+                        window.location.href = data.redirectUrl;
+                    } else {
+                        alert('구매 페이지로 이동하는 데 실패했습니다');
+                    }
                 }
             } catch (error) {
                 console.error('Error:', error);
