@@ -21,8 +21,8 @@
         flex-direction: row; /* 수평으로 정렬 */
         align-items: center;
         border: 1px solid #ddd;
-        padding: 50px;
-        margin-top: 60px; /* 상단 여백 추가 */
+        padding: 20px;
+        margin-top: 20px; /* 상단 여백 추가 */
         width: 50%; /* 가로폭을 조절하여 중앙으로 정렬 */
     }
 
@@ -62,25 +62,26 @@
 <body>
 <div th:include="/etc/header.html :: banner"></div>
 <h1>주문 확인</h1>
-<div style="width:80%; text-align:right; position:relative; left: 35px; margin:10px; padding: 10px;">
+<div style="width:80%; text-align:center; position:relative; left: 35px; ">
     <input type="text" placeholder="검색">
+    <h2>회원 주문</h2>
 </div>
-<div class="container">
-    <input type="checkbox">
 
+<div class="container" th:each="purchase : ${memPurchaseList}">
+    <input type="checkbox">
     <div class="info-container">
-        <div class="book-image">
-            <img th:src="${cover}" alt="책 이미지">
+        <div class="book-image" >
+            <img th:src="${purchase.cover}" alt="책 이미지">
         </div>
     </div>
 
     <div class="info-container">
         <div class="book-info">
-            <h2 th:text="${bookname}"></h2>
-            <p th:text="${author}">저자: 작가명</p>
-            <p th:text="${publisher}">출판사: 출판사명</p>
-            <p th:text="${price}">가격: 18,000원</p>
-            <p th:text="${publicationdate}">출간일: 2023-12-09</p>
+            <h2 th:text="${purchase.bookname}"></h2>
+            <p th:text="${purchase.author}"></p>
+            <p th:text="${purchase.publisher}"></p>
+            <p th:text="${purchase.price}"></p>
+            <p th:text="${purchase.publicationdate}"></p>
 
             <select>
                 <option value="주문 완료">주문 완료</option>
@@ -95,10 +96,50 @@
     <div class="info-container">
         <div class="buyer-info">
             <h2>구매자 정보</h2>
-            <p>이름: 송포뇨</p>
-            <p>이메일: ponyo@gmail.com</p>
-            <p>주소: 서울시 강남구</p>
-            <p>전화번호: 010-1234-5678</p>
+            <p th:text="${purchase.username}"></p>
+            <p th:text="${purchase.userid}"></p>
+            <p th:text="${purchase.addr1}+${purchase.addr2}"></p>
+            <p th:text="${purchase.telno}"></p>
+        </div>
+    </div>
+</div>
+
+<div style="width:80%; text-align:center; position:relative; left: 35px; margin-top: 30px;">
+    <h2>비회원 주문</h2>
+</div>
+
+<div class="container" th:each="unpurchase : ${unmempurchaseList}">
+    <input type="checkbox">
+    <div class="info-container">
+        <div class="book-image">
+            <img th:src="${unpurchase.cover}" alt="책 이미지">
+        </div>
+    </div>
+
+    <div class="info-container">
+        <div class="book-info">
+            <h2 th:text="${unpurchase.bookname}"></h2>
+            <p th:text="${unpurchase.author}"></p>
+            <p th:text="${unpurchase.publisher}"></p>
+            <p th:text="${unpurchase.price}"></p>
+            <p th:text="${unpurchase.publicationdate}"></p>
+
+            <select>
+                <option value="주문 완료">주문 완료</option>
+                <option value="출고 처리 중">출고 처리 중</option>
+                <option value="배송 준비">배송 준비</option>
+                <option value="배송 중">배송 중</option>
+                <option value="배송 완료">배송 완료</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="info-container">
+        <div class="buyer-info">
+            <h2>비회원 정보</h2>
+            <p th:text="${unpurchase.name}"></p>
+            <p th:text="${unpurchase.addr} + '' + ${unpurchase.detailaddr}"></p>
+            <p th:text="${unpurchase.telnum}"></p>
         </div>
     </div>
 </div>

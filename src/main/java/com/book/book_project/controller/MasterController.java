@@ -182,35 +182,82 @@ public class MasterController {
         return "redirect:/master/memberManage?page=0";
     }
 
-    // 주문 확인
+    // 회원 주문 관리
     @GetMapping("/master/purchaseManage")
     public void purchaselist(Model model) {
         List<Map<String, String>> list = purchaseInfoRepository.mempurchaseinfo();
+        List<Map<String, String>> list2 = purchaseInfoRepository.unpurchaseinfo();
+
+        List<Map<String, Object>> memPurchaseList = new ArrayList<>();
+        List<Map<String, Object>> unmempurchaseList = new ArrayList<>();
 
         for(Map<String, String> map : list){
+            Map<String, Object> memPurchaseMap = new HashMap<>();
             //회원 주문 도서 정보
-            String bookname = String.valueOf(map.get("bookname"));
-            String author = String.valueOf(map.get("author"));
-            String publisher = String.valueOf(map.get("publisher"));
-            String publicationdate = String.valueOf(map.get("publicationdate"));
-            String price = String.valueOf(map.get("price"));
-            String cover = String.valueOf(map.get("cover"));
-            String username = String.valueOf(map.get("username"));
-            String userid = String.valueOf(map.get("userid"));
-            String addr1 = String.valueOf(map.get(""));
+            memPurchaseMap.put("bookname", map.get("bookname"));
+            memPurchaseMap.put("author", map.get("author"));
+            memPurchaseMap.put("publisher", map.get("publisher"));
+            memPurchaseMap.put("publicationdate", map.get("publicationdate"));
+            memPurchaseMap.put("price", map.get("price"));
+            memPurchaseMap.put("cover", map.get("cover"));
+            //주문 회원 정보
+            memPurchaseMap.put("username", map.get("receivername"));
+            memPurchaseMap.put("userid", map.get("userid"));
+            memPurchaseMap.put("addr1", map.get("receiveraddr"));
+            memPurchaseMap.put("addr2", map.get("receiverdetailaddr"));
+            memPurchaseMap.put("telno", map.get("receivertelno"));
 
-
-            model.addAttribute("bookname", bookname);
-            model.addAttribute("author", author);
-            model.addAttribute("publisher", publisher);
-            model.addAttribute("publicationdate", publicationdate);
-            model.addAttribute("price", price);
-            model.addAttribute("cover", cover);
-
-
-
+            memPurchaseList.add(memPurchaseMap);
         }
+        for(Map<String, String> map : list2){
+            Map<String, Object> unmempurchaseMap = new HashMap<>();
+            //비회원 주문 도서 정보
+            unmempurchaseMap.put("bookname", map.get("bookname"));
+            unmempurchaseMap.put("author", map.get("author"));
+            unmempurchaseMap.put("publisher", map.get("publisher"));
+            unmempurchaseMap.put("publicationdate", map.get("publicationdate"));
+            unmempurchaseMap.put("price", map.get("price"));
+            unmempurchaseMap.put("cover", map.get("cover"));
+            //비회원 정보
+            unmempurchaseMap.put("name", map.get("receivername"));
+            unmempurchaseMap.put("addr", map.get("addr"));
+            unmempurchaseMap.put("detailaddr", map.get("detailaddr"));
+            unmempurchaseMap.put("telnum", map.get("receivertelno"));
+
+            unmempurchaseList.add(unmempurchaseMap);
+        }
+
+        model.addAttribute("memPurchaseList", memPurchaseList);
+        model.addAttribute("unmempurchaseList", unmempurchaseList);
     }
+
+//    //비회원 주문 관리
+//    @GetMapping("/master/purchasesManage")
+//    public void unmempurchaselist(Model model){
+//        List<Map<String, String>> list = purchaseInfoRepository.unpurchaseinfo();
+//
+//        List<Map<String, Object>> unmempurchaseList = new ArrayList<>();
+//
+//        for(Map<String, String> map : list){
+//            Map<String, Object> unmempurchaseMap = new HashMap<>();
+//            //비회원 주문 도서 정보
+//            unmempurchaseMap.put("bookname", map.get("bookname"));
+//            unmempurchaseMap.put("author", map.get("author"));
+//            unmempurchaseMap.put("publisher", map.get("publisher"));
+//            unmempurchaseMap.put("publicationdate", map.get("publicationdate"));
+//            unmempurchaseMap.put("price", map.get("price"));
+//            unmempurchaseMap.put("cover", map.get("cover"));
+//            //비회원 정보
+//            unmempurchaseMap.put("name", map.get("receivername"));
+//            unmempurchaseMap.put("addr", map.get("addr"));
+//            unmempurchaseMap.put("detailaddr", map.get("detailaddr"));
+//            unmempurchaseMap.put("telnum", map.get("receivertelno"));
+//
+//            unmempurchaseList.add(unmempurchaseMap);
+//        }
+//
+//        model.addAttribute("unmempurchaseList", unmempurchaseList);
+//    }
 
     // 매출 내역
     @GetMapping("/master/salesInfo")

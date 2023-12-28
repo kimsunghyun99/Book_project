@@ -16,9 +16,9 @@ public interface PurchaseInfoService {
 
     List<PurchaseInfoEntity> unMemberPurchaseList(UnMemberEntity unmembertelno) throws Exception;
 
-//    //회원 비회원 주문 관리
-//    public List<ProductEntity> purchaselist();
-
     //회원 주문 관리
     public List<Map<String, String>> mempurchaseinfo();
+
+    //비회원 주문 관리
+    public List<Map<String, String>> unpurchaseinfo();
 }

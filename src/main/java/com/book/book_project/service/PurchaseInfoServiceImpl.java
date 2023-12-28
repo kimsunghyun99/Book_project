@@ -29,16 +29,16 @@ public class PurchaseInfoServiceImpl implements PurchaseInfoService {
         return null;
     }
 
-//    //회원 비회원 주문 관리
-//    @Override
-//    public List<ProductEntity> purchaselist(){
-//        List<ProductEntity> list = purchaseInfoRepository.purchaselist();
-//        return list;
-//    }
-
     //회원 주문 관리
     public List<Map<String, String>> mempurchaseinfo(){
         List<Map<String, String>> list = purchaseInfoRepository.mempurchaseinfo();
+
+        return list;
+    }
+
+    //비회원 주문 관리
+    public List<Map<String, String>> unpurchaseinfo(){
+        List<Map<String, String>> list = purchaseInfoRepository.unpurchaseinfo();
 
         return list;
     }

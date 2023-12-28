@@ -17,20 +17,6 @@ public interface PurchaseInfoRepository extends JpaRepository<PurchaseInfoEntity
 
     List<PurchaseInfoEntity> findByBuyerseq(BuyerInfoEntity buyerseq);
 
-//    //회원 / 비회원 주문 관리
-//    @Query(value = "(SELECT p.* \n" +
-//            "FROM tbl_product p \n" +
-//            "JOIN tbl_purchaseinfo i ON p.bookid = i.bookid \n" +
-//            "WHERE i.statusseq = 1) \n" +
-//            "\n" +
-//            "UNION\n" +
-//            "\n" +
-//            "(SELECT p.* \n" +
-//            "FROM tbl_product p \n" +
-//            "JOIN tbl_unmemberpurchaseinfo u ON p.bookid = u.bookid\n" +
-//            "WHERE u.statusseq = 1); \n", nativeQuery = true)
-//    List<ProductEntity> purchaselist();
-
     //회원 주문 관리
     @Query(value = "SELECT pr.*, b.*\n" +
             "FROM tbl_purchaseinfo p\n" +
@@ -38,6 +24,14 @@ public interface PurchaseInfoRepository extends JpaRepository<PurchaseInfoEntity
             "JOIN tbl_product pr ON p.bookid = pr.bookid\n" +
             "WHERE p.statusseq = 1;", nativeQuery = true)
     List<Map<String, String>> mempurchaseinfo();
+
+    //비회원 주문 관리
+    @Query(value = "SELECT p.* , um.*\n" +
+            "FROM tbl_unmemberpurchaseinfo u\n" +
+            "JOIN tbl_unmember um ON u.unmemberseq = um.unmemberseq\n" +
+            "JOIN tbl_product p ON u.bookid = p.bookid\n" +
+            "WHERE u.statusseq = 1", nativeQuery = true)
+    List<Map<String, String>> unpurchaseinfo();
 
 
 }
