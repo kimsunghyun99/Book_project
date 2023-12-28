@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>교보문고</title>
+<title>IT커넥션</title>
 <style>
         body {
             font-family: Arial, sans-serif;
@@ -127,34 +127,6 @@
 </head>
 <body>
 <div th:include="/etc/header.html"></div>
-
-<header>
-    <h1>교보문고</h1>
-</header>
-
-<nav>
-    <!-- 세션 값이 없을 경우 로그인 및 회원가입 버튼 표시 -->
-    <div th:if="${session.userid == null}">
-        <a href="/product/main">홈</a> |
-        <a href="/product/productInfo">도서</a> |
-        <a href="#">이벤트</a> |
-        <a href="/member/login">로그인</a>
-        <a href="/member/signup">회원가입</a>
-    </div>
-    <!-- 세션 값이 있을 경우 로그아웃 및 마이페이지 버튼 표시 -->
-    <div th:if="${session.userid != null}">
-        <a href="#">홈</a> |
-        <a href="/product/productInfo">도서</a> |
-        <a href="#">이벤트</a> |
-        <a href="/member/mypage">마이페이지</a>
-        <th:block th:if="${session.isNaverLogin}">
-            <a href="https://nid.naver.com/oauth2.0/token?grant_type=delete&client_id="+XByAHVwF8T8HXlkMwWvc+"&client_secret="+ZzilCSao94+"&access_token="+token.replaceAll("'", "")+"&service_provider=NAVER">로그아웃</a>
-        </th:block>
-        <th:block th:unless="${session.isNaverLogin}">
-        <a href="/member/logout">로그아웃</a>
-        </th:block>
-    </div>
-</nav>
 
 <section>
     <h2>추천 도서</h2>

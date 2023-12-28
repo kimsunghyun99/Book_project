@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
     <title>쇼핑몰</title>
@@ -142,9 +141,55 @@
           /*//  height: 70vh; !* 화면의 100% 높이로 설정하여 가운데 정렬 *!*/
         }
 
+        #RequestText1 {
+            display:none;
+        }
+
     </style>
 
-    <script>
+    <script th:inline="javascript">
+
+        document.addEventListener('DOMContentLoaded', function () {
+            /*<![CDATA[*/
+            var productList = [[${view}]];
+            /*]]>*/
+
+            var totalprice = 0;
+
+            productList.forEach(function (product) {
+                // product 객체에서 bookid 값을 가져옵니다.
+                var bookid = product.bookid;
+                var price = parseInt(product.price, 10); // 정수형으로 변환
+                var salespoint = parseInt(product.salespoint, 10); // 정수형으로 변환
+                var quantity = parseInt(product.quantity, 10); // 정수형으로 변환
+
+                // 각 상품별 총액과 총 판매 포인트 계산
+                var totalAmount = price * quantity;
+                var totalSalespoint = salespoint * quantity;
+
+                totalprice +=totalAmount;
+
+                // 계산된 값을 표시할 요소 선택
+                var totalAmountElement = document.getElementById('totalAmount' + bookid);
+                var totalSalespointElement = document.getElementById('totalSalespoint' + bookid);
+
+                // 계산된 값을 해당 요소에 표시
+                if (totalAmountElement) {
+                    totalAmountElement.innerText = totalAmount.toLocaleString('ko-KR') + '원';
+                }
+                if (totalSalespointElement) {
+                    totalSalespointElement.innerText = totalSalespoint.toLocaleString('ko-KR') + 'point';
+                }
+            });
+            document.getElementById('totalcost').innerText=totalprice.toLocaleString('ko-KR') + '원';
+
+        });
+
+
+
+
+        // 총액과 총 판매 포인트를 화면에 표시
+
 
         let addplusVisible = false;
         const AddAddr = () => {
@@ -159,7 +204,7 @@
         }
 
 
-        const searchAddr = () => {
+            const searchAddr = () => {
 
             if(addrSearch.value == '') {
                 alert("검색할 주소를 입력하세요");
@@ -190,6 +235,42 @@
             finaladdr.innerText = "배송될 주소 : " + addr1 + "" + detailaddr;
         }
 
+        // select 변경 시 호출되는 함수
+        function handleRequestChange() {
+            var selectElement = document.getElementById('RequestText');
+            var inputElement = document.getElementById('RequestText1');
+
+            if (selectElement.value === 'INPUT') {
+                inputElement.style.display = 'block';
+            } else {
+                inputElement.style.display = 'none';
+            }
+
+        }
+
+        // point 사용
+        function UsePoint() {
+            var pointInput = document.getElementById('point');
+            var totalInvoiceAmountElement = document.getElementById('totalInvoiceAmount');
+
+            var point = parseInt(pointInput.value, 10);
+            var totalInvoiceAmount = parseInt(totalInvoiceAmountElement.innerText.replace(/,/g, '').replace('원',''), 10);
+            var FinalPay = document.getElementById('FinalPay');
+
+
+            if(point > [[${memberInfo.point}]]) {
+                alert("나의 포인트를 확인해주세요");
+                document.getElementById('point').focus();
+                return false;
+            }
+
+            else {
+                FinalPay.innerHTML = '최종 결제금액 ' + (totalInvoiceAmount - point) + '원';
+            }
+        }
+
+
+
 
 
 
@@ -199,39 +280,12 @@
 </head>
 
 <body>
-
+<div th:insert="~{/etc/header.html}"></div>
 <div class="mall">
     <div class="main_shop">
 
         <h1>주문서</h1><br>
-        <div class="tableDiv">
-            <table class="InfoTable">
-                <tr>
-                    <th>주문상품</th>
-                    <th>책 이름</th>
-                    <th>저자</th>
-                    <th>책 가격</th>
-                    <th>수량</th>
-                </tr>
 
-                <tbody>
-                <tr th:each="view : ${view}">
-                    <td><img class="p_image" th:src="${view.cover}" alt="책 표지 이미지" style="width:300px; height: auto"></td>
-                    <td><span th:text="${view.bookname}"></span></td>
-                    <td><span th:text="${view.author}"></span></td>
-                    <td><span th:text="${#numbers.formatInteger(view.price,3,'COMMA')+'원'}"></span></td>
-<!--                    <td>1</td>-->
-<!--                    <td><span th:text="${view.order_quantity}"></span></td>-->
-<!--                    <td><span class="invoiceAmount" th:text="${#numbers.formatInteger(list.order_amount,3,'COMMA')+'원'}"></span></td>-->
-                </tr>
-                <tr>
-                    <td colspan="3"></td>
-                    <td colspan="3"><span style="text-align:right"><h2>합계 : <span id="totalInvoiceAmount" style="text-align:right"></span>원</h2></span></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <br>
         <h4 style="display: inline-block;">배송지 목록</h4>
         <div id="ADDorDelete" style="display: inline-block;">
             <input type="button" id="add" value="새로운 배송지" onclick="AddAddr()" style="width:120%;">
@@ -248,8 +302,8 @@
             </tr>
             </thead>
             <tbody>
-            <th:block th:if="${delverylist != null}">
-                <tr th:each="delivery, stat :${delverylist}">
+            <th:block>
+                <tr th:each="delivery, stat :${deliverylist}" th:if="${deliverylist != null}">
                     <td th:text="${delivery.name}"></td>
                     <td th:id="'original_addr' + ${stat.index}" th:text="${delivery.addr} + ' ' + ${delivery.detailaddr}"></td>
                     <td th:text="${delivery.zipcode}"></td>
@@ -275,10 +329,70 @@
         <br><br><br>
 
         <span id="finaladdr">배송될 주소 : </span>
+        <br><br>
+        배송 요청사항 :
+        <select id="RequestText" name="RequestText" onchange="handleRequestChange()">
+            <option value="all" disabled selected>배송 시 요청사항을 선택해주세요 ▼</option>
+            <option value="1">부재 시 경비실에 맡겨주세요 </option>
+            <option value="2">부재 시 택배함에 맡겨주세요</option>
+            <option value="3">부재 시 집 앞에 맡겨주세요</option>
+            <option value="3">배송 전 연락 바랍니다</option>
+            <option value="3">파손의 위험이 있는 상품입니다. 배송 시 주의해 주세요.</option>
+            <option value="INPUT">직접 입력</option>
+        </select>
+        <br><br>
+        <input type="text" id="RequestText1" class="input_field" name="RequestText1" placeholder="직접입력">
+        <br><br><br>
 
 
-        <br><br><br><br>
 
+
+
+        <div class="tableDiv">
+            <table class="InfoTable">
+                <tr>
+                    <th>주문상품</th>
+                    <th>책 이름 / 저자</th>
+                    <th>책 가격</th>
+                    <th>수량</th>
+                    <th>금액(적립 포인트)</th>
+
+                </tr>
+                <tbody>
+                <tr>
+                    <th:block>
+                        <tr th:each="product:${view}" th:if="${view != null}">
+                            <td><img class="p_image" th:src="${product.cover}" alt="책 표지 이미지" style="width:300px; height: auto"></td>
+                            <td>
+                                <span th:id="'bookname'+${product.bookname}" th:text="${product.bookname}"></span><br>/
+                                <span th:id="'author'+${product.author}" th:text="${product.author}"></span>
+                            </td>
+                            <td><span th:id="'price'+${product.bookid}" th:text="${#numbers.formatInteger(product.price,3,'COMMA')+'원'}"></span></td>
+                            <td><span th:id="'quntity'+${product.bookid}" th:text="${product.quantity}"></span></td>
+                            <td colspan="3">
+                                <span style="text-align:right"><h4>합계<br><span class="productTotalAmount" th:id="'totalAmount' + ${product.bookid}"></span></h4></span>
+                                <span style="text-align:right"><h4>적립 포인트<br><span class="productTotalSalespoint" th:id="'totalSalespoint' + ${product.bookid}"></span></h4></span>
+                            </td>
+<!--                                <input type="hidden" th:id="'salespoint'+${product.bookid}" th:value="${product.salespoint}">-->
+<!--                                <input type="hidden" th:id="bookid" th:value="${product.bookid}">-->
+        <!--                    <td><span th:text="${view.order_quantity}"></span></td>-->
+        <!--                    <td><span class="invoiceAmount" th:text="${#numbers.formatInteger(list.order_amount,3,'COMMA')+'원'}"></span></td>-->
+                        </tr>
+                    </th:block>
+                <tr>
+                    <td colspan="6"><span style="text-align:right"><h2>총 합계<br><span class="totalcost" id="totalcost" style="text-align:right" ></span></h2></span></td>
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <br><br>
+        <p th:text="'나의 포인트 : ' + ${memberInfo.point}"></p>
+        <input type="text" style="width:11%" id="point" placeholder="사용할 포인트를 입력해주세요">
+        <input type="button" style="width:7%" value="사용하기" onclick="UsePoint()">
+
+        <p id="FinalPay"></p>
+        <br><br>
             <div id="pay">
                 <input type="button" style="text-align: center" class="btn_order" value="결제하기">
             </div>

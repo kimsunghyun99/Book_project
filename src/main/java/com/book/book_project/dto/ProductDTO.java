@@ -19,13 +19,13 @@ public class ProductDTO {
     private String publisher;   //출판사
     private String author;//작가
     private int price;  //원가
-    private int pricesales;//할인가
     private String stock;  //재고
     private String description; //설명
     private String cover;  //표지 이미지
     private Timestamp regdate;  //등록일
     private String publicationdate;  //출판일
     private int salespoint;//판매지수
+    private int quantity;
 
     private CategoryEntity categorynumber;    //분류 이름
 
@@ -35,7 +35,6 @@ public class ProductDTO {
         this.bookid = productEntity.getBookid();
         this.bookname = productEntity.getBookname();
         this.publisher = productEntity.getPublisher();
-        this.pricesales = productEntity.getPricesales();
         this.author=productEntity.getAuthor();
         this.price = productEntity.getPrice();
         this.stock = productEntity.getStock();
@@ -56,7 +55,6 @@ public class ProductDTO {
                 .publisher(dto.getPublisher())
                 .author(dto.getAuthor())
                 .price(dto.getPrice())
-                .pricesales(dto.getPricesales())
                 .stock(dto.getStock())
                 .description(dto.getDescription())
                 .cover(dto.getCover())
