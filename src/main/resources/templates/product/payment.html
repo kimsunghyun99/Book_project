@@ -365,8 +365,8 @@
                         <tr th:each="product:${view}" th:if="${view != null}">
                             <td><img class="p_image" th:src="${product.cover}" alt="책 표지 이미지" style="width:300px; height: auto"></td>
                             <td>
-                                <span th:text="${product.bookname}"></span><br>/
-                                <span th:text="${product.author}"></span>
+                                <span th:id="'bookname'+${product.bookname}" th:text="${product.bookname}"></span><br>/
+                                <span th:id="'author'+${product.author}" th:text="${product.author}"></span>
                             </td>
                             <td><span th:id="'price'+${product.bookid}" th:text="${#numbers.formatInteger(product.price,3,'COMMA')+'원'}"></span></td>
                             <td><span th:id="'quntity'+${product.bookid}" th:text="${product.quantity}"></span></td>
