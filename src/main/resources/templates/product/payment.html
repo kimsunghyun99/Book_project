@@ -278,10 +278,10 @@
             // 각 요소에 대한 참조를 가져오기 전에 변수로 선언해보세요.
             var buyerName = document.getElementById("receiver").value;
             var bookid = document.getElementById("bookid").value;
-            var bookname = document.getElementById("bookname" + '[[${view.bookname}]]');
-            var bookQuntity = document.getElementById("quantity").value;
-            var totalInvoiceAmount = document.getElementById("price").value;
-            var buyerEmail = document.getElementById("buyerEmail").value;
+            var bookname = document.getElementById("bookname" + bookid);
+            var bookQuntity = document.getElementById("quantity"+bookid).textContent;
+            var totalInvoiceAmount = document.getElementById("totalcost").textContent;
+            // var buyerEmail = document.getElementById("buyerEmail").value;
             var receiverTelNo = document.getElementById("receivertelno").value;
             var addr1 = document.getElementById("addr1").value;
             var detailAddr = document.getElementById("detailaddr").value;
@@ -300,8 +300,9 @@
             function extractPriceValue(priceText) {
                 // 여기에서 필요한 가격 값 추출 논리를 구현
                 // 예를 들어, '1,234원' 형식의 문자열을 '1234' 숫자로 변환
-                var numericValue = parseInt(priceText.replace(/[^\d]/g, ''), 10);
+                var numericValue = parseInt(priceText.replace(/[^\d]/g, ''));
                 return numericValue;
+
             }
 
 
@@ -323,7 +324,7 @@
             var selectedBookname = bookname;
             var selectedBookquntity = bookQuntity; // 수정된 부분
             var amount = price;
-            var email = buyerEmail ? buyerEmail.value : null;
+            // var email = buyerEmail ? buyerEmail.value : null;
             var telNo = receiverTelNo ? receiverTelNo.value : null;
             var address = addr1 && detailAddr ? addr1.value + " " + detailAddr.value : null;
             var postcode = zipcode ? zipcode.value : null;
@@ -347,8 +348,8 @@
                 bookid: bookid,
                 name: selectedBookname,
                 amount: amount,
-                bookquntity : bookquntity,
-                buyer_email: email,
+                bookquntity : bookQuntity,
+                // buyer_email: email,
                 buyer_tel: telNo,
                 buyer_addr: address,
                 buyer_postcode: postcode,
@@ -476,8 +477,8 @@
                         <tr th:each="product:${view}" th:if="${view != null}">
                             <td><img class="p_image" th:src="${product.cover}" alt="책 표지 이미지" style="width:300px; height: auto"></td>
                             <td>
-                                <span th:id="'bookname'+${product.bookname}" th:text="${product.bookname}"></span><br>/
-                                <span th:id="'author'+${product.author}" th:text="${product.author}"></span>
+                                <span th:id="'bookname'+${product.bookid}" th:text="${product.bookname}"></span><br>/
+                                <span th:id="'author'+${product.bookid}" th:text="${product.author}"></span>
                             </td>
                             <td><span th:id="'price'+${product.bookid}" th:text="${#numbers.formatInteger(product.price,3,'COMMA')+'원'}"></span></td>
                             <td><span th:id="'quantity'+${product.bookid}" th:text="${product.quantity}"></span></td>
@@ -485,6 +486,7 @@
                                 <span style="text-align:right"><h4>합계<br><span class="productTotalAmount" th:id="'totalAmount' + ${product.bookid}"></span></h4></span>
                                 <span style="text-align:right"><h4>적립 포인트<br><span class="productTotalSalespoint" th:id="'totalSalespoint' + ${product.bookid}"></span></h4></span>
                             </td>
+                            <input type="hidden" id="bookid" th:value="${product.bookid}">
                             <!--                                <input type="hidden" th:id="'salespoint'+${product.bookid}" th:value="${product.salespoint}">-->
                             <!--                                <input type="hidden" th:id="bookid" th:value="${product.bookid}">-->
                             <!--                    <td><span th:text="${view.order_quantity}"></span></td>-->
