@@ -134,6 +134,7 @@ public class ProductController {
             }
             model.addAttribute("list",list);
         }
+
     }
 
 
@@ -142,8 +143,8 @@ public class ProductController {
     @PostMapping("/product/shoppingBasket")
     public String postShoppingBasket(@RequestBody Map<String, String> bookid, HttpSession session) throws Exception{
         CartEntity cartEntity=new CartEntity();
-
         String userid = (String) session.getAttribute("userid");
+
         MemberEntity memberEntity = memberRepository.findById(userid).orElse(null);
         ProductEntity productEntity = productRepository.findById(bookid.get("bookid")).orElse(null);
 

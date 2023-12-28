@@ -148,33 +148,48 @@
 
     </style>
 
-    <script>
+    <script th:inline="javascript">
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
+            /*<![CDATA[*/
             var productList = [[${view}]];
+            /*]]>*/
 
-            var totalAmount = 0;
-            var totalSalespoint = 0;
+            var totalprice = 0;
 
-            productList.forEach(function(product) {
-                var price = parseInt(product.price);
-                var salespoint = parseInt(product.salespoint);
-                var quantity = parseInt(product.quantity);
-                console.log("price = "+price);
-                console.log("salespoint = "+salespoint);
-                console.log("quantity = "+quantity);
+            productList.forEach(function (product) {
+                // product 객체에서 bookid 값을 가져옵니다.
+                var bookid = product.bookid;
+                var price = parseInt(product.price, 10); // 정수형으로 변환
+                var salespoint = parseInt(product.salespoint, 10); // 정수형으로 변환
+                var quantity = parseInt(product.quantity, 10); // 정수형으로 변환
 
+                // 각 상품별 총액과 총 판매 포인트 계산
+                var totalAmount = price * quantity;
+                var totalSalespoint = salespoint * quantity;
 
-                totalAmount += price * quantity;
-                totalSalespoint += salespoint * quantity;
+                totalprice +=totalAmount;
+
+                // 계산된 값을 표시할 요소 선택
+                var totalAmountElement = document.getElementById('totalAmount' + bookid);
+                var totalSalespointElement = document.getElementById('totalSalespoint' + bookid);
+
+                // 계산된 값을 해당 요소에 표시
+                if (totalAmountElement) {
+                    totalAmountElement.innerText = totalAmount.toLocaleString('ko-KR') + '원';
+                }
+                if (totalSalespointElement) {
+                    totalSalespointElement.innerText = totalSalespoint.toLocaleString('ko-KR') + 'point';
+                }
             });
+            document.getElementById('totalcost').innerText=totalprice.toLocaleString('ko-KR') + '원';
 
-            var totalInvoiceAmountElement = document.getElementById('totalInvoiceAmount');
-            var totalSalesAmountElement = document.getElementById('totalSalesAmount');
-
-            totalInvoiceAmountElement.innerText = totalAmount.toLocaleString('ko-KR') + '원';
-            totalSalesAmountElement.innerText = totalSalespoint.toLocaleString('ko-KR') + '원';
         });
+
+
+
+
+        // 총액과 총 판매 포인트를 화면에 표시
 
 
         let addplusVisible = false;
@@ -244,15 +259,15 @@
             var FinalPay = document.getElementById('FinalPay');
 
 
-        if(point > [[${memberInfo.point}]]) {
-            alert("나의 포인트를 확인해주세요");
-            document.getElementById('point').focus();
-            return false;
-        }
+            if(point > [[${memberInfo.point}]]) {
+                alert("나의 포인트를 확인해주세요");
+                document.getElementById('point').focus();
+                return false;
+            }
 
-        else {
-            FinalPay.innerHTML = '최종 결제금액 ' + (totalInvoiceAmount - point) + '원';
-        }
+            else {
+                FinalPay.innerHTML = '최종 결제금액 ' + (totalInvoiceAmount - point) + '원';
+            }
         }
 
 
@@ -353,21 +368,20 @@
                                 <span th:text="${product.bookname}"></span><br>/
                                 <span th:text="${product.author}"></span>
                             </td>
-                            <td><span th:text="${#numbers.formatInteger(product.price,3,'COMMA')+'원'}"></span></td>
-                            <td><span th:text="${product.quantity}"></span></td>
+                            <td><span th:id="'price'+${product.bookid}" th:text="${#numbers.formatInteger(product.price,3,'COMMA')+'원'}"></span></td>
+                            <td><span th:id="'quntity'+${product.bookid}" th:text="${product.quantity}"></span></td>
                             <td colspan="3">
-                                <span style="text-align:right"><h3>합계 : <span id="totalInvoiceAmount" style="text-align:right"></span></h3></span>
-                                <span style="text-align:right"><h3>적립 포인트 : <span id="totalSalesAmount" style="text-align:right"></span></h3></span>
+                                <span style="text-align:right"><h4>합계<br><span class="productTotalAmount" th:id="'totalAmount' + ${product.bookid}"></span></h4></span>
+                                <span style="text-align:right"><h4>적립 포인트<br><span class="productTotalSalespoint" th:id="'totalSalespoint' + ${product.bookid}"></span></h4></span>
                             </td>
-
+<!--                                <input type="hidden" th:id="'salespoint'+${product.bookid}" th:value="${product.salespoint}">-->
+<!--                                <input type="hidden" th:id="bookid" th:value="${product.bookid}">-->
         <!--                    <td><span th:text="${view.order_quantity}"></span></td>-->
         <!--                    <td><span class="invoiceAmount" th:text="${#numbers.formatInteger(list.order_amount,3,'COMMA')+'원'}"></span></td>-->
                         </tr>
                     </th:block>
                 <tr>
-                    <td colspan="3"></td>
-                    <td colspan="3"><span style="text-align:right"><h2>총 합계 : <span style="text-align:right"></span></h2></span></td>
-                </tr>
+                    <td colspan="6"><span style="text-align:right"><h2>총 합계<br><span class="totalcost" id="totalcost" style="text-align:right" ></span></h2></span></td>
 
                 </tr>
                 </tbody>
