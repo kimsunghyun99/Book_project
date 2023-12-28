@@ -13,4 +13,6 @@ public interface CartService {
     void cartRegistry(CartEntity cartEntity);
 
     List<CartEntity> cartList(String userid);
+
+    void delete(CartEntity cartEntity);
 }
