@@ -27,7 +27,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @Slf4j
@@ -41,32 +43,24 @@ public class ProductController {
     private final ProductRepository productRepository;
     private final MemberRepository memberRepository;
     private final CartService cartService;
-    private  final CartRepository cartRepository;
+    private final CartRepository cartRepository;
     private final DeliveryService deliveryService;
     private final PurchaseInfoService purchaseInfoService;
-
-
 
 
     // main화면 보기
     @GetMapping("/product/main")
     public void getMain(Model model) throws Exception {
-       // System.out.println("시작");
-       //  bookid, bookname, cover 가져오기 -> 나중에 interests 토대로 가져올 예정
+        // System.out.println("시작");
+        //  bookid, bookname, cover 가져오기 -> 나중에 interests 토대로 가져올 예정
         List<ProductEntity> productDTOList = service.productlist();
         model.addAttribute("productList", productDTOList);
 
 
-
-
         List<NewsDTO> newsDTOList = newsService.crawlNews();
-        List<ProductEntity> bookList=productRepository.getProductList();
+        List<ProductEntity> bookList = productRepository.getProductList();
         model.addAttribute("bookListId", bookList.get(0).getBookid()); // 이거 null -> 수ㅡ정필요
         model.addAttribute("newsList", newsDTOList);
-
-
-
-
 
 
     }
@@ -81,18 +75,18 @@ public class ProductController {
 
 
         //상품정보를 불러와야함.
-        String bookId= String.valueOf(bookid.getBookid());
+        String bookId = String.valueOf(bookid.getBookid());
 
         int postNum = 5; //한 화면에 보여지는 게시물 행의 갯수
         int pageListCount = 5; //화면 하단에 보여지는 페이지리스트의 페이지 갯수
-       // System.out.println("ProductEntity1: "+bookid.getClass().getName());
-       // System.out.println("ProductEntity2: "+bookid.getBookid());
+        // System.out.println("ProductEntity1: "+bookid.getClass().getName());
+        // System.out.println("ProductEntity2: "+bookid.getBookid());
 
         PageUtil page = new PageUtil();
-       Page<ReviewEntity> list = reviewService.list(bookid, pageNum, postNum);
-       int totalCount = (int)list.getTotalElements();
+        Page<ReviewEntity> list = reviewService.list(bookid, pageNum, postNum);
+        int totalCount = (int) list.getTotalElements();
 
-        if(session.getAttribute("userid")!=null){
+        if (session.getAttribute("userid") != null) {
             String userid = (String) session.getAttribute("userid");
             String nickname = memberService.memberInfo(userid).getNickname();
             model.addAttribute("nickname", nickname);
@@ -117,34 +111,32 @@ public class ProductController {
         model.addAttribute("view", service.view(bookId));
 
 
-
         model.addAttribute("list", list);
-        System.out.println("......." +list);
+        System.out.println("......." + list);
         model.addAttribute("totalElement", totalCount);
         model.addAttribute("postNum", postNum);
         model.addAttribute("page", pageNum);
-        model.addAttribute("pageList", page.getPageList(pageNum, postNum, pageListCount,totalCount, bookId));
+        model.addAttribute("pageList", page.getPageList(pageNum, postNum, pageListCount, totalCount, bookId));
 
 
     }
 
     @GetMapping("/product/favoritesList")
     public void getFavoritesList(HttpSession session, Model model) throws Exception {
-        String userid = (String)session.getAttribute("userid");
+        String userid = (String) session.getAttribute("userid");
 
     }
 
     @GetMapping("/product/productList")
-    public void getProductList(HttpSession session, Model model) throws Exception{
+    public void getProductList(HttpSession session, Model model) throws Exception {
         String bookid = (String) session.getAttribute("bookid");
         model.addAttribute("view", service.view(bookid));
     }
 
 
-
     // 장바구니에 저장된 상품 보기
     @GetMapping("/product/shoppingBasket")
-    public void getShoppingBasket(Model model, HttpSession session) throws Exception{
+    public void getShoppingBasket(Model model, HttpSession session) throws Exception {
 
 //        String userid = (String)session.getAttribute("userid");
 //        if(userid!=null){
@@ -173,30 +165,30 @@ public class ProductController {
 //        }
 //        return cartService.bCartCount(userid);
 
- //}
+    //}
 
 
     //닉네임 창
 
     @GetMapping("/product/nickname")
-    public void getNickname(){}
+    public void getNickname() {
+    }
+
     @ResponseBody
     @PostMapping("/product/nickname")
     public String postNickname(HttpSession session, @RequestParam("nickname") String nickname, Model model) throws Exception {
-        String userid = (String)session.getAttribute("userid");
+        String userid = (String) session.getAttribute("userid");
         session.setAttribute("nickname", nickname);
-        memberService.nickname(userid,nickname);
-        model.addAttribute("nicknameview" + memberService.nickname(userid,nickname));
+        memberService.nickname(userid, nickname);
+        model.addAttribute("nicknameview" + memberService.nickname(userid, nickname));
         return "{\"message\":\"GOOD\"}";
     }
-
-
 
 
     //리뷰 처리
     @ResponseBody
     @PostMapping(value = "/product/review")
-    public List<ReviewInterface> postReview(@RequestBody ReviewInterfaceImpl review, @RequestParam("option") String option,@RequestParam("page") int pageNum,
+    public List<ReviewInterface> postReview(@RequestBody ReviewInterfaceImpl review, @RequestParam("option") String option, @RequestParam("page") int pageNum,
                                             @RequestParam("bookid")
                                             ProductEntity bookid, Model model) throws Exception {
 
@@ -215,7 +207,7 @@ public class ProductController {
 //                // 페이지 처리 로직 추가
 ////                List<ReviewInterface> pagedReviews = reviewService.getPagedReviews(page);
 ////                return pagedReviews;
-  //              int postNum = 5; //한 화면에 보여지는 게시물 행의 갯수
+                //              int postNum = 5; //한 화면에 보여지는 게시물 행의 갯수
 //                int pageListCount = 5; //화면 하단에 보여지는 페이지리스트의 페이지 갯수
 //
                 PageUtil page = new PageUtil();
@@ -224,7 +216,7 @@ public class ProductController {
 //                // 모델에 페이징 결과를 추가
 //                model.addAttribute("list", pagedReviews.getContent());
 //                model.addAttribute("totalElement", pagedReviews.getTotalElements());
-     //           model.addAttribute("postNum", postNum);
+                //           model.addAttribute("postNum", postNum);
                 model.addAttribute("page", pageNum);
 //                model.addAttribute("pageList", page.getPageList(pageNum, postNum, pageListCount, pagedReviews.getTotalPages(), String.valueOf(bookid.getBookid())));
 //                return reviewService.reviewView(review);
@@ -236,52 +228,61 @@ public class ProductController {
 
     // 결제화면
     @GetMapping("/product/payment")
-    public void getPayment(@RequestParam("bookid") String bookid, Model model, HttpSession session) throws Exception {
-
-
-        String userid = (String)session.getAttribute("userid");
-
-        // userid에 대한 주소지 다 꺼내기
-        model.addAttribute("delverylist", deliveryService.list(userid));
-        //bookid 에 대한 정보
-        model.addAttribute("view", service.view(bookid));
-
-
-
-
-
-
-
-    }
-    //결제 성공시
-    @GetMapping("/api/order/payment/complete")
-    public void getPaymentSC(@RequestParam("imp_uid") String imp_uid, @RequestParam("merchant_uid") String merchant_uid){
-
-    }
-
-
-    @RequiredArgsConstructor
-    @RestController
-    @RequestMapping("/api/v1/payment")
-    public class PaymentApiController {
-
-        private final PurchaseInfoService purchaseInfoService;
-
-
-
-
-
-        @PostMapping("/complete")
-        public ResponseEntity<?> paymentResult(@RequestBody String imp_uid) throws Exception {
-            System.out.println("imp_uid : " + imp_uid);
-
-            String token = purchaseInfoService.getToken();
-            System.out.println("token : " + token);
-
-            return ResponseEntity.ok().build();
+    public void getPayment(
+            @RequestParam(value = "bookid", required = false) String bookid,
+            @RequestParam(value = "quantity", required = false) Integer quantity,
+            Model model, HttpSession session) throws Exception {
+        String userid = (String) session.getAttribute("userid");
+        if (session.getAttribute("productDTOList") != null) {
+            List<ProductDTO> productlist = (List<ProductDTO>) session.getAttribute("productDTOList");
+            model.addAttribute("view", productlist);
         }
+        // 모델에 productDTOList 추가
+        else {
+            List<ProductDTO> productlist = new ArrayList<>();
+            ProductDTO productDTO = new ProductDTO();
+            ProductEntity productEntity = service.findById(bookid);
+            productDTO.setQuantity(quantity);
+            productDTO.setBookname(productEntity.getBookname());
+            productDTO.setSalespoint(productEntity.getSalespoint());
+            productDTO.setBookid(productEntity.getBookid());
+            productDTO.setAuthor(productEntity.getAuthor());
+            productDTO.setPrice(productEntity.getPrice());
+            productDTO.setCover(productEntity.getCover());
+            productlist.add(productDTO);
+            model.addAttribute("view", productlist);
+        }
+        model.addAttribute("memberInfo", memberService.memberInfo(userid));
+        // userid에 대한 주소지 다 꺼내기
+        model.addAttribute("deliverylist", deliveryService.list(userid));
+        //bookid 에 대한 정보
     }
 
-
-
+    @PostMapping("/product/payment")
+    public ResponseEntity<?> postPayment(@RequestBody Map<String, List<Map<String, Object>>> payload, HttpSession session) {
+        List<Map<String, Object>> items = payload.get("items");
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        for (Map<String, Object> item : items) {
+            String bookid = (String) item.get("bookid");
+            int quantity = (Integer) item.get("quantity");
+            ProductEntity productEntity = service.findById(bookid);
+            if (productEntity != null) {
+                ProductDTO productDTO = new ProductDTO();
+                productDTO.setAuthor(productEntity.getAuthor());
+                productDTO.setSalespoint(productEntity.getSalespoint());
+                productDTO.setCover(productEntity.getCover());
+                productDTO.setBookname(productEntity.getBookname());
+                productDTO.setPrice(productEntity.getPrice());
+                productDTO.setBookid(productEntity.getBookid());
+                productDTO.setQuantity(quantity);
+                productDTOList.add(productDTO);
+            }
+        }
+        // 여기서 적절한 리다이렉트 경로를 설정하세요.
+        session.setAttribute("productDTOList", productDTOList);
+        // 클라이언트에 리다이렉션 URL 전송
+        return ResponseEntity.ok(Map.of("redirectUrl", "/product/payment"));
+    }
 }
+
+

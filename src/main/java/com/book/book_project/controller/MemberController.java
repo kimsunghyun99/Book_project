@@ -2,9 +2,13 @@ package com.book.book_project.controller;
 
 import com.book.book_project.dto.DeliverAddrDTO;
 import com.book.book_project.entity.*;
+import com.book.book_project.entity.repository.PurchaseInfoRepository;
 import com.book.book_project.service.DeliveryService;
 import com.book.book_project.dto.*;
 import com.book.book_project.service.*;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import com.book.book_project.util.PageUtil;
 import jakarta.servlet.http.HttpSession;
@@ -19,10 +23,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URLEncoder;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -32,6 +36,9 @@ public class MemberController {
 
     @Autowired
     MemberService service;
+
+    @Autowired
+    ProductService productService;
 
     @Autowired
     DeliveryService deliveryService;
@@ -44,6 +51,9 @@ public class MemberController {
     UnMemberService unMemberService;
 
     private final BuyerInfoService buyerInfoService;
+
+    @Autowired
+    private PurchaseInfoRepository purchaseInfoRepository;
 
 
 
@@ -280,20 +290,44 @@ public class MemberController {
 
 
     //회원 구매내역 조회 화면
-//    @GetMapping("/member/memberPurchaseList")
-//    public void getMemberPurchaseList(Model model, HttpSession session,PurchaseInfoService purchaseInfoService) throws Exception {
-//        MemberEntity userid = (MemberEntity) session.getAttribute("userid");
-//        List<BuyerInfoEntity> buyerInfo=buyerInfoService.buyerInfo(userid);
-//
-//        List<PurchaseInfoEntity> purchaseInfoList = new ArrayList<>();
-//
-//        for(BuyerInfoEntity buyerInfoEntity:buyerInfo){
-//            BuyerInfoEntity buyerseq = buyerInfoEntity;
-//            List<PurchaseInfoEntity> purchaseList = purchaseInfoService.purchaseList(buyerseq);
-//            purchaseInfoList.addAll(purchaseList);
-//            model.addAttribute("purchaseList",purchaseInfoList);
-//        }
-//    }
+    @Transactional
+    @PostMapping(value = "/member/memberPurchaseList")
+    public ResponseEntity<String> getMemberPurchaseList(
+            HttpSession session,
+            @RequestBody Map<String, Object> requestData,  @RequestParam("bookid") ProductEntity bookid
+    ) throws Exception {
+
+
+        String amount = requestData.get("amount").toString();
+        String merchant_uid = requestData.get("merchant_uid").toString();
+        String dateString = requestData.get("date").toString();
+
+
+        // 여기서 dateString을 Date로 변환
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+        Date date = dateFormat.parse(dateString);
+
+        PurchaseInfoEntity purchaseInfo = new PurchaseInfoEntity();
+        purchaseInfo.setBookid(bookid);
+        purchaseInfo.setVolume('3');
+        purchaseInfo.setPurchasedate(new java.sql.Timestamp(date.getTime()));
+        purchaseInfo.setTotalprice(Integer.parseInt(amount));
+        purchaseInfo.setPurchaseinfonumber(Integer.parseInt(merchant_uid));
+
+        purchaseInfoRepository.save(purchaseInfo);
+
+
+
+        // 나머지 로직 수행
+        // ...
+
+        // 성공했을 경우 응답
+        return ResponseEntity.ok("Success");
+    }
+
+
+
+
 
     //비회원 구매내역 조회 화면
 //    @GetMapping("/member/unMemberPurchaseList")

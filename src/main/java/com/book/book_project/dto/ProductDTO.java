@@ -26,16 +26,15 @@ public class ProductDTO {
     private Timestamp regdate;  //등록일
     private String publicationdate;  //출판일
     private int salespoint;//판매지수
+    private int quantity;
 
     private CategoryEntity categorynumber;    //분류 이름
-
 
     //Entity -> DTO
     public ProductDTO (ProductEntity productEntity) {
         this.bookid = productEntity.getBookid();
         this.bookname = productEntity.getBookname();
         this.publisher = productEntity.getPublisher();
-        this.pricesales = productEntity.getPricesales();
         this.author=productEntity.getAuthor();
         this.price = productEntity.getPrice();
         this.stock = productEntity.getStock();
@@ -46,17 +45,14 @@ public class ProductDTO {
         this.salespoint =productEntity.getSalespoint();
         this.categorynumber = productEntity.getCategorynumber();
     }
-
     //DTO -> Entity
     public ProductEntity dtoToEntity(ProductDTO dto) {
-
         return ProductEntity.builder()
                 .bookid(dto.getBookid())
                 .bookname(dto.getBookname())
                 .publisher(dto.getPublisher())
                 .author(dto.getAuthor())
                 .price(dto.getPrice())
-                .pricesales(dto.getPricesales())
                 .stock(dto.getStock())
                 .description(dto.getDescription())
                 .cover(dto.getCover())
@@ -66,7 +62,6 @@ public class ProductDTO {
                 .categorynumber(dto.getCategorynumber())
                 .build();
     }
-
 
 
 }

@@ -14,4 +14,6 @@ public class WebMvcConfig implements WebMvcConfigurer{
 				.addResourceLocations("file:///C:/Repository/profile/");
 	}
 
+
+
 }

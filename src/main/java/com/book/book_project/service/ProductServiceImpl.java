@@ -49,7 +49,12 @@ public class ProductServiceImpl implements ProductService{
     public List<ProductEntity> productlist() throws Exception {
         return productRepository.productlist();
     }
+    @Override
+    public ProductEntity findById(String bookid) {
+        return productRepository.findById(bookid).orElse(null);
+    }
 
+    }
 
 
 // 책 정보 가져오기
@@ -64,4 +69,4 @@ public class ProductServiceImpl implements ProductService{
 
 
 
-}
+
