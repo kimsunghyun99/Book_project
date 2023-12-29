@@ -282,40 +282,6 @@ public class MemberController {
     @GetMapping("/member/pwSearch")
     public void getPwSearch() {}
 
-
-    //회원 구매내역 조회 화면
-//    @GetMapping("/member/memberPurchaseList")
-//    public void getMemberPurchaseList(Model model, HttpSession session,PurchaseInfoService purchaseInfoService) throws Exception {
-//        MemberEntity userid = (MemberEntity) session.getAttribute("userid");
-//        List<BuyerInfoEntity> buyerInfo=buyerInfoService.buyerInfo(userid);
-//
-//        List<PurchaseInfoEntity> purchaseInfoList = new ArrayList<>();
-//
-//        for(BuyerInfoEntity buyerInfoEntity:buyerInfo){
-//            BuyerInfoEntity buyerseq = buyerInfoEntity;
-//            List<PurchaseInfoEntity> purchaseList = purchaseInfoService.purchaseList(buyerseq);
-//            purchaseInfoList.addAll(purchaseList);
-//            model.addAttribute("purchaseList",purchaseInfoList);
-//        }
-//    }
-
-    //비회원 구매내역 조회 화면
-//    @GetMapping("/member/unMemberPurchaseList")
-//    public void getUnMemberPurchaseList(Model model, HttpSession session,PurchaseInfoService purchaseInfoService) throws Exception {
-//        UnMemberEntity unmemberseq = (UnMemberEntity)
-//        List<UnMemberEntity> unMemberEntityList=unMemberService.unMemberInfo(unmembertelno);
-//
-//        List<PurchaseInfoEntity> purchaseInfoList = new ArrayList<>();
-//
-//        for(UnMemberEntity unMemberEntity:unMemberEntityList){
-//            UnMemberEntity unmembertelno = unMemberEntity;
-//            List<PurchaseInfoEntity> purchaseList = purchaseInfoService.unMemberPurchaseList(unmembertelno);
-//            purchaseInfoList.addAll(purchaseList);
-//            model.addAttribute("purchaseList",purchaseInfoList);
-//        }
-//    }
-
-
     //비회원 로그인 화면
     //비회원 로그인 화면 (23-12-12)
     @GetMapping("/member/unMemberLogin")
