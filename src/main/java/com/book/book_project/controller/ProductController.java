@@ -145,27 +145,27 @@ public class ProductController {
     public void getShoppingBasket(Model model, HttpSession session) throws Exception {
 
         String userid = (String) session.getAttribute("userid");
-        System.out.println("userid = "+userid);
-        if(userid!=null){
-            List<CartEntity> cartEntity=cartService.cartList(userid);
+        System.out.println("userid = " + userid);
+        if (userid != null) {
+            List<CartEntity> cartEntity = cartService.cartList(userid);
             List<ProductEntity> list = new ArrayList<>();
-            for(int i=0; i<cartEntity.size(); i++){
-                ProductEntity productEntity=new ProductEntity();
-                String  bookid = String.valueOf(cartEntity.get(i).getBookid().getBookid());
-                System.out.println("bookid = "+bookid);
+            for (int i = 0; i < cartEntity.size(); i++) {
+                ProductEntity productEntity = new ProductEntity();
+                String bookid = String.valueOf(cartEntity.get(i).getBookid().getBookid());
+                System.out.println("bookid = " + bookid);
                 productEntity = service.findById(bookid);
-                System.out.println("bookname = "+productEntity.getBookname());
-                System.out.println("cover = "+productEntity.getCover());
-                System.out.println("author = "+productEntity.getAuthor());
-                System.out.println("price = "+productEntity.getPrice());
+                System.out.println("bookname = " + productEntity.getBookname());
+                System.out.println("cover = " + productEntity.getCover());
+                System.out.println("author = " + productEntity.getAuthor());
+                System.out.println("price = " + productEntity.getPrice());
                 list.add(productEntity);
-                System.out.println("listsize = "+ list.size());
-                System.out.println("list.bookname = "+list.get(0).getBookname());
-                System.out.println("list.cover = "+list.get(0).getCover());
-                System.out.println("list.author = "+list.get(0).getAuthor());
-                System.out.println("list.price = "+list.get(0).getPrice());
+                System.out.println("listsize = " + list.size());
+                System.out.println("list.bookname = " + list.get(0).getBookname());
+                System.out.println("list.cover = " + list.get(0).getCover());
+                System.out.println("list.author = " + list.get(0).getAuthor());
+                System.out.println("list.price = " + list.get(0).getPrice());
             }
-            model.addAttribute("list",list);
+            model.addAttribute("list", list);
             model.addAttribute("session", userid);
         }
 
@@ -175,8 +175,8 @@ public class ProductController {
     // 장바구니로 상품 이동
     @ResponseBody
     @PostMapping("/product/shoppingBasket")
-    public String postShoppingBasket(@RequestBody Map<String, String> bookid, HttpSession session) throws Exception{
-        CartEntity cartEntity=new CartEntity();
+    public String postShoppingBasket(@RequestBody Map<String, String> bookid, HttpSession session) throws Exception {
+        CartEntity cartEntity = new CartEntity();
         String userid = (String) session.getAttribute("userid");
 
         MemberEntity memberEntity = memberRepository.findById(userid).orElse(null);
@@ -198,7 +198,7 @@ public class ProductController {
     //장바구니에서 상품 삭제
     @ResponseBody
     @PostMapping("/product/delete")
-    public boolean postDelete(@RequestBody Map<String, Object> bookids, HttpSession session){
+    public boolean postDelete(@RequestBody Map<String, Object> bookids, HttpSession session) {
         List<String> bookidList = (List<String>) bookids.get("bookids");
         String userid = (String) session.getAttribute("userid");
         CartEntity cartEntity = new CartEntity();
@@ -206,7 +206,7 @@ public class ProductController {
         ProductEntity productEntity = new ProductEntity();
         memberEntity.setUserid(userid);
         cartEntity.setUserid(memberEntity);
-        for(int i=0; i<bookidList.size(); i++){
+        for (int i = 0; i < bookidList.size(); i++) {
             productEntity.setBookid(bookidList.get(i));
             cartEntity.setBookid(productEntity);
             cartService.delete(cartEntity);
@@ -278,12 +278,12 @@ public class ProductController {
     @GetMapping("/product/payment")
     public void getPayment(
             @RequestParam(value = "bookid", required = false) String bookid,
-            @RequestParam(value = "quantity", required = false) Integer  quantity,
+            @RequestParam(value = "quantity", required = false) Integer quantity,
             Model model, HttpSession session) throws Exception {
 
-        String userid = (String)session.getAttribute("userid");
+        String userid = (String) session.getAttribute("userid");
 
-        if(session.getAttribute("productDTOList")!=null) {
+        if (session.getAttribute("productDTOList") != null) {
             List<ProductDTO> productlist = (List<ProductDTO>) session.getAttribute("productDTOList");
             model.addAttribute("view", productlist);
         }
@@ -345,10 +345,10 @@ public class ProductController {
     @GetMapping("/product/unMemberPayment")
     public void getUnMemberPayment(
             @RequestParam(value = "bookid", required = false) String bookid,
-            @RequestParam(value = "quantity", required = false) Integer  quantity,
+            @RequestParam(value = "quantity", required = false) Integer quantity,
             Model model, HttpSession session) throws Exception {
 
-        if(session.getAttribute("productDTOList")!=null) {
+        if (session.getAttribute("productDTOList") != null) {
             List<ProductDTO> productlist = (List<ProductDTO>) session.getAttribute("productDTOList");
             model.addAttribute("view", productlist);
         }
@@ -369,6 +369,7 @@ public class ProductController {
             model.addAttribute("view", productlist);
         }
     }
+
     @PostMapping("/product/unMemberPayment")
     public ResponseEntity<?> postUnMemberPayment(@RequestBody Map<String, List<Map<String, Object>>> payload, HttpSession session) {
         List<Map<String, Object>> items = payload.get("items");
@@ -399,5 +400,6 @@ public class ProductController {
         // 클라이언트에 리다이렉션 URL 전송
         return ResponseEntity.ok(Map.of("redirectUrl", "/product/unMemberPayment"));
     }
+}
 
 

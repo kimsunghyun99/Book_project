@@ -25,13 +25,13 @@ public class BuyerInfoEntity {
     @Column(name = "receiverzipcode", length = 10, nullable = true)
     private String receiverzipcode;
 
-    @Column(name = "receiveraddr", length = 20, nullable = true)
+    @Column(name = "receiveraddr", length = 50, nullable = true)
     private String receiveraddr;
 
     @Column(name = "receivername", length = 10, nullable = true)
     private String receivername;
 
-    @Column(name = "receivertelno", length = 10, nullable = true)
+    @Column(name = "receivertelno", length = 50, nullable = true)
     private String receivertelno;
 
 

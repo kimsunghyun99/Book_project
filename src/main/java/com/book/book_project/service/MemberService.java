@@ -44,7 +44,7 @@ public interface MemberService {
     //회원 구매, 주문 목록 갯수 구하기
     public Long countJoinedRecordsByUserId(String userid);
 
-
+    public MemberEntity findById(String userid);
 
 
 }

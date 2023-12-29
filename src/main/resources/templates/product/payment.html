@@ -249,11 +249,11 @@
             // point 사용
             function UsePoint() {
                 var pointInput = document.getElementById('point');
-                var totalInvoiceAmountElement = document.getElementById('totalInvoiceAmount');
+                var totalInvoiceAmountElement = document.getElementById('totalcost');
 
                 var point = parseInt(pointInput.value, 10);
                 var totalInvoiceAmount = parseInt(totalInvoiceAmountElement.innerText.replace(/,/g, '').replace('원', ''), 10);
-                var FinalPay = document.getElementById('FinalPay');
+                var FinalPay = totalInvoiceAmount - point;
 
 
                 if (point > [[${memberInfo.point}]]) {
@@ -261,8 +261,10 @@
                     document.getElementById('point').focus();
                     return false;
                 } else {
-                    FinalPay.innerHTML = '최종 결제금액 ' + (totalInvoiceAmount - point) + '원';
+
+                    totalInvoiceAmountElement.innerText = FinalPay + '원';
                 }
+
             }
 
             function KGpay() {
@@ -278,7 +280,7 @@
                 var bookQuntity = document.getElementById("quantity" + bookid).textContent;
                 var totalInvoiceAmount = document.getElementById("totalcost").textContent;
                 // var buyerEmail = document.getElementById("buyerEmail").value;
-                var receivertelno = document.getElementById("receivertelno").value;
+                var telno = document.getElementById("receivertelno");
                 var addr1 = document.getElementById("addr1");
                 var detailAddr = document.getElementById("detailaddr");
                 var zipcode = document.getElementById("zipcode");
@@ -330,7 +332,7 @@
                 var selectedBookquntity = bookQuntity; // 수정된 부분
                 var amount = price;
                 // var email = buyerEmail ? buyerEmail.value : null;
-                var receivertelno = receivertelno ? receivertelno.value : null;
+                var receivertelno = telno ? telno.value : null;
                 var address = addr1 ? addr1.value : null;
                 var detailaddr = detailAddr ? detailAddr.value : null;
                 var postcode = zipcode ? zipcode.value : null;
