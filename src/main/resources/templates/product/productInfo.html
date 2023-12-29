@@ -64,28 +64,16 @@
 
         .book-actions {
             display: flex;
+            text-align: center;
             gap: 10px;
+            margin: auto;
         }
 
-        .book-actions button {
-            padding: 100px;
-            font-size: 2em;
+        .book-actions input {
+
             margin: 20px;
             cursor: pointer;
-        }
 
-        .book-cart {
-            background-color: #f0ad4e;
-            color: white;
-            padding: 10px;
-            border: 50px;
-        }
-
-        .book-buy {
-            background-color: #5cb85c;
-            color: white;
-            padding: 10px;
-            border: 50px;
         }
 
         #volume input {
@@ -114,8 +102,8 @@
         var salespoint = parseInt(`[[${view.salespoint}]]`);
 
 
-        //        const bookdiscount = document.querySelector('.book-discount').value;
-        //        const bookprice = document.querySelector('.book-price').value;
+//        const bookdiscount = document.querySelector('.book-discount').value;
+//        const bookprice = document.querySelector('.book-price').value;
         //통화 적용임
         document.addEventListener('DOMContentLoaded', function() {
             // JavaScript 코드 작성
@@ -214,31 +202,31 @@
                     if (confirm("새로운 닉네임을 입력하세요. 계속하시겠습니까?")) {
                         reviewContentTextarea.blur(); // 리뷰 내용 입력 칸의 포커스 해제
 
-                        // "확인"을 눌렀을 때 실행될 코드
-                        window.open("nickname", "닉네임입력", "width=950, height=540, top=50, left=50"); // 새 창 열기
-                    }
-                }else{
-                    reviewContentTextarea.focus();
-                }
+                // "확인"을 눌렀을 때 실행될 코드
+                window.open("nickname", "닉네임입력", "width=950, height=540, top=50, left=50"); // 새 창 열기
             }
-        }
+            }else{
+                reviewContentTextarea.focus();
+            }
+    }
+}
 
         const count = (type) =>  {
 
-            number = parseInt(document.getElementById('quantity').innerHTML);
-            if(type === 'plus') {
-                number ++;
-                totalPrice += price;
-                totalsalespoint += salespoint;
-            }else if(type === 'minus' && number !==1 )  {
-                number --;
-                totalPrice -= price;
-                totalsalespoint -= salespoint;
-            }
-            document.getElementById('quantity').innerHTML = number;
-            document.getElementById('total_price').innerHTML = totalPrice.toLocaleString('ko-KR') + '원';
-            document.getElementById('total_salespoint').innerHTML = totalsalespoint.toLocaleString('ko-KR') + '원';
-        }
+    number = parseInt(document.getElementById('quantity').innerHTML);
+    if(type === 'plus') {
+        number ++;
+        totalPrice += price;
+        totalsalespoint += salespoint;
+    }else if(type === 'minus' && number !==1 )  {
+        number --;
+        totalPrice -= price;
+        totalsalespoint -= salespoint;
+    }
+    document.getElementById('quantity').innerHTML = number;
+    document.getElementById('total_price').innerHTML = totalPrice.toLocaleString('ko-KR') + '원';
+    document.getElementById('total_salespoint').innerHTML = totalsalespoint.toLocaleString('ko-KR') + '원';
+}
 
 
 
@@ -249,24 +237,24 @@
             var bookid = document.getElementById("bookid").value;
             console.log("bookid = "+bookid);
 
-            await fetch('/product/shoppingBasket',{
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ bookid: bookid}),
-            }).then((response)=> response.json())
-                .then((data) => {
-                    if(data.message ==='GOOD'){
-                        if(confirm("장바구니로 이동하시겠습니까?")){
-                            document.location.href="/product/shoppingBasket"
-                        }
-                    } else {
-                        alert("시스템 장애로 장바구니 담기가 실패했습니다.");
-                    }
-                }).catch((error)=> {
-                    console.log("error = " + error);
-                });
+                    await fetch('/product/shoppingBasket',{
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ bookid: bookid}),
+                    }).then((response)=> response.json())
+                        .then((data) => {
+                            if(data.message ==='GOOD'){
+                                if(confirm("장바구니로 이동하시겠습니까?")){
+                                    document.location.href="/product/shoppingBasket"
+                                }
+                            } else {
+                                alert("시스템 장애로 장바구니 담기가 실패했습니다.");
+                            }
+                        }).catch((error)=> {
+                            console.log("error = " + error);
+                        });
 
         }
 
@@ -310,15 +298,32 @@
             }
         };
 
-        const GoPayment = (bookid, quantity) => {
-            document.location.href=`/product/payment?bookid=${bookid}&quantity=${quantity}`
-        }
+        const GoPayment = async () => {
+            var userid = /*[[${session.userid}]]*/ 'default';
+            var bookid = document.getElementById("bookid").value;
+            var quantity = document.getElementById("quantity").innerText;
+            if (userid === 'default') {
+                userid = 'null';
+            }
+            console.log("productInfo_userid = "+userid);
+            console.log("userid = "+userid);
+            try {
+                if(userid!=='null'||userid!==null) {
+                    document.location.href=`/product/payment?bookid=${bookid}&quantity=${quantity}`
+                }
+                else{
+                    document.location.href=`/product/unMemberPayment?bookid=${bookid}&quantity=${quantity}`
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('오류가 발생했습니다: ' + error.message);
+            }
+
+        };
 
     </script>
 </head>
 <body>
-<div th:include="/etc/header.html"></div>
-<br><br><br>
 <div th:include="/etc/header.html"></div>
 <br><br><br>
 <div class="book-details">
@@ -333,7 +338,7 @@
         <p class="book-title" id="bookname" th:text="${view.bookname}"></p>
         <p class="book-author" id="author" th:text="'작가: ' + ${view.author}"></p>
         <p class="book-price" id="price" th:text="'가격: ' + ${view.price} + '원'"></p>
-        <!--        <p class="book-discount" id="pricesales" th:text="'할인가: ' + ${view.pricesales} + '%'"></p>-->
+<!--        <p class="book-discount" id="pricesales" th:text="'할인가: ' + ${view.pricesales} + '%'"></p>-->
 
 
         <div id="volume">
@@ -348,7 +353,7 @@
         </div>
         <br>
         <div>
-            <span>적립 포인트 : </span> <span id="total_salespoint">[[${view.salespoint}]] point</span>
+        <span>적립 포인트 : </span> <span id="total_salespoint">[[${view.salespoint}]] point</span>
         </div>
         <div class="book-actions">
 
@@ -362,13 +367,14 @@
             <input type="button" value="구매하기" th:onclick="GoPayment([[${view.bookid}]],document.getElementById('quantity').innerHTML)">
 
         </div>
-        <!--        <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.salespoint,3,'COMMA')} + '원'"></p>-->
+<!--        <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.salespoint,3,'COMMA')} + '원'"></p>-->
         <br>
-        <!--            <span id="total_price">[[${#numbers.formatInteger(view.price,3,'COMMA')}]] 원</span>-->
-        <!--            <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.price * 0.05, 3, 'COMMA')} + '원'"></p>-->
-    </div><br>
-    <br>
+<!--            <span id="total_price">[[${#numbers.formatInteger(view.price,3,'COMMA')}]] 원</span>-->
+<!--            <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.price * 0.05, 3, 'COMMA')} + '원'"></p>-->
+        </div><br>
+        <br>
 </div>
+
 <div class="reviewDiv" style="width:60%;height:300px;margin:auto;text-align:left;">
 
     <p id="reviewNotice">리뷰을 작성해 주세요.</p>

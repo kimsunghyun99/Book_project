@@ -46,7 +46,7 @@ public class PurchaseInfoEntity {
     @JoinColumn(name="buyerseq", nullable = false)
     private BuyerInfoEntity buyerseq;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action= OnDeleteAction.CASCADE)
     @JoinColumn(name="statusseq", nullable = false)
     private PurchaseStatusEntity statusseq;

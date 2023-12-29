@@ -19,7 +19,6 @@ public class ProductDTO {
     private String publisher;   //출판사
     private String author;//작가
     private int price;  //원가
-    private int pricesales;//할인가
     private String stock;  //재고
     private String description; //설명
     private String cover;  //표지 이미지

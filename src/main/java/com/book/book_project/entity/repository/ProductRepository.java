@@ -31,12 +31,6 @@ public interface ProductRepository extends JpaRepository<ProductEntity, String> 
     @Query(value="select * from tbl_product", nativeQuery=true)
     List<ProductEntity> getProductList();
 
-
-
-
-
-
-
     // bookname, cover 가져오기 -> 나중에 interests 토대로 가져올 예정
     @Query(value="select * from tbl_product", nativeQuery = true)
     List<ProductEntity> productlist();

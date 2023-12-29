@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>장바구니</title>
@@ -69,22 +69,314 @@
         border: none;
         cursor: pointer;
     }
+
 </style>
 
     <script>
-        const count = (type) =>  {
-
-            number = parseInt(document.getElementById('quantity').innerHTML);
-            if(type === 'plus') {
-                number ++;
-                totalPrice += price;
-            }else if(type === 'minus' && number !==1 )  {
-                number --;
-                totalPrice -= price;
+        window.onload=async function() {
+            var userid = /*[[${session.userid}]]*/ 'default';
+            if (userid === 'default') {
+                userid = 'null';
             }
-            document.getElementById('quantity').innerHTML = number;
-            document.getElementById('total_price').innerHTML = totalPrice.toLocaleString('ko-KR');
+
+            console.log("javascript userid = "+userid);
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+            if(userid !=='null' && cart.length >0){
+                if(confirm("로그인하지 않고 담아놓은 물건이 있습니다. 추가하시겠습니까?")){
+
+                    for (const item of cart) {
+                        var bookid = item.bookid;
+                        console.log("bookid = " + bookid);
+
+                        await fetch('/product/shoppingBasket', {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({bookid: bookid}),
+                        }).then((response) => response.json())
+                            .then((data) => {
+                                if (data.message !== 'GOOD') {
+                                    throw new Error('장바구니에 추가 실패했습니다.');
+                                }
+                            }).catch((error) => {
+                                console.log("error = " + error);
+                            });
+                    }
+                    alert('장바구니에 추가되었습니다.');
+                    localStorage.removeItem('cart');
+                    window.location.reload();
+                }else {
+                    // 로컬 스토리지와 서버에서 장바구니가 비어있을 때
+                    emptyCartMessage.style.display = '';
+                }
+            }
+        };
+        document.addEventListener('DOMContentLoaded', function () {
+            const cartBody = document.getElementById('cartBody');
+            const emptyCartMessage = document.getElementById('emptyCartMessage');
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+            if (cart.length > 0) {
+                emptyCartMessage.style.display = 'none';
+
+                cart.forEach(function (item) {
+                    const row = cartBody.insertRow();
+
+                    // 체크박스 셀
+                    const checkboxCell = row.insertCell(0);
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.classList.add('checkbox');
+                    checkbox.id = 'checkbox' + item.bookid;
+                    checkbox.value = item.bookid;
+                    checkboxCell.appendChild(checkbox);
+
+                    // 책 정보 셀
+                    const bookCell = row.insertCell(1);
+                    const img = document.createElement('img');
+                    img.src = item.cover;
+                    img.classList.add('book-image');
+                    bookCell.appendChild(img);
+
+                    const br = document.createElement('br');
+                    bookCell.appendChild(br);
+
+                    const bookNameSpan = document.createElement('span');
+                    bookNameSpan.classList.add('book-name');
+                    bookNameSpan.textContent = item.bookname;
+                    bookCell.appendChild(bookNameSpan);
+
+                    // 가격 셀
+                    const priceCell = row.insertCell(2);
+                    const priceParagraph = document.createElement('p');
+                    priceParagraph.classList.add('book-price');
+                    priceParagraph.id = 'price' + item.bookid;
+                    priceParagraph.textContent = (item.price).toLocaleString('ko-KR') + '원';
+                    priceCell.appendChild(priceParagraph);
+
+                    // 수량 조절 셀
+                    const volumeDiv = document.createElement('div');
+                    volumeDiv.id = 'volume' + item.bookid; // 각 아이템마다 고유한 ID를 가지도록 수정
+
+                    const plusButton = document.createElement('input');
+                    plusButton.type = 'button';
+                    plusButton.dataset.bookid = item.bookid;
+                    plusButton.value = '+';
+                    plusButton.onclick = function () { count('plus', this.dataset.bookid); };
+                    volumeDiv.appendChild(plusButton);
+
+                    const quantitySpan = document.createElement('span');
+                    quantitySpan.id = 'quantity' + item.bookid;
+                    quantitySpan.textContent = item.quantity; // 로컬 스토리지에 저장된 수량 사용
+                    volumeDiv.appendChild(quantitySpan);
+
+                    const minusButton = document.createElement('input');
+                    minusButton.type = 'button';
+                    minusButton.dataset.bookid = item.bookid;
+                    minusButton.value = '-';
+                    minusButton.onclick = function () { count('minus', this.dataset.bookid); };
+                    volumeDiv.appendChild(minusButton);
+
+                    priceCell.appendChild(volumeDiv);
+
+                    // 총 금액 셀
+                    const totalPrice = row.insertCell(3);
+                    const price = parseInt(item.price.replace(/,/g, ''));
+                    const quantity = parseInt(item.quantity);
+                    const totalprice = price * quantity;
+                    totalPrice.id='total_price'+item.bookid;
+                    totalPrice.textContent = totalprice.toLocaleString('ko-KR') + '원';
+                });
+            }
+        });
+
+
+        const count = (type, bookid) =>  {
+            var quantityElement = document.getElementById('quantity' + bookid);
+            var priceElement = document.getElementById('price' + bookid).innerText.replace(/,/g, '');
+            var totalPriceElement = document.getElementById('total_price' + bookid);
+            var number = parseInt(quantityElement.innerText);
+            var price = parseInt(priceElement);
+
+            if (type === 'plus') {
+                number++;
+            } else if (type === 'minus' && number > 1) {
+                number--;
+            }
+
+            quantityElement.innerText = number;
+            var totalPrice = number * price;
+            totalPriceElement.innerText = totalPrice.toLocaleString('ko-KR') + ' 원';
+
+            updateTotalPrice();
         }
+
+        function deleteCheckedItems(){
+            var checkboxes = document.querySelectorAll('.checkbox:checked');
+            if (checkboxes.length === 0) {
+                alert('삭제할 항목을 선택해주세요.');
+                return;
+            }
+            var checkedids = Array.from(checkboxes).map(cb => cb.value);
+            fetch('/product/delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ bookids: checkedids }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data) {
+                        // 성공적으로 삭제되었다면, 체크박스가 속한 행(tr)을 DOM에서 제거합니다.
+                        window.location.reload();
+                        alert('삭제되었습니다.');
+                    } else {
+                        // 서버에서 삭제가 실패했다면, 사용자에게 알립니다.
+                        alert('항목을 삭제하는 데 실패했습니다.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        function updateTotalPrice() {
+            var checkboxes = document.querySelectorAll('.checkbox');
+            var sumDisplay = document.getElementById('sumOfCheckedPrices');
+            var total = 0;
+
+            checkboxes.forEach(function(cb) {
+                if (cb.checked) {
+                    var bookId = cb.getAttribute('value');
+                    var priceText = document.getElementById('total_price' + bookId).textContent;
+                    var price = parseInt(priceText.replace(/[^\d]/g, ''));
+                    total += price;
+                }
+            });
+
+            sumDisplay.textContent = total.toLocaleString('ko-KR') + ' 원';
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var checkboxes = document.querySelectorAll('.checkbox');
+            var sumDisplay = document.getElementById('sumOfCheckedPrices');
+
+            checkboxes.forEach(function(checkbox) {
+                checkbox.addEventListener('change', function() {
+                    var total = 0;
+                    checkboxes.forEach(function(cb) {
+                        if (cb.checked) {
+                            var bookId = cb.getAttribute('value');
+                            var price = document.getElementById('total_price' + bookId).textContent.replace(/[^\d]/g, '');
+                            total += parseInt(price);
+                        }
+                    });
+                    sumDisplay.textContent = total.toLocaleString('ko-KR') + ' 원';
+                });
+            });
+        });
+
+
+        const GoPayment = async () => {
+            var userid = /*[[${session.userid}]]*/ 'default';
+            if (userid === 'default') {
+                userid = 'null';
+            }
+            console.log("userid = "+userid);
+            const checkedCheckboxes = document.querySelectorAll('.checkbox:checked');
+            if (checkedCheckboxes.length === 0) {
+                alert('구매할 항목을 선택해주세요.');
+                return;
+            }
+            const items = Array.from(checkedCheckboxes).map(cb => {
+                const bookid = cb.value;
+                const quantityElement = document.getElementById('quantity' + bookid);
+                const quantity = quantityElement ? parseInt(quantityElement.innerText) : 1;
+                return { bookid, quantity };
+            });
+
+
+            try {
+                if(userid!=='null'||userid!==null) {
+                    const response = await fetch('/product/payment', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({items}),
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('서버 응답이 OK가 아닙니다.');
+                    }
+
+                    const data = await response.json();
+                    if (data.redirectUrl) {
+                        window.location.href = data.redirectUrl;
+                    } else {
+                        alert('구매 페이지로 이동하는 데 실패했습니다');
+                    }
+                }
+                else{
+                    const response = await fetch('/product/unMemberPayment', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({items}),
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('서버 응답이 OK가 아닙니다.');
+                    }
+
+                    const data = await response.json();
+                    if (data.redirectUrl) {
+                        window.location.href = data.redirectUrl;
+                    } else {
+                        alert('구매 페이지로 이동하는 데 실패했습니다');
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('오류가 발생했습니다: ' + error.message);
+            }
+
+        };
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            var checkAll = document.getElementById('checkAll');
+            var checkboxes = document.querySelectorAll('.checkbox');
+
+            // 전체 선택 체크박스의 상태 변경을 감지하는 이벤트 리스너
+            checkAll.addEventListener('change', function() {
+                // 전체 선택 체크박스의 상태에 따라 모든 체크박스의 상태를 변경
+                checkboxes.forEach(function(checkbox) {
+                    checkbox.checked = checkAll.checked;
+                });
+
+                // 체크박스 상태 변경 후 총합계 업데이트 함수 호출 (이전에 만든 함수)
+                updateTotalPrice();
+            });
+
+            // 개별 체크박스의 상태 변경을 감지하는 이벤트 리스너
+            checkboxes.forEach(function(checkbox) {
+                checkbox.addEventListener('change', function() {
+                    // 사용자가 모든 체크박스를 수동으로 선택했는지 확인
+                    checkAll.checked = Array.from(checkboxes).every(cb => cb.checked);
+
+                    // 체크박스 상태 변경 후 총합계 업데이트 함수 호출 (이전에 만든 함수)
+                    updateTotalPrice();
+                });
+            });
+        });
+
+
 
 
 
@@ -92,68 +384,53 @@
     </script>
 </head>
 <body>
-<div th:include="/etc/header.html"></div>
+<div th:insert="~{/etc/header.html}"></div>
+
 
 <h1>장바구니</h1>
 <table>
-    <tr>
-        <th><input type="checkbox"></th>
-        <th>책</th>
-        <th>수량</th>
-        <th>가격</th>
-        <th>총 금액</th>
-    </tr>
-
-    <tr>
+    <tbody id="cartBody">
+    <th><input type="checkbox" id="checkAll"></th>
+    <th>책</th>
+    <th>가격</th>
+    <th>총 금액</th>
         <th:block th:if="${list != null}">
-            <tr th:each="list:${list}">
-
+            <tr th:each="booklist:${list}">
+        <input type="hidden" th:value="${booklist.bookid}">
         <td>
-            <input type="checkbox">
+            <input type="checkbox" th:id="'checkbox'+${booklist.bookid}" th:value="${booklist.bookid}" class="checkbox">
         </td>
         <td>
-            <p class="book-price" th:text="${list.cover} + "></p>
-            <p class="book-price" th:text="${list.bookname} + "></p>
+            <img class="book-image" id="cover" th:src="${booklist.cover}"><br>
+            <span class="book-name" th:text="${booklist.bookname}"></span>
         </td>
-
         <td>
+            <p class="book-price" th:id="'price'+${booklist.bookid}" th:text="${#numbers.formatInteger(booklist.price,3,'COMMA')}"></p>
             <div id="volume">
-                <input type='button' onclick='count("plus")' value='+'/>
-                <span id="quantity">1</span>
-                <input type='button' onclick='count("minus")' value='-'/><br><br>
+                <input type='button' th:data-bookid="${booklist.bookid}" onclick="count('plus', this.getAttribute('data-bookid'));" value='+'/>
+                <span th:id="'quantity' + ${booklist.bookid}">1</span>
+                <input type='button' th:data-bookid="${booklist.bookid}" onclick="count('minus', this.getAttribute('data-bookid'));" value='-'/>
             </div>
         </td>
         <td>
-            <p class="book-price" th:text="${list.pricesales} + '원'"></p>
-        </td>
-        <td>
-            <span>상품 금액 : </span>&nbsp;
-            <span id="total_price">[[${#numbers.formatInteger(view.pricesales,3,'COMMA')}]] 원</span>
+            <span th:id="'total_price'+${booklist.bookid}">[[${#numbers.formatInteger(booklist.price,3,'COMMA')}]] 원</span>
         </td>
 
     </tr>
-
     </th:block>
-</table>
-
-    <th:block th:if="${list == null}">
+    </tbody>
+    <tr id="emptyCartMessage" style="display: none;">
         <td colspan="5">장바구니에 등록된 상품이 없습니다.</td>
-    </th:block>
-
-
-
-
-
+    </tr>
+</table>
 <!--            <p class="book-discount" th:text="'할인가: ' + ${view.pricesales} + '%'"></p>-->
 <!--            <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.pricesales * 0.05, 3, 'COMMA')} + '원'"></p>-->
 
-
-
-
 <div class="total-payment">
-    <button class="delete-button">삭제</button>
-    <p>총 결제금액: 00000 원</p>
-    <button class="payment-button">결제하기</button>
+    <button class="delete-button" onclick="deleteCheckedItems()">삭제</button>
+    <h2>총 결제금액</h2>
+    <div id="sumOfCheckedPrices">0 원</div>
+    <input type="button" value="구매하기" onclick="GoPayment()">
 </div>
 </body>
 </html>

@@ -1,16 +1,9 @@
 package com.book.book_project.service;
 
-import com.book.book_project.dto.BuyerInfoDTO;
 import com.book.book_project.dto.MemberDTO;
-import com.book.book_project.dto.PurchaseInfoDTO;
 import com.book.book_project.entity.AddressEntity;
 import com.book.book_project.entity.MemberEntity;
 import org.springframework.data.domain.Page;
-import com.book.book_project.entity.FavoritesEntity;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 
 public interface MemberService {
@@ -51,9 +44,7 @@ public interface MemberService {
     //회원 구매, 주문 목록 갯수 구하기
     public Long countJoinedRecordsByUserId(String userid);
 
-    //즐겨찾기 정보 가져오기
-    public List<FavoritesEntity> findFavoritesByUserId(String userid);
 
 
-    MemberEntity findById(String userid);
+
 }

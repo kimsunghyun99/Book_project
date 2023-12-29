@@ -1,6 +1,5 @@
 package com.book.book_project.entity.repository;
 
-import com.book.book_project.entity.FavoritesEntity;
 import com.book.book_project.entity.MemberEntity;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,10 +22,6 @@ public interface MemberRepository extends JpaRepository<MemberEntity, String> {
     //구매, 주문 목록 갯수 구하기
     @Query(value="SELECT COUNT(*) FROM tbl_member m JOIN tbl_buyerInfo b ON m.userid = b.userid JOIN tbl_purchaseInfo p ON b.buyerseq = p.buyerseq WHERE m.userid = :userid", nativeQuery = true)
     Long countJoinedRecordsByUserId(@Param("userid") String userid);
-
-    //즐겨찾기 목록 보기
-    @Query(value="SELECT * FROM tbl_favorite f JOIN tbl_member m ON f.userid = m.userid WHERE m.userid = :userid", nativeQuery = true)
-    List<FavoritesEntity> findFavoritesByUserId(@Param("userid") String userid);
 
 
     // 회원 정보 변경
