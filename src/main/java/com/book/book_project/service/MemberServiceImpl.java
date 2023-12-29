@@ -43,8 +43,8 @@ public class MemberServiceImpl implements MemberService {
     // select * from tbl_member where userid = #{userid}
     //회원 정보 가져 오기
     @Override
-    public MemberDTO memberInfo(String userid) {
-        return memberRepository.findById(userid).map(member -> new MemberDTO(member)).get();
+    public MemberEntity memberInfo(String userid) {
+        return memberRepository.findById(userid).orElse(null);
     }
 
     //회원 구매,주문 갯수 가져오기
@@ -196,5 +196,10 @@ public class MemberServiceImpl implements MemberService {
         List<Map<String, Integer>> list = memberRepository.memberage();
 
         return list;
+    }
+    //리뷰 갯수 가져오기
+    @Override
+    public long countReviewsByUserId(String userid){
+        return memberRepository.countReviewsByUserId(userid);
     }
 }

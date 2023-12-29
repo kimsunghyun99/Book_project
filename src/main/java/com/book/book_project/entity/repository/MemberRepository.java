@@ -77,5 +77,8 @@ public interface MemberRepository extends JpaRepository<MemberEntity, String> {
     //전체 회원 목록 불러오기
     public Page<MemberEntity> findByRole(String role, Pageable pageable);
 
+    //리뷰 갯수 구하기
+    @Query(value = "select count(*) from tbl_review r join tbl_member m on r.userid = m.userid where m.userid = :userid", nativeQuery = true)
+    Long countReviewsByUserId(@Param("userid") String userid);
 
 }

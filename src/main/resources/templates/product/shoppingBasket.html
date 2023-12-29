@@ -3,74 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <title>장바구니</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-    }
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
 
-    header {
-        background-color: #007ACC;
-        color: #FFF;
-        text-align: center;
-        padding: 10px;
-    }
+        header {
+            background-color: #007ACC;
+            color: #FFF;
+            text-align: center;
+            padding: 10px;
+        }
 
-    nav {
-        background-color: #333;
-        color: #FFF;
-        text-align: center;
-        padding: 10px;
-    }
+        nav {
+            background-color: #333;
+            color: #FFF;
+            text-align: center;
+            padding: 10px;
+        }
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 20px;
-    }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
 
-    th, td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: center;
-        vertical-align: middle;
-    }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+            vertical-align: middle;
+        }
 
-    td img {
-        width: 100px; /* 이미지 크기 수정 */
-        height: 100px; /* 이미지 크기 수정 */
-        object-fit: cover;
-    }
+        td img {
+            width: 100px; /* 이미지 크기 수정 */
+            height: 100px; /* 이미지 크기 수정 */
+            object-fit: cover;
+        }
 
-    .delete-button {
-        padding: 10px;
-        font-size: 1.2em;
-        background-color: #dc3545;
-        color: white;
-        border: none;
-        cursor: pointer;
-    }
+        .delete-button {
+            padding: 10px;
+            font-size: 1.2em;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
 
-    .total-payment {
-        display: flex;
-        justify-content: space-between; /* 삭제 버튼과 결제 정보를 양 끝으로 배치 */
-        align-items: center;
-    }
+        .total-payment {
+            display: flex;
+            justify-content: space-between; /* 삭제 버튼과 결제 정보를 양 끝으로 배치 */
+            align-items: center;
+        }
 
-    .total-payment p {
-        margin-left: auto; /* 총 결제금액을 결제하기 버튼 옆으로 이동 */
-        gap: 10px;
-    }
+        .total-payment p {
+            margin-left: auto; /* 총 결제금액을 결제하기 버튼 옆으로 이동 */
+            gap: 10px;
+        }
 
-    .payment-button {
-        padding: 10px;
-        font-size: 1.2em;
-        background-color: #5cb85c;
-        color: white;
-        border: none;
-        cursor: pointer;
-    }
+        .payment-button {
+            padding: 10px;
+            font-size: 1.2em;
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
 
-</style>
+    </style>
 
     <script>
 
@@ -363,33 +363,33 @@
     <th>책</th>
     <th>가격</th>
     <th>총 금액</th>
-        <th:block th:if="${list != null}">
-            <tr th:each="booklist:${list}">
-        <input type="hidden" th:value="${booklist.bookid}">
-        <td>
-            <input type="checkbox" th:id="'checkbox'+${booklist.bookid}" th:value="${booklist.bookid}" class="checkbox">
-        </td>
-        <td>
-            <a th:href="@{'/product/productInfo?bookid=' + ${product.bookid} + '&page=1'}">
-                <img class="book-image" id="cover" th:src="${booklist.cover}"><br>
-                <span class="book-name" th:text="${booklist.bookname}"></span>
-            </a>
+    <th:block th:if="${list != null}">
+        <tr th:each="booklist:${list}">
+            <input type="hidden" th:value="${booklist.bookid}">
+            <td>
+                <input type="checkbox" th:id="'checkbox'+${booklist.bookid}" th:value="${booklist.bookid}" class="checkbox">
+            </td>
+            <td>
+                <a th:href="@{'/product/productInfo?bookid=' + ${booklist.bookid} + '&page=1'}">
+                    <img class="book-image" id="cover" th:src="${booklist.cover}"><br>
+                    <span class="book-name" th:text="${booklist.bookname}"></span>
+                </a>
 
 
-        </td>
-        <td>
-            <p class="book-price" th:id="'price'+${booklist.bookid}" th:text="${#numbers.formatInteger(booklist.price,3,'COMMA')}"></p>
-            <div id="volume">
-                <input type='button' th:data-bookid="${booklist.bookid}" onclick="count('plus', this.getAttribute('data-bookid'));" value='+'/>
-                <span th:id="'quantity' + ${booklist.bookid}">1</span>
-                <input type='button' th:data-bookid="${booklist.bookid}" onclick="count('minus', this.getAttribute('data-bookid'));" value='-'/>
-            </div>
-        </td>
-        <td>
-            <span th:id="'total_price'+${booklist.bookid}">[[${#numbers.formatInteger(booklist.price,3,'COMMA')}]] 원</span>
-        </td>
+            </td>
+            <td>
+                <p class="book-price" th:id="'price'+${booklist.bookid}" th:text="${#numbers.formatInteger(booklist.price,3,'COMMA')}"></p>
+                <div id="volume">
+                    <input type='button' th:data-bookid="${booklist.bookid}" onclick="count('plus', this.getAttribute('data-bookid'));" value='+'/>
+                    <span th:id="'quantity' + ${booklist.bookid}">1</span>
+                    <input type='button' th:data-bookid="${booklist.bookid}" onclick="count('minus', this.getAttribute('data-bookid'));" value='-'/>
+                </div>
+            </td>
+            <td>
+                <span th:id="'total_price'+${booklist.bookid}">[[${#numbers.formatInteger(booklist.price,3,'COMMA')}]] 원</span>
+            </td>
 
-    </tr>
+        </tr>
     </th:block>
     </tbody>
     <tr id="emptyCartMessage" style="display: none;">
