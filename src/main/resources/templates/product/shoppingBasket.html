@@ -98,18 +98,23 @@
 
                     // 책 정보 셀
                     const bookCell = row.insertCell(1);
+                    const anchor = document.createElement('a');
+                    anchor.href = '/product/productInfo?bookid=' + item.bookid + '&page=1';
+
+                    bookCell.appendChild(anchor);
+
                     const img = document.createElement('img');
                     img.src = item.cover;
                     img.classList.add('book-image');
-                    bookCell.appendChild(img);
-
+                    anchor.appendChild(img);
+                    anchor.href = '/product/productInfo?bookid=' + item.bookid + '&page=1';
                     const br = document.createElement('br');
-                    bookCell.appendChild(br);
+                    anchor.appendChild(br);
 
                     const bookNameSpan = document.createElement('span');
                     bookNameSpan.classList.add('book-name');
                     bookNameSpan.textContent = item.bookname;
-                    bookCell.appendChild(bookNameSpan);
+                    anchor.appendChild(bookNameSpan);
 
                     // 가격 셀
                     const priceCell = row.insertCell(2);
@@ -365,8 +370,12 @@
             <input type="checkbox" th:id="'checkbox'+${booklist.bookid}" th:value="${booklist.bookid}" class="checkbox">
         </td>
         <td>
-            <img class="book-image" id="cover" th:src="${booklist.cover}"><br>
-            <span class="book-name" th:text="${booklist.bookname}"></span>
+            <a th:href="@{'/product/productInfo?bookid=' + ${product.bookid} + '&page=1'}">
+                <img class="book-image" id="cover" th:src="${booklist.cover}"><br>
+                <span class="book-name" th:text="${booklist.bookname}"></span>
+            </a>
+
+
         </td>
         <td>
             <p class="book-price" th:id="'price'+${booklist.bookid}" th:text="${#numbers.formatInteger(booklist.price,3,'COMMA')}"></p>
