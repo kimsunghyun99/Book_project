@@ -143,7 +143,6 @@ public class MasterController {
 
     }
 
-
     // 장르별 통계
     @GetMapping("/master/genreStatistics")
     public void getGenreStatistics() {}
@@ -181,11 +180,8 @@ public class MasterController {
     @GetMapping("/master/purchaseManage")
     public void purchaselist(Model model) {
         List<Map<String, String>> list = purchaseInfoRepository.mempurchaseinfo();
-        List<Map<String, String>> list2 = purchaseInfoRepository.unpurchaseinfo();
         List<Map<String, String>> list3 = purchaseInfoRepository.statuslist();
-
         List<Map<String, Object>> memPurchaseList = new ArrayList<>();
-        List<Map<String, Object>> unmempurchaseList = new ArrayList<>();
 
         for(Map<String, String> map : list){
             Map<String, Object> memPurchaseMap = new HashMap<>();
@@ -209,6 +205,18 @@ public class MasterController {
 
             memPurchaseList.add(memPurchaseMap);
         }
+        model.addAttribute("memPurchaseList", memPurchaseList);
+        model.addAttribute("statuslist", list3);
+    }
+
+    //비회원 주문 관리
+    @GetMapping("/master/unmemberPurchaseManage")
+    public void unmemberpurchaselist(Model model){
+        List<Map<String, String>> list2 = purchaseInfoRepository.unpurchaseinfo();
+        List<Map<String, String>> list3 = purchaseInfoRepository.statuslist();
+
+        List<Map<String, Object>> unmempurchaseList = new ArrayList<>();
+
         for(Map<String, String> map : list2){
             Map<String, Object> unmempurchaseMap = new HashMap<>();
             //비회원 주문 도서 정보
@@ -222,8 +230,7 @@ public class MasterController {
             unmempurchaseMap.put("statusseq", map.get("statusseq"));
             unmempurchaseMap.put("statusname", map.get("statusname"));
             System.out.println(unmempurchaseMap.put("unmember_purseq", map.get("unmember_purseq")));
-            System.out.println(unmempurchaseMap.put("statusseq", map.get("statusseq")));
-            System.out.println(unmempurchaseMap.put("statusname", map.get("statusname")));
+
             //비회원 정보
             unmempurchaseMap.put("name", map.get("receivername"));
             unmempurchaseMap.put("addr", map.get("addr"));
@@ -232,8 +239,6 @@ public class MasterController {
 
             unmempurchaseList.add(unmempurchaseMap);
         }
-
-        model.addAttribute("memPurchaseList", memPurchaseList);
         model.addAttribute("unmempurchaseList", unmempurchaseList);
         model.addAttribute("statuslist", list3);
     }
@@ -242,11 +247,10 @@ public class MasterController {
     @ResponseBody
     @PostMapping("/master/memorderupdate")
     public String memberorderupdate(@RequestBody PurchaseInfoEntity purchaseInfoEntity){
-        System.out.println("123123123");
+
         int statusseq = purchaseInfoEntity.getStatusseq().getStatusseq();
         int purchaseinfonumber = purchaseInfoEntity.getPurchaseinfonumber();
-        System.out.println(statusseq);
-        System.out.println(purchaseinfonumber);
+
         purchaseInfoRepository.memberorderupdate(statusseq, purchaseinfonumber);
 
         return "good";
@@ -255,7 +259,7 @@ public class MasterController {
     //비회원 주문 상태 변경
     @ResponseBody
     @PostMapping("/master/unmemorderupdate")
-    public String unmemorderupdate(@RequestBody UnMemberPurchaseInfoEntity unMemberPurchaseInfoEntity){
+    public String unmemberorderupdate(@RequestBody UnMemberPurchaseInfoEntity unMemberPurchaseInfoEntity){
         System.out.println("비회원 주문 상태 변경");
         int statusseq = unMemberPurchaseInfoEntity.getStatusseq().getStatusseq();
         int unmember_purseq = unMemberPurchaseInfoEntity.getUnmemberpurchaseinfoseq();
@@ -264,7 +268,7 @@ public class MasterController {
 
         purchaseInfoRepository.unmemberorderupdate(statusseq, unmember_purseq);
 
-        return "GOOD";
+        return "good";
     }
 
     // 매출 내역

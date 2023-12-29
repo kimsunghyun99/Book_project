@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>주문 관리 화면</title>
+<title>회원 주문 관리 화면</title>
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -103,52 +103,8 @@
             });
         });
     });
-/*------------------------------------------------------------------------------------------------------*/
-    // 비회원 주문 상태 변경
-    const unmemberstatusUpdate = async (select) => {
-        let unmember_purseq = select.dataset.unmember_purseq;
-        let statusseq = select.value;
+/*---------------------------------------------------------------------------------------------------------------*/
 
-        if(statusseq === '1') {
-            alert("주문 완료 상태로의 변경은 불가합니다.");
-            window.location.reload();
-            return;
-        }
-
-        let url = "/master/unmemorderupdate";
-
-        let formData = {
-            "unmember_purseq" : parseInt(unmember_purseq),
-            "statusseq" : {
-                "statusseq": parseInt(statusseq)
-            }
-        }
-        console.log(formData)
-
-        await fetch(url,{
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData),
-        }).then((response) => response.text())
-            .then((data)=>{
-                if(data === 'GOOD') {
-                    alert("주문 번호 : " + unmember_purseq + " 의 상태가 변경 되었습니다.");
-                    window.location.reload();
-                }
-                else alert("시스템 장애로 상태 변경이 실패했습니다.");
-            }).catch((error)=> {
-                console.log("error = " + error);
-            });
-    }
-    document.addEventListener('DOMContentLoaded', (event) => {
-        document.querySelectorAll('.statusSelect').forEach((select) => {
-            select.addEventListener('change', function() {
-                statusUpdate(this);
-            });
-        });
-    });
 </Script>
 </head>
 <body>
@@ -192,44 +148,6 @@
         </div>
     </div>
 </div>
-
-<div style="width:80%; text-align:center; position:relative; left: 35px; margin-top: 30px;">
-    <h2>비회원 주문</h2>
-</div>
-
-<div class="container" th:each="unpurchase : ${unmempurchaseList}">
-    <input type="checkbox">
-    <div class="info-container">
-        <div class="book-image">
-            <img th:src="${unpurchase.cover}" alt="책 이미지">
-        </div>
-    </div>
-
-    <div class="info-container">
-        <div class="book-info">
-            <h2 th:text="${unpurchase.bookname}"></h2>
-            <p th:text="${unpurchase.author}"></p>
-            <p th:text="${unpurchase.publisher}"></p>
-            <p th:text="${unpurchase.price}"></p>
-            <p th:text="${unpurchase.publicationdate}"></p>
-
-            <select class="unmemberstatusUpdate" th:data-unmember_purseq="${unpurchase.unmember_purseq}">
-                <option th:each="status : ${statuslist}" th:value="${status.statusseq}"
-                        th:text="${status.statusname}" th:selected="${status.statusseq} == ${unpurchase.statusseq}"></option>
-            </select>
-        </div>
-    </div>
-
-    <div class="info-container">
-        <div class="buyer-info">
-            <h2>비회원 정보</h2>
-            <p th:text="${unpurchase.name}"></p>
-            <p th:text="${unpurchase.addr} + '' + ${unpurchase.detailaddr}"></p>
-            <p th:text="${unpurchase.telnum}"></p>
-        </div>
-    </div>
-</div>
-
 
 </body>
 </html>
