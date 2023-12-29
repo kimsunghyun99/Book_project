@@ -68,4 +68,7 @@ public interface MemberService {
 
     //일반 회원 나이대 별 회원 수 불러오기
     public List<Map<String, Integer>> memberage();
+
+    //리뷰 갯수 가져오기
+    public long countReviewsByUserId(String userid);
 }

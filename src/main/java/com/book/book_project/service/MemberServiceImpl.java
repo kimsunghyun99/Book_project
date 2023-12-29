@@ -193,4 +193,9 @@ public class MemberServiceImpl implements MemberService {
 
         return list;
     }
+    //리뷰 갯수 가져오기
+    @Override
+    public long countReviewsByUserId(String userid){
+        return memberRepository.countReviewsByUserId(userid);
+    }
 }
