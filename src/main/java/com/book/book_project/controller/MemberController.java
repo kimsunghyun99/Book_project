@@ -192,17 +192,16 @@ public class MemberController {
         String username = member.getUsername();
         String nickname = member.getNickname();
         String telno = member.getTelno();
+        String interest = member.getInterest();
 
 
         if ("U".equals(option)) {
-            service.modifyMember(userid,username, nickname,telno); // 회원 기본정보 수정
+            service.modifyMember(userid,username, nickname,telno, interest); // 회원 기본정보 수정
         }
 
         return "{\"message\":\"GOOD\"}";
 
     }
-
-
 
     //주소 검색
     @GetMapping("/member/addrSearch")
@@ -234,8 +233,6 @@ public class MemberController {
         return result;
 
     }
-
-
 
     //로그인 화면 보기
     @GetMapping("/member/login")
