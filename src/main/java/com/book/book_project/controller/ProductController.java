@@ -128,7 +128,9 @@ public class ProductController {
                 System.out.println("list.price = "+list.get(0).getPrice());
             }
             model.addAttribute("list",list);
+            model.addAttribute("session", userid);
         }
+
     }
 
 
@@ -137,8 +139,8 @@ public class ProductController {
     @PostMapping("/product/shoppingBasket")
     public String postShoppingBasket(@RequestBody Map<String, String> bookid, HttpSession session) throws Exception{
         CartEntity cartEntity=new CartEntity();
-
         String userid = (String) session.getAttribute("userid");
+
         MemberEntity memberEntity = memberRepository.findById(userid).orElse(null);
         ProductEntity productEntity = productRepository.findById(bookid.get("bookid")).orElse(null);
 
@@ -244,12 +246,13 @@ public class ProductController {
             productDTO.setCover(productEntity.getCover());
             productlist.add(productDTO);
             model.addAttribute("view", productlist);
+
+            model.addAttribute("memberInfo", memberService.memberInfo(userid));
+            // userid에 대한 주소지 다 꺼내기
+            model.addAttribute("deliverylist", deliveryService.list(userid));
+            //bookid 에 대한 정보
         }
 
-        model.addAttribute("memberInfo", memberService.memberInfo(userid));
-        // userid에 대한 주소지 다 꺼내기
-        model.addAttribute("deliverylist", deliveryService.list(userid));
-        //bookid 에 대한 정보
     }
 
     @PostMapping("/product/payment")
@@ -281,6 +284,64 @@ public class ProductController {
 
         // 클라이언트에 리다이렉션 URL 전송
         return ResponseEntity.ok(Map.of("redirectUrl", "/product/payment"));
+    }
+
+    @GetMapping("/product/unMemberPayment")
+    public void getUnMemberPayment(
+            @RequestParam(value = "bookid", required = false) String bookid,
+            @RequestParam(value = "quantity", required = false) Integer  quantity,
+            Model model, HttpSession session) throws Exception {
+
+        if(session.getAttribute("productDTOList")!=null) {
+            List<ProductDTO> productlist = (List<ProductDTO>) session.getAttribute("productDTOList");
+            model.addAttribute("view", productlist);
+        }
+        // 모델에 productDTOList 추가
+        else {
+            List<ProductDTO> productlist = new ArrayList<>();
+
+            ProductDTO productDTO = new ProductDTO();
+            ProductEntity productEntity = service.findById(bookid);
+            productDTO.setQuantity(quantity);
+            productDTO.setBookname(productEntity.getBookname());
+            productDTO.setSalespoint(productEntity.getSalespoint());
+            productDTO.setBookid(productEntity.getBookid());
+            productDTO.setAuthor(productEntity.getAuthor());
+            productDTO.setPrice(productEntity.getPrice());
+            productDTO.setCover(productEntity.getCover());
+            productlist.add(productDTO);
+            model.addAttribute("view", productlist);
+        }
+    }
+    @PostMapping("/product/unMemberPayment")
+    public ResponseEntity<?> postUnMemberPayment(@RequestBody Map<String, List<Map<String, Object>>> payload, HttpSession session) {
+        List<Map<String, Object>> items = payload.get("items");
+        List<ProductDTO> productDTOList = new ArrayList<>();
+
+        for (Map<String, Object> item : items) {
+            String bookid = (String) item.get("bookid");
+            int quantity = (Integer) item.get("quantity");
+
+            ProductEntity productEntity = service.findById(bookid);
+            if (productEntity != null) {
+                ProductDTO productDTO = new ProductDTO();
+                productDTO.setAuthor(productEntity.getAuthor());
+                productDTO.setSalespoint(productEntity.getSalespoint());
+                productDTO.setCover(productEntity.getCover());
+                productDTO.setBookname(productEntity.getBookname());
+                productDTO.setPrice(productEntity.getPrice());
+                productDTO.setBookid(productEntity.getBookid());
+                productDTO.setQuantity(quantity);
+
+                productDTOList.add(productDTO);
+            }
+        }
+
+        // 여기서 적절한 리다이렉트 경로를 설정하세요.
+        session.setAttribute("productDTOList", productDTOList);
+
+        // 클라이언트에 리다이렉션 URL 전송
+        return ResponseEntity.ok(Map.of("redirectUrl", "/product/unMemberPayment"));
     }
 
 

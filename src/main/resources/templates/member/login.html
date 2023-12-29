@@ -138,6 +138,7 @@ text-align: center;
             return false;
         }
 
+
         let formData = new FormData();
         formData.append("userid", userid.value);
         formData.append("password", password.value);
@@ -157,6 +158,7 @@ text-align: center;
                 if(data.message === 'GOOD'){
                     cookieManage(userid.value, password.value);
                     login();
+
                 }else if(data.message === 'ID_NOT_FOUND'){
                     msg.innerHTML = '존재하지 않는 아이디입니다';
                 }else if(data.message === 'PASSWORD_NOT_FOUND'){
