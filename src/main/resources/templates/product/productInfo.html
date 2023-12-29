@@ -265,7 +265,7 @@ const count = (type) =>  {
             var cover = document.getElementById("cover").getAttribute('src');
             var author = document.getElementById("author").innerText.replace('작가: ', '');
             var price = document.getElementById("price").innerText.replace('가격: ', '').replace('원', '');
-            var volume = document.getElementById("quantity").value;
+            var quantity = document.getElementById("quantity").innerText;
 
             const data = {
                 bookid: bookid,
@@ -273,7 +273,7 @@ const count = (type) =>  {
                 cover: cover,
                 author: author,
                 price: price,
-                volume: volume
+                quantity: quantity
             };
 
             const cart = JSON.parse(localStorage.getItem("cart"))||[];
@@ -298,9 +298,28 @@ const count = (type) =>  {
             }
         };
 
-        const GoPayment = (bookid, quantity) => {
-            document.location.href=`/product/payment?bookid=${bookid}&quantity=${quantity}`
-        }
+        const GoPayment = async () => {
+            var userid = /*[[${session.userid}]]*/ 'default';
+            var bookid = document.getElementById("bookid").value;
+            var quantity = document.getElementById("quantity").innerText;
+            if (userid === 'default') {
+                userid = 'null';
+            }
+            console.log("productInfo_userid = "+userid);
+            console.log("userid = "+userid);
+            try {
+                if(userid!=='null'||userid!==null) {
+                    document.location.href=`/product/payment?bookid=${bookid}&quantity=${quantity}`
+                }
+                else{
+                    document.location.href=`/product/unMemberPayment?bookid=${bookid}&quantity=${quantity}`
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('오류가 발생했습니다: ' + error.message);
+            }
+
+        };
 
         window.onload = function() {
             var urlParams = new URLSearchParams('?bookid=123&page=1&focus=true');
@@ -343,7 +362,7 @@ const count = (type) =>  {
         </div>
         <br>
         <div>
-        <span>적립 포인트 : </span> <span id="total_salespoint">[[${#numbers.formatInteger(view.salespoint,3,'COMMA')}]] 원</span>
+        <span>적립 포인트 : </span> <span id="total_salespoint">[[${view.salespoint}]] point</span>
         </div>
         <div class="book-actions">
 
@@ -354,7 +373,7 @@ const count = (type) =>  {
                 <input type="button" id="btn_cart" class="btn_cart" value="장바구니 담기" th:onclick="cart()">
             </div>
 
-            <input type="button" value="구매하기" th:onclick="GoPayment([[${view.bookid}]],document.getElementById('quantity').innerHTML)">
+            <input type="button" value="구매하기" onclick="GoPayment()">
 
         </div>
 <!--        <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.salespoint,3,'COMMA')} + '원'"></p>-->
@@ -364,10 +383,6 @@ const count = (type) =>  {
         </div><br>
         <br>
 </div>
-
-</div>
-
-
 
 <div class="reviewDiv" style="width:60%;height:300px;margin:auto;text-align:left;">
 
