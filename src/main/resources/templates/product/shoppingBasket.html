@@ -281,6 +281,11 @@
 
 
         const GoPayment = async () => {
+            var userid = /*[[${session.userid}]]*/ 'default';
+            if (userid === 'default') {
+                userid = 'null';
+            }
+            console.log("userid = "+userid);
             const checkedCheckboxes = document.querySelectorAll('.checkbox:checked');
             if (checkedCheckboxes.length === 0) {
                 alert('구매할 항목을 선택해주세요.');
@@ -295,7 +300,7 @@
 
 
             try {
-                if(userid!=='null') {
+                if(userid!=='null'||userid!==null) {
                     const response = await fetch('/product/payment', {
                         method: 'POST',
                         headers: {

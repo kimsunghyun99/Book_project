@@ -251,12 +251,13 @@ public class ProductController {
             productDTO.setCover(productEntity.getCover());
             productlist.add(productDTO);
             model.addAttribute("view", productlist);
+
+            model.addAttribute("memberInfo", memberService.memberInfo(userid));
+            // userid에 대한 주소지 다 꺼내기
+            model.addAttribute("deliverylist", deliveryService.list(userid));
+            //bookid 에 대한 정보
         }
 
-        model.addAttribute("memberInfo", memberService.memberInfo(userid));
-        // userid에 대한 주소지 다 꺼내기
-        model.addAttribute("deliverylist", deliveryService.list(userid));
-        //bookid 에 대한 정보
     }
 
     @PostMapping("/product/payment")
@@ -287,16 +288,14 @@ public class ProductController {
         session.setAttribute("productDTOList", productDTOList);
 
         // 클라이언트에 리다이렉션 URL 전송
-        return ResponseEntity.ok(Map.of("redirectUrl", "/product/unMemberPayment"));
+        return ResponseEntity.ok(Map.of("redirectUrl", "/product/payment"));
     }
 
-    @GetMapping("/product/payment")
+    @GetMapping("/product/unMemberPayment")
     public void getUnMemberPayment(
             @RequestParam(value = "bookid", required = false) String bookid,
             @RequestParam(value = "quantity", required = false) Integer  quantity,
             Model model, HttpSession session) throws Exception {
-
-        String userid = (String)session.getAttribute("userid");
 
         if(session.getAttribute("productDTOList")!=null) {
             List<ProductDTO> productlist = (List<ProductDTO>) session.getAttribute("productDTOList");
@@ -318,11 +317,6 @@ public class ProductController {
             productlist.add(productDTO);
             model.addAttribute("view", productlist);
         }
-
-        model.addAttribute("memberInfo", memberService.memberInfo(userid));
-        // userid에 대한 주소지 다 꺼내기
-        model.addAttribute("deliverylist", deliveryService.list(userid));
-        //bookid 에 대한 정보
     }
     @PostMapping("/product/unMemberPayment")
     public ResponseEntity<?> postUnMemberPayment(@RequestBody Map<String, List<Map<String, Object>>> payload, HttpSession session) {
@@ -352,7 +346,7 @@ public class ProductController {
         session.setAttribute("productDTOList", productDTOList);
 
         // 클라이언트에 리다이렉션 URL 전송
-        return ResponseEntity.ok(Map.of("redirectUrl", "/product/payment"));
+        return ResponseEntity.ok(Map.of("redirectUrl", "/product/unMemberPayment"));
     }
 
 

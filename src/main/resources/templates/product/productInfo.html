@@ -298,9 +298,28 @@ const count = (type) =>  {
             }
         };
 
-        const GoPayment = (bookid, quantity) => {
-            document.location.href=`/product/payment?bookid=${bookid}&quantity=${quantity}`
-        }
+        const GoPayment = async () => {
+            var userid = /*[[${session.userid}]]*/ 'default';
+            var bookid = document.getElementById("bookid").value;
+            var quantity = document.getElementById("quantity").innerText;
+            if (userid === 'default') {
+                userid = 'null';
+            }
+            console.log("productInfo_userid = "+userid);
+            console.log("userid = "+userid);
+            try {
+                if(userid!=='null'||userid!==null) {
+                    document.location.href=`/product/payment?bookid=${bookid}&quantity=${quantity}`
+                }
+                else{
+                    document.location.href=`/product/unMemberPayment?bookid=${bookid}&quantity=${quantity}`
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('오류가 발생했습니다: ' + error.message);
+            }
+
+        };
 
     </script>
 </head>
@@ -345,7 +364,7 @@ const count = (type) =>  {
                 <input type="button" id="btn_cart" class="btn_cart" value="장바구니 담기" th:onclick="cart()">
             </div>
 
-            <input type="button" value="구매하기" th:onclick="GoPayment([[${view.bookid}]],document.getElementById('quantity').innerHTML)">
+            <input type="button" value="구매하기" onclick="GoPayment()">
 
         </div>
 <!--        <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.salespoint,3,'COMMA')} + '원'"></p>-->

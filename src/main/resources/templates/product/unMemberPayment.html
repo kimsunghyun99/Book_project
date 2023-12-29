@@ -121,9 +121,6 @@
             margin-left: 5px; /* 각 버튼 사이 여백 조절 */
             text-align:center;
         }
-        #addplus {
-            display: none;
-        }
 
         table {
 
@@ -192,18 +189,6 @@
         // 총액과 총 판매 포인트를 화면에 표시
 
 
-        let addplusVisible = false;
-        const AddAddr = () => {
-            if (addplusVisible) {
-                addplus.style.display = 'none'; // 이미 보이는 상태면 감추기
-            } else {
-                addplus.style.display = 'block'; // 안 보이는 상태면 보이기
-            }
-
-            addplusVisible = !addplusVisible; // 상태를 토글
-
-        }
-
 
             const searchAddr = () => {
 
@@ -224,12 +209,6 @@
 
 
 
-        const finaldelivery = (index) => {
-            const original_addr = document.getElementById('original_addr' + index).innerText;
-            const finaladdr = document.getElementById("finaladdr");
-            finaladdr.innerText = "배송될 주소 : " + original_addr;
-        }
-
         const finaldelivery1 = (addr1, detailaddr) => {
 
             const finaladdr = document.getElementById("finaladdr");
@@ -249,31 +228,6 @@
 
         }
 
-        // point 사용
-        function UsePoint() {
-            var pointInput = document.getElementById('point');
-            var totalInvoiceAmountElement = document.getElementById('totalInvoiceAmount');
-
-            var point = parseInt(pointInput.value, 10);
-            var totalInvoiceAmount = parseInt(totalInvoiceAmountElement.innerText.replace(/,/g, '').replace('원',''), 10);
-            var FinalPay = document.getElementById('FinalPay');
-
-
-            if(point > [[${memberInfo.point}]]) {
-                alert("나의 포인트를 확인해주세요");
-                document.getElementById('point').focus();
-                return false;
-            }
-
-            else {
-                FinalPay.innerHTML = '최종 결제금액 ' + (totalInvoiceAmount - point) + '원';
-            }
-        }
-
-
-
-
-
 
     </script>
 
@@ -286,37 +240,16 @@
     <div class="main_shop">
 
         <h1>주문서</h1><br>
+        <h4>비회원 주문</h4>
+        <div>
+            <input type="text" id="buyerTelno" name="buyerTelno" placeholder="번호를 입력하세요">
+            <input type="password" id="unMemberPassword" name="unMemberPassword" placeholder="임시비밀번호를 입력하세요">
 
-        <h4 style="display: inline-block;">배송지 목록</h4>
-        <div id="ADDorDelete" style="display: inline-block;">
-            <input type="button" id="add" value="새로운 배송지" onclick="AddAddr()" style="width:120%;">
         </div>
 
-        <table class="InfoTable" style="border-width: 2px; border-style: solid;">
-            <thead>
-            <tr>
-                <th>받는사람</th>
-                <th>주소</th>
-                <th>우편번호</th>
-                <th>번호</th>
-                <th>선택</th>
-            </tr>
-            </thead>
-            <tbody>
-            <th:block>
-                <tr th:each="delivery, stat :${deliverylist}" th:if="${deliverylist != null}">
-                    <td th:text="${delivery.name}"></td>
-                    <td th:id="'original_addr' + ${stat.index}" th:text="${delivery.addr} + ' ' + ${delivery.detailaddr}"></td>
-                    <td th:text="${delivery.zipcode}"></td>
-                    <td th:text="${delivery.telno}"></td>
-                    <td><input type="button" style="text-align: center;" value="선택" th:onclick="'finaldelivery(' + ${stat.index} + ')'"></td>
-                    <input type="hidden" id="deleteseqno" th:value="${delivery.deliveryseq}">
-                    <!--                <span style="display: none" id="deleteseqno" th:value="${delverylist.deliveryseq}"></span>-->
-                </tr>
-            </th:block>
-            </tbody>
-        </table>
+        <h4 style="display: inline-block;">배송지</h4>
         <br><br>
+        <div class="addr">
         <div id="addplus">
             <input type="text" id="addrSearch" name="addrSearch" class="addrSearch" placeholder="주소를 검색합니다.">
             <input type="button" id="btn_addSearch" class="btn_addrSearch" value="주소검색" onclick="searchAddr()">
@@ -325,7 +258,7 @@
             <input type="text" id="detailaddr" class="input_field" name="detailaddr" placeholder="상세 주소를 입력하세요">
             <input type="text" id="receiver" class="input_field" name="receiver" placeholder="받는사람 이름을 입력하세요">
             <input type="text" id="receivertelno" class="input_field" name="receivertelno" placeholder="받는사람 번호를 입력하세요">
-            <input type="button" id="newdelivery" class="input_field" value="선택" onclick="finaldelivery1(document.getElementById('addr1').value, document.getElementById('detailaddr').value)">
+            <input type="button" id="newdelivery" class="input_field" value="확인" onclick="finaldelivery1(document.getElementById('addr1').value, document.getElementById('detailaddr').value)">
         </div>
         <br><br><br>
 
@@ -345,6 +278,8 @@
         <input type="text" id="RequestText1" class="input_field" name="RequestText1" placeholder="직접입력">
         <br><br><br>
 
+        </div>
+
 
 
 
@@ -356,7 +291,7 @@
                     <th>책 이름 / 저자</th>
                     <th>책 가격</th>
                     <th>수량</th>
-                    <th>금액(적립 포인트)</th>
+                    <th>금액</th>
 
                 </tr>
                 <tbody>
@@ -372,7 +307,6 @@
                             <td><span th:id="'quntity'+${product.bookid}" th:text="${product.quantity}"></span></td>
                             <td colspan="3">
                                 <span style="text-align:right"><h4>합계<br><span class="productTotalAmount" th:id="'totalAmount' + ${product.bookid}"></span></h4></span>
-                                <span style="text-align:right"><h4>적립 포인트<br><span class="productTotalSalespoint" th:id="'totalSalespoint' + ${product.bookid}"></span></h4></span>
                             </td>
 <!--                                <input type="hidden" th:id="'salespoint'+${product.bookid}" th:value="${product.salespoint}">-->
 <!--                                <input type="hidden" th:id="bookid" th:value="${product.bookid}">-->
@@ -388,9 +322,6 @@
             </table>
         </div>
         <br><br>
-        <p th:text="'나의 포인트 : ' + ${memberInfo.point}"></p>
-        <input type="text" style="width:11%" id="point" placeholder="사용할 포인트를 입력해주세요">
-        <input type="button" style="width:7%" value="사용하기" onclick="UsePoint()">
 
         <p id="FinalPay"></p>
         <br><br>
