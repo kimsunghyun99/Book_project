@@ -246,128 +246,169 @@
 
         }
 
-            // point 사용
-            function UsePoint() {
-                var pointInput = document.getElementById('point');
-                var totalInvoiceAmountElement = document.getElementById('totalcost');
+                // point 사용
+                function UsePoint() {
+                    var pointInput = document.getElementById('point');
+                    var totalInvoiceAmountElement = document.getElementById('totalInvoiceAmount');
+                    var point = parseInt(pointInput.value, 10);
 
-                var point = parseInt(pointInput.value, 10);
-                var totalInvoiceAmount = parseInt(totalInvoiceAmountElement.innerText.replace(/,/g, '').replace('원', ''), 10);
-                var FinalPay = totalInvoiceAmount - point;
-        // point 사용
-        function UsePoint() {
-            var pointInput = document.getElementById('point');
-            var totalInvoiceAmountElement = document.getElementById('totalInvoiceAmount');
-            var point = parseInt(pointInput.value, 10);
-
-            var pointValue = document.getElementById("myPoint").innerText;
-            var totalInvoiceAmount = parseInt(totalInvoiceAmountElement.innerText.replace(/,/g, '').replace('원',''), 10);
-            var FinalPay = document.getElementById('FinalPay');
+                    var pointValue = document.getElementById("myPoint").innerText;
+                    var totalInvoiceAmount = parseInt(totalInvoiceAmountElement.innerText.replace(/,/g, '').replace('원', ''), 10);
+                    var FinalPay = document.getElementById('FinalPay');
 
 
-            if(point >pointValue) {
-                alert("나의 포인트를 확인해주세요");
-                document.getElementById('point').focus();
-                return false;
-            }
-                if (point > [[${memberInfo.point}]]) {
-                    alert("나의 포인트를 확인해주세요");
-                    document.getElementById('point').focus();
-                    return false;
-                } else {
+                    if (point > pointValue) {
+                        alert("나의 포인트를 확인해주세요");
+                        document.getElementById('point').focus();
+                        return false;
+                    }
+                    if (point > [[${memberInfo.point}]]) {
+                        alert("나의 포인트를 확인해주세요");
+                        document.getElementById('point').focus();
+                        return false;
+                    } else {
 
-                    totalInvoiceAmountElement.innerText = FinalPay + '원';
-                }
-
-            }
-
-            function KGpay() {
-                // IMP 객체가 전역 범위에 정의되어 있다고 가정합니다.
-                IMP.init("imp61517557");
-
-                // 각 요소에 대한 참조를 가져오기 전에 변수로 선언해보세요.
-
-                var buyerName = document.getElementById("receiver").value;
-                var useid = document.getElementById("userid").value;
-                var bookid = document.getElementById("bookid").value;
-                var bookname = document.getElementById("bookname" + bookid);
-                var bookQuntity = document.getElementById("quantity" + bookid).textContent;
-                var totalInvoiceAmount = document.getElementById("totalcost").textContent;
-                // var buyerEmail = document.getElementById("buyerEmail").value;
-                var telno = document.getElementById("receivertelno");
-                var addr1 = document.getElementById("addr1");
-                var detailAddr = document.getElementById("detailaddr");
-                var zipcode = document.getElementById("zipcode");
-
-
-                console.log("Bookid:", bookid);
-
-                if (totalInvoiceAmount) {
-                    var priceText = totalInvoiceAmount.innerText;
-
-                    // 가격을 숫자로 변환하거나 다른 필요한 처리 수행
-                    var price = extractPriceValue(priceText);
-
-                    // 이제 price 변수에는 클라이언트 측에서 사용할 수 있는 값이 저장되어 있습니다.
-                    console.log("Price:", price);
-                }
-
-            else {
-                FinalPay.innerHTML = '최종 결제금액 ' + (totalInvoiceAmount - point) + '원';
-            }
-        }
-
-                function extractPriceValue(priceText) {
-                    // 여기에서 필요한 가격 값 추출 논리를 구현
-                    // 예를 들어, '1,234원' 형식의 문자열을 '1234' 숫자로 변환
-                    //var numericValue = parseInt(priceText.replace(/[^\d]/g, ''));
-                    var numericValue = parseInt(totalInvoiceAmount.replace(/[^\d]/g, ''));
-                    return numericValue;
+                        totalInvoiceAmountElement.innerText = FinalPay + '원';
+                    }
 
                 }
 
+                function KGpay() {
+                    // IMP 객체가 전역 범위에 정의되어 있다고 가정합니다.
+                    IMP.init("imp61517557");
 
-                // if (bookid) {
-                //     var bookID = bookid.innerText;
-                // }
+                    // 각 요소에 대한 참조를 가져오기 전에 변수로 선언해보세요.
 
-                if (bookname) {
-                    var book = bookname.innerText;
+                    var buyerName = document.getElementById("receiver").value;
+                    var useid = document.getElementById("userid").value;
+                    var bookid = document.getElementById("bookid").value;
+                    var bookname = document.getElementById("bookname" + bookid);
+                    var bookQuntity = document.getElementById("quantity" + bookid).textContent;
+                    var totalInvoiceAmount = document.getElementById("totalcost").textContent;
+                    // var buyerEmail = document.getElementById("buyerEmail").value;
+                    var telno = document.getElementById("receivertelno");
+                    var addr1 = document.getElementById("addr1");
+                    var detailAddr = document.getElementById("detailaddr");
+                    var zipcode = document.getElementById("zipcode");
+
+
+                    console.log("Bookid:", bookid);
+
+                    if (totalInvoiceAmount) {
+                        var priceText = totalInvoiceAmount.innerText;
+
+                        // 가격을 숫자로 변환하거나 다른 필요한 처리 수행
+                        var price = extractPriceValue(priceText);
+
+                        // 이제 price 변수에는 클라이언트 측에서 사용할 수 있는 값이 저장되어 있습니다.
+                        console.log("Price:", price);
+                    } else {
+                        FinalPay.innerHTML = '최종 결제금액 ' + (totalInvoiceAmount - point) + '원';
+                    }
+
+
+                    function extractPriceValue(priceText) {
+                        // 여기에서 필요한 가격 값 추출 논리를 구현
+                        // 예를 들어, '1,234원' 형식의 문자열을 '1234' 숫자로 변환
+                        //var numericValue = parseInt(priceText.replace(/[^\d]/g, ''));
+                        var numericValue = parseInt(totalInvoiceAmount.replace(/[^\d]/g, ''));
+                        return numericValue;
+
+                    }
+
+
+                    // if (bookid) {
+                    //     var bookID = bookid.innerText;
+                    // }
+
+                    if (bookname) {
+                        var book = bookname.innerText;
+                    }
+
+                    // 참조를 가져온 후에 값을 읽어보세요.
+                    var currentDate = new Date();
+                    var year = currentDate.getFullYear().toString().substr(2, 2);
+                    var month = ('0' + (currentDate.getMonth() + 1)).slice(-2);
+                    var day = ('0' + currentDate.getDate()).slice(-2);
+                    var seconds = ('0' + currentDate.getSeconds()).slice(-2);
+
+                    var merchant_uid = year + month + day + seconds;
+                    var useId = useid;
+                    var username = buyerName;
+                    var selectedBookid = bookid;
+                    var selectedBookname = book;
+                    var selectedBookquntity = bookQuntity; // 수정된 부분
+                    var amount = price;
+                    // var email = buyerEmail ? buyerEmail.value : null;
+                    var receivertelno = telno ? telno.value : null;
+                    var address = addr1 ? addr1.value : null;
+                    var detailaddr = detailAddr ? detailAddr.value : null;
+                    var postcode = zipcode ? zipcode.value : null;
+                    var date = new Date();
+
+                    console.log("merchant_uid:", merchant_uid);
+                    console.log("amount:", amount);
+                    console.log("selectedBookname:", selectedBookname);
+                    console.log("selectedBookid:", selectedBookid);
+                    console.log("selectedBookquntity:", selectedBookquntity);
+                    console.log("useId", useId);
+                    console.log("address", address);
+                    console.log("detailaddr", detailaddr);
+                    console.log("postcode", postcode);
+                    console.log("receivertelno", receivertelno);
+
+
+                    // 나머지 코드 (Ajax 호출 등) 추가
+                    IMP.request_pay({
+                        pg: "html5_inicis",
+                        pay_method: "card",
+                        merchant_uid: merchant_uid,
+                        bookid: bookid,
+                        username: username,
+                        name: selectedBookname,
+                        amount: amount,
+                        bookquntity: selectedBookquantity,
+                        // buyer_email: email,
+                        receivertelno: receivertelno,
+                        address: address,
+                        detailaddr: detailaddr,
+                        postcode: postcode,
+                        date: date
+                    }, function (rsp) {
+                        if (rsp.success) {
+                            // 결제 성공 시에 서버로 데이터 전송
+                            $.ajax({
+                                type: "POST",
+                                url: "/member/paymentInfo",
+                                contentType: "application/json",
+                                data: JSON.stringify({
+                                    "amount": amount,
+                                    "date": date,
+                                    "merchant_uid": merchant_uid,
+                                    "bookid": bookid,
+                                    "bookquntity": selectedBookquantity,
+                                    "address": address,
+                                    "detailaddr": detailaddr,
+                                    "postcode": postcode,
+                                    "username": username,
+                                    "receivertelno": receivertelno
+
+
+                                }),
+                                success: function (response) {
+                                    // 성공 시 동작
+                                    console.log("Server response:", response);
+                                },
+                                error: function (error) {
+                                    // 실패 시 동작
+                                    console.error("Error during server request:", error);
+                                }
+                            });
+                        } else {
+                            alert("결제에 실패하였습니다. 에러 내용: " + rsp.error_msg);
+                        }
+                    });
                 }
-
-                // 참조를 가져온 후에 값을 읽어보세요.
-                var currentDate = new Date();
-                var year = currentDate.getFullYear().toString().substr(2, 2);
-                var month = ('0' + (currentDate.getMonth() + 1)).slice(-2);
-                var day = ('0' + currentDate.getDate()).slice(-2);
-                var seconds = ('0' + currentDate.getSeconds()).slice(-2);
-
-                var merchant_uid = year + month + day + seconds;
-                var useId = useid;
-                var username = buyerName;
-                var selectedBookid = bookid;
-                var selectedBookname = book;
-                var selectedBookquntity = bookQuntity; // 수정된 부분
-                var amount = price;
-                // var email = buyerEmail ? buyerEmail.value : null;
-                var receivertelno = telno ? telno.value : null;
-                var address = addr1 ? addr1.value : null;
-                var detailaddr = detailAddr ? detailAddr.value : null;
-                var postcode = zipcode ? zipcode.value : null;
-                var date = new Date();
-
-                console.log("merchant_uid:", merchant_uid);
-                console.log("amount:", amount);
-                console.log("selectedBookname:", selectedBookname);
-                console.log("selectedBookid:", selectedBookid);
-                console.log("selectedBookquntity:", selectedBookquntity);
-                console.log("useId", useId);
-                console.log("address", address);
-                console.log("detailaddr", detailaddr);
-                console.log("postcode", postcode);
-                console.log("receivertelno", receivertelno);
-
-                // 나머지 코드 (Ajax 호출 등) 추가
 
 
 
@@ -497,7 +538,7 @@
         <p id="FinalPay"></p>
         <br><br>
             <div id="pay">
-                <input type="button" style="text-align: center" class="btn_order" value="결제하기">
+                <input type="button" style="text-align: center" class="btn_order" value="결제하기" onclick="KGpay()">
             </div>
 
     </div>

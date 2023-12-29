@@ -230,7 +230,7 @@
 
         }
 
-        function KGpay() {
+        function KGpayApi() {
             // IMP 객체가 전역 범위에 정의되어 있다고 가정합니다.
             IMP.init("imp61517557");
 
@@ -332,7 +332,7 @@
                     // 결제 성공 시에 서버로 데이터 전송
                     $.ajax({
                         type: "POST",
-                        url: "/member/memberPurchaseList",
+                        url: "/member/paymentInfo",
                         contentType: "application/json",
                         data: JSON.stringify({
                             "amount": amount,
@@ -464,7 +464,7 @@
         <p id="FinalPay"></p>
         <br><br>
             <div id="pay">
-                <input type="button" style="text-align: center" class="btn_order" value="결제하기" onclick="KGpay()">
+                <input type="button" style="text-align: center" class="btn_order" value="결제하기" onclick="KGpayApi()">
             </div>
 
     </div>

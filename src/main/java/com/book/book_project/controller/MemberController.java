@@ -309,6 +309,8 @@ public class MemberController {
 
     //회원 구매내역 조회 화면
     @GetMapping("/member/memberPurchaseList")
+
+
     public void getMemberPurchaseList(Model model, HttpSession session,PurchaseInfoService purchaseInfoService) throws Exception {
 
         String userid = (String) session.getAttribute("userid");
@@ -369,8 +371,8 @@ public class MemberController {
 
 
     @Transactional
-    @PostMapping(value = "/member/memberPurchaseList")
-    public ResponseEntity<String> getMemberPurchaseList(
+    @PostMapping(value = "/member/paymentInfo")
+    public ResponseEntity<String> postPaymentInfo(
             HttpSession session,
             @RequestBody Map<String, Object> requestData
     ) throws Exception {

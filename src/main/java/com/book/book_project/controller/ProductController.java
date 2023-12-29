@@ -290,14 +290,14 @@ public class ProductController {
                 //              int postNum = 5; //한 화면에 보여지는 게시물 행의 갯수
 //                int pageListCount = 5; //화면 하단에 보여지는 페이지리스트의 페이지 갯수
 //
-                PageUtil page = new PageUtil();
+               // PageUtil page = new PageUtil();
 //                Page<ReviewEntity> pagedReviews = reviewService.list(bookid, pageNum, postNum);
 //
 //                // 모델에 페이징 결과를 추가
 //                model.addAttribute("list", pagedReviews.getContent());
 //                model.addAttribute("totalElement", pagedReviews.getTotalElements());
                 //           model.addAttribute("postNum", postNum);
-                model.addAttribute("page", pageNum);
+//                model.addAttribute("page", pageNum);
 //                model.addAttribute("pageList", page.getPageList(pageNum, postNum, pageListCount, pagedReviews.getTotalPages(), String.valueOf(bookid.getBookid())));
 //                return reviewService.reviewView(review);
         }

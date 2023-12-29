@@ -38,12 +38,7 @@ public class ProductServiceImpl implements ProductService{
         return productRepository.findByKeywordAndCategorynumber(keyword, categorynumbers, pageRequest);
     }
 
-    @Override
-    public Page<ProductEntity> list(int pageNum, int postNum, String keyword) throws Exception {
-        PageRequest pageRequest = PageRequest.of(pageNum - 1, postNum, Sort.by(Sort.Direction.DESC, "bookid"));
-        return productRepository.findByBookidContainingOrBooknameContainingOrCategorynumberContainingOrPublisher
-                (keyword, keyword, keyword, keyword, pageRequest);
-    }
+
     public Page<ProductEntity> list1(int pageNum, int postNum, String keyword) throws Exception {
         PageRequest pageRequest = PageRequest.of(pageNum - 1, postNum, Sort.by(Sort.Direction.DESC,"bookid"));
         return productRepository.findByBooknameContainingOrAuthorContainingOrPublisherContaining(keyword,keyword,keyword, pageRequest);
