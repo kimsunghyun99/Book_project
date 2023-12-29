@@ -73,50 +73,13 @@
 </style>
 
     <script>
-        window.onload=async function() {
-            var userid = /*[[${session.userid}]]*/ 'default';
-            if (userid === 'default') {
-                userid = 'null';
-            }
 
-            console.log("javascript userid = "+userid);
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-            if(userid !=='null' && cart.length >0){
-                if(confirm("로그인하지 않고 담아놓은 물건이 있습니다. 추가하시겠습니까?")){
-
-                    for (const item of cart) {
-                        var bookid = item.bookid;
-                        console.log("bookid = " + bookid);
-
-                        await fetch('/product/shoppingBasket', {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify({bookid: bookid}),
-                        }).then((response) => response.json())
-                            .then((data) => {
-                                if (data.message !== 'GOOD') {
-                                    throw new Error('장바구니에 추가 실패했습니다.');
-                                }
-                            }).catch((error) => {
-                                console.log("error = " + error);
-                            });
-                    }
-                    alert('장바구니에 추가되었습니다.');
-                    localStorage.removeItem('cart');
-                    window.location.reload();
-                }else {
-                    // 로컬 스토리지와 서버에서 장바구니가 비어있을 때
-                    emptyCartMessage.style.display = '';
-                }
-            }
-        };
         document.addEventListener('DOMContentLoaded', function () {
             const cartBody = document.getElementById('cartBody');
             const emptyCartMessage = document.getElementById('emptyCartMessage');
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            var localList = '[[${list}]]';
+
 
             if (cart.length > 0) {
                 emptyCartMessage.style.display = 'none';
@@ -189,6 +152,9 @@
                     totalPrice.id='total_price'+item.bookid;
                     totalPrice.textContent = totalprice.toLocaleString('ko-KR') + '원';
                 });
+            }else if(cart.length===0&&localList==='') {
+                // 로컬 스토리지와 서버에서 장바구니가 비어있을 때
+                emptyCartMessage.style.display = '';
             }
         });
 
@@ -281,10 +247,8 @@
 
 
         const GoPayment = async () => {
-            var userid = /*[[${session.userid}]]*/ 'default';
-            if (userid === 'default') {
-                userid = 'null';
-            }
+            var userid = '[[${session.userid}]]';
+
             console.log("userid = "+userid);
             const checkedCheckboxes = document.querySelectorAll('.checkbox:checked');
             if (checkedCheckboxes.length === 0) {
@@ -300,7 +264,7 @@
 
 
             try {
-                if(userid!=='null'||userid!==null) {
+                if(userid!=='') {
                     const response = await fetch('/product/payment', {
                         method: 'POST',
                         headers: {
