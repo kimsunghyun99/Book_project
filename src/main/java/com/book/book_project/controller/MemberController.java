@@ -334,6 +334,21 @@ public class MemberController {
 
 
 
+    //회원 구매내역 교환,환불 처리
+    @PostMapping("/member/memberPurchaseList")
+    public String postMemberPurchaseList(RefundDTO refundDTO) throws Exception {
+
+        refundDTO.dtoToEntity(refundDTO);
+
+
+        return "{\"message\":\"GOOD\"}";
+    }
+
+
+
+
+
+
     //비회원 구매내역 조회 화면
 //    @GetMapping("/member/unMemberPurchaseList")
 //    public void getUnMemberPurchaseList(Model model, HttpSession session,PurchaseInfoService purchaseInfoService) throws Exception {
