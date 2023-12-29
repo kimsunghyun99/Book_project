@@ -6,6 +6,7 @@ import com.book.book_project.entity.PurchaseInfoEntity;
 import com.book.book_project.entity.UnMemberEntity;
 import com.book.book_project.entity.repository.PurchaseInfoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,5 +42,15 @@ public class PurchaseInfoServiceImpl implements PurchaseInfoService {
         List<Map<String, String>> list = purchaseInfoRepository.unpurchaseinfo();
 
         return list;
+    }
+
+    //회원 주문 상태 변경
+    public void memberorderupdate(int statusseq, int purchaseinfonumber){
+        purchaseInfoRepository.memberorderupdate(statusseq, purchaseinfonumber);
+    }
+
+    //비회원 주문 상태 변경
+    public void unmemberorderupdate(int statusseq, int unmember_purseq) {
+        purchaseInfoRepository.unmemberorderupdate(statusseq, unmember_purseq);
     }
 }

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>주문 관리 화면</title>
@@ -58,6 +57,99 @@
         margin-right: 10px; /* 오른쪽 여백 추가 */
     }
 </style>
+<Script>
+    // 회원 주문 상태 변경
+    const statusUpdate = async (select) => {
+        let purchaseinfonumber = select.dataset.purchaseinfonumber;
+        let statusseq = select.value;
+
+        if(statusseq === '1') {
+            alert("주문 완료 상태로의 변경은 불가합니다.");
+            window.location.reload();
+            return;
+        }
+
+        let url = "/master/memorderupdate";
+
+        let formData = {
+            "purchaseinfonumber" : parseInt(purchaseinfonumber),
+            "statusseq" : {
+                "statusseq": parseInt(statusseq)
+            }
+        }
+        console.log(formData)
+
+        await fetch(url,{
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData),
+        }).then((response) => response.text())
+            .then((data)=>{
+                if(data === 'good') {
+                    alert("주문 번호 : " + purchaseinfonumber + " 의 상태가 변경 되었습니다.");
+                    window.location.reload();
+                }
+                else alert("시스템 장애로 상태 변경이 실패했습니다.");
+            }).catch((error)=> {
+                console.log("error = " + error);
+            });
+    }
+    document.addEventListener('DOMContentLoaded', (event) => {
+        document.querySelectorAll('.statusSelect').forEach((select) => {
+            select.addEventListener('change', function() {
+                statusUpdate(this);
+            });
+        });
+    });
+/*------------------------------------------------------------------------------------------------------*/
+    // 비회원 주문 상태 변경
+    const unmemberstatusUpdate = async (select) => {
+        let unmember_purseq = select.dataset.unmember_purseq;
+        let statusseq = select.value;
+
+        if(statusseq === '1') {
+            alert("주문 완료 상태로의 변경은 불가합니다.");
+            window.location.reload();
+            return;
+        }
+
+        let url = "/master/unmemorderupdate";
+
+        let formData = {
+            "unmember_purseq" : parseInt(unmember_purseq),
+            "statusseq" : {
+                "statusseq": parseInt(statusseq)
+            }
+        }
+        console.log(formData)
+
+        await fetch(url,{
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData),
+        }).then((response) => response.text())
+            .then((data)=>{
+                if(data === 'GOOD') {
+                    alert("주문 번호 : " + unmember_purseq + " 의 상태가 변경 되었습니다.");
+                    window.location.reload();
+                }
+                else alert("시스템 장애로 상태 변경이 실패했습니다.");
+            }).catch((error)=> {
+                console.log("error = " + error);
+            });
+    }
+    document.addEventListener('DOMContentLoaded', (event) => {
+        document.querySelectorAll('.statusSelect').forEach((select) => {
+            select.addEventListener('change', function() {
+                statusUpdate(this);
+            });
+        });
+    });
+</Script>
 </head>
 <body>
 <div th:include="/etc/header.html :: banner"></div>
@@ -83,12 +175,9 @@
             <p th:text="${purchase.price}"></p>
             <p th:text="${purchase.publicationdate}"></p>
 
-            <select>
-                <option value="주문 완료">주문 완료</option>
-                <option value="출고 처리 중">출고 처리 중</option>
-                <option value="배송 준비">배송 준비</option>
-                <option value="배송 중">배송 중</option>
-                <option value="배송 완료">배송 완료</option>
+            <select class="statusSelect" th:data-purchaseinfonumber="${purchase.purchaseinfonumber}">
+                <option th:each="status : ${statuslist}" th:value="${status.statusseq}"
+                        th:text="${status.statusname}" th:selected="${status.statusseq} == ${purchase.statusseq}"></option>
             </select>
         </div>
     </div>
@@ -98,7 +187,7 @@
             <h2>구매자 정보</h2>
             <p th:text="${purchase.username}"></p>
             <p th:text="${purchase.userid}"></p>
-            <p th:text="${purchase.addr1}+${purchase.addr2}"></p>
+            <p th:text="${purchase.addr1} + '' + ${purchase.addr2}"></p>
             <p th:text="${purchase.telno}"></p>
         </div>
     </div>
@@ -124,12 +213,9 @@
             <p th:text="${unpurchase.price}"></p>
             <p th:text="${unpurchase.publicationdate}"></p>
 
-            <select>
-                <option value="주문 완료">주문 완료</option>
-                <option value="출고 처리 중">출고 처리 중</option>
-                <option value="배송 준비">배송 준비</option>
-                <option value="배송 중">배송 중</option>
-                <option value="배송 완료">배송 완료</option>
+            <select class="unmemberstatusUpdate" th:data-unmember_purseq="${unpurchase.unmember_purseq}">
+                <option th:each="status : ${statuslist}" th:value="${status.statusseq}"
+                        th:text="${status.statusname}" th:selected="${status.statusseq} == ${unpurchase.statusseq}"></option>
             </select>
         </div>
     </div>
