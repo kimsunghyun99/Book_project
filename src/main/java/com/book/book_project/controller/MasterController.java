@@ -226,10 +226,10 @@ public class MasterController {
             unmempurchaseMap.put("publicationdate", map.get("publicationdate"));
             unmempurchaseMap.put("price", map.get("price"));
             unmempurchaseMap.put("cover", map.get("cover"));
-            unmempurchaseMap.put("unmember_purseq", map.get("unmember_purseq"));
+            unmempurchaseMap.put("unmemberpurchaseinfoseq", map.get("unmemberpurchaseinfoseq"));
             unmempurchaseMap.put("statusseq", map.get("statusseq"));
             unmempurchaseMap.put("statusname", map.get("statusname"));
-            System.out.println(unmempurchaseMap.put("unmember_purseq", map.get("unmember_purseq")));
+            System.out.println(unmempurchaseMap.put("unmemberpurchaseinfoseq", map.get("unmemberpurchaseinfoseq")));
 
             //비회원 정보
             unmempurchaseMap.put("name", map.get("receivername"));
@@ -262,11 +262,11 @@ public class MasterController {
     public String unmemberorderupdate(@RequestBody UnMemberPurchaseInfoEntity unMemberPurchaseInfoEntity){
         System.out.println("비회원 주문 상태 변경");
         int statusseq = unMemberPurchaseInfoEntity.getStatusseq().getStatusseq();
-        int unmember_purseq = unMemberPurchaseInfoEntity.getUnmemberpurchaseinfoseq();
+        int unmemberpurchaseinfoseq = unMemberPurchaseInfoEntity.getUnmemberpurchaseinfoseq();
         System.out.println(statusseq);
-        System.out.println(unmember_purseq);
+        System.out.println(unmemberpurchaseinfoseq);
 
-        purchaseInfoRepository.unmemberorderupdate(statusseq, unmember_purseq);
+        purchaseInfoRepository.unmemberorderupdate(statusseq, unmemberpurchaseinfoseq);
 
         return "good";
     }

@@ -8,13 +8,12 @@
 </style>
 </head>
 <body>
-<div th:include="/etc/header.html"></div>
+<div th:insert="~{/etc/header.html}"></div>
 <br><br>
+<h2 th:text="${memberInfo.username} "> <a href="/member/memberPurchaseList">장바구니</a></h2>
 <br><br>
-<h4 th:text="${memberInfo.username} ">
-    <a href="/member/memberInfoModify">정보수정</a>
+<h4 th:text="${memberInfo.username} "><a href="/member/memberInfoModify">정보수정</a></h4>
 
-</h4>
 <div class="table-container">
     <table class="InfoTable">
         <tr>
