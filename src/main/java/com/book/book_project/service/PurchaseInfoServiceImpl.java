@@ -32,7 +32,7 @@ public class PurchaseInfoServiceImpl implements PurchaseInfoService {
     public PurchaseInfoEntity purchaseList( BuyerInfoEntity buyerseq){
 
 
-        return purchaseInfoRepository.findByBuyerseq(buyerseq);
+        return (PurchaseInfoEntity) purchaseInfoRepository.findByBuyerseq(buyerseq);
     }
 
 

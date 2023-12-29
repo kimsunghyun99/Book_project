@@ -46,13 +46,13 @@ public interface PurchaseInfoRepository extends JpaRepository<PurchaseInfoEntity
     @Query(value = "update tbl_purchaseinfo set statusseq = :statusseq where purchaseinfonumber = :purchaseinfonumber", nativeQuery = true)
     public void memberorderupdate(@Param("statusseq") int statusseq, @Param("purchaseinfonumber") int purchaseinfonumber);
 
-//    //비회원 주문 상태 변경
-//    //회원 주문 상태 변경
-//    @Transactional
-//    @Modifying//테이블 DML(update, insert, delete)을 실행 시켜 변화를 주었을 경우 테이블에 반영된 내용을 엔티티 클래스에 반영
-//    @Query(value = "update tbl_unmemberpurchaseinfo set statusseq = :statusseq where unmember_purseq = :unmember_purseq", nativeQuery = true)
-//    public void unmemberorderupdate(@Param("statusseq") int statusseq, @Param("unmember_purseq") int unmember_purseq);
-////    List<PurchaseInfoEntity> findByBuyerseq(BuyerInfoEntity buyerseq);
+    //비회원 주문 상태 변경
+    //회원 주문 상태 변경
+    @Transactional
+    @Modifying//테이블 DML(update, insert, delete)을 실행 시켜 변화를 주었을 경우 테이블에 반영된 내용을 엔티티 클래스에 반영
+    @Query(value = "update tbl_unmemberpurchaseinfo set statusseq = :statusseq where unmember_purseq = :unmember_purseq", nativeQuery = true)
+    public void unmemberorderupdate(@Param("statusseq") int statusseq, @Param("unmember_purseq") int unmember_purseq);
+//    List<PurchaseInfoEntity> findByBuyerseq(BuyerInfoEntity buyerseq);
 //PurchaseInfoEntity findByBuyerseq( BuyerInfoEntity buyerseq);
 
 }

@@ -271,7 +271,7 @@ public class MemberController {
     public void getMyPage(HttpSession session, Model model) {
         String userid = (String)session.getAttribute("userid");
         model.addAttribute("memberInfo", service.memberInfo(userid));//회원정보 불러오기
-        model.addAttribute("countReviewsByUserId", service.countReviewsByUserId(userid));//리뷰 갯수 구하기
+//        model.addAttribute("countReviewsByUserId", service.countReviewsByUserId(userid));//리뷰 갯수 구하기
 
     }
 
@@ -310,7 +310,7 @@ public class MemberController {
         for(int i =0; i<buyerInfo.size(); i++) {
 
             BuyerInfoEntity buyerInfoEntity = buyerInfoRepository.findById(buyerInfo.get(i).getBuyerseq()).orElse(null);
-            PurchaseInfoEntity purchaseInfoEntity = purchaseInfoRepository.findByBuyerseq(buyerInfoEntity); // buyerseq 값 정의
+            PurchaseInfoEntity purchaseInfoEntity = (PurchaseInfoEntity) purchaseInfoRepository.findByBuyerseq(buyerInfoEntity); // buyerseq 값 정의
             purchaseInfoList.add(purchaseInfoEntity);
 
 
