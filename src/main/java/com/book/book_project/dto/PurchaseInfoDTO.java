@@ -30,8 +30,6 @@ public class PurchaseInfoDTO {
         this.totalprice=purchaseInfoEntity.getTotalprice();
     }
 
-
-
     public PurchaseInfoEntity dtoToEntity(PurchaseInfoDTO dto){
 
         return PurchaseInfoEntity.builder()

@@ -70,11 +70,6 @@ public class ProductController {
         model.addAttribute("bookListId", bookList.get(0).getBookid());
         model.addAttribute("newsList", newsDTOList);
 
-
-
-
-
-
     }
 
     @GetMapping("/product/productInfo")

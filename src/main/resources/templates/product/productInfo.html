@@ -299,20 +299,20 @@ const count = (type) =>  {
         };
 
         const GoPayment = async () => {
-            var userid = /*[[${session.userid}]]*/ 'default';
+            var userid =  `[[${session.userid}]]`;
+            console.log(userid);
             var bookid = document.getElementById("bookid").value;
             var quantity = document.getElementById("quantity").innerText;
-            if (userid === 'default') {
-                userid = 'null';
-            }
+
             console.log("productInfo_userid = "+userid);
             console.log("userid = "+userid);
             try {
-                if(userid!=='null'||userid!==null) {
+                if(userid!=='') {
                     document.location.href=`/product/payment?bookid=${bookid}&quantity=${quantity}`
                 }
                 else{
                     document.location.href=`/product/unMemberPayment?bookid=${bookid}&quantity=${quantity}`
+                    console.log("bookid = "+bookid);
                 }
             } catch (error) {
                 console.error('Error:', error);
