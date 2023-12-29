@@ -43,8 +43,8 @@ public class MemberServiceImpl implements MemberService {
     // select * from tbl_member where userid = #{userid}
     //회원 정보 가져 오기
     @Override
-    public MemberDTO memberInfo(String userid) {
-        return memberRepository.findById(userid).map(member -> new MemberDTO(member)).get();
+    public MemberEntity memberInfo(String userid) {
+        return memberRepository.findById(userid).orElse(null);
     }
 
     //회원 구매,주문 갯수 가져오기
@@ -84,7 +84,7 @@ public class MemberServiceImpl implements MemberService {
 
     //회원정보 수정
     @Override
-    public void modifyMember(String userid,String username, String nickname,String telno) {
+    public void modifyMember(String userid,String username, String nickname,String telno, String interest) {
 //        member.dtoToEntity(member);
 //       // memberEntity.setPassword(pwdEncoder.encode(member.getPassword()));
 //         //memberRepository.membermodify(member.dtoToEntity());
@@ -93,7 +93,7 @@ public class MemberServiceImpl implements MemberService {
 //        member.setMemberclass("bronze");
      //   MemberEntity memberEntity = member.dtoToEntity(member);
       //  memberRepository.save(memberEntity);  // 변경 내용을 데이터베이스에 저장
-        memberRepository.membermodify(userid,username, nickname, telno);
+        memberRepository.membermodify(userid,username, nickname, telno, interest);
     }
 
     //주소 검색
@@ -193,14 +193,15 @@ public class MemberServiceImpl implements MemberService {
 
         return list;
     }
-    @Override
-    public MemberEntity findById(String userid) {
-        return memberRepository.findById(userid).orElse(null);
-    }
-
     //리뷰 갯수 가져오기
     @Override
     public long countReviewsByUserId(String userid){
         return memberRepository.countReviewsByUserId(userid);
     }
+    @Override
+    public MemberEntity findById(String userid) {
+        return memberRepository.findById(userid).orElse(null);
+    }
+
+
 }

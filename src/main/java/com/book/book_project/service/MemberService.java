@@ -19,7 +19,7 @@ public interface MemberService {
     public void memberInfoRegistry(MemberDTO member);
 
     //회원 정보 가져 오기
-    public MemberDTO memberInfo(String userid);
+    public MemberEntity memberInfo(String userid);
 
     MemberDTO nickname(String userid, String nickname) throws Exception;
 
@@ -27,7 +27,7 @@ public interface MemberService {
     public void memberPasswordModify(MemberDTO member);
 
     // 회원정보 수정
-    public void modifyMember(String userid,String username, String nickname,String telno);
+    public void modifyMember(String userid,String username, String nickname,String telno, String interest);
 
     //마지막 로그인 날짜 기록
     public void lastloginUpdate(MemberDTO member);
@@ -46,8 +46,6 @@ public interface MemberService {
 
     //주소 검색
     public Page<AddressEntity> addrSearch(int pageNum, int postNum, String addrSearch);
-
-
 
     //아이디 중복 확인
     public int idCheck(String userid);
@@ -77,6 +75,4 @@ public interface MemberService {
 
     //리뷰 갯수 가져오기
     public long countReviewsByUserId(String userid);
-
-
 }

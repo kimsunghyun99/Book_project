@@ -90,9 +90,7 @@
             localStorage.setItem('recentlyViewed', JSON.stringify(recentlyViewed));
         }
 
-        // Function ViewProductDetails(bookid) {
-        //         window.location.href='product/productInfo?bookid'+ bookid + '&page=1';
-        // }
+
 
         window.onload = () =>  {
             var recentlyViewedDiv = document.getElementById('recentlyViewed');
@@ -103,27 +101,10 @@
                 var productElement = document.createElement('div');
                 productElement.innerHTML =  '<img src=' + product.cover + ' style="width:200px;height:200px;">';
                 productElement.innerHTML =  productElement.innerHTML + '<h3>' + product.bookname + '</h3>';
-
-
-                productElement.onmouseover = function () {
-                    productElement.style.cursor = 'pointer'; // 커서 모양 변경
-                };
-                productElement.addEventListener('click',function() {
-                            // ViewProductDetails(product.bookid);
-                    window.location.href='/product/productInfo?bookid='+ product.bookid.replace(/"/g, '') + '&page=1';
-                });
                 recentlyViewedDiv.appendChild(productElement);
                 // 안쪽
             });
         }
-
-
-
-
-
-
-
-
 
 
       //  localStorage.clear();

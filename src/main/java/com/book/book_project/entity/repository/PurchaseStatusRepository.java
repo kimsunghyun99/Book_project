@@ -12,4 +12,11 @@ public interface PurchaseStatusRepository extends JpaRepository<PurchaseInfoEnti
     @Query("SELECT p FROM purchasestatus p WHERE p.statusseq = :statusseq")
     PurchaseStatusEntity findByStatusseq(@Param("statusseq") int statusseq);
 
+
+
+@Query(value="select statusname from tbl_purchasestatus where statusseq = :statusseq", nativeQuery = true)
+        public String getStatusName(@Param("statusseq") int statusseq);
+
+
+
 }

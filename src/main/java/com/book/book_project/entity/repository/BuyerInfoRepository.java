@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Transactional
 @Repository
-public interface BuyerInfoRepository extends JpaRepository<BuyerInfoEntity, String> {
+public interface BuyerInfoRepository extends JpaRepository<BuyerInfoEntity, Integer> {
 
     //비회원 구매번호 조회
     @Query(value = "SELECT * FROM tbl_unmember u JOIN tbl_buyerInfo b ON u.unmembertelno = b.unmembertelno JOIN tbl_purchaseInfo p ON b.buyerseq = p.buyerseq WHERE u.temppassword = :temppassword AND p.purchaseinfoseq = :purchaseinfoseq", nativeQuery = true)

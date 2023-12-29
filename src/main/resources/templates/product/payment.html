@@ -138,7 +138,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /*//  height: 70vh; !* 화면의 100% 높이로 설정하여 가운데 정렬 *!*/
+          /*//  height: 70vh; !* 화면의 100% 높이로 설정하여 가운데 정렬 *!*/
         }
 
         #RequestText1 {
@@ -150,27 +150,30 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
     <script th:inline="javascript">
 
-
-
-
         document.addEventListener('DOMContentLoaded', function () {
             /*<![CDATA[*/
             var productList = [[${view}]];
             /*]]>*/
+
             var totalprice = 0;
+
             productList.forEach(function (product) {
                 // product 객체에서 bookid 값을 가져옵니다.
                 var bookid = product.bookid;
                 var price = parseInt(product.price, 10); // 정수형으로 변환
                 var salespoint = parseInt(product.salespoint, 10); // 정수형으로 변환
                 var quantity = parseInt(product.quantity, 10); // 정수형으로 변환
+
                 // 각 상품별 총액과 총 판매 포인트 계산
                 var totalAmount = price * quantity;
                 var totalSalespoint = salespoint * quantity;
-                totalprice += totalAmount;
+
+                totalprice +=totalAmount;
+
                 // 계산된 값을 표시할 요소 선택
                 var totalAmountElement = document.getElementById('totalAmount' + bookid);
                 var totalSalespointElement = document.getElementById('totalSalespoint' + bookid);
+
                 // 계산된 값을 해당 요소에 표시
                 if (totalAmountElement) {
                     totalAmountElement.innerText = totalAmount.toLocaleString('ko-KR') + '원';
@@ -179,9 +182,16 @@
                     totalSalespointElement.innerText = totalSalespoint.toLocaleString('ko-KR') + 'point';
                 }
             });
-            document.getElementById('totalcost').innerText = totalprice.toLocaleString('ko-KR') + '원';
+            document.getElementById('totalcost').innerText=totalprice.toLocaleString('ko-KR') + '원';
+
         });
+
+
+
+
         // 총액과 총 판매 포인트를 화면에 표시
+
+
         let addplusVisible = false;
         const AddAddr = () => {
             if (addplusVisible) {
@@ -189,24 +199,26 @@
             } else {
                 addplus.style.display = 'block'; // 안 보이는 상태면 보이기
             }
+
             addplusVisible = !addplusVisible; // 상태를 토글
+
         }
 
 
             const searchAddr = () => {
 
-                if (addrSearch.value == '') {
-                    alert("검색할 주소를 입력하세요");
-                    addrSearch.focus();
-                    return false;
-                }
-
-                window.open(
-                    "/member/addrSearch?page=1&addrSearch=" + addrSearch.value,
-                    "주소검색",
-                    "width=950, height=540, top=50, left=50"
-                );
+            if(addrSearch.value == '') {
+                alert("검색할 주소를 입력하세요");
+                addrSearch.focus();
+                return false;
             }
+
+            window.open(
+                "/member/addrSearch?page=1&addrSearch=" + addrSearch.value,
+                "주소검색",
+                "width=950, height=540, top=50, left=50"
+            );
+        }
 
 
             const finaldelivery = (index) => {
@@ -215,24 +227,24 @@
                 finaladdr.innerText = "배송될 주소 : " + original_addr;
             }
 
-            const finaldelivery1 = (addr1, detailaddr) => {
+        const finaldelivery1 = (addr1, detailaddr) => {
 
-                const finaladdr = document.getElementById("finaladdr");
-                finaladdr.innerText = "배송될 주소 : " + addr1 + "" + detailaddr;
+            const finaladdr = document.getElementById("finaladdr");
+            finaladdr.innerText = "배송될 주소 : " + addr1 + "" + detailaddr;
+        }
+
+        // select 변경 시 호출되는 함수
+        function handleRequestChange() {
+            var selectElement = document.getElementById('RequestText');
+            var inputElement = document.getElementById('RequestText1');
+
+            if (selectElement.value === 'INPUT') {
+                inputElement.style.display = 'block';
+            } else {
+                inputElement.style.display = 'none';
             }
 
-            // select 변경 시 호출되는 함수
-            function handleRequestChange() {
-                var selectElement = document.getElementById('RequestText');
-                var inputElement = document.getElementById('RequestText1');
-
-                if (selectElement.value === 'INPUT') {
-                    inputElement.style.display = 'block';
-                } else {
-                    inputElement.style.display = 'none';
-                }
-
-            }
+        }
 
             // point 사용
             function UsePoint() {
@@ -242,8 +254,22 @@
                 var point = parseInt(pointInput.value, 10);
                 var totalInvoiceAmount = parseInt(totalInvoiceAmountElement.innerText.replace(/,/g, '').replace('원', ''), 10);
                 var FinalPay = totalInvoiceAmount - point;
+        // point 사용
+        function UsePoint() {
+            var pointInput = document.getElementById('point');
+            var totalInvoiceAmountElement = document.getElementById('totalInvoiceAmount');
+            var point = parseInt(pointInput.value, 10);
+
+            var pointValue = document.getElementById("myPoint").innerText;
+            var totalInvoiceAmount = parseInt(totalInvoiceAmountElement.innerText.replace(/,/g, '').replace('원',''), 10);
+            var FinalPay = document.getElementById('FinalPay');
 
 
+            if(point >pointValue) {
+                alert("나의 포인트를 확인해주세요");
+                document.getElementById('point').focus();
+                return false;
+            }
                 if (point > [[${memberInfo.point}]]) {
                     alert("나의 포인트를 확인해주세요");
                     document.getElementById('point').focus();
@@ -286,6 +312,10 @@
                     console.log("Price:", price);
                 }
 
+            else {
+                FinalPay.innerHTML = '최종 결제금액 ' + (totalInvoiceAmount - point) + '원';
+            }
+        }
 
                 function extractPriceValue(priceText) {
                     // 여기에서 필요한 가격 값 추출 논리를 구현
@@ -426,6 +456,7 @@
                     <th>책 가격</th>
                     <th>수량</th>
                     <th>금액(적립 포인트)</th>
+
                 </tr>
                 <tbody>
                 <tr>
@@ -433,38 +464,42 @@
                         <tr th:each="product:${view}" th:if="${view != null}">
                             <td><img class="p_image" th:src="${product.cover}" alt="책 표지 이미지" style="width:300px; height: auto"></td>
                             <td>
-                                <span th:id="'bookname'+${product.bookid}" th:text="${product.bookname}"></span><br>/
-                                <span th:id="'author'+${product.bookid}" th:text="${product.author}"></span>
+                                <span th:id="'bookname'+${product.bookname}" th:text="${product.bookname}"></span><br>/
+                                <span th:id="'author'+${product.author}" th:text="${product.author}"></span>
                             </td>
                             <td><span th:id="'price'+${product.bookid}" th:text="${#numbers.formatInteger(product.price,3,'COMMA')+'원'}"></span></td>
-                            <td><span th:id="'quantity'+${product.bookid}" th:text="${product.quantity}"></span></td>
+                            <td><span th:id="'quntity'+${product.bookid}" th:text="${product.quantity}"></span></td>
                             <td colspan="3">
                                 <span style="text-align:right"><h4>합계<br><span class="productTotalAmount" th:id="'totalAmount' + ${product.bookid}"></span></h4></span>
                                 <span style="text-align:right"><h4>적립 포인트<br><span class="productTotalSalespoint" th:id="'totalSalespoint' + ${product.bookid}"></span></h4></span>
                             </td>
-                            <input type="hidden" id="bookid" th:value="${product.bookid}">
-                            <input type="hidden" id="userid" th:value="${session.userid}">
-                            <!--                                <input type="hidden" th:id="'salespoint'+${product.bookid}" th:value="${product.salespoint}">-->
-                            <!--                                <input type="hidden" th:id="bookid" th:value="${product.bookid}">-->
-                            <!--                    <td><span th:text="${view.order_quantity}"></span></td>-->
-                            <!--                    <td><span class="invoiceAmount" th:text="${#numbers.formatInteger(list.order_amount,3,'COMMA')+'원'}"></span></td>-->
+<!--                                <input type="hidden" th:id="'salespoint'+${product.bookid}" th:value="${product.salespoint}">-->
+<!--                                <input type="hidden" th:id="bookid" th:value="${product.bookid}">-->
+
+
+        <!--                    <td><span th:text="${view.order_quantity}"></span></td>-->
+        <!--                    <td><span class="invoiceAmount" th:text="${#numbers.formatInteger(list.order_amount,3,'COMMA')+'원'}"></span></td>-->
                         </tr>
                     </th:block>
                 <tr>
                     <td colspan="6"><span style="text-align:right"><h2>총 합계<br><span class="totalcost" id="totalcost" style="text-align:right" ></span></h2></span></td>
                 </tr>
+
+                </tr>
                 </tbody>
             </table>
         </div>
         <br><br>
-        <p th:text="'나의 포인트 : ' + ${memberInfo.point}"></p>
+        <p>나의 포인트 : <p th:text="${memberInfo.point}" id="mypoint"></p></p>
         <input type="text" style="width:11%" id="point" placeholder="사용할 포인트를 입력해주세요">
         <input type="button" style="width:7%" value="사용하기" onclick="UsePoint()">
+
         <p id="FinalPay"></p>
         <br><br>
-        <div id="pay">
-            <input type="button" style="text-align: center" class="btn_order" value="결제하기" onclick="KGpay()">
-        </div>
+            <div id="pay">
+                <input type="button" style="text-align: center" class="btn_order" value="결제하기">
+            </div>
+
     </div>
 </div>
 <br><br><br><br>

@@ -3,7 +3,7 @@ package com.book.book_project.controller;
 import com.book.book_project.dto.DeliverAddrDTO;
 import com.book.book_project.entity.*;
 import com.book.book_project.entity.repository.BuyerInfoRepository;
-import com.book.book_project.entity.repository.MemberRepository;
+import com.book.book_project.entity.repository.ProductRepository;
 import com.book.book_project.entity.repository.PurchaseInfoRepository;
 import com.book.book_project.entity.repository.PurchaseStatusRepository;
 import com.book.book_project.service.DeliveryService;
@@ -29,6 +29,10 @@ import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.*;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -59,16 +63,15 @@ public class MemberController {
     MemberService memberService;
 
     private final BuyerInfoService buyerInfoService;
-  
+    private final PurchaseInfoRepository purchaseInfoRepository;
+    private final BuyerInfoRepository buyerInfoRepository;
+    private final ProductRepository productRepository;
+    private final PurchaseStatusRepository purchaseStatusRepository;
+    private final PurchaseInfoService purchaseInfoService;
+    private final PurchaseStatusService purchaseStatusService;
+    private final RefundService refundService;
 
-    @Autowired
-    private PurchaseInfoRepository purchaseInfoRepository;
 
-    @Autowired
-    private PurchaseStatusRepository purchaseStatusRepository;
-
-    @Autowired
-    private BuyerInfoRepository buyerInfoRepository;
 
 
     //회원 등록 화면 보기
@@ -193,8 +196,7 @@ public class MemberController {
         member.setUserid(userid);
         //member.setPassword(service.memberInfo(userid).getPassword());
 
-
-        System.out.println("컨트롤러1");
+//        System.out.println("컨트롤러1");
 
 //        System.out.println(member.getUsername());
 //        System.out.println(member.getNickname());
@@ -204,10 +206,11 @@ public class MemberController {
         String username = member.getUsername();
         String nickname = member.getNickname();
         String telno = member.getTelno();
+        String interest = member.getInterest();
 
 
         if ("U".equals(option)) {
-            service.modifyMember(userid,username, nickname,telno); // 회원 기본정보 수정
+            service.modifyMember(userid,username, nickname,telno,interest); // 회원 기본정보 수정
         }
 
         return "{\"message\":\"GOOD\"}";
@@ -283,7 +286,7 @@ public class MemberController {
     public void getMyPage(HttpSession session, Model model) {
         String userid = (String)session.getAttribute("userid");
         model.addAttribute("memberInfo", service.memberInfo(userid));//회원정보 불러오기
-        model.addAttribute("countReviewsByUserId", service.countReviewsByUserId(userid));//리뷰 갯수 구하기
+//        model.addAttribute("countReviewsByUserId", service.countReviewsByUserId(userid));//리뷰 갯수 구하기
 
     }
 
@@ -305,6 +308,66 @@ public class MemberController {
 
 
     //회원 구매내역 조회 화면
+    @GetMapping("/member/memberPurchaseList")
+    public void getMemberPurchaseList(Model model, HttpSession session,PurchaseInfoService purchaseInfoService) throws Exception {
+
+        String userid = (String) session.getAttribute("userid");
+        MemberEntity memberEntity = new MemberEntity();
+        memberEntity.setUserid(userid);
+
+
+        List<BuyerInfoEntity> buyerInfo=buyerInfoService.buyerInfo(memberEntity); // -> userid에 대한 받는이 주소, 집코드, 주소, 이름, 번호가 담김
+        List<PurchaseInfoEntity> purchaseInfoList = new ArrayList<>();
+        List<String> BookNameList = new ArrayList<>();
+        List<String> BookIdList = new ArrayList<>();
+        List<String> StatusList = new ArrayList<>();
+
+        for(int i =0; i<buyerInfo.size(); i++) {
+
+            BuyerInfoEntity buyerInfoEntity = buyerInfoRepository.findById(buyerInfo.get(i).getBuyerseq()).orElse(null);
+            PurchaseInfoEntity purchaseInfoEntity = (PurchaseInfoEntity) purchaseInfoRepository.findByBuyerseq(buyerInfoEntity); // buyerseq 값 정의
+            purchaseInfoList.add(purchaseInfoEntity);
+
+
+
+            String bookid  = String.valueOf(purchaseInfoEntity.getBookid().getBookid());
+            String bookname = productRepository.getBookName(bookid);
+            String statusseq =  String.valueOf(purchaseInfoEntity.getStatusseq().getStatusseq());
+           String statusname = purchaseStatusService.getStatusName(statusseq);
+            System.out.println(statusname);
+
+
+
+            BookIdList.add(bookid);
+            StatusList.add(statusname);
+            BookNameList.add(bookname);
+
+        }
+        model.addAttribute("bookids", BookIdList);
+        model.addAttribute("booknames", BookNameList);
+        model.addAttribute("purchaseInfo",purchaseInfoList);
+        model.addAttribute("statusList", StatusList);
+        System.out.println("purchaseInfolist 실험 : " + purchaseInfoList.get(0));
+    }
+
+
+
+
+    //회원 구매내역 교환,환불 처리
+    @PostMapping("/member/memberPurchaseList")
+    public String postMemberPurchaseList(RefundDTO refundDTO) throws Exception {
+
+
+
+        refundService.ExchangeRegistry(refundDTO);
+
+        return "{\"message\":\"GOOD\"}";
+    }
+
+
+
+
+
     @Transactional
     @PostMapping(value = "/member/memberPurchaseList")
     public ResponseEntity<String> getMemberPurchaseList(

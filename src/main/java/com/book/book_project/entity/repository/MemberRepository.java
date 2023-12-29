@@ -1,6 +1,6 @@
 package com.book.book_project.entity.repository;
 
-
+import com.book.book_project.entity.FavoritesEntity;
 import com.book.book_project.entity.MemberEntity;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
@@ -31,8 +31,11 @@ public interface MemberRepository extends JpaRepository<MemberEntity, String> {
     // 회원 정보 변경
     @Transactional
     @Modifying //  테이블에 DML ( insert, update, delete) 을 실행 시켜 변화를 주었을 경우 테이블에 반영된 내용을 엔티티 클래스에 반영
-    @Query(value="update tbl_member set username = :username, nickname = :nickname, telno = :telno where userid = :userid",nativeQuery = true)
-    public void membermodify(@Param("userid") String userid, @Param("username") String username, @Param("nickname") String nickname, @Param("telno") String telno);
+    @Query(value="update tbl_member set username = :username, nickname = :nickname, telno = :telno, interest = :interest where userid = :userid",nativeQuery = true)
+    public void membermodify(@Param("userid") String userid, @Param("username") String username, @Param("nickname") String nickname, @Param("telno") String telno, @Param("interest") String interest);
+//// interests =:interests
+//    @Query(value="update tbl_member set username = :username, nickname = :nickname, telno = :telno where userid = :userid",nativeQuery = true)
+//    public void membermodify(@Param("userid") String userid, @Param("username") String username, @Param("nickname") String nickname, @Param("telno") String telno);
 
     //social로그인 회원 수 불러오기
     @Query(value = "select count(*) as social from tbl_member where fromsocial = (\"Y\") ", nativeQuery = true)
@@ -71,9 +74,8 @@ public interface MemberRepository extends JpaRepository<MemberEntity, String> {
     //전체 회원 목록 불러오기
     public Page<MemberEntity> findByRole(String role, Pageable pageable);
 
+    //리뷰 갯수 구하기
     @Query(value = "select count(*) from tbl_review r join tbl_member m on r.userid = m.userid where m.userid = :userid", nativeQuery = true)
     Long countReviewsByUserId(@Param("userid") String userid);
-
-
 
 }

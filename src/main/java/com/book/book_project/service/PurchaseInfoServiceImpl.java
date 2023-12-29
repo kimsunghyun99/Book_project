@@ -5,6 +5,7 @@ import com.book.book_project.entity.ProductEntity;
 import com.book.book_project.entity.PurchaseInfoEntity;
 import com.book.book_project.entity.UnMemberEntity;
 import com.book.book_project.entity.repository.PurchaseInfoRepository;
+import com.book.book_project.entity.repository.PurchaseStatusRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
@@ -26,17 +27,29 @@ public class PurchaseInfoServiceImpl implements PurchaseInfoService {
     private final PurchaseInfoRepository purchaseInfoRepository;
 
 
+
+//    @Override
+//    public List<PurchaseInfoEntity> purchaseList(BuyerInfoEntity buyerseq){
+//
+//
+//        return repository.findByBuyerseq(buyerseq);
+//    }
+
+
     @Override
-    public List<PurchaseInfoEntity> purchaseList(BuyerInfoEntity buyerseq){
+    public PurchaseInfoEntity purchaseList( BuyerInfoEntity buyerseq){
 
 
-        return purchaseInfoRepository.findByBuyerseq(buyerseq);
+        return (PurchaseInfoEntity) purchaseInfoRepository.findByBuyerseq(buyerseq);
     }
+
 
     @Override
     public List<PurchaseInfoEntity> unMemberPurchaseList(UnMemberEntity unmembertelno) throws Exception {
         return null;
     }
+
+
 
     //회원 주문 관리
     public List<Map<String, String>> mempurchaseinfo(){
