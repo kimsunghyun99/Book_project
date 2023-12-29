@@ -54,6 +54,7 @@ public class MemberController {
     private final PurchaseStatusRepository purchaseStatusRepository;
     private final PurchaseInfoService purchaseInfoService;
     private final PurchaseStatusService purchaseStatusService;
+    private final RefundService refundService;
 
     //회원 등록 화면 보기
     @GetMapping("/member/signup")
@@ -338,8 +339,9 @@ public class MemberController {
     @PostMapping("/member/memberPurchaseList")
     public String postMemberPurchaseList(RefundDTO refundDTO) throws Exception {
 
-        refundDTO.dtoToEntity(refundDTO);
 
+
+        refundService.ExchangeRegistry(refundDTO);
 
         return "{\"message\":\"GOOD\"}";
     }
