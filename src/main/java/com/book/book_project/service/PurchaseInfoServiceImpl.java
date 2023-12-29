@@ -23,14 +23,14 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class PurchaseInfoServiceImpl implements PurchaseInfoService {
-    private final PurchaseInfoRepository repository;
+    private final PurchaseInfoRepository purchaseInfoRepository;
 
 
     @Override
     public List<PurchaseInfoEntity> purchaseList(BuyerInfoEntity buyerseq){
 
 
-        return repository.findByBuyerseq(buyerseq);
+        return purchaseInfoRepository.findByBuyerseq(buyerseq);
     }
 
     @Override

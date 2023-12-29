@@ -144,6 +144,8 @@
         }
 
     </style>
+    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
 
     <script th:inline="javascript">
 
@@ -235,10 +237,9 @@
             // 각 요소에 대한 참조를 가져오기 전에 변수로 선언해보세요.
 
             var buyerName = document.getElementById("receiver").value;
-            var useid = document.getElementById("userid").value;
             var bookid = document.getElementById("bookid").value;
             var bookname = document.getElementById("bookname" + bookid);
-            var bookQuntity = document.getElementById("quantity" + bookid).textContent;
+            var bookQuantity = document.getElementById("quantity" + bookid).textContent;
             var totalInvoiceAmount = document.getElementById("totalcost").textContent;
             // var buyerEmail = document.getElementById("buyerEmail").value;
             var telno = document.getElementById("receivertelno");
@@ -286,11 +287,10 @@
             var seconds = ('0' + currentDate.getSeconds()).slice(-2);
 
             var merchant_uid = year + month + day + seconds;
-            var useId = useid;
             var username = buyerName;
             var selectedBookid = bookid;
             var selectedBookname = book;
-            var selectedBookquntity = bookQuntity; // 수정된 부분
+            var selectedBookquantity = bookQuantity; // 수정된 부분
             var amount = price;
             // var email = buyerEmail ? buyerEmail.value : null;
             var receivertelno = telno ? telno.value : null;
@@ -303,8 +303,7 @@
             console.log("amount:", amount);
             console.log("selectedBookname:", selectedBookname);
             console.log("selectedBookid:", selectedBookid);
-            console.log("selectedBookquntity:", selectedBookquntity);
-            console.log("useId", useId);
+            console.log("selectedBookquantity:", selectedBookquantity);
             console.log("address", address);
             console.log("detailaddr", detailaddr);
             console.log("postcode", postcode);
@@ -319,10 +318,9 @@
                 merchant_uid: merchant_uid,
                 bookid: bookid,
                 username: username,
-                userid: useId,
                 name: selectedBookname,
                 amount: amount,
-                bookquntity: selectedBookquntity,
+                bookquntity: selectedBookquantity,
                 // buyer_email: email,
                 receivertelno: receivertelno,
                 address: address,
@@ -341,11 +339,10 @@
                             "date": date,
                             "merchant_uid": merchant_uid,
                             "bookid": bookid,
-                            "bookquntity": selectedBookquntity,
+                            "bookquntity": selectedBookquantity,
                             "address": address,
                             "detailaddr": detailaddr,
                             "postcode": postcode,
-                            "userid": useid,
                             "username": username,
                             "receivertelno": receivertelno
 
@@ -444,10 +441,11 @@
                                 <span th:id="'author'+${product.author}" th:text="${product.author}"></span>
                             </td>
                             <td><span th:id="'price'+${product.bookid}" th:text="${#numbers.formatInteger(product.price,3,'COMMA')+'원'}"></span></td>
-                            <td><span th:id="'quntity'+${product.bookid}" th:text="${product.quantity}"></span></td>
+                            <td><span th:id="'quantity'+${product.bookid}" th:text="${product.quantity}"></span></td>
                             <td colspan="3">
                                 <span style="text-align:right"><h4>합계<br><span class="productTotalAmount" th:id="'totalAmount' + ${product.bookid}"></span></h4></span>
                             </td>
+                            <input type="hidden" id="bookid" th:value="${product.bookid}">
 <!--                                <input type="hidden" th:id="'salespoint'+${product.bookid}" th:value="${product.salespoint}">-->
 <!--                                <input type="hidden" th:id="bookid" th:value="${product.bookid}">-->
         <!--                    <td><span th:text="${view.order_quantity}"></span></td>-->

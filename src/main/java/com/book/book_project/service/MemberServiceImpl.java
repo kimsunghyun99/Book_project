@@ -7,6 +7,7 @@ import com.book.book_project.entity.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -195,5 +196,11 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberEntity findById(String userid) {
         return memberRepository.findById(userid).orElse(null);
+    }
+
+    //리뷰 갯수 가져오기
+    @Override
+    public long countReviewsByUserId(String userid){
+        return memberRepository.countReviewsByUserId(userid);
     }
 }

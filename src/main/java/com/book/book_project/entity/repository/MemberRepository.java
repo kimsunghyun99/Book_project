@@ -1,6 +1,6 @@
 package com.book.book_project.entity.repository;
 
-import com.book.book_project.entity.FavoritesEntity;
+
 import com.book.book_project.entity.MemberEntity;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
@@ -70,6 +70,10 @@ public interface MemberRepository extends JpaRepository<MemberEntity, String> {
 
     //전체 회원 목록 불러오기
     public Page<MemberEntity> findByRole(String role, Pageable pageable);
+
+    @Query(value = "select count(*) from tbl_review r join tbl_member m on r.userid = m.userid where m.userid = :userid", nativeQuery = true)
+    Long countReviewsByUserId(@Param("userid") String userid);
+
 
 
 }
