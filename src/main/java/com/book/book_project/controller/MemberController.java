@@ -21,7 +21,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Member;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -41,9 +40,6 @@ public class MemberController {
     @Autowired
     DeliveryService deliveryService;
 
-//    @Autowired
-//    LikeService likeService;
-
     @Autowired
     private BCryptPasswordEncoder pwdEncoder;
 
@@ -58,6 +54,7 @@ public class MemberController {
     private final PurchaseInfoService purchaseInfoService;
     private final PurchaseStatusService purchaseStatusService;
     private final RefundService refundService;
+    private final CartService cartService;
 
     //회원 등록 화면 보기
     @GetMapping("/member/signup")
@@ -269,7 +266,7 @@ public class MemberController {
         String userid = (String)session.getAttribute("userid");
         model.addAttribute("memberInfo", service.memberInfo(userid));//회원정보 불러오기
         model.addAttribute("countReviewsByUserId", service.countReviewsByUserId(userid));//리뷰 갯수 구하기
-
+        model.addAttribute("cartcount",cartService.usercartcount(userid));//회원 별 장바구니 갯수
     }
 
     //아이디 찾기 화면

@@ -15,4 +15,7 @@ public interface CartService {
     List<CartEntity> cartList(String userid);
 
     void delete(CartEntity cartEntity);
+
+    //회원 별 장바구니 갯수 구하기
+    public int usercartcount(String userid);
 }

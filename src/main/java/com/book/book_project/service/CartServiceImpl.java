@@ -38,4 +38,10 @@ class CartServiceImpl implements CartService {
     public void delete(CartEntity cartEntity) {
         cartRepository.delete(cartEntity);
     }
+
+    //회원 별 장바구니 갯수 구하기
+    @Override
+    public int usercartcount(String userid){
+        return cartRepository.usercartcount(userid);
+    }
 }

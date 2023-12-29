@@ -18,4 +18,9 @@ public interface CartRepository extends JpaRepository<CartEntity, CartEntityID> 
 
     @Query(value = "select userid, bookid, cartregdate from tbl_cart where userid =:userid", nativeQuery = true)
     List<CartEntity> findByUserid(@Param("userid") String userid);
+
+    //회원 별 장바구니 갯수 구하기
+    @Query(value = "select count(*) from tbl_cart where userid = :userid", nativeQuery = true)
+    public int usercartcount(@Param("userid") String userid);
+
 }
