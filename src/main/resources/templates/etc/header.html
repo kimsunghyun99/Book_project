@@ -7,6 +7,43 @@
 </div>
 
 <div th:fragment="nav">
+    <script>
+       function localcheck(){
+            var userid = `[[${session.userid}]]`
+
+
+            console.log("javascript userid = "+userid);
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+            if(userid !==''){
+                if(confirm("로그인하지 않고 담아놓은 물건이 있습니다. 추가하시겠습니까?")){
+
+                    for (const item of cart) {
+                        var bookid = item.bookid;
+                        console.log("bookid = " + bookid);
+
+                        fetch('/product/shoppingBasket', {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({bookid: bookid}),
+                        }).then((response) => response.json())
+                            .then((data) => {
+                                if (data.message !== 'GOOD') {
+                                    throw new Error('장바구니에 추가 실패했습니다.');
+                                }
+                            }).catch((error) => {
+                                console.log("error = " + error);
+                            });
+                    }
+                    alert('장바구니에 추가되었습니다.');
+                    localStorage.removeItem('cart');
+                    document.location.href="/product/shoppingBasket"
+                }
+            }
+        }
+    </script>
     <nav>
     <!-- 세션 값이 없을 경우 로그인 및 회원가입 버튼 표시 -->
         <div th:if="${session.userid == null}">
@@ -18,7 +55,7 @@
         <!-- 세션 값이 있을 경우 로그아웃 및 마이페이지 버튼 표시 -->
         <div th:if="${session.userid != null}">
             <a href="/product/productList">도서</a> |
-            <a href="/product/shoppingBasket">장바구니</a> |
+            <a href="javascript:localcheck()">장바구니</a> |
             <a href="/member/mypage">마이페이지</a> |
             <a href="/member/logout">로그아웃</a>
         </div>

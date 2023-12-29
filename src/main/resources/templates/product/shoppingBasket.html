@@ -73,45 +73,13 @@
 </style>
 
     <script>
-        window.onload=async function() {
-            const userid = /*[[${session.userid}]]*/ 'default';
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-            if(userid !==null && cart.length >0){
-                if(confirm("로그인하지 않고 담아놓은 물건이 있습니다. 추가하시겠습니까?")){
-
-                    for (const item of cart) {
-                        var bookid = item.bookid;
-                        console.log("bookid = " + bookid);
-
-                        await fetch('/product/shoppingBasket', {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify({bookid: bookid}),
-                        }).then((response) => response.json())
-                            .then((data) => {
-                                if (data.message !== 'GOOD') {
-                                    throw new Error('장바구니에 추가 실패했습니다.');
-                                }
-                            }).catch((error) => {
-                                console.log("error = " + error);
-                            });
-                    }
-                    alert('장바구니에 추가되었습니다.');
-                    localStorage.removeItem('cart');
-                    window.location.reload();
-                }else {
-                    // 로컬 스토리지와 서버에서 장바구니가 비어있을 때
-                    emptyCartMessage.style.display = '';
-                }
-            }
-        };
         document.addEventListener('DOMContentLoaded', function () {
             const cartBody = document.getElementById('cartBody');
             const emptyCartMessage = document.getElementById('emptyCartMessage');
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            var localList = '[[${list}]]';
+
 
             if (cart.length > 0) {
                 emptyCartMessage.style.display = 'none';
@@ -130,18 +98,23 @@
 
                     // 책 정보 셀
                     const bookCell = row.insertCell(1);
+                    const anchor = document.createElement('a');
+                    anchor.href = '/product/productInfo?bookid=' + item.bookid + '&page=1';
+
+                    bookCell.appendChild(anchor);
+
                     const img = document.createElement('img');
                     img.src = item.cover;
                     img.classList.add('book-image');
-                    bookCell.appendChild(img);
-
+                    anchor.appendChild(img);
+                    anchor.href = '/product/productInfo?bookid=' + item.bookid + '&page=1';
                     const br = document.createElement('br');
-                    bookCell.appendChild(br);
+                    anchor.appendChild(br);
 
                     const bookNameSpan = document.createElement('span');
                     bookNameSpan.classList.add('book-name');
                     bookNameSpan.textContent = item.bookname;
-                    bookCell.appendChild(bookNameSpan);
+                    anchor.appendChild(bookNameSpan);
 
                     // 가격 셀
                     const priceCell = row.insertCell(2);
@@ -184,6 +157,9 @@
                     totalPrice.id='total_price'+item.bookid;
                     totalPrice.textContent = totalprice.toLocaleString('ko-KR') + '원';
                 });
+            }else if(cart.length===0&&localList==='') {
+                // 로컬 스토리지와 서버에서 장바구니가 비어있을 때
+                emptyCartMessage.style.display = '';
             }
         });
 
@@ -274,7 +250,11 @@
             });
         });
 
+
         const GoPayment = async () => {
+            var userid = '[[${session.userid}]]';
+
+            console.log("userid = "+userid);
             const checkedCheckboxes = document.querySelectorAll('.checkbox:checked');
             if (checkedCheckboxes.length === 0) {
                 alert('구매할 항목을 선택해주세요.');
@@ -289,23 +269,45 @@
 
 
             try {
-                const response = await fetch('/product/payment', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ items }),
-                });
+                if(userid!=='') {
+                    const response = await fetch('/product/payment', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({items}),
+                    });
 
-                if (!response.ok) {
-                    throw new Error('서버 응답이 OK가 아닙니다.');
+                    if (!response.ok) {
+                        throw new Error('서버 응답이 OK가 아닙니다.');
+                    }
+
+                    const data = await response.json();
+                    if (data.redirectUrl) {
+                        window.location.href = data.redirectUrl;
+                    } else {
+                        alert('구매 페이지로 이동하는 데 실패했습니다');
+                    }
                 }
+                else{
+                    const response = await fetch('/product/unMemberPayment', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({items}),
+                    });
 
-                const data = await response.json();
-                if (data.redirectUrl) {
-                    window.location.href = data.redirectUrl;
-                } else {
-                    alert('구매 페이지로 이동하는 데 실패했습니다');
+                    if (!response.ok) {
+                        throw new Error('서버 응답이 OK가 아닙니다.');
+                    }
+
+                    const data = await response.json();
+                    if (data.redirectUrl) {
+                        window.location.href = data.redirectUrl;
+                    } else {
+                        alert('구매 페이지로 이동하는 데 실패했습니다');
+                    }
                 }
             } catch (error) {
                 console.error('Error:', error);
@@ -368,8 +370,12 @@
             <input type="checkbox" th:id="'checkbox'+${booklist.bookid}" th:value="${booklist.bookid}" class="checkbox">
         </td>
         <td>
-            <img class="book-image" id="cover" th:src="${booklist.cover}"><br>
-            <span class="book-name" th:text="${booklist.bookname}"></span>
+            <a th:href="@{'/product/productInfo?bookid=' + ${product.bookid} + '&page=1'}">
+                <img class="book-image" id="cover" th:src="${booklist.cover}"><br>
+                <span class="book-name" th:text="${booklist.bookname}"></span>
+            </a>
+
+
         </td>
         <td>
             <p class="book-price" th:id="'price'+${booklist.bookid}" th:text="${#numbers.formatInteger(booklist.price,3,'COMMA')}"></p>

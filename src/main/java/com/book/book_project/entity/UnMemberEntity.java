@@ -35,4 +35,9 @@ public class  UnMemberEntity {
 
     @Column(name="temppassword", length = 100, nullable = false)
     private String temppassword;
+
+    @Column(name="buyertelno", length = 100, nullable = false)
+    private String buyertelno;
+
+
 }
