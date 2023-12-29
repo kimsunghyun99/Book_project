@@ -22,9 +22,8 @@ public interface ProductRepository extends JpaRepository<ProductEntity, String> 
 //    public Page<ProductEntity> findByBooknameContainingOrAuthorContainingOrPublisherContainingAndCategorynumber_Categorynumber
 //    (String keyword1, String keyword2, String keyword3, int categorynumber, Pageable pageable);
 
-    @Query(value = "SELECT p.bookname,p.cover FROM tbl_product p WHERE p.bookname LIKE %:keyword% OR p.author LIKE %:keyword% OR p.publisher LIKE %:keyword% AND categorynumber =:categorynumber", nativeQuery = true)
-    Page<ProductEntity> findByKeywordAndCategorynumber
-            (@Param("keyword") String keyword,@Param("categorynumber") int categorynumber, Pageable pageable);
+    @Query(value = "SELECT p.bookid,p.author,p.bookname,p.cover,p.description,p.price,p.pricesales, p.publicationdate,p.publisher,p.regdate,p.salespoint,p.stock,p.categorynumber FROM tbl_product p WHERE (p.bookname LIKE %:keyword% OR p.author LIKE %:keyword% OR p.publisher LIKE %:keyword%) AND categorynumber IN :categorynumber", nativeQuery = true)
+    Page<ProductEntity> findByKeywordAndCategorynumber(@Param("keyword") String keyword,@Param("categorynumber") List<Integer> categorynumbers, Pageable pageable);
 
 
 
@@ -38,7 +37,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, String> 
 
 
     @Query(value="select categorynumber from tbl_category where depth3 = :interest", nativeQuery = true)
-    int getCateNumber(@Param("interest") String interest);
+    List<Integer> getCateNumber(@Param("interest") String interest);
 
 
 
@@ -55,7 +54,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, String> 
 
 
 
-    @Query(value = "select * from tbl_product where categorynumber = (select categorynumber from tbl_category where depth3 = :interest)", nativeQuery = true)
+    @Query(value = "select * from tbl_product where categorynumber IN (select categorynumber from tbl_category where depth3 = :interest)", nativeQuery = true)
     List<ProductEntity> productlist(@Param("interest") String interest);
 
 

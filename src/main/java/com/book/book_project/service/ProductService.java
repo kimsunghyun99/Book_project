@@ -15,7 +15,7 @@ import java.util.List;
 public interface ProductService {
 
    // interest값을 토대로 항목들가져오기
-    public Page<ProductEntity> list(int pageNum, int postNum,  String keyword , int categorynumber) throws Exception;
+    public Page<ProductEntity> list(int pageNum, int postNum,  String keyword , List<Integer> categorynumbers) throws Exception;
 
 
     // interest 안고른경우 항목들 가져오기
@@ -30,7 +30,7 @@ public interface ProductService {
 
 
  // interest를 토대로 categorynumber 가져오기
-     public int getCateNumber(String interest)throws Exception;
+     public List<Integer> getCateNumber(String interest)throws Exception;
 
 
 

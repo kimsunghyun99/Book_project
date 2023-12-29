@@ -35,9 +35,9 @@ public class ProductServiceImpl implements ProductService{
 
 
         @Override
-    public Page<ProductEntity> list(int pageNum, int postNum, String keyword,  int categorynumber ) throws Exception {
+    public Page<ProductEntity> list(int pageNum, int postNum, String keyword,  List<Integer> categorynumbers ) throws Exception {
         PageRequest pageRequest = PageRequest.of(pageNum - 1, postNum, Sort.by(Sort.Direction.DESC,"bookid"));
-        return productRepository.findByKeywordAndCategorynumber(keyword, categorynumber, pageRequest);
+        return productRepository.findByKeywordAndCategorynumber(keyword, categorynumbers, pageRequest);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class ProductServiceImpl implements ProductService{
 
     // interest를 토대로 categorynumber 가져오기
 @Override
-public int getCateNumber(String interest) throws Exception {
+public List<Integer> getCateNumber(String interest) throws Exception {
         return productRepository.getCateNumber(interest);
 }
 

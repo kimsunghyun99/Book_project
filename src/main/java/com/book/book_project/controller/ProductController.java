@@ -124,10 +124,10 @@ public class ProductController {
 
         if(!"all".equals(interest)) {
 
-            int categorynumber = service.getCateNumber(interest);
-            System.out.println("categorynumber = "+categorynumber);
+            List<Integer> categorynumbers = service.getCateNumber(interest);
+            System.out.println("categorynumber = "+categorynumbers);
 
-            Page<ProductEntity> list = service.list(pageNum, postNum, keyword, categorynumber);
+            Page<ProductEntity> list = service.list(pageNum, postNum, keyword, categorynumbers);
             System.out.println("list.size = "+list);
             int totalCount = (int)list.getTotalElements();
 
