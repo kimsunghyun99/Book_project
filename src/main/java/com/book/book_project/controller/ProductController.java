@@ -69,6 +69,10 @@ public class ProductController {
         model.addAttribute("newsList", newsDTOList);
 
 
+
+
+
+
     }
 
     @GetMapping("/product/productInfo")

@@ -18,10 +18,6 @@ public class CartDTO {
     private ProductEntity bookid;
     private Timestamp cartregdate;
 
-
-
-
-
 //Entity --> DTO
 
     public CartDTO(CartEntity cartEntity) {
@@ -30,7 +26,6 @@ public class CartDTO {
         this.bookid =cartEntity.getBookid();
         this.cartregdate =cartEntity.getCartregdate();
     }
-
 
     //DTO --> Entity
 

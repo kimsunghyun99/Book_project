@@ -32,6 +32,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		
 		if(memberInfo == null) {
 			throw new UsernameNotFoundException("아이디가 존재하지 않습니다....");
+		}if("Y".equals(memberInfo.getSuspend())){
+			throw new RuntimeException("정지된 아이디입니다");
 		}
 		
 		// SimpleGrantedAuthority : 여러개의 사용자 Role값을 받는 객체
