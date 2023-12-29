@@ -1,5 +1,6 @@
 package com.book.book_project.entity.repository;
 
+
 import com.book.book_project.entity.MemberEntity;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
@@ -33,8 +34,11 @@ public interface MemberRepository extends JpaRepository<MemberEntity, String> {
     // 회원 정보 변경
     @Transactional
     @Modifying //  테이블에 DML ( insert, update, delete) 을 실행 시켜 변화를 주었을 경우 테이블에 반영된 내용을 엔티티 클래스에 반영
-    @Query(value="update tbl_member set username = :username, nickname = :nickname, telno = :telno where userid = :userid",nativeQuery = true)
-    public void membermodify(@Param("userid") String userid, @Param("username") String username, @Param("nickname") String nickname, @Param("telno") String telno);
+    @Query(value="update tbl_member set username = :username, nickname = :nickname, telno = :telno, interest = :interest where userid = :userid",nativeQuery = true)
+    public void membermodify(@Param("userid") String userid, @Param("username") String username, @Param("nickname") String nickname, @Param("telno") String telno, @Param("interest") String interest);
+//// interests =:interests
+//    @Query(value="update tbl_member set username = :username, nickname = :nickname, telno = :telno where userid = :userid",nativeQuery = true)
+//    public void membermodify(@Param("userid") String userid, @Param("username") String username, @Param("nickname") String nickname, @Param("telno") String telno);
 
     //social로그인 회원 수 불러오기
     @Query(value = "select count(*) as social from tbl_member where fromsocial = (\"Y\") ", nativeQuery = true)

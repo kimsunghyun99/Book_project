@@ -2,6 +2,10 @@ package com.book.book_project.controller;
 
 import com.book.book_project.dto.DeliverAddrDTO;
 import com.book.book_project.entity.*;
+import com.book.book_project.entity.repository.BuyerInfoRepository;
+import com.book.book_project.entity.repository.ProductRepository;
+import com.book.book_project.entity.repository.PurchaseInfoRepository;
+import com.book.book_project.entity.repository.PurchaseStatusRepository;
 import com.book.book_project.service.DeliveryService;
 import com.book.book_project.dto.*;
 import com.book.book_project.service.*;
@@ -21,6 +25,7 @@ import java.lang.reflect.Member;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,9 +51,13 @@ public class MemberController {
     UnMemberService unMemberService;
 
     private final BuyerInfoService buyerInfoService;
-  
-
-
+    private final PurchaseInfoRepository purchaseInfoRepository;
+    private final BuyerInfoRepository buyerInfoRepository;
+    private final ProductRepository productRepository;
+    private final PurchaseStatusRepository purchaseStatusRepository;
+    private final PurchaseInfoService purchaseInfoService;
+    private final PurchaseStatusService purchaseStatusService;
+    private final RefundService refundService;
 
     //회원 등록 화면 보기
     @GetMapping("/member/signup")
@@ -281,6 +290,86 @@ public class MemberController {
     //패스워드 찾기 화면
     @GetMapping("/member/pwSearch")
     public void getPwSearch() {}
+
+
+    //회원 구매내역 조회 화면
+    @GetMapping("/member/memberPurchaseList")
+    public void getMemberPurchaseList(Model model, HttpSession session,PurchaseInfoService purchaseInfoService) throws Exception {
+
+        String userid = (String) session.getAttribute("userid");
+        MemberEntity memberEntity = new MemberEntity();
+        memberEntity.setUserid(userid);
+
+
+        List<BuyerInfoEntity> buyerInfo=buyerInfoService.buyerInfo(memberEntity); // -> userid에 대한 받는이 주소, 집코드, 주소, 이름, 번호가 담김
+        List<PurchaseInfoEntity> purchaseInfoList = new ArrayList<>();
+        List<String> BookNameList = new ArrayList<>();
+        List<String> BookIdList = new ArrayList<>();
+        List<String> StatusList = new ArrayList<>();
+
+        for(int i =0; i<buyerInfo.size(); i++) {
+
+            BuyerInfoEntity buyerInfoEntity = buyerInfoRepository.findById(buyerInfo.get(i).getBuyerseq()).orElse(null);
+            PurchaseInfoEntity purchaseInfoEntity = (PurchaseInfoEntity) purchaseInfoRepository.findByBuyerseq(buyerInfoEntity); // buyerseq 값 정의
+            purchaseInfoList.add(purchaseInfoEntity);
+
+
+
+            String bookid  = String.valueOf(purchaseInfoEntity.getBookid().getBookid());
+            String bookname = productRepository.getBookName(bookid);
+            String statusseq =  String.valueOf(purchaseInfoEntity.getStatusseq().getStatusseq());
+           String statusname = purchaseStatusService.getStatusName(statusseq);
+            System.out.println(statusname);
+
+
+
+            BookIdList.add(bookid);
+            StatusList.add(statusname);
+            BookNameList.add(bookname);
+
+        }
+        model.addAttribute("bookids", BookIdList);
+        model.addAttribute("booknames", BookNameList);
+        model.addAttribute("purchaseInfo",purchaseInfoList);
+        model.addAttribute("statusList", StatusList);
+        System.out.println("purchaseInfolist 실험 : " + purchaseInfoList.get(0));
+    }
+
+
+
+
+    //회원 구매내역 교환,환불 처리
+    @PostMapping("/member/memberPurchaseList")
+    public String postMemberPurchaseList(RefundDTO refundDTO) throws Exception {
+
+
+
+        refundService.ExchangeRegistry(refundDTO);
+
+        return "{\"message\":\"GOOD\"}";
+    }
+
+
+
+
+
+
+    //비회원 구매내역 조회 화면
+//    @GetMapping("/member/unMemberPurchaseList")
+//    public void getUnMemberPurchaseList(Model model, HttpSession session,PurchaseInfoService purchaseInfoService) throws Exception {
+//        UnMemberEntity unmemberseq = (UnMemberEntity)
+//        List<UnMemberEntity> unMemberEntityList=unMemberService.unMemberInfo(unmembertelno);
+//
+//        List<PurchaseInfoEntity> purchaseInfoList = new ArrayList<>();
+//
+//        for(UnMemberEntity unMemberEntity:unMemberEntityList){
+//            UnMemberEntity unmembertelno = unMemberEntity;
+//            List<PurchaseInfoEntity> purchaseList = purchaseInfoService.unMemberPurchaseList(unmembertelno);
+//            purchaseInfoList.addAll(purchaseList);
+//            model.addAttribute("purchaseList",purchaseInfoList);
+//        }
+//    }
+
 
     //비회원 로그인 화면
     //비회원 로그인 화면 (23-12-12)

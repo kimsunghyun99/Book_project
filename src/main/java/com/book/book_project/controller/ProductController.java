@@ -3,6 +3,7 @@ package com.book.book_project.controller;
 import com.book.book_project.dto.NewsDTO;
 import com.book.book_project.dto.ProductDTO;
 import com.book.book_project.entity.*;
+import com.book.book_project.entity.repository.CategoryRepository;
 import com.book.book_project.service.NewsService;
 import com.book.book_project.service.ProductService;
 import com.book.book_project.dto.CartDTO;
@@ -14,6 +15,7 @@ import com.book.book_project.entity.repository.MemberRepository;
 import com.book.book_project.entity.repository.ProductRepository;
 import com.book.book_project.service.*;
 import com.book.book_project.util.PageUtil;
+import com.book.book_project.util.PageUtil2;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -44,21 +46,28 @@ public class ProductController {
     private final CartService cartService;
     private  final CartRepository cartRepository;
     private final DeliveryService deliveryService;
+    private final CategoryRepository categoryRepository;
 
     // main화면 보기
     @GetMapping("/product/main")
-    public void getMain(Model model) throws Exception {
-       // System.out.println("시작");
-       //  bookid, bookname, cover 가져오기 -> 나중에 interests 토대로 가져올 예정
-        List<ProductEntity> productDTOList = service.productlist();
-        model.addAttribute("productList", productDTOList);
+    public void getMain(Model model ,HttpSession session) throws Exception {
 
 
+        String userid = (String)session.getAttribute("userid") != null?  (String)session.getAttribute("userid") : "";
 
+        if(userid != "") {
+            String interest = memberService.memberInfo(userid).getInterest();
+            List<ProductEntity> productDTOList = service.productlist(interest);
+            model.addAttribute("productList", productDTOList);
+        } else {
+            List<ProductEntity> productDTOList1 = service.productlist1();
+            model.addAttribute("productList", productDTOList1);
+
+        }
 
         List<NewsDTO> newsDTOList = newsService.crawlNews();
         List<ProductEntity> bookList=productRepository.getProductList();
-        model.addAttribute("bookListId", bookList.get(0).getBookid()); // 이거 null -> 수ㅡ정필요
+        model.addAttribute("bookListId", bookList.get(0).getBookid());
         model.addAttribute("newsList", newsDTOList);
 
     }
@@ -95,9 +104,94 @@ public class ProductController {
 
 
     @GetMapping("/product/productList")
-    public void getProductList(HttpSession session, Model model) throws Exception{
-        String bookid = (String) session.getAttribute("bookid");
-        model.addAttribute("view", service.view(bookid));
+    public void getProductList(@RequestParam(name = "category", required = false, defaultValue = "all") String interest, @RequestParam("page") int pageNum,@RequestParam(name="keyword",defaultValue="",required=false) String keyword, Model model) throws Exception{
+
+
+
+        int postNum = 21; //한 화면에 보여지는 게시물 행의 갯수
+//        int startPoint = (pageNum-1) * postNum+1; //페이지 시작 게시물 번호
+//        int endPoint = pageNum*postNum;
+        int pageListCount = 5; //화면 하단에 보여지는 페이지리스트의 페이지 갯수
+
+
+        PageUtil2 page = new PageUtil2();
+
+
+        if(!"all".equals(interest)) {
+
+            List<Integer> categorynumbers = service.getCateNumber(interest);
+            System.out.println("categorynumber = "+categorynumbers);
+
+            Page<ProductEntity> list = service.list(pageNum, postNum, keyword, categorynumbers);
+            System.out.println("list.size = "+list);
+            int totalCount = (int)list.getTotalElements();
+
+            model.addAttribute("pageList", page.getPageList(pageNum, postNum, pageListCount,totalCount,interest));
+            model.addAttribute("productList", list);
+
+        }else {
+            // all인경우
+            Page<ProductEntity> list = service.list1(pageNum, postNum, keyword);
+            int totalCount = (int)list.getTotalElements();
+
+            model.addAttribute("pageList", page.getPageList(pageNum, postNum, pageListCount,totalCount,interest));
+            model.addAttribute("productList", list);
+        }
+
+
+//        switch(interest) {
+//            case "all":
+//                List<ProductEntity> productDTOList2 = service.productlist1();
+//                model.addAttribute("productList", productDTOList2);
+//                break;
+//
+//            case "OS/Networking":
+//                List<ProductEntity> productDTOList3 = service.productlist2(interest);
+//                model.addAttribute("productList", productDTOList3);
+//                break;
+//            case "프로그래밍 개발/방법론":
+//                List<ProductEntity> productDTOList4 = service.productlist2(interest);
+//                model.addAttribute("productList", productDTOList4);
+//                break;
+//            case "프로그래밍 언어":
+//                List<ProductEntity> productDTOList5 = service.productlist2(interest);
+//                model.addAttribute("productList", productDTOList5);
+//                break;
+//            case "활용능력":
+//                List<ProductEntity> productDTOList6 = service.productlist2(interest);
+//                model.addAttribute("productList", productDTOList6);
+//                break;
+//            case "e비즈니스/창업":
+//                List<ProductEntity> productDTOList7 = service.productlist2(interest);
+//                model.addAttribute("productList", productDTOList7);
+//                break;
+//            case "오피스(엑셀/파워포인트)":
+//                List<ProductEntity> productDTOList8 = service.productlist2(interest);
+//                model.addAttribute("productList", productDTOList8);
+//                break;
+//            case "웹디자인/홈페이지":
+//                List<ProductEntity> productDTOList9 = service.productlist2(interest);
+//                model.addAttribute("productList", productDTOList9);
+//                break;
+//            case "그래픽/멀티미디어":
+//                List<ProductEntity> productDTOList10 = service.productlist2(interest);
+//                model.addAttribute("productList", productDTOList10);
+//                break;
+//            case "컴퓨터 공학":
+//                List<ProductEntity> productDTOList11 = service.productlist2(interest);
+//                model.addAttribute("productList", productDTOList11);
+//                break;
+//            case "스마트폰/태블릿/SNS":
+//                List<ProductEntity> productDTOList12 = service.productlist2(interest);
+//                model.addAttribute("productList", productDTOList12);
+//                break;
+//            case "모바일 프로그래밍":
+//                List<ProductEntity> productDTOList13 = service.productlist2(interest);
+//                model.addAttribute("productList", productDTOList13);
+//                break;
+//
+//        }
+
     }
 
 

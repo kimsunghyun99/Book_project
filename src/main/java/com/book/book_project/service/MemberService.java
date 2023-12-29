@@ -27,7 +27,7 @@ public interface MemberService {
     public void memberPasswordModify(MemberDTO member);
 
     // 회원정보 수정
-    public void modifyMember(String userid,String username, String nickname,String telno);
+    public void modifyMember(String userid,String username, String nickname,String telno, String interest);
 
     //리뷰 갯수 가져오기
     public long countReviewsByUserId(String userid);

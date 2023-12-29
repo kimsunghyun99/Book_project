@@ -13,9 +13,15 @@ public interface PurchaseInfoService {
 
     //회원 구매 번호 조회
     //public
-    List<PurchaseInfoEntity> purchaseList(BuyerInfoEntity buyerseq) throws Exception;
+//    List<PurchaseInfoEntity> purchaseList(BuyerInfoEntity buyerseq) throws Exception;
+   PurchaseInfoEntity purchaseList( BuyerInfoEntity buyerseq) throws Exception;
 
     List<PurchaseInfoEntity> unMemberPurchaseList(UnMemberEntity unmembertelno) throws Exception;
+
+
+
+
+//    String repository(String statusseq) throws Exception;
 
     //회원 주문 관리
     public List<Map<String, String>> mempurchaseinfo();

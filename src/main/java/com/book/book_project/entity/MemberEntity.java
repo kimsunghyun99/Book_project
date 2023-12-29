@@ -79,4 +79,6 @@ public class MemberEntity {
     @Column(name = "suspend", length = 5, nullable = true)
     private String suspend;
 
+
+
 }
