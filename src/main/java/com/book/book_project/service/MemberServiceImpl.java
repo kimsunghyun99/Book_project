@@ -134,9 +134,8 @@ public class MemberServiceImpl implements MemberService {
                 .map(MemberEntity::getPassword).orElse("PW_NOT_FOUND");
     }
 
-//    @Override
-//    public BuyerInfoDTO buyerAndPurchaseInfo(String userid) {
-//        BuyerInfoEntity buyerInfoEntity = memberRepository.
-//        return null;
-//    }
+    @Override
+    public MemberEntity findById(String userid) {
+        return memberRepository.findById(userid).orElse(null);
+    }
 }

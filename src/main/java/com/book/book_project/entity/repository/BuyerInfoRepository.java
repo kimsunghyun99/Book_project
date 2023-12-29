@@ -21,4 +21,6 @@ public interface BuyerInfoRepository extends JpaRepository<BuyerInfoEntity, Stri
     Optional<UnMemberEntity> findByTemppasswordAndPurchaseinfoseq(@Param("temppassword") String temppassword, @Param("purchaseinfoseq") int purchaseinfoseq);
 
     List<BuyerInfoEntity> findByUserid(MemberEntity userid);
+
+    BuyerInfoEntity findByBuyerseq(int buyerseq);
 }

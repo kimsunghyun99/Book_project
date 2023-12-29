@@ -148,6 +148,7 @@
 
     </style>
     <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
     <script th:inline="javascript">
 
 
@@ -276,16 +277,21 @@
             IMP.init("imp61517557");
 
             // 각 요소에 대한 참조를 가져오기 전에 변수로 선언해보세요.
+
             var buyerName = document.getElementById("receiver").value;
+            var useid = document.getElementById("userid").value;
             var bookid = document.getElementById("bookid").value;
             var bookname = document.getElementById("bookname" + bookid);
             var bookQuntity = document.getElementById("quantity"+bookid).textContent;
             var totalInvoiceAmount = document.getElementById("totalcost").textContent;
             // var buyerEmail = document.getElementById("buyerEmail").value;
-            var receiverTelNo = document.getElementById("receivertelno").value;
-            var addr1 = document.getElementById("addr1").value;
-            var detailAddr = document.getElementById("detailaddr").value;
-            var zipcode = document.getElementById("zipcode").value;
+            var receivertelno = document.getElementById("receivertelno").value;
+            var addr1 = document.getElementById("addr1");
+            var detailAddr = document.getElementById("detailaddr");
+            var zipcode = document.getElementById("zipcode");
+
+
+            console.log("Bookid:", bookid);
 
             if (totalInvoiceAmount) {
                 var priceText = totalInvoiceAmount.innerText;
@@ -297,10 +303,13 @@
                 console.log("Price:", price);
             }
 
+
+
             function extractPriceValue(priceText) {
                 // 여기에서 필요한 가격 값 추출 논리를 구현
                 // 예를 들어, '1,234원' 형식의 문자열을 '1234' 숫자로 변환
-                var numericValue = parseInt(priceText.replace(/[^\d]/g, ''));
+                //var numericValue = parseInt(priceText.replace(/[^\d]/g, ''));
+                var numericValue = parseInt(totalInvoiceAmount.replace(/[^\d]/g, ''));
                 return numericValue;
 
             }
@@ -308,8 +317,12 @@
 
 
 
-            if (bookid) {
-                var bookID = bookid.innerText;
+            // if (bookid) {
+            //     var bookID = bookid.innerText;
+            // }
+
+            if (bookname) {
+                var book = bookname.innerText;
             }
 
             // 참조를 가져온 후에 값을 읽어보세요.
@@ -320,13 +333,16 @@
             var seconds = ('0' + currentDate.getSeconds()).slice(-2);
 
             var merchant_uid = year + month + day + seconds;
-            var selectedBookid = bookID;
-            var selectedBookname = bookname;
+            var useId = useid;
+            var username = buyerName;
+            var selectedBookid = bookid;
+            var selectedBookname = book;
             var selectedBookquntity = bookQuntity; // 수정된 부분
             var amount = price;
             // var email = buyerEmail ? buyerEmail.value : null;
-            var telNo = receiverTelNo ? receiverTelNo.value : null;
-            var address = addr1 && detailAddr ? addr1.value + " " + detailAddr.value : null;
+            var receivertelno = receivertelno ? receivertelno.value : null;
+            var address = addr1 ? addr1.value : null ;
+            var detailaddr = detailAddr ? detailAddr.value : null;
             var postcode = zipcode ? zipcode.value : null;
             var date = new Date();
 
@@ -335,6 +351,11 @@
             console.log("selectedBookname:", selectedBookname);
             console.log("selectedBookid:", selectedBookid);
             console.log("selectedBookquntity:", selectedBookquntity);
+            console.log("useId", useId);
+            console.log("address", address);
+            console.log("detailaddr", detailaddr);
+            console.log("postcode", postcode);
+            console.log("receivertelno", receivertelno);
 
             // 나머지 코드 (Ajax 호출 등) 추가
 
@@ -346,13 +367,16 @@
                 pay_method: "card",
                 merchant_uid: merchant_uid,
                 bookid: bookid,
+                username : username,
+                userid : useId,
                 name: selectedBookname,
                 amount: amount,
-                bookquntity : bookQuntity,
+                bookquntity : selectedBookquntity,
                 // buyer_email: email,
-                buyer_tel: telNo,
-                buyer_addr: address,
-                buyer_postcode: postcode,
+            receivertelno: receivertelno,
+                address: address,
+                detailaddr : detailaddr,
+                 postcode: postcode,
                 date: date
             }, function (rsp) {
                 if (rsp.success) {
@@ -365,7 +389,16 @@
                             "amount": amount,
                             "date": date,
                             "merchant_uid": merchant_uid,
-                            "bookid": bookid
+                            "bookid": bookid,
+                            "bookquntity" : selectedBookquntity,
+                            "address" : address,
+                            "detailaddr" :detailaddr,
+                            "postcode" : postcode,
+                            "userid" : useid,
+                            "username" : username,
+                            "receivertelno" : receivertelno
+
+
                         }),
                         success: function (response) {
                             // 성공 시 동작
@@ -487,6 +520,7 @@
                                 <span style="text-align:right"><h4>적립 포인트<br><span class="productTotalSalespoint" th:id="'totalSalespoint' + ${product.bookid}"></span></h4></span>
                             </td>
                             <input type="hidden" id="bookid" th:value="${product.bookid}">
+                            <input type="hidden" id="userid" th:value="${session.userid}">
                             <!--                                <input type="hidden" th:id="'salespoint'+${product.bookid}" th:value="${product.salespoint}">-->
                             <!--                                <input type="hidden" th:id="bookid" th:value="${product.bookid}">-->
                             <!--                    <td><span th:text="${view.order_quantity}"></span></td>-->

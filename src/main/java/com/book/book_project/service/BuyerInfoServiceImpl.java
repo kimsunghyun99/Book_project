@@ -18,4 +18,8 @@ public class BuyerInfoServiceImpl implements BuyerInfoService {
     public List<BuyerInfoEntity> buyerInfo(MemberEntity userid) {
         return repository.findByUserid(userid);
     }
+
+    public BuyerInfoEntity findByBuyerseq(int buyerseq) {
+        return repository.findByBuyerseq(buyerseq);
+    }
 }

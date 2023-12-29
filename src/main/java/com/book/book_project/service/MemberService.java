@@ -4,6 +4,7 @@ import com.book.book_project.dto.BuyerInfoDTO;
 import com.book.book_project.dto.MemberDTO;
 import com.book.book_project.dto.PurchaseInfoDTO;
 import com.book.book_project.entity.AddressEntity;
+import com.book.book_project.entity.MemberEntity;
 import org.springframework.data.domain.Page;
 import com.book.book_project.entity.FavoritesEntity;
 import org.springframework.data.repository.query.Param;
@@ -54,5 +55,5 @@ public interface MemberService {
     public List<FavoritesEntity> findFavoritesByUserId(String userid);
 
 
-
+    MemberEntity findById(String userid);
 }

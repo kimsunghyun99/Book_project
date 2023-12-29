@@ -23,10 +23,10 @@ public interface ProductRepository extends JpaRepository<ProductEntity, String> 
 
 //    List<Object> findById(ProductEntity bookid);
 
-//    //bookid 가져 오기
-//    @Query(value="select * from tbl_product", nativeQuery=true)
-//    String getBookid();
-//
+    //bookid 가져 오기
+    @Query(value="select * from tbl_product", nativeQuery=true)
+    String getBookid();
+
 //    //
     @Query(value="select * from tbl_product", nativeQuery=true)
     List<ProductEntity> getProductList();
