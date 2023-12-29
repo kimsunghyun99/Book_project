@@ -337,7 +337,8 @@ public class MemberController {
 
     //회원 구매내역 교환,환불 처리
     @PostMapping("/member/memberPurchaseList")
-    public String postMemberPurchaseList(RefundDTO refundDTO) throws Exception {
+    @ResponseBody
+    public String postMemberPurchaseList(@RequestBody RefundDTO refundDTO)throws Exception {
 
 
 
