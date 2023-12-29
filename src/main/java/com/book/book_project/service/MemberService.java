@@ -19,7 +19,7 @@ public interface MemberService {
     public void memberInfoRegistry(MemberDTO member);
 
     //회원 정보 가져 오기
-    public MemberDTO memberInfo(String userid);
+    public MemberEntity memberInfo(String userid);
 
     MemberDTO nickname(String userid, String nickname) throws Exception;
 

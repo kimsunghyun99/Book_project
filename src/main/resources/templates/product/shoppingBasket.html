@@ -370,7 +370,7 @@
                 <input type="checkbox" th:id="'checkbox'+${booklist.bookid}" th:value="${booklist.bookid}" class="checkbox">
             </td>
             <td>
-                <a th:href="@{'/product/productInfo?bookid=' + ${product.bookid} + '&page=1'}">
+                <a th:href="@{'/product/productInfo?bookid=' + ${booklist.bookid} + '&page=1'}">
                     <img class="book-image" id="cover" th:src="${booklist.cover}"><br>
                     <span class="book-name" th:text="${booklist.bookname}"></span>
                 </a>
