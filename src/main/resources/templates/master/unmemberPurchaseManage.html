@@ -60,9 +60,9 @@
 <script>
     // 비회원 주문 상태 변경
     const statusUpdate = async (select) => {
-        let unmember_purseq = select.dataset.unmember_purseq;
+        let unmemberpurchaseinfoseq = select.dataset.unmemberpurchaseinfoseq;
         let statusseq = select.value;
-        console.log(unmember_purseq);
+        console.log(unmemberpurchaseinfoseq);
         console.log(statusseq);
 
         if(statusseq === '1') {
@@ -74,7 +74,7 @@
         let url = "/master/unmemorderupdate";
 
         let formData = {
-            "unmember_purseq" : parseInt(unmember_purseq),
+            "unmemberpurchaseinfoseq" : parseInt(unmemberpurchaseinfoseq),
             "statusseq" : {
                 "statusseq": parseInt(statusseq)
             }
@@ -90,7 +90,7 @@
         }).then((response) => response.text())
             .then((data)=>{
                 if(data === 'good') {
-                    alert("주문 번호 : " + unmember_purseq + " 의 상태가 변경 되었습니다.");
+                    alert("주문 번호 : " + unmemberpurchaseinfoseq + " 의 상태가 변경 되었습니다.");
                     window.location.reload();
                 }
                 else alert("시스템 장애로 상태 변경이 실패했습니다.");
@@ -130,7 +130,7 @@
             <p th:text="${unpurchase.price}"></p>
             <p th:text="${unpurchase.publicationdate}"></p>
 
-            <select class="statusSelect" th:data-unmember_purseq="${unpurchase.unmember_purseq}">
+            <select class="statusSelect" th:data-unmemberpurchaseinfoseq="${unpurchase.unmemberpurchaseinfoseq}">
                 <option th:each="status : ${statuslist}" th:value="${status.statusseq}"
                         th:text="${status.statusname}" th:selected="${status.statusseq} == ${unpurchase.statusseq}"></option>
             </select>

@@ -53,6 +53,10 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.countJoinedRecordsByUserId(userid);
     }
 
+    @Override
+    public Page<MemberEntity> findAll(Pageable pageable) {
+        return memberRepository.findAll(pageable);
+    }
 
     //닉네임
     @Override
@@ -110,6 +114,12 @@ public class MemberServiceImpl implements MemberService {
                 .map(MemberEntity::getUserid).orElse("ID_NOT_FOUND");
     }
 
+    //리뷰 갯수 가져오기
+    @Override
+    public long countReviewsByUserId(String userid){
+        return memberRepository.countReviewsByUserId(userid);
+    }
+
     //아이디 중복 확인
     @Override
     public int idCheck(String userid) {
@@ -138,12 +148,6 @@ public class MemberServiceImpl implements MemberService {
         MemberEntity memberEntity = memberRepository.findById(member.getUserid()).get();
         memberEntity.setLastlogoutdate(member.getLastlogoutdate());
         memberRepository.save(memberEntity);
-    }
-
-    //전체 회원 정보 불러오기
-    @Override
-    public Page<MemberEntity> findAll(Pageable pageable){
-        return memberRepository.findAll(pageable);
     }
 
     //회원 정지
@@ -192,10 +196,5 @@ public class MemberServiceImpl implements MemberService {
         List<Map<String, Integer>> list = memberRepository.memberage();
 
         return list;
-    }
-    //리뷰 갯수 가져오기
-    @Override
-    public long countReviewsByUserId(String userid){
-        return memberRepository.countReviewsByUserId(userid);
     }
 }

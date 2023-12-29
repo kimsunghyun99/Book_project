@@ -33,5 +33,5 @@ public interface PurchaseInfoService {
     public void memberorderupdate(int statusseq, int purchaseinfonumber);
 
     //비회원 주문 상태 변경
-    public void unmemberorderupdate(int statusseq, int unmember_purseq);
+    public void unmemberorderupdate(int statusseq, int unmemberpurchaseinfoseq);
 }

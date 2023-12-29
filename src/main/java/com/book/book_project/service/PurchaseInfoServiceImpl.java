@@ -63,7 +63,7 @@ public class PurchaseInfoServiceImpl implements PurchaseInfoService {
     }
 
     //비회원 주문 상태 변경
-    public void unmemberorderupdate(int statusseq, int unmember_purseq) {
-        purchaseInfoRepository.unmemberorderupdate(statusseq, unmember_purseq);
+    public void unmemberorderupdate(int statusseq, int unmemberpurchaseinfoseq) {
+        purchaseInfoRepository.unmemberorderupdate(statusseq, unmemberpurchaseinfoseq);
     }
 }

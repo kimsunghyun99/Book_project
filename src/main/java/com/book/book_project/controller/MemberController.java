@@ -180,9 +180,9 @@ public class MemberController {
         String userid = (String)session.getAttribute("userid");
         member.setUserid(userid);
         //member.setPassword(service.memberInfo(userid).getPassword());
-        System.out.println("관심사 : " + member.getInterest());
 
-//        System.out.println("컨트롤러1");
+
+        System.out.println("컨트롤러1");
 
 //        System.out.println(member.getUsername());
 //        System.out.println(member.getNickname());
@@ -196,7 +196,7 @@ public class MemberController {
 
 
         if ("U".equals(option)) {
-            service.modifyMember(userid,username, nickname,telno,interest); // 회원 기본정보 수정
+            service.modifyMember(userid,username, nickname,telno, interest); // 회원 기본정보 수정
         }
 
         return "{\"message\":\"GOOD\"}";
@@ -272,7 +272,7 @@ public class MemberController {
     public void getMyPage(HttpSession session, Model model) {
         String userid = (String)session.getAttribute("userid");
         model.addAttribute("memberInfo", service.memberInfo(userid));//회원정보 불러오기
-//        model.addAttribute("countReviewsByUserId", service.countReviewsByUserId(userid));//리뷰 갯수 구하기
+        model.addAttribute("countReviewsByUserId", service.countReviewsByUserId(userid));//리뷰 갯수 구하기
 
     }
 
