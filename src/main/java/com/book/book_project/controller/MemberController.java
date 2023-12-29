@@ -57,6 +57,7 @@ public class MemberController {
     private final PurchaseStatusRepository purchaseStatusRepository;
     private final PurchaseInfoService purchaseInfoService;
     private final PurchaseStatusService purchaseStatusService;
+    private final RefundService refundService;
 
     //회원 등록 화면 보기
     @GetMapping("/member/signup")
@@ -334,6 +335,22 @@ public class MemberController {
         model.addAttribute("statusList", StatusList);
         System.out.println("purchaseInfolist 실험 : " + purchaseInfoList.get(0));
     }
+
+
+
+
+    //회원 구매내역 교환,환불 처리
+    @PostMapping("/member/memberPurchaseList")
+    public String postMemberPurchaseList(RefundDTO refundDTO) throws Exception {
+
+
+
+        refundService.ExchangeRegistry(refundDTO);
+
+        return "{\"message\":\"GOOD\"}";
+    }
+
+
 
 
 

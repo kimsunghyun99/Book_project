@@ -2,6 +2,85 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+
+
+    <style>
+
+        #exchangeDiv, #refundDiv {
+            display: none;
+        }
+
+
+    </style>
+
+
+    <script>
+
+
+
+
+       function showDiv(number)  {
+           var number = number;
+           var exchange = document.getElementById('exchangeDiv');
+           var refund = document.getElementById('refundDiv');
+
+           var exchangenumber = document.getElementById('purchaseinfonumber1');
+           exchangenumber.innerText = number;
+           if(exchange.style.display === 'none') {
+               exchange.style.display = 'block';
+               refund.style.display = 'none';
+           } else {
+               exchange.style.display = 'none';
+           }
+       }
+
+
+       function showDiv1(number)  {
+           var number = number;
+           var exchange = document.getElementById('exchangeDiv');
+           var refund = document.getElementById('refundDiv');
+           var refundenumber = document.getElementById('purchaseinfonumber2');
+           refundenumber.innerText = number;
+
+
+           if(refund.style.display ==='none') {
+               refund.style.display = 'block';
+               exchange.style.display = 'none';
+           }
+           else {
+               refund.style.display = 'none';
+           }
+       }
+
+
+       const exchange123 = async () => {
+
+           const refundreason = document.getElementById('description1').value;
+           const status = 'exchange';
+           const purchaseinfonumber = document.getElementById('purchaseinfonumber1').value;
+
+
+
+           await fetch('/member/memberPurchaseList', {
+               method: "POST",
+               body: JSON.stringify({
+                   refundreason: refundreason,
+                   status: status,
+                   purchaseinfonumber: purchaseinfonumber
+               })
+           }).then((response) => response.json())
+               .then((data) => {
+                   if (data.message === 'GOOD') {
+                       alert('교환처리 되었습니다.');
+                   }
+                   else {
+                      alert('교환 실패했습니다.');
+                   }
+               });
+       }
+
+
+    </script>
 </head>
     <title>회원구매내역조회</title>
     <script src="/js/getCookie.js"></script>
@@ -17,8 +96,7 @@
                 <th>주문상태</th>
                 <th>결제금액</th>
                 <th>리뷰작성</th>
-<!--                <th rowspan="2"> <a href="/product/productInfo" onMouseover="this.style.background='pink'; this.style.textDecoration='underline';"-->
-<!--                                    onmouseout="this.style.background='white'; this.style.textDecoration='none';">리뷰작성</a></th>-->
+                <th>교환 ㅣ 환불</th>
             </tr>
             <<th:block th:if="${purchaseInfo != null}">
             <tr th:each="list, stat :${purchaseInfo}"
@@ -29,8 +107,14 @@
                 <td th:text="${booknames[stat.index]}"></td>
                 <td th:text="${statusList[stat.index]}"></td>
                 <td th:text="${list.totalprice}"></td>
-                <td> <a th:href="@{'/product/productInfo?bookid='+ ${bookids[stat.index]} + '&page=1'  + '&focus=true'}">리뷰작성</a>
-
+                <td> <a th:href="@{'/product/productInfo?bookid='+ ${bookids[stat.index]} + '&page=1'  + '&focus=true'}">리뷰작성</a></td>
+                <td>
+                    [<a href="javascript:void(0);" onMouseover="this.style.background='pink'; this.style.textDecoration='underline';"
+                        onmouseout="this.style.background='white'; this.style.textDecoration='none';" onclick="showDiv('${list.purchaseinfonumber}');">교환</a> |
+                    <a href="javascript:void(0)" onMouseover="this.style.background='pink'; this.style.textDecoration='underline';"
+                       onmouseout="this.style.background='white'; this.style.textDecoration='none';" onclick="showDiv1('${list.purchaseinfonumber}');">환불</a>]
+                    <a href="javascript:void(0)" onMouseover="this.style.background='pink'; this.style.textDecoration='underline';"
+                       onmouseout="this.style.background='white'; this.style.textDecoration='none';">주문확정</a>
                 </td>
             </tr>
             </th:block>
@@ -39,14 +123,20 @@
             </th:block>
         </table>
     </div>
-    <div class="bottomText">
-        [<a href="/" onMouseover="this.style.background='pink'; this.style.textDecoration='underline';"
-            onmouseout="this.style.background='white'; this.style.textDecoration='none';">교환</a> |
-        <a href="/" onMouseover="this.style.background='pink'; this.style.textDecoration='underline';"
-           onmouseout="this.style.background='white'; this.style.textDecoration='none';">환불</a>]
-        <a href="/" onMouseover="this.style.background='pink'; this.style.textDecoration='underline';"
-           onmouseout="this.style.background='white'; this.style.textDecoration='none';">주문확정</a>
-        <br><br>
-    </div>
+<br><br><br><br>
+        <div id="exchangeDiv">
+        <p style="font-size:32px;">교환 사유</p>
+            <textarea class="input_content" id="description1" cols="100" rows="5" name="description1" placeholder="사유를 입력해 주세요"></textarea><br>
+            <input type="hidden" id="purchaseinfonumber1">
+<!--            <input type="button" value="교환하기" onclick="exchange123()">-->
+            <button onclick="exchange123()">교환하기</button>
+        </div>
+
+        <div id="refundDiv">
+            <p style="font-size:32px;">환불 사유</p>
+            <textarea class="input_content" id="description2" cols="100" rows="5" name="description2" placeholder="사유를 입력해 주세요"></textarea><br>
+            <input type="hidden" id="purchaseinfonumber2">
+            <input type="button" value="환불하기" onclick="refund()">
+        </div>
 </body>
 </html>
