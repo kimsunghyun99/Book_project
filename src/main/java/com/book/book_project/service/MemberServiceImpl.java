@@ -33,6 +33,8 @@ public class MemberServiceImpl implements MemberService {
         member.setPwcheck(1);
         member.setRole("user");
         member.setFromSocial("N");
+        member.setSuspend("N");
+        member.setRole("USER");
         memberRepository.save(member.dtoToEntity(member));
     }
 
@@ -167,20 +169,6 @@ public class MemberServiceImpl implements MemberService {
             memberRepository.save(memberEntity);
         }
     }
-
-    //회원 통계
-//    @Override
-//    public Map<String, Integer> countMembers() {
-//        Map<String, Integer> counts = memberRepository.countmember();
-//        int countFromSocialY = counts.get(countMembers().get(0));
-//        int countFromSocialN = counts.get(countMembers().get(1));
-//
-//        Map<String, Integer> result = new HashMap<>();
-//        result.put("countFromSocialY", countFromSocialY);
-//        result.put("countFromSocialN", countFromSocialN);
-//
-//        return result;
-//    }
 
     //social 회원 수
     @Override

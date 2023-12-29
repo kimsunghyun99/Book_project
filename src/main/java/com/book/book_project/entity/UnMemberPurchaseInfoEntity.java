@@ -16,7 +16,7 @@ import java.sql.Timestamp;
 @Table(name="tbl_unmemberpurchaseinfo")
 public class UnMemberPurchaseInfoEntity {
     @Id
-    @Column(name="unmember_purseq", nullable=false)
+    @Column(name="unmemberpurchaseinfoseq", nullable=false)
     private int unmemberpurchaseinfoseq;
 
     @Column(name="purchasedate", nullable=false)

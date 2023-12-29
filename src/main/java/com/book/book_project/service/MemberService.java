@@ -60,9 +60,6 @@ public interface MemberService {
     //회원 정지 해제
     public void unstop(List<String> userids);
 
-    //회원 통계
-//    public Map<String, Integer> countMembers();
-
     //social 회원 수
     public int socialcount();
 

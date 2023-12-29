@@ -34,10 +34,6 @@ public interface MemberRepository extends JpaRepository<MemberEntity, String> {
     @Query(value="update tbl_member set username = :username, nickname = :nickname, telno = :telno where userid = :userid",nativeQuery = true)
     public void membermodify(@Param("userid") String userid, @Param("username") String username, @Param("nickname") String nickname, @Param("telno") String telno);
 
-    //일반 회원 / 소셜 회원 count
-//    @Query(value = "select sum(if(fromsocial = 'Y', 1, 0)) as count_fromsocial_y, sum(if(fromsocial <> 'N',0,1)) as count_fromsocial_n from tbl_member", nativeQuery = true)
-//    Map<String, Integer> countmember();
-
     //social로그인 회원 수 불러오기
     @Query(value = "select count(*) as social from tbl_member where fromsocial = (\"Y\") ", nativeQuery = true)
         public int socialcount();

@@ -1,90 +1,139 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>주문 관리 화면</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
+<meta charset="UTF-8">
+<title>회원 주문 관리 화면</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: row; /* 수평으로 정렬 */
+        align-items: center;
+        border: 1px solid #ddd;
+        padding: 20px;
+        margin-top: 20px; /* 상단 여백 추가 */
+        width: 50%; /* 가로폭을 조절하여 중앙으로 정렬 */
+    }
+
+    .info-container {
+        display: flex;
+        flex-direction: column; /* 세로로 정렬 */
+        align-items: center;
+        margin-left: 100px; /* 오른쪽 여백 추가 */
+    }
+
+    .book-image img {
+        width: 150px;
+        height: auto;
+        margin-bottom: 20px; /* 아래 여백 추가 */
+    }
+
+    .book-info,
+    .buyer-info {
+        text-align: left;
+        margin-top: 20px; /* 상단 여백 추가 */
+    }
+
+    select {
+        width: 100%;
+        padding: 8px;
+        margin-top: 10px;
+    }
+
+    header input[type="text"] {
+        width: 200px; /* 검색바 너비 조절 */
+        padding: 5px; /* 내부 여백 추가 */
+        margin-left: auto; /* 검색바를 헤더 오른쪽에 위치시키기 */
+        margin-right: 10px; /* 오른쪽 여백 추가 */
+    }
+</style>
+<Script>
+    // 회원 주문 상태 변경
+    const statusUpdate = async (select) => {
+        let purchaseinfonumber = select.dataset.purchaseinfonumber;
+        let statusseq = select.value;
+
+        if(statusseq === '1') {
+            alert("주문 완료 상태로의 변경은 불가합니다.");
+            window.location.reload();
+            return;
         }
 
-        .container {
-            display: flex;
-            flex-direction: row; /* 수평으로 정렬 */
-            align-items: center;
-            border: 1px solid #ddd;
-            padding: 50px;
-            margin-top: 60px; /* 상단 여백 추가 */
-            width: 50%; /* 가로폭을 조절하여 중앙으로 정렬 */
-        }
+        let url = "/master/memorderupdate";
 
-        .info-container {
-            display: flex;
-            flex-direction: column; /* 세로로 정렬 */
-            align-items: center;
-            margin-left: 100px; /* 오른쪽 여백 추가 */
+        let formData = {
+            "purchaseinfonumber" : parseInt(purchaseinfonumber),
+            "statusseq" : {
+                "statusseq": parseInt(statusseq)
+            }
         }
+        console.log(formData)
 
-        .book-image img {
-            width: 150px;
-            height: auto;
-            margin-bottom: 20px; /* 아래 여백 추가 */
-        }
+        await fetch(url,{
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData),
+        }).then((response) => response.text())
+            .then((data)=>{
+                if(data === 'good') {
+                    alert("주문 번호 : " + purchaseinfonumber + " 의 상태가 변경 되었습니다.");
+                    window.location.reload();
+                }
+                else alert("시스템 장애로 상태 변경이 실패했습니다.");
+            }).catch((error)=> {
+                console.log("error = " + error);
+            });
+    }
+    document.addEventListener('DOMContentLoaded', (event) => {
+        document.querySelectorAll('.statusSelect').forEach((select) => {
+            select.addEventListener('change', function() {
+                statusUpdate(this);
+            });
+        });
+    });
+/*---------------------------------------------------------------------------------------------------------------*/
 
-        .book-info,
-        .buyer-info {
-            text-align: left;
-            margin-top: 20px; /* 상단 여백 추가 */
-        }
-
-        select {
-            width: 100%;
-            padding: 8px;
-            margin-top: 10px;
-        }
-
-        header input[type="text"] {
-            width: 200px; /* 검색바 너비 조절 */
-            padding: 5px; /* 내부 여백 추가 */
-            margin-left: auto; /* 검색바를 헤더 오른쪽에 위치시키기 */
-            margin-right: 10px; /* 오른쪽 여백 추가 */
-        }
-    </style>
+</Script>
 </head>
 <body>
 <div th:include="/etc/header.html :: banner"></div>
 <h1>주문 확인</h1>
-<div style="width:80%; text-align:right; position:relative; left: 35px; margin:10px; padding: 10px;">
+<div style="width:80%; text-align:center; position:relative; left: 35px; ">
     <input type="text" placeholder="검색">
+    <h2>회원 주문</h2>
 </div>
-<div class="container">
-    <input type="checkbox">
 
+<div class="container" th:each="purchase : ${memPurchaseList}">
+    <input type="checkbox">
     <div class="info-container">
-        <div class="book-image">
-            <img src="/resources/static/images/book.jpg" alt="책 이미지">
+        <div class="book-image" >
+            <img th:src="${purchase.cover}" alt="책 이미지">
         </div>
     </div>
 
     <div class="info-container">
         <div class="book-info">
-            <h2>책 제목</h2>
-            <p>저자: 작가명</p>
-            <p>출판사: 출판사명</p>
-            <p>가격: 18,000원</p>
-            <p>출간일: 2023-12-09</p>
+            <h2 th:text="${purchase.bookname}"></h2>
+            <p th:text="${purchase.author}"></p>
+            <p th:text="${purchase.publisher}"></p>
+            <p th:text="${purchase.price}"></p>
+            <p th:text="${purchase.publicationdate}"></p>
 
-            <select>
-                <option value="구매완료">구매완료</option>
-                <option value="배송중">배송중</option>
-                <option value="배송완료">배송완료</option>
+            <select class="statusSelect" th:data-purchaseinfonumber="${purchase.purchaseinfonumber}">
+                <option th:each="status : ${statuslist}" th:value="${status.statusseq}"
+                        th:text="${status.statusname}" th:selected="${status.statusseq} == ${purchase.statusseq}"></option>
             </select>
         </div>
     </div>
@@ -92,14 +141,13 @@
     <div class="info-container">
         <div class="buyer-info">
             <h2>구매자 정보</h2>
-            <p>이름: 송포뇨</p>
-            <p>이메일: ponyo@gmail.com</p>
-            <p>주소: 서울시 강남구</p>
-            <p>전화번호: 010-1234-5678</p>
+            <p th:text="${purchase.username}"></p>
+            <p th:text="${purchase.userid}"></p>
+            <p th:text="${purchase.addr1} + '' + ${purchase.addr2}"></p>
+            <p th:text="${purchase.telno}"></p>
         </div>
     </div>
 </div>
-
 
 </body>
 </html>

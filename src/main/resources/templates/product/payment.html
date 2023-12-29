@@ -258,6 +258,7 @@
             var FinalPay = document.getElementById('FinalPay');
 
 
+<<<<<<< HEAD
             if(point > [[${memberInfo.point}]]) {
                 alert("나의 포인트를 확인해주세요");
                 document.getElementById('point').focus();
@@ -267,6 +268,17 @@
             else {
                 FinalPay.innerHTML = '최종 결제금액 ' + (totalInvoiceAmount - point) + '원';
             }
+=======
+        if(point > [[${memberInfo.point}]]) {
+            alert("나의 포인트를 확인해주세요");
+            document.getElementById('point').focus();
+            return false;
+        }
+
+        else {
+            FinalPay.innerHTML = '최종 결제금액 ' + (totalInvoiceAmount - point) + '원';
+        }
+>>>>>>> kimji
         }
 
 
@@ -364,6 +376,7 @@
                         <tr th:each="product:${view}" th:if="${view != null}">
                             <td><img class="p_image" th:src="${product.cover}" alt="책 표지 이미지" style="width:300px; height: auto"></td>
                             <td>
+<<<<<<< HEAD
                                 <span th:id="'bookname'+${product.bookname}" th:text="${product.bookname}"></span><br>/
                                 <span th:id="'author'+${product.author}" th:text="${product.author}"></span>
                             </td>
@@ -375,12 +388,30 @@
                             </td>
 <!--                                <input type="hidden" th:id="'salespoint'+${product.bookid}" th:value="${product.salespoint}">-->
 <!--                                <input type="hidden" th:id="bookid" th:value="${product.bookid}">-->
+=======
+                                <span th:text="${product.bookname}"></span><br>/
+                                <span th:text="${product.author}"></span>
+                            </td>
+                            <td><span th:text="${#numbers.formatInteger(product.price,3,'COMMA')+'원'}"></span></td>
+                            <td><span th:text="${product.quantity}"></span></td>
+                            <td colspan="3">
+                                <span style="text-align:right"><h3>합계 : <span id="totalInvoiceAmount" style="text-align:right"></span></h3></span>
+                                <span style="text-align:right"><h3>적립 포인트 : <span id="totalSalesAmount" style="text-align:right"></span></h3></span>
+                            </td>
+
+>>>>>>> kimji
         <!--                    <td><span th:text="${view.order_quantity}"></span></td>-->
         <!--                    <td><span class="invoiceAmount" th:text="${#numbers.formatInteger(list.order_amount,3,'COMMA')+'원'}"></span></td>-->
                         </tr>
                     </th:block>
                 <tr>
+<<<<<<< HEAD
                     <td colspan="6"><span style="text-align:right"><h2>총 합계<br><span class="totalcost" id="totalcost" style="text-align:right" ></span></h2></span></td>
+=======
+                    <td colspan="3"></td>
+                    <td colspan="3"><span style="text-align:right"><h2>총 합계 : <span style="text-align:right"></span></h2></span></td>
+                </tr>
+>>>>>>> kimji
 
                 </tr>
                 </tbody>
