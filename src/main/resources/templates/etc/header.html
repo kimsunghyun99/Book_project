@@ -45,7 +45,7 @@
         }
     </script>
     <nav>
-    <!-- 세션 값이 없을 경우 로그인 및 회원가입 버튼 표시 -->
+        <!-- 세션 값이 없을 경우 로그인 및 회원가입 버튼 표시 -->
         <div th:if="${session.userid == null}">
             <a href="/product/productList">도서</a> |
             <a href="/product/shoppingBasket">장바구니</a> |
@@ -55,10 +55,17 @@
         <!-- 세션 값이 있을 경우 로그아웃 및 마이페이지 버튼 표시 -->
         <div th:if="${session.userid != null}">
             <a href="/product/productList">도서</a> |
-            <a href="javascript:localcheck()">장바구니</a> |
+            <a href="/product/shoppingBasket">장바구니</a> |
             <a href="/member/mypage">마이페이지</a> |
+            <!-- 세션의 role이 MASTER일 경우 회원 관리, 회원 통계, 주문 관리 표시 -->
+            <div th:if="${session.role == 'MASTER'}">
+                <a href="/member/manage">회원 관리</a> |
+                <a href="/member/statistics">회원 통계</a> |
+                <a href="/order/manage">주문 관리</a> |
+            </div>
             <a href="/member/logout">로그아웃</a>
         </div>
     </nav>
+
 </div>
 </div>
