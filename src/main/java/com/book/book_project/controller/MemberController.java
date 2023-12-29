@@ -267,6 +267,7 @@ public class MemberController {
         model.addAttribute("memberInfo", service.memberInfo(userid));//회원정보 불러오기
         model.addAttribute("countReviewsByUserId", service.countReviewsByUserId(userid));//리뷰 갯수 구하기
         model.addAttribute("cartcount",cartService.usercartcount(userid));//회원 별 장바구니 갯수
+        model.addAttribute("purchasecount", purchaseInfoRepository.purchasecount(userid));
     }
 
     //아이디 찾기 화면

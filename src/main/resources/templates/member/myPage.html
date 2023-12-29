@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>Title</title>
@@ -10,23 +10,22 @@
 <body>
 <div th:insert="~{/etc/header.html}"></div>
 <br><br>
-<h2 th:text="${memberInfo.username} "> <a href="/member/memberPurchaseList">장바구니</a></h2>
 <br><br>
-<h4 th:text="${memberInfo.username} "><a href="/member/memberInfoModify">정보수정</a></h4>
-
+<h4 th:text="${memberInfo.username} ">
+</h4>
 <div class="table-container">
     <table class="InfoTable">
         <tr>
             <th>포인트</th>
             <th>총 리뷰</th>
-            <th th:href="/product/shoppingBasket">장바구니</th>
-            <th th:href="/member/memberPurchaseList">구매 내역</th>
+            <th a href="/product/shoppingBasket">장바구니</th>
+            <th a href="/member/memberPurchaseList">구매 내역</th>
         </tr>
         <tr>
             <td th:text="${memberInfo.point}"></td>
             <td th:text="${countReviewsByUserId}"></td>
             <td th:text="${cartcount}"></td>
-            <td th:text="${}"></td>
+            <td th:text="${purchasecount}"></td>
         </tr>
     </table>
 </div>

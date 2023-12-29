@@ -52,6 +52,15 @@ public interface PurchaseInfoRepository extends JpaRepository<PurchaseInfoEntity
     @Modifying//테이블 DML(update, insert, delete)을 실행 시켜 변화를 주었을 경우 테이블에 반영된 내용을 엔티티 클래스에 반영
     @Query(value = "update tbl_unmemberpurchaseinfo set statusseq = :statusseq where unmemberpurchaseinfoseq = :unmemberpurchaseinfoseq", nativeQuery = true)
     public void unmemberorderupdate(@Param("statusseq") int statusseq, @Param("unmemberpurchaseinfoseq") int unmemberpurchaseinfoseq);
+
+    //회원 구매내역 불러오기(갯수)
+    @Query(value = "SELECT COUNT(*) \n" +
+            "FROM tbl_purchaseinfo p \n" +
+            "join tbl_buyerinfo b ON p.buyerseq = b.buyerseq \n" +
+            "JOIN tbl_member m ON b.userid = m.userid\n" +
+            "WHERE m.userid = :userid", nativeQuery = true)
+    public int purchasecount(@Param("userid") String userid);
+
 //    List<PurchaseInfoEntity> findByBuyerseq(BuyerInfoEntity buyerseq);
 //PurchaseInfoEntity findByBuyerseq( BuyerInfoEntity buyerseq);
 

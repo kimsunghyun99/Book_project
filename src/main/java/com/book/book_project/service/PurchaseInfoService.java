@@ -34,4 +34,7 @@ public interface PurchaseInfoService {
 
     //비회원 주문 상태 변경
     public void unmemberorderupdate(int statusseq, int unmemberpurchaseinfoseq);
+
+    //회원 구매내역 불러오기(갯수)
+    public int purchasecount(String userid);
 }

@@ -66,4 +66,10 @@ public class PurchaseInfoServiceImpl implements PurchaseInfoService {
     public void unmemberorderupdate(int statusseq, int unmemberpurchaseinfoseq) {
         purchaseInfoRepository.unmemberorderupdate(statusseq, unmemberpurchaseinfoseq);
     }
+
+    //회원 구매내역 불러오기(갯수)
+    @Override
+    public int purchasecount(String userid){
+        return purchaseInfoRepository.purchasecount(userid);
+    }
 }
