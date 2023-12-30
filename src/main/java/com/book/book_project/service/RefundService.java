@@ -9,6 +9,10 @@ public interface RefundService {
 
 
     //교환건 추가
-    public void ExchangeRegistry(RefundDTO refundDTO);
+    public void ExchangeRegistry(RefundDTO refundDTO) throws Exception;
+
+
+    //환불건 추가
+    public void RefundRegistry(RefundDTO refundDTO) throws Exception;
 
 }

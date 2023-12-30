@@ -56,6 +56,7 @@ public class MemberController {
     private final PurchaseStatusService purchaseStatusService;
     private final RefundService refundService;
 
+
     //회원 등록 화면 보기
     @GetMapping("/member/signup")
     public void getSignup() {}
@@ -316,7 +317,7 @@ public class MemberController {
             String bookname = productRepository.getBookName(bookid);
             String statusseq =  String.valueOf(purchaseInfoEntity.getStatusseq().getStatusseq());
            String statusname = purchaseStatusService.getStatusName(statusseq);
-            System.out.println(statusname);
+//            System.out.println(statusname);
 
 
 
@@ -329,20 +330,44 @@ public class MemberController {
         model.addAttribute("booknames", BookNameList);
         model.addAttribute("purchaseInfo",purchaseInfoList);
         model.addAttribute("statusList", StatusList);
-        System.out.println("purchaseInfolist 실험 : " + purchaseInfoList.get(0));
+//        System.out.println("purchaseInfolist 실험 : " + purchaseInfoList.get(0));
     }
 
 
 
 
-    //회원 구매내역 교환,환불 처리
+    //회원 구매내역 교환,환불, 취소 처리 , 철회처리
     @PostMapping("/member/memberPurchaseList")
     @ResponseBody
-    public String postMemberPurchaseList(@RequestBody RefundDTO refundDTO)throws Exception {
+    public String postMemberPurchaseList(@RequestBody RefundDTO refundDTO, @RequestParam("option") String option)throws Exception {
+
+        // 교환일경우
+        if(option.equals("e")) {
+            int statsseq = 6;
+            refundService.ExchangeRegistry(refundDTO);
+            purchaseInfoService.updateStatusseq(statsseq,refundDTO.getPurchaseinfonumber().getPurchaseinfonumber());
+
+        // 환불일 경우
+        }else if(option.equals("r")){
+            int statsseq = 7;
+            refundService.RefundRegistry(refundDTO);
+            purchaseInfoService.updateStatusseq(statsseq,refundDTO.getPurchaseinfonumber().getPurchaseinfonumber());
+        }
+        else if(option.equals("c")) {
+            int statsseq = 10;
+            System.out.println(refundDTO.getPurchaseinfonumber().getPurchaseinfonumber());
+            purchaseInfoService.updateStatusseq(statsseq, refundDTO.getPurchaseinfonumber().getPurchaseinfonumber());
+        }
+        else if(option.equals("w")) {
 
 
+        }
 
-        refundService.ExchangeRegistry(refundDTO);
+//        System.out.println("controller purchaseinfonumber : " + refundDTO.getPurchaseinfonumber().getPurchaseinfonumber());
+//        System.out.println("컨트롤러1");
+//        System.out.println("컨트롤러2");
+
+
 
         return "{\"message\":\"GOOD\"}";
     }

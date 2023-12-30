@@ -12,7 +12,7 @@ public class PurchaseStatusServiceImpl implements PurchaseStatusService {
     private final PurchaseStatusRepository purchaseStatusRepository;
 
 
-
+    //주문상태 가져오기
     @Override
     public String getStatusName(String statusseq) throws Exception {
 
@@ -22,4 +22,7 @@ public class PurchaseStatusServiceImpl implements PurchaseStatusService {
 
         return purchaseStatusRepository.getStatusName(Statusseq);
     }
+
+
+
 }
