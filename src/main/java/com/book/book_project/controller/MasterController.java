@@ -1,19 +1,27 @@
 package com.book.book_project.controller;
 
 
-import com.book.book_project.entity.CategoryEntity;
-import com.book.book_project.entity.ProductEntity;
+import com.book.book_project.entity.*;
 import com.book.book_project.entity.repository.CategoryRepository;
+import com.book.book_project.entity.repository.MemberRepository;
 import com.book.book_project.entity.repository.ProductRepository;
+import com.book.book_project.entity.repository.PurchaseInfoRepository;
+import com.book.book_project.service.MemberService;
 import com.book.book_project.service.ProductService;
+import com.book.book_project.service.PurchaseInfoService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
-import org.springframework.data.repository.query.Param;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -21,74 +29,23 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
 @RequiredArgsConstructor
 public class MasterController {
 
-    private final ProductService productService;
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
-
+    private final MemberRepository memberRepository;
+    private final MemberService memberService;
+    private final PurchaseInfoRepository purchaseInfoRepository;
+    private final PurchaseInfoService purchaseInfoService;
     @GetMapping("/master/bookUpdate")
     public void getBookUpdate() throws Exception {
-//        String key = "ttbdpfwnl01191710001";
-//        String title = "자바"; // 검색하려는 제목
-//        URL url = new URL("http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=" + key
-//                + "&Query=" + URLEncoder.encode(title, "UTF-8") + "&QueryType=Title"
-//                + "&MaxResults=50&start=1&output=js&Version=20131101");
-//
-//        System.out.println(url);
-//
-//        BufferedReader bf = new BufferedReader(new InputStreamReader(url.openStream(),"UTF-8"));
-//        String result = "";
-//        String line;
-//        while((line = bf.readLine()) != null) {
-//            result = result.concat(line);
-//        }
-//        System.out.println(result);
-//
-//        bf.close();
-//
-//        JSONParser jsonParser = new JSONParser();
-//        JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
-//        JSONArray itemArray = (JSONArray) jsonObject.get("item");
-//        System.out.println(jsonObject);
-//        List<ProductEntity> productList = new ArrayList<>();
-//
-//        if(itemArray != null) {
-//            for(Object itemObj : itemArray) {
-//                JSONObject itemInfo = (JSONObject) itemObj;
-//                ProductEntity product = new ProductEntity();
-//
-//                product.setBookname((String) itemInfo.get("title"));
-//                product.setAuthor((String) itemInfo.get("author"));
-//                product.setPublisher((String) itemInfo.get("publisher"));
-//                product.setPrice((Integer) itemInfo.get("priceStandard"));
-//                product.setStock((String) itemInfo.get("stockStatus "));
-//                product.setDescription((String) itemInfo.get("description"));
-//                product.setCover((String) itemInfo.get("cover"));
-//                product.setRegdate(new Timestamp(System.currentTimeMillis()));
-//                product.setBookid((String) itemInfo.get("isbn"));
-//                product.setPublicationdate((String) itemInfo.get("pubDate"));
-//                product.setSalespoint((Integer) itemInfo.get("salesPoint"));
-//                // categoryId를 int로 변환하여 설정
-//                int categoryId = (Integer) itemInfo.get("categoryId");
-//                CategoryEntity category = new CategoryEntity();
-//                category.setCategorynumber(categoryId);
-//                product.setCategorynumber(category);
-//
-//                productList.add(product);
-//                productRepository.save(product); // DB에 저장
-//            }
-//        }
-    }
-
-    @PostMapping("/master/bookUpdate")
-    public String postBookUpdate(@Param("titleValue")String titleValue) throws Exception {
         String key = "ttbdpfwnl01191710001";
         String [] title = {
 //                "MS 오피스","워드","엑셀","파워포인트","액세스","한글(한글과컴퓨터)","그래픽 일반","포토샵","3ds max","Maya"
@@ -161,13 +118,30 @@ public class MasterController {
                 }
             }
         }
-        return "{\"data\":\"GOOD\"}";
     }
-
-    // 나이대별 통계
+    // 회원 통계
     @GetMapping("/master/ageStatistics")
-    public void getAgeStatistics() {}
+    public String socialcount(Model model){
+        //소셜 / 일반 회원 통계
+        int social = memberRepository.socialcount();
+        int normal = memberRepository.normalcount();
 
+        model.addAttribute("social", social);
+        model.addAttribute("normal", normal);
+
+        List<Map<String, Integer>> list = memberRepository.memberage();
+
+        //일반 회원 가입연령 별 통계
+        for (Map<String, Integer> map : list) {
+            String ageGroup = String.valueOf(map.get("age_group"));
+            Integer count = ((Number)map.get("count")).intValue();
+
+            model.addAttribute(ageGroup, count);
+        }
+
+        return "/master/ageStatistics";
+
+    }
 
     // 장르별 통계
     @GetMapping("/master/genreStatistics")
@@ -175,18 +149,130 @@ public class MasterController {
 
     // 회원 관리
     @GetMapping("/master/memberManage")
-    public void getMemberManage() {}
+    public String findAll(Model model, @PageableDefault(size = 5) Pageable pageable, @RequestParam(value = "page", defaultValue = "0") int page) {
+        Pageable adjustedPageable = PageRequest.of(page, 5);
+        Page<MemberEntity> members = memberRepository.findByRole("USER", adjustedPageable);
+        model.addAttribute("members", members);
+        return "/master/memberManage";
+    }
 
-    // 주문 확인
+    //회원 정지
+    @PostMapping("/master/suspend")
+    public String suspendMembers(@RequestParam("suspendMembers") String suspendMembers) throws Exception{
+        // JSON 형태의 문자열을 List<String>으로 변환
+        List<String> userids = new ObjectMapper().readValue(suspendMembers, new TypeReference<List<String>>(){});
+        System.out.println(userids);
+        memberService.stop(userids);
+
+        return "redirect:/master/memberManage?page=0";
+    }
+
+    //회원 정지 해제
+    @PostMapping("/master/unsuspend")
+    public String unSuspendMembers(@RequestParam("unSuspendMembers") String unSuspendMembers) throws Exception {
+        List<String> userids = new ObjectMapper().readValue(unSuspendMembers, new TypeReference<List<String>>() {});
+        System.out.println(userids);
+        memberService.stop(userids);
+        return "redirect:/master/memberManage?page=0";
+    }
+
+    // 회원 주문 관리
     @GetMapping("/master/purchaseManage")
-    public void getPurchaseManage() {}
+    public void purchaselist(Model model) {
+        List<Map<String, String>> list = purchaseInfoRepository.mempurchaseinfo();
+        List<Map<String, String>> list3 = purchaseInfoRepository.statuslist();
+        List<Map<String, Object>> memPurchaseList = new ArrayList<>();
 
+        for(Map<String, String> map : list){
+            Map<String, Object> memPurchaseMap = new HashMap<>();
+            //회원 주문 도서 정보
+            memPurchaseMap.put("bookname", map.get("bookname"));
+            memPurchaseMap.put("author", map.get("author"));
+            memPurchaseMap.put("publisher", map.get("publisher"));
+            memPurchaseMap.put("publicationdate", map.get("publicationdate"));
+            memPurchaseMap.put("price", map.get("price"));
+            memPurchaseMap.put("cover", map.get("cover"));
+            memPurchaseMap.put("purchaseinfonumber", map.get("purchaseinfonumber"));
+            memPurchaseMap.put("statusseq", map.get("statusseq"));
+            memPurchaseMap.put("statusname",map.get("statusname"));
+
+            //주문 회원 정보
+            memPurchaseMap.put("username", map.get("receivername"));
+            memPurchaseMap.put("userid", map.get("userid"));
+            memPurchaseMap.put("addr1", map.get("receiveraddr"));
+            memPurchaseMap.put("addr2", map.get("receiverdetailaddr"));
+            memPurchaseMap.put("telno", map.get("receivertelno"));
+
+            memPurchaseList.add(memPurchaseMap);
+        }
+        model.addAttribute("memPurchaseList", memPurchaseList);
+        model.addAttribute("statuslist", list3);
+    }
+
+    //비회원 주문 관리
+    @GetMapping("/master/unmemberPurchaseManage")
+    public void unmemberpurchaselist(Model model){
+        List<Map<String, String>> list2 = purchaseInfoRepository.unpurchaseinfo();
+        List<Map<String, String>> list3 = purchaseInfoRepository.statuslist();
+
+        List<Map<String, Object>> unmempurchaseList = new ArrayList<>();
+
+        for(Map<String, String> map : list2){
+            Map<String, Object> unmempurchaseMap = new HashMap<>();
+            //비회원 주문 도서 정보
+            unmempurchaseMap.put("bookname", map.get("bookname"));
+            unmempurchaseMap.put("author", map.get("author"));
+            unmempurchaseMap.put("publisher", map.get("publisher"));
+            unmempurchaseMap.put("publicationdate", map.get("publicationdate"));
+            unmempurchaseMap.put("price", map.get("price"));
+            unmempurchaseMap.put("cover", map.get("cover"));
+            unmempurchaseMap.put("unmemberpurchaseinfoseq", map.get("unmemberpurchaseinfoseq"));
+            unmempurchaseMap.put("statusseq", map.get("statusseq"));
+            unmempurchaseMap.put("statusname", map.get("statusname"));
+            System.out.println(unmempurchaseMap.put("unmemberpurchaseinfoseq", map.get("unmemberpurchaseinfoseq")));
+
+            //비회원 정보
+            unmempurchaseMap.put("name", map.get("receivername"));
+            unmempurchaseMap.put("addr", map.get("addr"));
+            unmempurchaseMap.put("detailaddr", map.get("detailaddr"));
+            unmempurchaseMap.put("telnum", map.get("receivertelno"));
+
+            unmempurchaseList.add(unmempurchaseMap);
+        }
+        model.addAttribute("unmempurchaseList", unmempurchaseList);
+        model.addAttribute("statuslist", list3);
+    }
+
+    //회원 주문 상태 변경
+    @ResponseBody
+    @PostMapping("/master/memorderupdate")
+    public String memberorderupdate(@RequestBody PurchaseInfoEntity purchaseInfoEntity){
+
+        int statusseq = purchaseInfoEntity.getStatusseq().getStatusseq();
+        int purchaseinfonumber = purchaseInfoEntity.getPurchaseinfonumber();
+
+        purchaseInfoRepository.memberorderupdate(statusseq, purchaseinfonumber);
+
+        return "good";
+    }
+
+    //비회원 주문 상태 변경
+    @ResponseBody
+    @PostMapping("/master/unmemorderupdate")
+    public String unmemberorderupdate(@RequestBody UnMemberPurchaseInfoEntity unMemberPurchaseInfoEntity){
+        System.out.println("비회원 주문 상태 변경");
+        int statusseq = unMemberPurchaseInfoEntity.getStatusseq().getStatusseq();
+        int unmemberpurchaseinfoseq = unMemberPurchaseInfoEntity.getUnmemberpurchaseinfoseq();
+        System.out.println(statusseq);
+        System.out.println(unmemberpurchaseinfoseq);
+
+        purchaseInfoRepository.unmemberorderupdate(statusseq, unmemberpurchaseinfoseq);
+
+        return "good";
+    }
 
     // 매출 내역
     @GetMapping("/master/salesInfo")
     public void getSalesInfo() {}
-
-
-
 
 }

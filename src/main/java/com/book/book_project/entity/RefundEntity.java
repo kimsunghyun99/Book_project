@@ -20,10 +20,13 @@ public class RefundEntity {
     @Column(name="refundreason", length = 2000, nullable = false)
     private String refundreason;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @Column(name="status", length = 20, nullable = false)
+    private String status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action= OnDeleteAction.CASCADE)
-    @JoinColumn(name="purchaseinfoseq")
-    private PurchaseInfoEntity purchaseinfoseq;
+    @JoinColumn(name="purchaseinfonumber",  nullable = false)
+    private PurchaseInfoEntity purchaseinfonumber;
 
 
 }

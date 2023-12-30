@@ -252,13 +252,14 @@
         function UsePoint() {
             var pointInput = document.getElementById('point');
             var totalInvoiceAmountElement = document.getElementById('totalInvoiceAmount');
-
             var point = parseInt(pointInput.value, 10);
+
+            var pointValue = document.getElementById("myPoint").innerText;
             var totalInvoiceAmount = parseInt(totalInvoiceAmountElement.innerText.replace(/,/g, '').replace('원',''), 10);
             var FinalPay = document.getElementById('FinalPay');
 
 
-            if(point > [[${memberInfo.point}]]) {
+            if(point >pointValue) {
                 alert("나의 포인트를 확인해주세요");
                 document.getElementById('point').focus();
                 return false;
@@ -375,19 +376,22 @@
                             </td>
 <!--                                <input type="hidden" th:id="'salespoint'+${product.bookid}" th:value="${product.salespoint}">-->
 <!--                                <input type="hidden" th:id="bookid" th:value="${product.bookid}">-->
+
+
         <!--                    <td><span th:text="${view.order_quantity}"></span></td>-->
         <!--                    <td><span class="invoiceAmount" th:text="${#numbers.formatInteger(list.order_amount,3,'COMMA')+'원'}"></span></td>-->
                         </tr>
                     </th:block>
                 <tr>
                     <td colspan="6"><span style="text-align:right"><h2>총 합계<br><span class="totalcost" id="totalcost" style="text-align:right" ></span></h2></span></td>
+                </tr>
 
                 </tr>
                 </tbody>
             </table>
         </div>
         <br><br>
-        <p th:text="'나의 포인트 : ' + ${memberInfo.point}"></p>
+        <p>나의 포인트 : <p th:text="${memberInfo.point}" id="mypoint"></p></p>
         <input type="text" style="width:11%" id="point" placeholder="사용할 포인트를 입력해주세요">
         <input type="button" style="width:7%" value="사용하기" onclick="UsePoint()">
 
