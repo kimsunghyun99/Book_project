@@ -3,6 +3,7 @@ package com.book.book_project.controller;
 import com.book.book_project.dto.NewsDTO;
 import com.book.book_project.dto.ProductDTO;
 import com.book.book_project.entity.*;
+import com.book.book_project.entity.repository.CategoryRepository;
 import com.book.book_project.service.NewsService;
 import com.book.book_project.service.ProductService;
 import com.book.book_project.dto.CartDTO;
@@ -14,6 +15,7 @@ import com.book.book_project.entity.repository.MemberRepository;
 import com.book.book_project.entity.repository.ProductRepository;
 import com.book.book_project.service.*;
 import com.book.book_project.util.PageUtil;
+import com.book.book_project.util.PageUtil2;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -44,27 +46,29 @@ public class ProductController {
     private final CartService cartService;
     private  final CartRepository cartRepository;
     private final DeliveryService deliveryService;
+    private final CategoryRepository categoryRepository;
 
     // main화면 보기
     @GetMapping("/product/main")
-    public void getMain(Model model) throws Exception {
-       // System.out.println("시작");
-       //  bookid, bookname, cover 가져오기 -> 나중에 interests 토대로 가져올 예정
-        List<ProductEntity> productDTOList = service.productlist();
-        model.addAttribute("productList", productDTOList);
+    public void getMain(Model model ,HttpSession session) throws Exception {
 
 
+        String userid = (String)session.getAttribute("userid") != null?  (String)session.getAttribute("userid") : "";
 
+        if(userid != "") {
+            String interest = memberService.memberInfo(userid).getInterest();
+            List<ProductEntity> productDTOList = service.productlist(interest);
+            model.addAttribute("productList", productDTOList);
+        } else {
+            List<ProductEntity> productDTOList1 = service.productlist1();
+            model.addAttribute("productList", productDTOList1);
+
+        }
 
         List<NewsDTO> newsDTOList = newsService.crawlNews();
         List<ProductEntity> bookList=productRepository.getProductList();
-        model.addAttribute("bookListId", bookList.get(0).getBookid()); // 이거 null -> 수ㅡ정필요
+        model.addAttribute("bookListId", bookList.get(0).getBookid());
         model.addAttribute("newsList", newsDTOList);
-
-
-
-
-
 
     }
 
@@ -100,9 +104,40 @@ public class ProductController {
 
 
     @GetMapping("/product/productList")
-    public void getProductList(HttpSession session, Model model) throws Exception{
-        String bookid = (String) session.getAttribute("bookid");
-        model.addAttribute("view", service.view(bookid));
+    public void getProductList(@RequestParam(name = "category", required = false, defaultValue = "all") String interest, @RequestParam("page") int pageNum,@RequestParam(name="keyword",defaultValue="",required=false) String keyword, Model model) throws Exception{
+
+
+
+        int postNum = 21; //한 화면에 보여지는 게시물 행의 갯수
+//        int startPoint = (pageNum-1) * postNum+1; //페이지 시작 게시물 번호
+//        int endPoint = pageNum*postNum;
+        int pageListCount = 5; //화면 하단에 보여지는 페이지리스트의 페이지 갯수
+
+
+        PageUtil2 page = new PageUtil2();
+
+
+        if(!"all".equals(interest)) {
+
+            List<Integer> categorynumbers = service.getCateNumber(interest);
+            System.out.println("categorynumber = "+categorynumbers);
+
+            Page<ProductEntity> list = service.list(pageNum, postNum, keyword, categorynumbers);
+            System.out.println("list.size = "+list);
+            int totalCount = (int)list.getTotalElements();
+
+            model.addAttribute("pageList", page.getPageList(pageNum, postNum, pageListCount,totalCount,interest));
+            model.addAttribute("productList", list);
+
+        }else {
+            // all인경우
+            Page<ProductEntity> list = service.list1(pageNum, postNum, keyword);
+            int totalCount = (int)list.getTotalElements();
+
+            model.addAttribute("pageList", page.getPageList(pageNum, postNum, pageListCount,totalCount,interest));
+            model.addAttribute("productList", list);
+        }
+
     }
 
 
@@ -223,6 +258,7 @@ public class ProductController {
     }
 
 
+
     // 결제화면
     @GetMapping("/product/payment")
     public void getPayment(
@@ -252,11 +288,12 @@ public class ProductController {
             productlist.add(productDTO);
             model.addAttribute("view", productlist);
 
+        }
             model.addAttribute("memberInfo", memberService.memberInfo(userid));
+            System.out.println(memberService.memberInfo(userid).getPoint());
             // userid에 대한 주소지 다 꺼내기
             model.addAttribute("deliverylist", deliveryService.list(userid));
             //bookid 에 대한 정보
-        }
 
     }
 
@@ -264,7 +301,6 @@ public class ProductController {
     public ResponseEntity<?> postPayment(@RequestBody Map<String, List<Map<String, Object>>> payload, HttpSession session) {
         List<Map<String, Object>> items = payload.get("items");
         List<ProductDTO> productDTOList = new ArrayList<>();
-
         for (Map<String, Object> item : items) {
             String bookid = (String) item.get("bookid");
             int quantity = (Integer) item.get("quantity");

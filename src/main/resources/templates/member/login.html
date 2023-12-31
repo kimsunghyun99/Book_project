@@ -146,7 +146,14 @@ text-align: center;
         await fetch('/member/loginCheck',{
             method: "POST",
             body: formData
-        }).then((response) => response.json())
+        }).then((response) => {
+            if (!response.ok) {
+                return response.text().then((error) => {
+                    throw new Error(error);
+                });
+            }
+            return response.json();
+        })
             .then((data) => {
                 if(data.message === 'GOOD'){
                     cookieManage(userid.value, password.value);
@@ -160,7 +167,7 @@ text-align: center;
                     alert("시스템 장애로 로그인이 실패했습니다");
                 }
             }).catch((error) => {
-                console.log("error =" + error);
+                alert(error.message);
             })
     }
 

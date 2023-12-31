@@ -2,18 +2,28 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>국내 도서 및 새 책</title>
     <style>
         body {
             display: flex;
-            font-family: Arial, sans-serif;
+            font-family: Arial, sans-serif
         }
 
         #categories {
-            width: 200px;
+            width: 210px;
             padding: 20px;
             background-color: #f0f0f0;
+            display: block;
+            top: 60%;
+            position:fixed;
+            left: 0;
+            transform: translateY(-50%);
         }
 
         #books {
@@ -30,6 +40,7 @@
             flex-direction: column;
             align-items: center;
             margin-bottom: 20px; /* 컨테이너 간 간격 조절을 위해 추가 */
+            justify-content: space-around;
         }
 
         .container h1 {
@@ -37,76 +48,275 @@
         }
 
         .book {
-            width: 200px;
+            width: 100%;
             margin: 10px;
             text-align: center;
         }
 
         .book img {
             width: 100%;
-            height: 200px;
+            height: 150px;
             object-fit: cover;
             border: 1px solid #ddd;
             border-radius: 5px;
         }
+
+
     </style>
+    <script>
+
+
+
+        function addProductToRecentlyViewed(bookid, bookname, cover) {
+            console.log(bookid);
+            console.log(cover);
+            console.log(bookname);
+            var product = {
+                bookid: bookid,
+                bookname: bookname,
+                cover: cover
+            };
+            // 처음에 빈배열됨
+            var recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed')) || [];
+
+            // 이미 저장된 상품인지 확인 후 중복 방지
+            var existingProduct = recentlyViewed.findIndex(function (item) {
+                return item.bookid === product.bookid;     // 이게 true면 있다는거
+            });
+
+
+            // 중복인 경우 , 해당 값 배열에서 삭제하기
+            if(existingProduct != -1) {
+                recentlyViewed.splice(existingProduct, 1);
+                recentlyViewed.push(product);
+            }
+
+            if (existingProduct == -1) {
+                // 새로운 상품을 추가
+                recentlyViewed.push(product);
+
+                // 최근 본 상품 목록을 로컬 스토리지에 저장
+
+            }
+
+            localStorage.setItem('recentlyViewed', JSON.stringify(recentlyViewed));
+        }
+
+        const search = () => {
+            const keyword = document.querySelector('#keyword');
+            document.location.href='/product/productList?category=all&page=1&keyword=' + keyword.value;
+        }
+        const press = () => {
+            if(event.keyCode == 13) search();
+        }
+
+
+
+
+
+        // $(document).ready(function(){
+        //     $('.dropdown-toggle').dropdown();
+        // });
+    </script>
 </head>
 <body>
-<div th:include="/etc/header.html"></div>
+<div th:insert="~{/etc/header.html}"></div>
+<input type="text" name="keyword" id="keyword"
+       style="width:35%;height:30px;border:2px solid #168;font-size: 16px"
+       placeholder="검색할 책 이름, 저자 및 출판사를 입력하세요." onkeydown="press()">
+
+<br><br>
 <div id="categories">
-    <h2>국내 도서 카테고리</h2>
-    <ul>
-        <li>소설</li>
-        <li>시/에세이</li>
-        <li>역사/문화</li>
-        <li>과학/자연</li>
-        <li>인문/사회</li>
-        <li>경제/경영</li>
+    <h2 style="text-align: center; font-size: 18px">국내 도서 카테고리</h2>
+<!--    <a href="/product/productList?category=all&page=1">모두보기</a>-->
+<div class="container mt-3">
+    <a href="/product/productList?category=all&page=1">모두보기</a>
+    <br>
+    <div class="dropdown dropend">
+    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">OS/Networking</button>
+    <ul class="dropdown-menu">
+        <li><a href="/product/productList?category=네트워크 보안/해킹&page=1" class="dropdown-item">네트워크 보안/해킹</a></li>
+        <li><a href="/product/productList?category=윈도우즈&page=1" class="dropdown-item">윈도우즈</a></li>
+        <li><a href="/product/productList?category=유닉스&page=1" class="dropdown-item">유닉스</a></li>
+        <li><a href="/product/productList?category=매킨토시&page=1" class="dropdown-item">매킨토시</a></li>
+        <li><a href="/product/productList?category=네트워크 구축&page=1" class="dropdown-item">네트워크 구축</a></li>
+        <li><a href="/product/productList?category=리눅스&page=1" class="dropdown-item">리눅스</a></li>
     </ul>
 </div>
+<br>
+    <div class="dropdown dropend">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">프로그래밍 개발/방법론</button>
+        <ul class="dropdown-menu">
+            <li><a href="/product/productList?category=데이터베이스 프로그래밍&page=1" class="dropdown-item">데이터베이스 프로그래밍 </a></li>
+            <li><a href="/product/productList?category=윈도우 프로그래밍&page=1" class="dropdown-item">윈도우 프로그래밍</a></li>
+            <li><a href="/product/productList?category=리눅스/유닉스 프로그래밍&page=1" class="dropdown-item">리눅스/유닉스 프로그래밍</a></li>
+            <li><a href="/product/productList?category=게임 프로그래밍&page=1" class="dropdown-item">게임 프로그래밍</a></li>
+            <li><a href="/product/productList?category=모바일/무선/임베디드 프로그래밍&page=1" class="dropdown-item">모바일/무선/임베디드 프로그래밍</a></li>
+            <li><a href="/product/productList?category=객체지향 프로그래밍/UML&page=1" class="dropdown-item">객체지향 프로그래밍/UML</a></li>
+            <li><a href="/product/productList?category=웹 서비스/웹 프로그래밍&page=1" class="dropdown-item">웹 서비스/웹 프로그래밍</a></li>
+            <li><a href="/product/productList?category=프로그래밍 기초/개발 방법론&page=1" class="dropdown-item">프로그래밍 기초/개발 방법론</a></li>
+            <li><a href="/product/productList?category=네트워크 프로그래밍&page=1" class="dropdown-item">네트워크 프로그래밍</a></li>
+            <li><a href="/product/productList?category=애플/아이폰/안드로이드 프로그래밍&page=1" class="dropdown-item">애플/아이폰/안드로이드 프로그래밍</a></li>
+        </ul>
+    </div>
+<br>
+    <div class="dropdown dropend">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">프로그래밍 언어</button>
+        <ul class="dropdown-menu">
+            <li><a href="/product/productList?category=자바&page=1" class="dropdown-item">자바 </a></li>
+            <li><a href="/product/productList?category=윈도우 프로그래밍&page=1" class="dropdown-item">윈도우 프로그래밍</a></li>
+            <li><a href="/product/productList?category=ASP&page=1" class="dropdown-item">ASP</a></li>
+            <li><a href="/product/productList?category=PHP&page=1" class="dropdown-item">PHP</a></li>
+            <li><a href="/product/productList?category=Visual Basic&page=1" class="dropdown-item">Visual Basic</a></li>
+            <li><a href="/product/productList?category=.NET&page=1" class="dropdown-item">.NET</a></li>
+            <li><a href="/product/productList?category=프로그래밍 언어 기타&page=1" class="dropdown-item">프로그래밍 언어 기타</a></li>
+            <li><a href="/product/productList?category=C&page=1" class="dropdown-item">C</a></li>
+            <li><a href="/product/productList?category=C++&page=1" class="dropdown-item">C++</a></li>
+            <li><a href="/product/productList?category=XML&page=1" class="dropdown-item">XML</a></li>
+            <li><a href="/product/productList?category=파이썬&page=1" class="dropdown-item">파이썬</a></li>
+            <li><a href="/product/productList?category=델파이&page=1" class="dropdown-item">델파이</a></li>
+            <li><a href="/product/productList?category=JSP&page=1" class="dropdown-item">JSP</a></li>
+            <li><a href="/product/productList?category=Ajax&page=1" class="dropdown-item">Ajax</a></li>
+            <li><a href="/product/productList?category=Ruby/Rails&page=1" class="dropdown-item">Ruby/Rails</a></li>
+            <li><a href="/product/productList?category=Objective C / 애플 어플리케이션&page=1" class="dropdown-item"> Objective C / 애플 어플리케이션
+            </a></li>
+        </ul>
+    </div>
+
+    <br>
+    <div class="dropdown dropend">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">활용능력</button>
+        <ul class="dropdown-menu">
+            <li><a href="/product/productList?category=인터넷정보관리사&page=1" class="dropdown-item">인터넷정보관리사</a></li>
+            <li><a href="/product/productList?category=컴퓨터활용능력&page=1" class="dropdown-item">컴퓨터활용능력</a></li>
+            <li><a href="/product/productList?category=MCP/MCSE&page=1" class="dropdown-item">MCP/MCSE</a></li>
+            <li><a href="/product/productList?category=신규 자격증/자격증 기타&page=1" class="dropdown-item">신규 자격증/자격증 기타</a></li>
+            <li><a href="/product/productList?category=SCJP&page=1" class="dropdown-item">SCJP</a></li>
+            <li><a href="/product/productList?category=Oracle OCA/OCP&page=1" class="dropdown-item">Oracle OCA/OCP</a></li>
+            <li><a href="/product/productList?category=정보기기/정보통신&page=1" class="dropdown-item">정보기기/정보통신</a></li>
+            <li><a href="/product/productList?category=전자상거래&page=1" class="dropdown-item">전자상거래</a></li>
+            <li><a href="/product/productList?category=CCNA/CCNP&page=1" class="dropdown-item">CCNA/CCNP</a></li>
+            <li><a href="/product/productList?category=MOS/MCAS&page=1" class="dropdown-item">MOS/MCAS</a></li>
+            <li><a href="/product/productList?category=ITQ&page=1" class="dropdown-item">ITQ</a></li>
+            <li><a href="/product/productList?category=컬러리스트&page=1" class="dropdown-item">컬러리스트</a></li>
+            <li><a href="/product/productList?category=사무자동화&page=1" class="dropdown-item">사무자동화</a></li>
+            <li><a href="/product/productList?category=워드프로세서&page=1" class="dropdown-item">워드프로세서</a></li>
+            <li><a href="/product/productList?category=정보처리기사&page=1" class="dropdown-item">정보처리기사</a></li>
+            <li><a href="/product/productList?category=정보처리기능사&page=1" class="dropdown-item">정보처리기능사</a></li>
+            <li><a href="/product/productList?category=정보처리산업기사&page=1" class="dropdown-item">정보처리산업기사</a></li>
+            <li><a href="/product/productList?category=웹디자인 기능사&page=1" class="dropdown-item">웹디자인 기능사</a></li>
+            <li><a href="/product/productList?category=GTQ&page=1" class="dropdown-item">GTQ</a></li>
+            <li><a href="/product/productList?category=DIAT&page=1" class="dropdown-item">DIAT</a></li>
+        </ul>
+    </div>
+<br>
+    <div class="dropdown dropend">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">e비즈니스/창업</button>
+        <ul class="dropdown-menu">
+            <li><a href="/product/productList?category=e-비즈니스/온라인 창업&page=1" class="dropdown-item">e-비즈니스/온라인 창업</a></li>
+            <li><a href="/product/productList?category=공공정책/자료&page=1" class="dropdown-item">공공정책/자료</a></li>
+            <li><a href="/product/productList?category=디지털 문화&page=1" class="dropdown-item">디지털 문화</a></li>
+        </ul>
+    </div>
+
+    <br>
+    <div class="dropdown dropend">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">오피스(엑셀/파워포인트)</button>
+        <ul class="dropdown-menu">
+            <li><a href="/product/productList?category=MS 오피스&page=1" class="dropdown-item">MS 오피스</a></li>
+            <li><a href="/product/productList?category=워드&page=1" class="dropdown-item">워드</a></li>
+            <li><a href="/product/productList?category=엑셀&page=1" class="dropdown-item">엑셀</a></li>
+            <li><a href="/product/productList?category=파워포인트&page=1" class="dropdown-item">파워포인트</a></li>
+            <li><a href="/product/productList?category=액세스&page=1" class="dropdown-item">액세스</a></li>
+            <li><a href="/product/productList?category=한글(한글과컴퓨터)&page=1" class="dropdown-item">한글(한글과컴퓨터)</a></li>
+        </ul>
+    </div>
+    <br>
+    <div class="dropdown dropend">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">웹디자인/홈페이지</button>
+        <ul class="dropdown-menu">
+            <li><a href="/product/productList?category=웹디자인 입문&page=1" class="dropdown-item">웹디자인 입문</a></li>
+            <li><a href="/product/productList?category=웹기획&page=1" class="dropdown-item">웹기획</a></li>
+            <li><a href="/product/productList?category=나모 웹에디터&page=1" class="dropdown-item">나모 웹에디터</a></li>
+            <li><a href="/product/productList?category=드림위버&page=1" class="dropdown-item">드림위버</a></li>
+            <li><a href="/product/productList?category=플래시&page=1" class="dropdown-item">플래시</a></li>
+            <li><a href="/product/productList?category=일러스트레이터&page=1" class="dropdown-item">일러스트레이터</a></li>
+            <li><a href="/product/productList?category=포토샵&page=1" class="dropdown-item">포토샵</a></li>
+            <li><a href="/product/productList?category=HTML/JavaScript&page=1" class="dropdown-item">HTML/JavaScript</a></li>
+            <li><a href="/product/productList?category=웹디자인 기타&page=1" class="dropdown-item">웹디자인 기타</a></li>
+        </ul>
+    </div>
+<br>
+    <div class="dropdown dropend">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">그래픽/멀티미디어</button>
+        <ul class="dropdown-menu">
+            <li><a href="/product/productList?category=그래픽 일반&page=1" class="dropdown-item">그래픽 일반</a></li>
+            <li><a href="/product/productList?category=포토샵&page=1" class="dropdown-item">포토샵</a></li>
+            <li><a href="/product/productList?category=3ds max&page=1" class="dropdown-item">3ds max</a></li>
+            <li><a href="/product/productList?category=Maya&page=1" class="dropdown-item">Maya</a></li>
+            <li><a href="/product/productList?category=CAD&page=1" class="dropdown-item">CAD</a></li>
+            <li><a href="/product/productList?category=DTP&page=1" class="dropdown-item">DTP</a></li>
+            <li><a href="/product/productList?category=멀티미디어 타이틀/컴퓨터 음악&page=1" class="dropdown-item">멀티미디어 타이틀/컴퓨터 음악</a></li>
+            <li><a href="/product/productList?category=디렉터&page=1" class="dropdown-item">디렉터</a></li>
+            <li><a href="/product/productList?category=프리미어/베가스&page=1" class="dropdown-item">프리미어/베가스</a></li>
+            <li><a href="/product/productList?category=코렐드로우/페인터&page=1" class="dropdown-item">코렐드로우/페인터</a></li>
+        </ul>
+    </div>
+<br>
+    <div class="dropdown dropend">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">컴퓨터 공학</button>
+        <ul class="dropdown-menu">
+            <li><a href="/product/productList?category=컴퓨터공학/전산학 개론&page=1" class="dropdown-item">컴퓨터공학/전산학 개론</a></li>
+            <li><a href="/product/productList?category=소프트웨어 공학&page=1" class="dropdown-item">소프트웨어 공학</a></li>
+            <li><a href="/product/productList?category=자료구조/알고리즘&page=1" class="dropdown-item">자료구조/알고리즘</a></li>
+            <li><a href="/product/productList?category=전산수학(SPSS/MATLAB)&page=1" class="dropdown-item">전산수학(SPSS/MATLAB)</a></li>
+            <li><a href="/product/productList?category=네트워크/데이터 통신&page=1" class="dropdown-item">네트워크/데이터 통신</a></li>
+            <li><a href="/product/productList?category=마이크로프로세서&page=1" class="dropdown-item">마이크로프로세서</a></li>
+            <li><a href="/product/productList?category=정보통신공학&page=1" class="dropdown-item">정보통신공학</a></li>
+            <li><a href="/product/productList?category=데이터베이스 개론&page=1" class="dropdown-item">데이터베이스 개론</a></li>
+        </ul>
+    </div>
+<br>
+
+    <div class="dropdown dropend">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">스마트폰/태블릿/SNS</button>
+        <ul class="dropdown-menu">
+            <li><a href="/product/productList?category=스마트폰/태블릿&page=1" class="dropdown-item">스마트폰/태블릿</a></li>
+            <li><a href="/product/productList?category=SNS&page=1" class="dropdown-item">SNS</a></li>
+        </ul>
+    </div>
+    <br>
+    <div class="dropdown dropend">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">모바일 프로그래밍</button>
+        <ul class="dropdown-menu">
+            <li><a href="/product/productList?category=모바일/임베디드&page=1" class="dropdown-item">모바일/임베디드</a></li>
+            <li><a href="/product/productList?category=아이폰/아이패드&page=1" class="dropdown-item">아이폰/아이패드</a></li>
+            <li><a href="/product/productList?category=안드로이드&page=1" class="dropdown-item">안드로이드</a></li>
+        </ul>
+    </div>
+
+</div>
+</div>
+
+
+
 
 <div id="books">
-    <div class="container">
-
-        <div class="book">
-            <img th:src="@{'/profile/' + ${bookinfo.storedimg}}" style="display:block;width: 200px; margin: 10px; text-align: center;" alt="책 1">
-            <p class="book-title" th:text="${bookinfo.bookname}"></p>
-            <p class="book-price" th:text="'가격: ' + ${bookinfo.price} + '원'"></p>
-        </div>
-        <div class="book">
-            <img th:src="@{'/profile/' + ${bookinfo.storedimg}}" style="display:block;width: 200px; margin: 10px; text-align: center;" alt="책 2">
-            <p class="book-title" th:text="${bookinfo.bookname}"></p>
-            <p class="book-price" th:text="'가격: ' + ${bookinfo.price} + '원'"></p>
-        </div>
-    </div>
-    <div class="container">
-
-        <div class="book">
-            <img th:src="@{'/profile/' + ${bookinfo.storedimg}}" style="display:block;width: 200px; margin: 10px; text-align: center;" alt="책 3">
-            <p class="book-title" th:text="${bookinfo.bookname}"></p>
-            <p class="book-price" th:text="'가격: ' + ${bookinfo.price} + '원'"></p>
-        </div>
-        <div class="book">
-            <img th:src="@{'/profile/' + ${bookinfo.storedimg}}" style="display:block;width: 200px; margin: 10px; text-align: center;" alt="책 4">
-            <p class="book-title" th:text="${bookinfo.bookname}"></p>
-            <p class="book-price" th:text="'가격: ' + ${bookinfo.price} + '원'"></p>
-        </div>
-    </div>
-    <div class="container">
-
-        <div class="book">
-            <img th:src="@{'/profile/' + ${bookinfo.storedimg}}" style="display:block;width: 200px; margin: 10px; text-align: center;" alt="책 5">
-            <p class="book-title" th:text="${bookinfo.bookname}"></p>
-            <p class="book-price" th:text="'가격: ' + ${bookinfo.price} + '원'"></p>
-        </div>
-        <div class="book">
-            <img th:src="@{'/profile/' + ${bookinfo.storedimg}}" style="display:block;width: 200px; margin: 10px; text-align: center;" alt="책 6">
-            <p class="book-title" th:text="${bookinfo.bookname}"></p>
-            <p class="book-price" th:text="'가격: ' + ${bookinfo.price} + '원'"></p>
-
+        <div th:each="product, stat : ${productList}" th:if="${stat.count <= 12}" class="container col-md-4">
+            <div class="book">
+        <a th:href="@{'/product/productInfo?bookid=' + ${product.bookid} + '&page=1'}"
+           th:onclick="addProductToRecentlyViewed('[[${product.bookid}]]', '[[${product.bookname}]]', '[[${product.cover}]]')">
+            <img th:src="${product.cover}" alt="책 표지 이미지" style="width: 100px; height: 150px;">
+        </a>
+            <br>
+        <a th:href="@{'/product/productInfo?bookid=' + ${product.bookid} + '&page=1'}"
+           th:onclick="addProductToRecentlyViewed('[[${product.bookid}]]', '[[${product.bookname}]]', '[[${product.cover}]]')"
+           th:text="${product.bookname}">
+        </a>
         </div>
     </div>
 </div>
+<div style="text-align:center; margin-top:20px; position:fixed; bottom:0; left:50%;">[(${pageList})]</div>
 
 </body>
 </html>
