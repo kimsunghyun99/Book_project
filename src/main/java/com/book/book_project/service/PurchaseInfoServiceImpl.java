@@ -18,8 +18,6 @@ import java.util.Map;
 public class PurchaseInfoServiceImpl implements PurchaseInfoService {
     private final PurchaseInfoRepository purchaseInfoRepository;
 
-
-
 //    @Override
 //    public List<PurchaseInfoEntity> purchaseList(BuyerInfoEntity buyerseq){
 //
@@ -35,13 +33,10 @@ public class PurchaseInfoServiceImpl implements PurchaseInfoService {
         return (PurchaseInfoEntity) purchaseInfoRepository.findByBuyerseq(buyerseq);
     }
 
-
     @Override
     public List<PurchaseInfoEntity> unMemberPurchaseList(UnMemberEntity unmembertelno) throws Exception {
         return null;
     }
-
-
 
     //회원 주문 관리
     public List<Map<String, String>> mempurchaseinfo(){
@@ -71,5 +66,19 @@ public class PurchaseInfoServiceImpl implements PurchaseInfoService {
     @Override
     public int purchasecount(String userid){
         return purchaseInfoRepository.purchasecount(userid);
+    }
+
+    //매출 내역 뽑기
+    @Override
+    public List<Map<String, String>> totalPrice() {
+        List<Map<String, String>> list = purchaseInfoRepository.totalPrice();
+        return list;
+    }
+
+    //전체 판매 수량, 전체 판매 금액 합계
+    @Override
+    public List<Map<String, String>> totalSalesPrice(){
+        List<Map<String, String>> list = purchaseInfoRepository.totalSalesPrice();
+        return list;
     }
 }

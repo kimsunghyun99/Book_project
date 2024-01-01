@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -44,19 +45,28 @@
     <h1>매출 내역</h1>
     <div class="table-container">
         <table class="InfoTable">
+            <thead>
             <tr>
                 <th>책 제목</th>
                 <th>판매 금액</th>
                 <th>판매 수량</th>
                 <th>총 판매 금액</th>
             </tr>
-            <tr>
-                <td>코딩 놀이</td>
-                <td>10,000</td>
-                <td>1,000</td>
-                <td>1,500,000</td>
-
+            </thead>
+            <tbody>
+            <tr th:each="total : ${totalList}">
+                <td th:text="${total.bookname}"></td>
+                <td th:text="${total.price}"></td>
+                <td th:text="${total.volume}"></td>
+                <td th:text="${total.total_price}"></td>
             </tr>
+            <tr th:each="total2 : ${totalSalesPriceList}">
+                <td>합계</td>
+                <td></td> <!-- 서버로부터 전달받은 판매 금액 합계 -->
+                <td th:text="${total2.totalvolume}">0</td> <!-- 서버로부터 전달받은 판매 수량 합계 -->
+                <td th:text="${total2.totalsales}">0</td> <!-- 서버로부터 전달받은 총 판매 금액 합계 -->
+            </tr>
+            </tbody>
         </table>
     </div>
 </div>

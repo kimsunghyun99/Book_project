@@ -61,6 +61,26 @@ public interface PurchaseInfoRepository extends JpaRepository<PurchaseInfoEntity
             "WHERE m.userid = :userid", nativeQuery = true)
     public int purchasecount(@Param("userid") String userid);
 
+    //매출 내역 뽑기
+    @Query(value = "select pp.*, p.total_price , p.volume  \n" +
+            "from tbl_purchaseinfo p \n" +
+            "join tbl_product pp on p.bookid = pp.bookid \n" +
+            "where p.statusseq = 5\n" +
+            "UNION\n" +
+            "select pp.* , ub.total_price , ub.volume \n" +
+            "from tbl_unmemberpurchaseinfo ub\n" +
+            "join tbl_product pp on ub.bookid = pp.bookid \n" +
+            "where ub.statusseq = 5", nativeQuery = true)
+    List<Map<String, String>> totalPrice();
+
+    //전체 판매 수량, 전체 판매 금액 합계
+    @Query(value = "SELECT \n" +
+            "  (SELECT sum(total_price) FROM tbl_purchaseinfo WHERE statusseq = 5) +\n" +
+            "  (SELECT sum(total_price) FROM tbl_unmemberpurchaseinfo WHERE statusseq = 5) AS totalsales,\n" +
+            "  (select sum(volume) from tbl_purchaseinfo where statusseq = 5) +\n" +
+            "  (select sum(volume) from tbl_unmemberpurchaseinfo where statusseq = 5) as totalvolume", nativeQuery = true)
+    List<Map<String, String>> totalSalesPrice();
+
 //    List<PurchaseInfoEntity> findByBuyerseq(BuyerInfoEntity buyerseq);
 //PurchaseInfoEntity findByBuyerseq( BuyerInfoEntity buyerseq);
 
