@@ -5,11 +5,23 @@
 <title>로그인</title>
 <style>
 
+    @font-face {
+        font-family: 'GmarketSansMedium';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+    }
 
     h1 {
         color: #333;
-        margin-top: 0; /* 기존 스타일에서 추가 */
+        margin-top: 0;
     }
+    h2 {
+
+        color: #333;
+        margin-top: 0;
+    }
+
 
     .container {
         text-align: center;
@@ -19,41 +31,48 @@
         justify-content: center;
         height: 100vh;
     }
-body {
-font-family: Arial, sans-serif;
-background-color: #f4f4f4;
-margin: 0;
-padding: 0;
-display: flex;
-justify-content: center;
-align-items: center;
-height: 100vh;
-}
 
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
 
-form {
-text-align: center;
-    width: 300px; /* 원하는 너비로 조절하세요 */
-}
+    form {
+        text-align: center;
+        width: 300px;
+    }
 
-.userid,
-.password,
-#btn_login {
-    width: 100%; /* 폼의 너비에 맞춤 */
-    padding: 10px;
-    box-sizing: border-box;
-    margin: 5px;
-}
+    .userid,
+    .password,
+    #btn_login {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        margin: 5px;
+    }
 
-.btn_login {
-font-size: 18px; /* 원하는 폰트 크기로 조절하세요 */
-}
+    .btn_login {
+        font-size: 18px;
+        background-color: #ffd153; /* 뉴트럴톤 노랑색 */
+        color: black;
+        cursor: pointer;
+        border: none; /* 테두리 없앰 */
+        outline: none; /* 포커스 효과 제거 */
+    }
 
-.bottomText {
-text-align: center;
-}
+    .bottomText {
+        font-family: 'GmarketSansMedium';
+        text-align: center;
+    }
 
     .remember {
+        font-family: 'GmarketSansMedium';
         display: inline-block;
         justify-content: space-between;
         align-items: center;
@@ -65,6 +84,7 @@ text-align: center;
     }
 
     .oauth-link {
+        font-family: 'GmarketSansMedium';
         margin-top: 10px;
     }
 </style>
@@ -221,7 +241,7 @@ text-align: center;
 <div class="container">
 <div th:include="/etc/header.html :: banner"></div>
     <br><br><br>
-<h1>로그인</h1>
+<h2>로그인</h2>
 
 <form name="loginForm" id="loginForm" method="post">
 

@@ -26,5 +26,9 @@ public interface ReviewRepository extends JpaRepository<ReviewEntity, Integer> {
 
 	Page<ReviewEntity> findByBookid(ProductEntity bookid, PageRequest pageRequest);
 
+	@Query(value="select count(*) from tbl_review where bookid=:bookid", nativeQuery = true)
+	int countreview(@Param("bookid") String bookid);
 
 }
+
+

@@ -1,7 +1,57 @@
 
 <div th:fragment="headerFragment">
 <div th:fragment="banner">
+
     <header>
+        <style>
+            @font-face {
+                font-family: 'WarhavenB';
+                src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2312-1@1.1/WarhavenB.woff2') format('woff2');
+                font-weight: 700;
+                font-style: normal;
+            }
+            @font-face {
+                font-family: 'GmarketSansMedium';
+                src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+                font-weight: normal;
+                font-style: normal;
+            }
+
+            h1{
+                font-family: 'WarhavenB';
+                font-size: 60px;
+                color: #191919;
+            }
+
+            h1 a {
+                text-decoration: none; /* 링크에 밑줄 제거 */
+                color: inherit; /* 기본 링크 색상으로 변경 */
+            }
+
+            h1 a:hover {
+                text-decoration: underline; /* 호버 시에는 다시 밑줄 표시 */
+            }
+
+            nav {
+                font-family: 'GmarketSansMedium';
+                /*background-color: #8B0000; !* 바탕색 지정 (예: 흰색) *!*/
+                background-color: #ffc118;
+                color: #191919;
+            }
+
+            nav a {
+                text-decoration: none; /* 밑줄 제거 */
+                color: #191919; /* 링크 색상 지정 (예: 검정색) */
+                margin-right: 10px; /* 각 링크 사이 여백 지정 */
+            }
+
+            /* 호버 시에 색상 변경 */
+            nav a:hover {
+                color: #007ACC; /* 호버 시에 색상 변경 (예: 파란색) */
+            }
+
+
+        </style>
         <h1><a href="/">IT커넥션</a></h1>
     </header>
 </div>

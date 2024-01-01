@@ -10,20 +10,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>국내 도서 및 새 책</title>
     <style>
+
+        @font-face {
+            font-family: 'GmarketSansMedium';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         body {
-            display: flex;
-            font-family: Arial, sans-serif
+
+            margin: 0;
+            padding: 0;
+            background-color: #f2ede9;
+        }
+        header {
+            background: #ffc118;
+            color: #FFF;
+            text-align: center;
+            padding: 10px;
+        }
+
+        nav {
+            text-align: center;
+            padding: 10px;
         }
 
         #categories {
+            font-family: 'GmarketSansMedium';
             width: 210px;
             padding: 20px;
-            background-color: #f0f0f0;
+            background-color: #ffdb7a;
             display: block;
             top: 60%;
             position:fixed;
             left: 0;
             transform: translateY(-50%);
+        }
+        .btn-primary {
+            color: black;
+            background-color: #ffdb7a;
+            border-color: #ffdb7a;
+        }
+
+        /* 마우스 호버 시의 스타일 변경 */
+        .btn-primary:hover {
+            color: #007ACC;
+            background-color: #ffdb7a;
+            border-color: #ffdb7a;
         }
 
         #books {
@@ -33,6 +67,7 @@
             justify-content: space-around;
             align-items: center;
             padding: 20px;
+            margin-left: 230px;
         }
 
         .container {
@@ -121,9 +156,15 @@
 </head>
 <body>
 <div th:insert="~{/etc/header.html}"></div>
-<input type="text" name="keyword" id="keyword"
-       style="width:35%;height:30px;border:2px solid #168;font-size: 16px"
-       placeholder="검색할 책 이름, 저자 및 출판사를 입력하세요." onkeydown="press()">
+<!--<input type="text" name="keyword" id="keyword"-->
+<!--       style="width:35%;height:30px;border:2px solid #168;font-size: 16px;"-->
+<!--       placeholder="검색할 책 이름, 저자 및 출판사를 입력하세요." onkeydown="press()">-->
+<div style="display: flex; justify-content: center; align-items: center; flex-direction: column; margin-top: 20px;">
+    <input type="text" name="keyword" id="keyword"
+           style="width:35%;height:30px;border:2px solid #168;font-size: 16px; margin-bottom: 10px;"
+           placeholder="검색할 책 이름, 저자 및 출판사를 입력하세요." onkeydown="press()">
+</div>
+
 
 <br><br>
 <div id="categories">
@@ -316,7 +357,7 @@
         </div>
     </div>
 </div>
-<div style="text-align:center; margin-top:20px; position:fixed; bottom:0; left:50%;">[(${pageList})]</div>
+<div style="text-align:center; margin-top:20px; bottom:0; left:50%; ">[(${pageList})]</div>
 
 </body>
 </html>

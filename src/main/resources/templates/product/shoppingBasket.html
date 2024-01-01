@@ -4,26 +4,29 @@
     <meta charset="UTF-8">
     <title>장바구니</title>
     <style>
+        @font-face {
+            font-family: 'GmarketSansMedium';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
         body {
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2ede9;
         }
 
-        header {
-            background-color: #007ACC;
-            color: #FFF;
-            text-align: center;
-            padding: 10px;
-        }
-
-        nav {
-            background-color: #333;
+        header, nav {
+            background:#ffc118;
             color: #FFF;
             text-align: center;
             padding: 10px;
         }
 
         table {
-            width: 100%;
+            width: 80%;
+            margin: 0 auto;
             border-collapse: collapse;
             margin-bottom: 20px;
         }
@@ -33,41 +36,62 @@
             padding: 8px;
             text-align: center;
             vertical-align: middle;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: #ffd153;
+            color: black;
+            font-weight: bold;
         }
 
         td img {
-            width: 100px; /* 이미지 크기 수정 */
-            height: 100px; /* 이미지 크기 수정 */
+            width: 80px;
+            height: 80px;
             object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .delete-button, .buy-button {
+            padding: 10px;
+            font-family: 'GmarketSansMedium';
+            font-size: 1.2em;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
         }
 
         .delete-button {
-            padding: 10px;
-            font-size: 1.2em;
             background-color: #dc3545;
-            color: white;
-            border: none;
-            cursor: pointer;
+            color: black;
         }
 
         .total-payment {
             display: flex;
-            justify-content: space-between; /* 삭제 버튼과 결제 정보를 양 끝으로 배치 */
+            justify-content: space-between;
             align-items: center;
+            margin-top: 20px; /* 상단 간격 조절 */
         }
 
-        .total-payment p {
-            margin-left: auto; /* 총 결제금액을 결제하기 버튼 옆으로 이동 */
-            gap: 10px;
+        .delete-button, .buy-button {
+            flex: 1; /* 균등한 공간을 차지하도록 설정 */
+            margin: 0 5px; /* 좌우 여백 조절 */
         }
 
-        .payment-button {
-            padding: 10px;
-            font-size: 1.2em;
-            background-color: #5cb85c;
-            color: white;
-            border: none;
-            cursor: pointer;
+
+        #sumOfCheckedPrices {
+            font-size: 1.5em;
+            font-weight: bold;
+
+        }
+
+        #checkAll {
+            transform: scale(1.5);
+        }
+
+        .buy-button{
+            background-color: #ffd153;
+            color: black;
         }
 
     </style>
@@ -356,7 +380,7 @@
 <div th:insert="~{/etc/header.html}"></div>
 
 
-<h1>장바구니</h1>
+<h2>장바구니</h2>
 <table>
     <tbody id="cartBody">
     <th><input type="checkbox" id="checkAll"></th>
@@ -403,7 +427,7 @@
     <button class="delete-button" onclick="deleteCheckedItems()">삭제</button>
     <h2>총 결제금액</h2>
     <div id="sumOfCheckedPrices">0 원</div>
-    <input type="button" value="구매하기" onclick="GoPayment()">
+    <button class="buy-button" onclick="GoPayment()">구매하기</button>
 </div>
 </body>
 </html>
