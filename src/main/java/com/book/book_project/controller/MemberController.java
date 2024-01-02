@@ -9,6 +9,9 @@ import com.book.book_project.entity.repository.PurchaseStatusRepository;
 import com.book.book_project.service.DeliveryService;
 import com.book.book_project.dto.*;
 import com.book.book_project.service.*;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import com.book.book_project.util.PageUtil;
 import jakarta.servlet.http.HttpSession;
@@ -24,11 +27,14 @@ import org.springframework.web.bind.annotation.*;
 import java.lang.reflect.Member;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.*;
+
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -37,6 +43,9 @@ public class MemberController {
 
     @Autowired
     MemberService service;
+
+    @Autowired
+    ProductService productService;
 
     @Autowired
     DeliveryService deliveryService;
@@ -50,6 +59,9 @@ public class MemberController {
     @Autowired
     UnMemberService unMemberService;
 
+    @Autowired
+    MemberService memberService;
+
     private final BuyerInfoService buyerInfoService;
     private final PurchaseInfoRepository purchaseInfoRepository;
     private final BuyerInfoRepository buyerInfoRepository;
@@ -58,6 +70,9 @@ public class MemberController {
     private final PurchaseInfoService purchaseInfoService;
     private final PurchaseStatusService purchaseStatusService;
     private final RefundService refundService;
+
+
+
 
     //회원 등록 화면 보기
     @GetMapping("/member/signup")
@@ -295,6 +310,8 @@ public class MemberController {
 
     //회원 구매내역 조회 화면
     @GetMapping("/member/memberPurchaseList")
+
+
     public void getMemberPurchaseList(Model model, HttpSession session,PurchaseInfoService purchaseInfoService) throws Exception {
 
         String userid = (String) session.getAttribute("userid");
@@ -350,6 +367,105 @@ public class MemberController {
         return "{\"message\":\"GOOD\"}";
     }
 
+
+
+
+
+    @Transactional
+    @PostMapping(value = "/member/paymentInfo")
+    public ResponseEntity<String> postPaymentInfo(
+            HttpSession session,
+            @RequestBody Map<String, Object> requestData
+    ) throws Exception {
+
+//
+//        String amount = requestData.get("amount").toString();
+//        String merchant_uid = requestData.get("merchant_uid").toString();
+//        String dateString = requestData.get("date").toString();
+//        String quantity  = requestData.get("bookquntity").toString();
+
+
+        String amount = requestData.get("amount") != null ? requestData.get("amount").toString() : "";
+        System.out.println("1" + amount);
+        String merchant_uid = requestData.get("merchant_uid") != null ? requestData.get("merchant_uid").toString() : "";
+        System.out.println("2" + merchant_uid);
+        String dateString = requestData.get("date") != null ? requestData.get("date").toString() : "";
+        System.out.println("3" + dateString);
+        String quantity = requestData.get("bookquntity") != null ? requestData.get("bookquntity").toString() : "";
+        System.out.println("4" + quantity);
+        String bookid = requestData.get("bookid") != null ? requestData.get("bookid").toString() : "";
+        System.out.println("5" + bookid);
+        String receiveraddr = requestData.get("address") != null ? requestData.get("address").toString() : "";
+        System.out.println("6" + receiveraddr);
+        String receiverdetailaddr = requestData.get("detailaddr") != null ? requestData.get("detailaddr").toString() : "";
+        System.out.println("7" + receiverdetailaddr);
+        String receiverzipcode = requestData.get("postcode") != null ? requestData.get("postcode").toString() : "";
+        System.out.println("8" + receiverzipcode);
+        String userid = requestData.get("userid") != null ? requestData.get("userid").toString() : "";
+        System.out.println("9" + userid);
+        String receivertelno = requestData.get("receivertelno") != null ? requestData.get("receivertelno").toString() : "";
+        System.out.println("10" + receivertelno);
+        String receivername = requestData.get("username") != null ? requestData.get("username").toString() : "";
+        System.out.println("11" + receivername);
+
+
+
+
+
+//        String bookid = requestData.get("bookid").toString();
+//        String receiveraddr = requestData.get("address").toString();
+//        String receiverdetailaddr = requestData.get("detailaddr").toString();
+//        String receiverzipcode = requestData.get("postcode").toString();
+//        String userid = requestData.get("userid").toString();
+//        String receivertelno = requestData.get("telno").toString();
+//        String receivername = requestData.get("username").toString();
+
+
+        ProductEntity productEntity = productService.findById(bookid);
+        System.out.println("///////////" + productEntity );
+
+        MemberEntity memberEntity = memberService.findById(userid);
+
+        BuyerInfoEntity buyerInfo = new BuyerInfoEntity();
+
+        buyerInfo.setUserid(memberEntity);
+        buyerInfo.setReceiveraddr(receiveraddr);
+        buyerInfo.setReceiverdetailaddr(receiverdetailaddr);
+        buyerInfo.setReceiverzipcode(receiverzipcode);
+        buyerInfo.setReceivertelno(receivertelno);
+        buyerInfo.setReceivername(receivername);
+
+        buyerInfoRepository.save(buyerInfo);
+
+
+        // 여기서 dateString을 Date로 변환
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+        Date date = dateFormat.parse(dateString);
+
+        int buyerseq = buyerInfo.getBuyerseq();
+
+        BuyerInfoEntity buyerInfoEntity = buyerInfoService.findByBuyerseq(buyerseq);
+        PurchaseStatusEntity statusEntity = purchaseStatusRepository.findByStatusseq(1);
+
+        PurchaseInfoEntity purchaseInfo = new PurchaseInfoEntity();
+        purchaseInfo.setBookid(productEntity);
+        purchaseInfo.setPurchasedate(new java.sql.Timestamp(date.getTime()));
+        purchaseInfo.setTotalprice(Integer.parseInt(amount));
+        purchaseInfo.setPurchaseinfonumber(Integer.parseInt(merchant_uid));
+        purchaseInfo.setVolume(Integer.parseInt(quantity));
+        purchaseInfo.setBuyerseq(buyerInfoEntity);
+        purchaseInfo.setStatusseq(statusEntity);
+
+        purchaseInfoRepository.save(purchaseInfo);
+
+
+
+        // 나머지 로직 수행
+        // ...
+
+        // 성공했을 경우 응답
+        return ResponseEntity.ok("Success");
+    }
 
 
 

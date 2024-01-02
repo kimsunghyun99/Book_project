@@ -1,14 +1,10 @@
 package com.book.book_project.controller;
 
-import com.book.book_project.dto.NewsDTO;
-import com.book.book_project.dto.ProductDTO;
+import com.book.book_project.dto.*;
 import com.book.book_project.entity.*;
 import com.book.book_project.entity.repository.CategoryRepository;
 import com.book.book_project.service.NewsService;
 import com.book.book_project.service.ProductService;
-import com.book.book_project.dto.CartDTO;
-import com.book.book_project.dto.ReviewInterface;
-import com.book.book_project.dto.ReviewInterfaceImpl;
 import com.book.book_project.entity.ProductEntity;
 import com.book.book_project.entity.repository.CartRepository;
 import com.book.book_project.entity.repository.MemberRepository;
@@ -18,7 +14,12 @@ import com.book.book_project.util.PageUtil;
 import com.book.book_project.util.PageUtil2;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
@@ -29,11 +30,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
+@Slf4j
 @RequiredArgsConstructor
 public class ProductController {
 
@@ -47,6 +54,8 @@ public class ProductController {
     private  final CartRepository cartRepository;
     private final DeliveryService deliveryService;
     private final CategoryRepository categoryRepository;
+    private final PurchaseInfoService purchaseInfoService;
+
 
     // main화면 보기
     @GetMapping("/product/main")
@@ -94,12 +103,34 @@ public class ProductController {
             String nickname = memberService.memberInfo(userid).getNickname();
             model.addAttribute("nickname", nickname);
         }
+
+        //ReviewInterfaceImpl review = new ReviewInterfaceImpl(bookId);
+        //List<ReviewInterface> reviews =  reviewService.reviewView(review);
+
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedNow = now.format(formatter);
+
+
+        int count = reviewService.countreview(bookId);
+
+        model.addAttribute("count", count);
+
+        model.addAttribute("currentDateTime", formattedNow);
+
+//        model.addAttribute("")
+
         model.addAttribute("view", service.view(bookId));
+
+
         model.addAttribute("list", list);
+        System.out.println("......." + list);
         model.addAttribute("totalElement", totalCount);
         model.addAttribute("postNum", postNum);
         model.addAttribute("page", pageNum);
-        model.addAttribute("pageList", page.getPageList(pageNum, postNum, pageListCount,totalCount, bookId));
+        model.addAttribute("pageList", page.getPageList(pageNum, postNum, pageListCount, totalCount, bookId));
+
+
     }
 
 
@@ -144,7 +175,7 @@ public class ProductController {
 
     // 장바구니에 저장된 상품 보기
     @GetMapping("/product/shoppingBasket")
-    public void getShoppingBasket(Model model, HttpSession session) throws Exception{
+    public void getShoppingBasket(Model model, HttpSession session) throws Exception {
 
         String userid = (String) session.getAttribute("userid");
         System.out.println("userid = "+userid);
@@ -252,6 +283,23 @@ public class ProductController {
             case "D":
                 reviewService.reviewDelete(review); //리뷰 삭제
                 break;
+            case "L":
+//                // 페이지 처리 로직 추가
+////                List<ReviewInterface> pagedReviews = reviewService.getPagedReviews(page);
+////                return pagedReviews;
+                //              int postNum = 5; //한 화면에 보여지는 게시물 행의 갯수
+//                int pageListCount = 5; //화면 하단에 보여지는 페이지리스트의 페이지 갯수
+//
+               // PageUtil page = new PageUtil();
+//                Page<ReviewEntity> pagedReviews = reviewService.list(bookid, pageNum, postNum);
+//
+//                // 모델에 페이징 결과를 추가
+//                model.addAttribute("list", pagedReviews.getContent());
+//                model.addAttribute("totalElement", pagedReviews.getTotalElements());
+                //           model.addAttribute("postNum", postNum);
+//                model.addAttribute("page", pageNum);
+//                model.addAttribute("pageList", page.getPageList(pageNum, postNum, pageListCount, pagedReviews.getTotalPages(), String.valueOf(bookid.getBookid())));
+//                return reviewService.reviewView(review);
         }
 
         return reviewService.reviewView(review);
@@ -263,12 +311,12 @@ public class ProductController {
     @GetMapping("/product/payment")
     public void getPayment(
             @RequestParam(value = "bookid", required = false) String bookid,
-            @RequestParam(value = "quantity", required = false) Integer  quantity,
+            @RequestParam(value = "quantity", required = false) Integer quantity,
             Model model, HttpSession session) throws Exception {
 
-        String userid = (String)session.getAttribute("userid");
+        String userid = (String) session.getAttribute("userid");
 
-        if(session.getAttribute("productDTOList")!=null) {
+        if (session.getAttribute("productDTOList") != null) {
             List<ProductDTO> productlist = (List<ProductDTO>) session.getAttribute("productDTOList");
             model.addAttribute("view", productlist);
         }
@@ -354,6 +402,7 @@ public class ProductController {
             model.addAttribute("view", productlist);
         }
     }
+
     @PostMapping("/product/unMemberPayment")
     public ResponseEntity<?> postUnMemberPayment(@RequestBody Map<String, List<Map<String, Object>>> payload, HttpSession session) {
         List<Map<String, Object>> items = payload.get("items");
@@ -384,8 +433,7 @@ public class ProductController {
         // 클라이언트에 리다이렉션 URL 전송
         return ResponseEntity.ok(Map.of("redirectUrl", "/product/unMemberPayment"));
     }
-
-
-
-
 }
+
+
+

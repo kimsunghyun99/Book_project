@@ -21,6 +21,12 @@ public class PurchaseInfoEntity {
     @Column(name="purchaseinfonumber", nullable=false)
     private int purchaseinfonumber;
 
+    @Column(name = "imp_key")
+    private String imp_key;
+
+    @Column(name = "imp_secret")
+    private String imp_secret;
+
     @Column(name="purchasedate", nullable=false)
     private Timestamp purchasedate;
 

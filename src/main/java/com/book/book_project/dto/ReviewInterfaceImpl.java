@@ -27,6 +27,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
             this.reviewregdate = reviewregdate;
         }
 
+//        // bookid만을 파라미터로 받는 생성자
+//        public ReviewInterfaceImpl(String bookid) {
+//            this.bookid = bookid;
+//            // 다른 필드들은 기본값이나 null로 초기화 될 수 있습니다.
+//            // 예를 들어, 정수형은 0, 객체는 null로 초기화 됩니다.
+//        }
+
         @Override
         public int getReviewseq() {
             return reviewseq;

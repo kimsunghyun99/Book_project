@@ -44,6 +44,9 @@ public interface MemberService {
     //비밀번호 찾기
     String pwSearch(MemberDTO member);
 
+//    //구매자정보 가져오기
+//    BuyerInfoDTO buyerAndPurchaseInfo(String userid);
+
     //주소 검색
     public Page<AddressEntity> addrSearch(int pageNum, int postNum, String addrSearch);
 
@@ -58,6 +61,7 @@ public interface MemberService {
 
     //회원 정지
     public void stop(List<String> userids);
+    public MemberEntity findById(String userid);
 
     //회원 정지 해제
     public void unstop(List<String> userids);

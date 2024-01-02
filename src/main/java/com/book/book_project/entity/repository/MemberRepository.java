@@ -1,6 +1,5 @@
 package com.book.book_project.entity.repository;
 
-
 import com.book.book_project.entity.MemberEntity;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;

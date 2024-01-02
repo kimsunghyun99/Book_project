@@ -29,7 +29,6 @@ public class ProductDTO {
 
     private CategoryEntity categorynumber;    //분류 이름
 
-
     //Entity -> DTO
     public ProductDTO (ProductEntity productEntity) {
         this.bookid = productEntity.getBookid();
@@ -45,10 +44,8 @@ public class ProductDTO {
         this.salespoint =productEntity.getSalespoint();
         this.categorynumber = productEntity.getCategorynumber();
     }
-
     //DTO -> Entity
     public ProductEntity dtoToEntity(ProductDTO dto) {
-
         return ProductEntity.builder()
                 .bookid(dto.getBookid())
                 .bookname(dto.getBookname())
@@ -64,7 +61,6 @@ public class ProductDTO {
                 .categorynumber(dto.getCategorynumber())
                 .build();
     }
-
 
 
 }
