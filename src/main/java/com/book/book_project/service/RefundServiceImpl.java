@@ -48,6 +48,12 @@ public class RefundServiceImpl implements RefundService {
         System.out.println("서비스임플2");
     }
 
+    public void delete(int purchaseinfonumber) throws Exception {
+
+        refundRepository.deletepurchase(purchaseinfonumber);
+
+    }
+
 
 
 

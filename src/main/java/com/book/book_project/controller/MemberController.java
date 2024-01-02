@@ -2,10 +2,7 @@ package com.book.book_project.controller;
 
 import com.book.book_project.dto.DeliverAddrDTO;
 import com.book.book_project.entity.*;
-import com.book.book_project.entity.repository.BuyerInfoRepository;
-import com.book.book_project.entity.repository.ProductRepository;
-import com.book.book_project.entity.repository.PurchaseInfoRepository;
-import com.book.book_project.entity.repository.PurchaseStatusRepository;
+import com.book.book_project.entity.repository.*;
 import com.book.book_project.service.DeliveryService;
 import com.book.book_project.dto.*;
 import com.book.book_project.service.*;
@@ -55,6 +52,7 @@ public class MemberController {
     private final PurchaseInfoService purchaseInfoService;
     private final PurchaseStatusService purchaseStatusService;
     private final RefundService refundService;
+    private final RefundRepository refundRepository;
 
 
     //회원 등록 화면 보기
@@ -361,6 +359,16 @@ public class MemberController {
         else if(option.equals("w")) {
 
 
+        }
+        else if(option.equals("d")) {
+            int statsseq = 11;
+            purchaseInfoService.updateStatusseq(statsseq, refundDTO.getPurchaseinfonumber().getPurchaseinfonumber());
+        }
+        // 교환 또는 환불 신청해놓고 그걸 취소하는 경우 -> 배송완료로 변경 , refund 값 삭제
+        else if(option.equals("cer")) {
+            int statsseq = 5;
+            purchaseInfoService.updateStatusseq(statsseq, refundDTO.getPurchaseinfonumber().getPurchaseinfonumber());
+            refundService.delete(refundDTO.getPurchaseinfonumber().getPurchaseinfonumber());
         }
 
 //        System.out.println("controller purchaseinfonumber : " + refundDTO.getPurchaseinfonumber().getPurchaseinfonumber());
