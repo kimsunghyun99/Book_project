@@ -10,6 +10,25 @@
             display: none;
         }
 
+        #buttons {
+            display: flex;
+
+        }
+
+        #buttons button {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            margin-right: 10px; /* 각 버튼 사이에 간격을 조절할 수 있습니다. */
+            display: none;
+        }
+
+        #buttons button:hover {
+            background: pink;
+            text-decoration: underline;
+        }
+
 
     </style>
 
@@ -19,65 +38,297 @@
 
 
 
-       function showDiv(number)  {
-           var number = number;
-           var exchange = document.getElementById('exchangeDiv');
-           var refund = document.getElementById('refundDiv');
-
-           var exchangenumber = document.getElementById('purchaseinfonumber1');
-           exchangenumber.innerText = number;
-           if(exchange.style.display === 'none') {
-               exchange.style.display = 'block';
-               refund.style.display = 'none';
-           } else {
-               exchange.style.display = 'none';
-           }
-       }
-
-
-       function showDiv1(number)  {
-           var number = number;
-           var exchange = document.getElementById('exchangeDiv');
-           var refund = document.getElementById('refundDiv');
-           var refundenumber = document.getElementById('purchaseinfonumber2');
-           refundenumber.innerText = number;
-
-
-           if(refund.style.display ==='none') {
-               refund.style.display = 'block';
-               exchange.style.display = 'none';
-           }
-           else {
-               refund.style.display = 'none';
-           }
-       }
-
-
-       const exchange123 = async () => {
-
-           const refundreason = document.getElementById('description1').value;
-           const status = 'exchange';
-           const purchaseinfonumber = document.getElementById('purchaseinfonumber1').value;
 
 
 
-           await fetch('/member/memberPurchaseList', {
-               method: "POST",
-               body: JSON.stringify({
-                   refundreason: refundreason,
-                   status: status,
-                   purchaseinfonumber: purchaseinfonumber
-               })
-           }).then((response) => response.json())
-               .then((data) => {
-                   if (data.message === 'GOOD') {
-                       alert('교환처리 되었습니다.');
-                   }
-                   else {
-                      alert('교환 실패했습니다.');
-                   }
-               });
-       }
+        document.addEventListener("DOMContentLoaded", function() {
+
+            const statusElements = document.querySelectorAll('[id^="status"]');
+
+
+            const cancel = document.querySelectorAll('[id^="cancel"]');
+            const exchange = document.querySelectorAll('[id^="exchange"]');
+            const refund1 = document.querySelectorAll('[id^="refund"]');
+            const reply = document.querySelectorAll('[id^="reply"]');
+            const noreply = document.querySelectorAll('[id^="noreply"]');
+            const determine = document.querySelectorAll('[id^="determine"]');
+            const exchangecancel = document.querySelectorAll('[id^="exchangecancel"]');
+            const refundcancel = document.querySelectorAll('[id^="refundcancel"]');
+
+
+            // const return1 = document.querySelectorAll('.return1');
+
+            statusElements.forEach((statusElement, index) => {
+                const status = statusElement.innerText
+                console.log(status);
+                if (status === '주문완료' || status === '출고처리중' || status === '배송준비중' || status === '배송중') {
+                    cancel[index].style.display = 'block';
+                    exchange[index].style.display = 'none';
+                    refund1[index].style.display = 'none';
+                    reply[index].style.display = 'none';
+                    noreply[index].style.display = 'block';
+                    determine[index].style.display = 'none';
+                    exchangecancel[index].style.display = 'none';
+                    refundcancel[index].style.display = 'none';
+
+                }
+                else if(status === '배송완료') {
+                    cancel[index].style.display = 'none';
+                    exchange[index].style.display = 'block';
+                    refund1[index].style.display = 'block';
+                    reply[index].style.display = 'block';
+                    noreply[index].style.display = 'none';
+                    determine[index].style.display = 'block';
+                    exchangecancel[index].style.display = 'none';
+                    refundcancel[index].style.display = 'none';
+                }
+                else if(status === '구매확정') {
+                    cancel[index].style.display = 'none';
+                    exchange[index].style.display = 'none';
+                    refund1[index].style.display = 'none';
+                    reply[index].style.display = 'block';
+                    noreply[index].style.display = 'none';
+                    determine[index].style.display = 'none';
+                    exchangecancel[index].style.display = 'none';
+                    refundcancel[index].style.display = 'none';
+                }
+                else if(status === '교환처리중') {
+                    cancel[index].style.display = 'none';
+                    exchange[index].style.display = 'none';
+                    refund1[index].style.display = 'none';
+                    reply[index].style.display = 'none';
+                    noreply[index].style.display = 'block';
+                    determine[index].style.display = 'none';
+                    exchangecancel[index].style.display = 'block';
+                    refundcancel[index].style.display = 'none';
+                }
+                 else if(status === '환불처리중') {
+                    cancel[index].style.display = 'none';
+                    exchange[index].style.display = 'none';
+                    refund1[index].style.display = 'none';
+                    reply[index].style.display = 'none';
+                    noreply[index].style.display = 'block';
+                    determine[index].style.display = 'none';
+                    exchangecancel[index].style.display = 'none';
+                    refundcancel[index].style.display = 'block';
+                }
+                 else {
+                    cancel[index].style.display = 'none';
+                    exchange[index].style.display = 'none';
+                    refund1[index].style.display = 'none';
+                    reply[index].style.display = 'none';
+                    noreply[index].style.display = 'block';
+                    determine[index].style.display = 'none';
+                    exchangecancel[index].style.display = 'none';
+                    refundcancel[index].style.display = 'none';
+                }
+
+            });
+        })
+
+
+
+            function showDiv(index) {
+                // var number1 = number.value;
+                var exchange = document.getElementById('exchangeDiv');
+                var refund = document.getElementById('refundDiv');
+                var exchangenumber = document.getElementById('exchangenumber');
+
+                var a = document.getElementById('purchaseinfonumber' + index);
+                var number = a.getAttribute('data-purchaseinfonumber');
+                exchangenumber.value = number;
+                console.log(number);
+                if (exchange.style.display === 'none') {
+                    exchange.style.display = 'block';
+                    refund.style.display = 'none';
+                } else {
+                    exchange.style.display = 'none';
+                }
+            }
+
+
+            function showDiv1(index) {
+                var a = document.getElementById('purchaseinfonumber' + index);
+                var number = a.getAttribute('data-purchaseinfonumber');
+
+                var exchange = document.getElementById('exchangeDiv');
+                var refund = document.getElementById('refundDiv');
+                var refundenumber = document.getElementById('refundenumber');
+                refundenumber.value = number;
+                console.log(number);
+
+                if (refund.style.display === 'none') {
+                    refund.style.display = 'block';
+                    exchange.style.display = 'none';
+                } else {
+                    refund.style.display = 'none';
+                }
+            }
+
+
+
+
+        async function cancelexchangeorrefund(index) {
+
+            console.log(index);
+            const a = document.getElementById('purchaseinfonumber' + index);
+            var purchaseinfonumber = a.getAttribute('data-purchaseinfonumber');
+            console.log(purchaseinfonumber);
+            await fetch('/member/memberPurchaseList?option=cer', {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    purchaseinfonumber: {purchaseinfonumber: purchaseinfonumber}
+                })
+            }).then((response) => response.json())
+                .then((data) => {
+                    if (data.message === 'GOOD') {
+                        alert('취소처리 되었습니다.');
+                    } else {
+                        alert('취소 실패했습니다.');
+                    }
+                });
+        }
+
+
+
+        async function cancel(index) {
+
+            console.log(index);
+            const a = document.getElementById('purchaseinfonumber' + index);
+            var purchaseinfonumber = a.getAttribute('data-purchaseinfonumber');
+            console.log(purchaseinfonumber);
+                await fetch('/member/memberPurchaseList?option=c', {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        purchaseinfonumber: {purchaseinfonumber: purchaseinfonumber}
+                    })
+                }).then((response) => response.json())
+                    .then((data) => {
+                        if (data.message === 'GOOD') {
+                            alert('주문 취소처리 되었습니다.');
+                        } else {
+                            alert('주문 취소 실패했습니다.');
+                        }
+                    });
+            }
+
+
+        async function determine(index) {
+
+            console.log(index);
+            const a = document.getElementById('purchaseinfonumber' + index);
+            var purchaseinfonumber = a.getAttribute('data-purchaseinfonumber');
+            console.log(purchaseinfonumber);
+            await fetch('/member/memberPurchaseList?option=d', {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    purchaseinfonumber: {purchaseinfonumber: purchaseinfonumber}
+                })
+            }).then((response) => response.json())
+                .then((data) => {
+                    if (data.message === 'GOOD') {
+                        alert('구매확정 처리 되었습니다.');
+                    } else {
+                        alert('구매확정 실패했습니다.');
+                    }
+                });
+        }
+
+
+
+        // async function withdrawal(index) {
+        //
+        //     console.log(index);
+        //     const a = document.getElementById('purchaseinfonumber' + index);
+        //     var purchaseinfonumber = a.getAttribute('data-purchaseinfonumber');
+        //     console.log(purchaseinfonumber);
+        //     await fetch('/member/memberPurchaseList?option=w', {
+        //         method: "POST",
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         },
+        //         body: JSON.stringify({
+        //             purchaseinfonumber: {purchaseinfonumber: purchaseinfonumber}
+        //         })
+        //     }).then((response) => response.json())
+        //         .then((data) => {
+        //             if (data.message === 'GOOD') {
+        //                 alert('철회처리 되었습니다.');
+        //             } else {
+        //                 alert('철회 실패했습니다.');
+        //             }
+        //         });
+        // }
+
+
+
+
+                const exchange123 = async () => {
+
+                    const refundreason = document.getElementById('description1').value;
+                    const status = 'exchange';
+                    const purchaseinfonumber = document.getElementById('exchangenumber').value;
+                    console.log(purchaseinfonumber);
+
+
+                    await fetch('/member/memberPurchaseList?option=e', {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            refundreason: refundreason,
+                            status: status,
+                            purchaseinfonumber: {purchaseinfonumber: purchaseinfonumber}
+                        })
+                    }).then((response) => response.json())
+                        .then((data) => {
+                            if (data.message === 'GOOD') {
+                                alert('교환처리 되었습니다.');
+                            } else {
+                                alert('교환 실패했습니다.');
+                            }
+                        });
+                }
+
+                const refund = async () => {
+
+                    const refundreason = document.getElementById('description2').value;
+                    const status = 'refund';
+                    const purchaseinfonumber = document.getElementById('refundenumber').value;
+
+
+                    await fetch('/member/memberPurchaseList?option=r', {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            refundreason: refundreason,
+                            status: status,
+                            purchaseinfonumber: {purchaseinfonumber: purchaseinfonumber}
+                        })
+                    }).then((response) => response.json())
+                        .then((data) => {
+                            if (data.message === 'GOOD') {
+                                alert('환불처리 되었습니다.');
+                            } else {
+                                alert('환불 실패했습니다.');
+                            }
+                        });
+                }
+
+
+
 
 
     </script>
@@ -96,26 +347,31 @@
                 <th>주문상태</th>
                 <th>결제금액</th>
                 <th>리뷰작성</th>
-                <th>교환 ㅣ 환불</th>
+                <th class="CancelOrExchangeOrRefund">취소  | 교환ㅣ 환불</th>
+                <th>구매확정</th>
             </tr>
-            <<th:block th:if="${purchaseInfo != null}">
+            <th:block th:if="${purchaseInfo != null}">
             <tr th:each="list, stat :${purchaseInfo}"
                 onMouseover="this.style.background='#46D2D2'"
                 onMouseout="this.style.background='white'">
                 <td th:text="${list.purchasedate}"></td>
                 <td th:text="${list.purchaseinfonumber}"></td>
                 <td th:text="${booknames[stat.index]}"></td>
-                <td th:text="${statusList[stat.index]}"></td>
+                <td id="status${stat.index}" class="status" th:text="${statusList[stat.index]}"></td>
                 <td th:text="${list.totalprice}"></td>
-                <td> <a th:href="@{'/product/productInfo?bookid='+ ${bookids[stat.index]} + '&page=1'  + '&focus=true'}">리뷰작성</a></td>
                 <td>
-                    [<a href="javascript:void(0);" onMouseover="this.style.background='pink'; this.style.textDecoration='underline';"
-                        onmouseout="this.style.background='white'; this.style.textDecoration='none';" onclick="showDiv('${list.purchaseinfonumber}');">교환</a> |
-                    <a href="javascript:void(0)" onMouseover="this.style.background='pink'; this.style.textDecoration='underline';"
-                       onmouseout="this.style.background='white'; this.style.textDecoration='none';" onclick="showDiv1('${list.purchaseinfonumber}');">환불</a>]
-                    <a href="javascript:void(0)" onMouseover="this.style.background='pink'; this.style.textDecoration='underline';"
-                       onmouseout="this.style.background='white'; this.style.textDecoration='none';">주문확정</a>
+                <button th:id="'noreply' + ${stat.index}">배송완료 또는 구매확정 시 리뷰작성 가능합니다</button>
+                <button th:id="'reply' + ${stat.index}"><a th:href="@{'/product/productInfo?bookid='+ ${bookids[stat.index]} + '&page=1'  + '&focus=true'}">리뷰작성</a></button>
                 </td>
+                <td>
+                    <button th:id="'cancel'+${stat.index}" class="cancel" th:onclick="'cancel(\'' + ${stat.index} + '\')'">주문취소</button>
+                    <button th:id="'exchange' + ${stat.index}" class="exchange" th:onclick="'javascript:showDiv(' + ${stat.index} + ');'">교환</button>
+                    <button th:id="'refund' + ${stat.index}" class="refund" th:onclick="'javascript:showDiv1(' + ${stat.index} + ');'">환불</button>
+                    <button th:id="'exchangecancel' + ${stat.index}" class="exchangecancel" th:onclick="'cancelexchangeorrefund(\'' + ${stat.index} + '\')'">교환 취소</button>
+                    <button th:id="'refundcancel' +${stat.index}" class="refundcancel" th:onclick="'cancelexchangeorrefund(\'' + ${stat.index} + '\')'">환불 취소 </button>
+                <input type="hidden" th:id="purchaseinfonumber + ${stat.index}" th:data-purchaseinfonumber="${list.purchaseinfonumber}">
+            </td>
+                <td th:id="'determine' + ${stat.index}" style="background: none; border: none; padding: 0; cursor: pointer;" onmouseover="this.style.background='pink'; this.style.textDecoration='underline';" onmouseout="this.style.background='white'; this.style.textDecoration='none';" th:onclick="'determine(\'' + ${stat.index} + '\')'">구매확정</td>
             </tr>
             </th:block>
             <th:block th:if="${purchaseInfo == null}">
@@ -127,15 +383,14 @@
         <div id="exchangeDiv">
         <p style="font-size:32px;">교환 사유</p>
             <textarea class="input_content" id="description1" cols="100" rows="5" name="description1" placeholder="사유를 입력해 주세요"></textarea><br>
-            <input type="hidden" id="purchaseinfonumber1">
-<!--            <input type="button" value="교환하기" onclick="exchange123()">-->
+            <input type="hidden" id="exchangenumber">
             <button onclick="exchange123()">교환하기</button>
         </div>
 
         <div id="refundDiv">
             <p style="font-size:32px;">환불 사유</p>
             <textarea class="input_content" id="description2" cols="100" rows="5" name="description2" placeholder="사유를 입력해 주세요"></textarea><br>
-            <input type="hidden" id="purchaseinfonumber2">
+            <input type="hidden" id="refundenumber">
             <input type="button" value="환불하기" onclick="refund()">
         </div>
 </body>
