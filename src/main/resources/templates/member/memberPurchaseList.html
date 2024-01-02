@@ -15,19 +15,25 @@
 
         }
 
-        #buttons button {
-            background: none;
-            border: none;
-            padding: 0;
-            cursor: pointer;
-            margin-right: 10px; /* 각 버튼 사이에 간격을 조절할 수 있습니다. */
+        /*#buttons button {*/
+        /*    background: none;*/
+        /*    border: none;*/
+        /*    padding: 0;*/
+        /*    cursor: pointer;*/
+        /*    margin-right: 10px; !* 각 버튼 사이에 간격을 조절할 수 있습니다. *!*/
+        /*    display: none;*/
+        /*}*/
+
+        /*#buttons button:hover {*/
+        /*    background: pink;*/
+        /*    text-decoration: underline;*/
+        /*}*/
+
+        .cancel, .exchange, .refund, .exchangecancel, .refundcancel {
             display: none;
         }
 
-        #buttons button:hover {
-            background: pink;
-            text-decoration: underline;
-        }
+
 
 
     </style>
@@ -59,9 +65,10 @@
             // const return1 = document.querySelectorAll('.return1');
 
             statusElements.forEach((statusElement, index) => {
+                console.log(index);
                 const status = statusElement.innerText
                 console.log(status);
-                if (status === '주문완료' || status === '출고처리중' || status === '배송준비중' || status === '배송중') {
+                if (status === "주문완료" || status === "출고처리중" || status === "배송준비중" || status === "배송중") {
                     cancel[index].style.display = 'block';
                     exchange[index].style.display = 'none';
                     refund1[index].style.display = 'none';
@@ -72,7 +79,7 @@
                     refundcancel[index].style.display = 'none';
 
                 }
-                else if(status === '배송완료') {
+                else if(status === "배송완료") {
                     cancel[index].style.display = 'none';
                     exchange[index].style.display = 'block';
                     refund1[index].style.display = 'block';
@@ -82,7 +89,7 @@
                     exchangecancel[index].style.display = 'none';
                     refundcancel[index].style.display = 'none';
                 }
-                else if(status === '구매확정') {
+                else if(status === "구매확정") {
                     cancel[index].style.display = 'none';
                     exchange[index].style.display = 'none';
                     refund1[index].style.display = 'none';
@@ -92,7 +99,7 @@
                     exchangecancel[index].style.display = 'none';
                     refundcancel[index].style.display = 'none';
                 }
-                else if(status === '교환처리중') {
+                else if(status === "교환처리중") {
                     cancel[index].style.display = 'none';
                     exchange[index].style.display = 'none';
                     refund1[index].style.display = 'none';
@@ -102,7 +109,7 @@
                     exchangecancel[index].style.display = 'block';
                     refundcancel[index].style.display = 'none';
                 }
-                 else if(status === '환불처리중') {
+                else if(status === "환불처리중") {
                     cancel[index].style.display = 'none';
                     exchange[index].style.display = 'none';
                     refund1[index].style.display = 'none';
@@ -112,7 +119,7 @@
                     exchangecancel[index].style.display = 'none';
                     refundcancel[index].style.display = 'block';
                 }
-                 else {
+                else {
                     cancel[index].style.display = 'none';
                     exchange[index].style.display = 'none';
                     refund1[index].style.display = 'none';
@@ -334,7 +341,7 @@
     </script>
 </head>
     <title>회원구매내역조회</title>
-    <script src="/js/getCookie.js"></script>
+<!--    <script src="/js/getCookie.js"></script>-->
 <body>
 <div th:include="/etc/header.html"></div>
     <h2>구매내역조회</h2>
@@ -371,7 +378,7 @@
                     <button th:id="'refundcancel' +${stat.index}" class="refundcancel" th:onclick="'cancelexchangeorrefund(\'' + ${stat.index} + '\')'">환불 취소 </button>
                 <input type="hidden" th:id="purchaseinfonumber + ${stat.index}" th:data-purchaseinfonumber="${list.purchaseinfonumber}">
             </td>
-                <td th:id="'determine' + ${stat.index}" style="background: none; border: none; padding: 0; cursor: pointer;" onmouseover="this.style.background='pink'; this.style.textDecoration='underline';" onmouseout="this.style.background='white'; this.style.textDecoration='none';" th:onclick="'determine(\'' + ${stat.index} + '\')'">구매확정</td>
+                <td th:id="'determine' + ${stat.index}" th:onclick="'determine(\'' + ${stat.index} + '\')'">구매확정</td>
             </tr>
             </th:block>
             <th:block th:if="${purchaseInfo == null}">

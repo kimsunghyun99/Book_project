@@ -184,13 +184,7 @@
             document.getElementById('totalcost').innerText=totalprice.toLocaleString('ko-KR') + '원';
 
         });
-
-
-
-
         // 총액과 총 판매 포인트를 화면에 표시
-
-
 
             const searchAddr = () => {
 
@@ -206,10 +200,6 @@
                 "width=950, height=540, top=50, left=50"
             );
         }
-
-
-
-
 
         const finaldelivery1 = (addr1, detailaddr) => {
 
@@ -234,8 +224,10 @@
             // IMP 객체가 전역 범위에 정의되어 있다고 가정합니다.
             IMP.init("imp61517557");
 
+            var buyerTelno = document.getElementById("buyerTelno").value;
+            var tmpPw = document.getElementById("unMemberPassword").value;
+            var tmpPwCheck = document.getElementById("unMemberPasswordCheck").value;
             // 각 요소에 대한 참조를 가져오기 전에 변수로 선언해보세요.
-
             var buyerName = document.getElementById("receiver").value;
             var bookid = document.getElementById("bookid").value;
             var bookname = document.getElementById("bookname" + bookid).textContent;
@@ -248,8 +240,48 @@
             var detailAddr = document.getElementById("detailaddr");
             var zipcode = document.getElementById("zipcode");
 
-
             console.log("Bookid:", bookid);
+
+            if(buyerTelno==''){
+                alert("구매자 전화번호를 입력하세요");
+                document.getElementById("buyerTelno").focus();
+                return false;
+            }
+            if (tmpPw == '') {
+                alert("암호를 입력하세요");
+                document.getElementById("unMemberPassword").focus();
+                return false;
+            }
+            if (tmpPwCheck == '') {
+                alert("암호를 입력하세요");
+                document.getElementById("unMemberPasswordCheck").focus();
+                return false;
+            }
+            if (tmpPw != tmpPwCheck) {
+                alert("입력된 암호를 확인하세요.");
+                document.getElementById("unMemberPasswordCheck").focus();
+                return false;
+            }
+            if (telno == '') {
+                alert("수령인 전화번호를 입력하세요");
+                document.getElementById("receivertelno").focus();
+                return false;
+            }
+            if (addr1 == '') {
+                alert("주소를 입력하세요");
+                document.getElementById("addr1").focus();
+                return false;
+            }
+            if (detailaddr == '') {
+                alert("상세주소를 입력하세요");
+                document.getElementById("detailaddr").focus();
+                return false;
+            }
+            if (zipcode == '') {
+                alert("우편번호를 입력하세요");
+                document.getElementById("zipcode").focus();
+                return false;
+            }
 
             if (totalInvoiceAmount) {
                 var priceText = totalInvoiceAmount.innerText;
@@ -261,7 +293,6 @@
                 console.log("Price:", price);
             }
 
-
             function extractPriceValue(priceText) {
                 // 여기에서 필요한 가격 값 추출 논리를 구현
                 // 예를 들어, '1,234원' 형식의 문자열을 '1234' 숫자로 변환
@@ -270,11 +301,6 @@
                 return numericValue;
 
             }
-
-
-            // if (bookid) {
-            //     var bookID = bookid.innerText;
-            // }
 
             if (bookname) {
                 var book = bookname.innerText;
@@ -317,6 +343,8 @@
                 pg: "html5_inicis",
                 pay_method: "card",
                 merchant_uid: merchant_uid,
+                buyerTelno:buyerTelno,
+                tmpPw: tmpPw,
                 bookid: bookid,
                 username: username,
                 name: selectedBookname,
@@ -336,6 +364,8 @@
                         url: "/member/paymentInfo",
                         contentType: "application/json",
                         data: JSON.stringify({
+                            "buyerTelno":buyerTelno,
+                            "tmpPw": tmpPw,
                             "amount": amount,
                             "date": date,
                             "merchant_uid": merchant_uid,
@@ -382,7 +412,7 @@
         <div>
             <input type="text" id="buyerTelno" name="buyerTelno" placeholder="번호를 입력하세요">
             <input type="password" id="unMemberPassword" name="unMemberPassword" placeholder="임시비밀번호를 입력하세요">
-
+            <input type="password" id="unMemberPasswordCheck" name="unMemberPasswordCheck" placeholder="임시비밀번호를 다시 입력하세요">
         </div>
 
         <h4 style="display: inline-block;">배송지</h4>
@@ -392,7 +422,7 @@
             <input type="text" id="addrSearch" name="addrSearch" class="addrSearch" placeholder="주소를 검색합니다.">
             <input type="button" id="btn_addSearch" class="btn_addrSearch" value="주소검색" onclick="searchAddr()">
             <input type="text" id="zipcode" class="input_field" name="zipcode" placeholder="우편번호가 검색되어 입력됩니다." readonly>
-            <input type="text" id="addr1" class="input_field" name="addr1" placeholder="주소가 검색되어 입력됩니다." readonly>
+            <input type="text" id=" " class="input_field" name="addr1" placeholder="주소가 검색되어 입력됩니다." readonly>
             <input type="text" id="detailaddr" class="input_field" name="detailaddr" placeholder="상세 주소를 입력하세요">
             <input type="text" id="receiver" class="input_field" name="receiver" placeholder="받는사람 이름을 입력하세요">
             <input type="text" id="receivertelno" class="input_field" name="receivertelno" placeholder="받는사람 번호를 입력하세요">

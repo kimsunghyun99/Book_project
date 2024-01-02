@@ -218,6 +218,8 @@ public class MemberController {
 
     }
 
+
+
     //주소 검색
     @GetMapping("/member/addrSearch")
     public void getAddrsearch(@RequestParam("addrSearch") String addrSearch,
@@ -249,6 +251,8 @@ public class MemberController {
 
     }
 
+
+
     //로그인 화면 보기
     @GetMapping("/member/login")
     public void getLogin() {}
@@ -278,15 +282,14 @@ public class MemberController {
 
     }
 
-//    //마이페이지 화면 (23-12-11)
-//    @GetMapping("/member/mypage")
-//    public void getMyPage(HttpSession session, Model model) {
-//        String userid = (String)session.getAttribute("userid");
-//        model.addAttribute("memberInfo", service.memberInfo(userid));//회원정보 불러오기
-//        model.addAttribute("countReviewsByUserId", service.countReviewsByUserId(userid));//리뷰 갯수 구하기
-//        model.addAttribute("cartcount",cartService.usercartcount(userid));//회원 별 장바구니 갯수
-//        model.addAttribute("purchasecount", purchaseInfoRepository.purchasecount(userid));
-//    }
+    //마이페이지 화면 (23-12-11)
+    @GetMapping("/member/mypage")
+    public void getMyPage(HttpSession session, Model model) {
+        String userid = (String)session.getAttribute("userid");
+        model.addAttribute("memberInfo", service.memberInfo(userid));//회원정보 불러오기
+        model.addAttribute("countReviewsByUserId", service.countReviewsByUserId(userid));//리뷰 갯수 구하기
+
+    }
 
     //아이디 찾기 화면
     @GetMapping("/member/idSearch")
@@ -325,7 +328,7 @@ public class MemberController {
         for(int i =0; i<buyerInfo.size(); i++) {
 
             BuyerInfoEntity buyerInfoEntity = buyerInfoRepository.findById(buyerInfo.get(i).getBuyerseq()).orElse(null);
-            PurchaseInfoEntity purchaseInfoEntity = (PurchaseInfoEntity) purchaseInfoRepository.findByBuyerseq(buyerInfoEntity); // buyerseq 값 정의
+            PurchaseInfoEntity purchaseInfoEntity =  purchaseInfoRepository.findByBuyerseq(buyerInfoEntity); // buyerseq 값 정의
             purchaseInfoList.add(purchaseInfoEntity);
 
 
