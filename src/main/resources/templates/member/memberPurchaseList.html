@@ -359,21 +359,19 @@
                 <td th:text="${booknames[stat.index]}"></td>
                 <td id="status${stat.index}" class="status" th:text="${statusList[stat.index]}"></td>
                 <td th:text="${list.totalprice}"></td>
-                <td id="noreply${stat.index}">배송완료 또는 구매확정 시 리뷰작성 가능합니다</td>
-                <td id="reply${stat.index}"><a th:href="@{'/product/productInfo?bookid='+ ${bookids[stat.index]} + '&page=1'  + '&focus=true'}">리뷰작성</a></td>
-                <td class="CancelOrExchangeOrRefund1">
-                    <div id="buttons">
-<!--                    <button class="return1" style="background: none; border: none; padding: 0; cursor: pointer;" onmouseover="this.style.background='pink'; this.style.textDecoration='underline';" onmouseout="this.style.background='white'; this.style.textDecoration='none';" th:onclick="'withdrawal(\'' + ${stat.index} + '\')'">철회</button>-->
-                    <button id="cancel${stat.index}" class="cancel" style="background: none; border: none; padding: 0; cursor: pointer;" onmouseover="this.style.background='pink'; this.style.textDecoration='underline';" onmouseout="this.style.background='white'; this.style.textDecoration='none';" th:onclick="'cancel(\'' + ${stat.index} + '\')'">주문취소</button>
-                    <button id="exchange${stat.index}" class="exchange" style="background: none; border: none; padding: 0; cursor: pointer;" onmouseover="this.style.background='pink'; this.style.textDecoration='underline';" onmouseout="this.style.background='white'; this.style.textDecoration='none';" th:onclick="'javascript:showDiv(' + ${stat.index} + ');'">교환</button>
-                    <button id="refund${stat.index}" class="refund" style="background: none; border: none; padding: 0; cursor: pointer;" onmouseover="this.style.background='pink'; this.style.textDecoration='underline';" onmouseout="this.style.background='white'; this.style.textDecoration='none';"th:onclick="'javascript:showDiv1(' + ${stat.index} + ');'">환불</button>
-                        <button id="exchangecancel${stat.index}" class="exchangecancel" style="background: none; border: none; padding: 0; cursor: pointer;" onmouseover="this.style.background='pink'; this.style.textDecoration='underline';" onmouseout="this.style.background='white'; this.style.textDecoration='none';"th:onclick="'cancelexchangeorrefund(\'' + ${stat.index} + '\')'">교환 취소</button>
-                        <button id="refundcancel${stat.index}" class="refundcancel" style="background: none; border: none; padding: 0; cursor: pointer;" onmouseover="this.style.background='pink'; this.style.textDecoration='underline';" onmouseout="this.style.background='white'; this.style.textDecoration='none';"th:onclick="'cancelexchangeorrefund(\'' + ${stat.index} + '\')'">환불 취소 </button>
-
-                    </div>
-              <input type="hidden" th:id="purchaseinfonumber + ${stat.index}" th:data-purchaseinfonumber="${list.purchaseinfonumber}">
+                <td>
+                <button th:id="'noreply' + ${stat.index}">배송완료 또는 구매확정 시 리뷰작성 가능합니다</button>
+                <button th:id="'reply' + ${stat.index}"><a th:href="@{'/product/productInfo?bookid='+ ${bookids[stat.index]} + '&page=1'  + '&focus=true'}">리뷰작성</a></button>
                 </td>
-                <td id="determine{stat.index}" style="background: none; border: none; padding: 0; cursor: pointer;" onmouseover="this.style.background='pink'; this.style.textDecoration='underline';" onmouseout="this.style.background='white'; this.style.textDecoration='none';" th:onclick="'determine(\'' + ${stat.index} + '\')'">구매확정</td>
+                <td>
+                    <button th:id="'cancel'+${stat.index}" class="cancel" th:onclick="'cancel(\'' + ${stat.index} + '\')'">주문취소</button>
+                    <button th:id="'exchange' + ${stat.index}" class="exchange" th:onclick="'javascript:showDiv(' + ${stat.index} + ');'">교환</button>
+                    <button th:id="'refund' + ${stat.index}" class="refund" th:onclick="'javascript:showDiv1(' + ${stat.index} + ');'">환불</button>
+                    <button th:id="'exchangecancel' + ${stat.index}" class="exchangecancel" th:onclick="'cancelexchangeorrefund(\'' + ${stat.index} + '\')'">교환 취소</button>
+                    <button th:id="'refundcancel' +${stat.index}" class="refundcancel" th:onclick="'cancelexchangeorrefund(\'' + ${stat.index} + '\')'">환불 취소 </button>
+                <input type="hidden" th:id="purchaseinfonumber + ${stat.index}" th:data-purchaseinfonumber="${list.purchaseinfonumber}">
+            </td>
+                <td th:id="'determine' + ${stat.index}" style="background: none; border: none; padding: 0; cursor: pointer;" onmouseover="this.style.background='pink'; this.style.textDecoration='underline';" onmouseout="this.style.background='white'; this.style.textDecoration='none';" th:onclick="'determine(\'' + ${stat.index} + '\')'">구매확정</td>
             </tr>
             </th:block>
             <th:block th:if="${purchaseInfo == null}">
