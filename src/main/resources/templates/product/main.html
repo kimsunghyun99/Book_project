@@ -144,15 +144,16 @@
             font-family: 'GmarketSansMedium';
             font-size: 10px;
             position: fixed;
-            top: 10%;
+            top: 25%;
             right: 0;
-            width: 200px;
+            width: 150px;
             height: auto;
             overflow: auto;
             background-color: #ffd153;
             padding: 10px;
-            margin-right: 100px;
-            margin-bottom: 50px;
+            margin-right: 40px;
+            /*margin-bottom: 100px;*/
+
         }
 
         footer {
@@ -168,7 +169,7 @@
 
     <script>
 
-
+        // localStorage.clear();
         function addProductToRecentlyViewed(bookid, bookname, cover) {
             console.log(bookid);
             console.log(cover);
@@ -206,9 +207,13 @@
             var recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed')) || [];
             var lastThreeProducts = recentlyViewed.slice(-3);
 
+            var productContainer = document.createElement('div');
+            productContainer.innerHTML = '<h2>최근 본 상품</h2>'
+            recentlyViewedDiv.appendChild(productContainer);
+
             lastThreeProducts.forEach(function (product) {
                 var productElement = document.createElement('div');
-                productElement.innerHTML =  '<img src=' + product.cover + ' style="width:200px;height:200px;">';
+                productElement.innerHTML =  '<img src=' + product.cover + ' style="width:100px;height:100px;">';
                 productElement.innerHTML =  productElement.innerHTML + '<h3>' + product.bookname + '</h3>';
 
 
@@ -219,7 +224,9 @@
                     // ViewProductDetails(product.bookid);
                     window.location.href='/product/productInfo?bookid='+ product.bookid.replace(/"/g, '') + '&page=1';
                 });
+
                 recentlyViewedDiv.appendChild(productElement);
+
                 // 안쪽
             });
         }
