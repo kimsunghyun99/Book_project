@@ -345,7 +345,7 @@
         <img class="book-image" id="cover" th:src="${view.cover}" alt="책 이미지">
         <div class="likes-reviews">
 
-            <p class="book-reviews">후기: 00</p>
+            <p class="book-reviews" th:text="'후기: ' + ${count}"></p>>후기: 00</p>
         </div>
     </div>
     <div class="book-info"><br><br>
@@ -550,6 +550,16 @@
             //             alert('페이지 이동 중 오류가 발생했습니다.');
             //         });
             // };
+
+
+            document.querySelectorAll('.btnReviewDelete').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const reviewSeq = this.getAttribute('data-reviewseq');
+
+                    reviewDelete(reviewSeq);
+                });
+            });
+
 
 
             // 수정 버튼 클릭 이벤트 설정
