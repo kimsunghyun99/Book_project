@@ -88,4 +88,25 @@ public class PurchaseInfoServiceImpl implements PurchaseInfoService {
         List<Map<String, Object>> list = purchaseInfoRepository.totalcategory();
         return list;
     }
+
+    //일별 매출
+    @Override
+    public List<Map<String, Object>> findDailySales(){
+        List<Map<String, Object>> list = purchaseInfoRepository.findDailySales();
+        return list;
+    }
+
+    //월별 매출
+    @Override
+    public List<Map<String, Object>> findMonthlySales(){
+        List<Map<String, Object>> list = purchaseInfoRepository.findDailySales();
+        return list;
+    }
+
+    //연도별 매출
+    @Override
+    public List<Map<String, Object>> findYearlySales(){
+        List<Map<String, Object>> list = purchaseInfoRepository.findDailySales();
+        return list;
+    }
 }

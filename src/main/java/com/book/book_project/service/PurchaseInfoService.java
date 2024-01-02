@@ -45,11 +45,11 @@ public interface PurchaseInfoService {
     public List<Map<String, Object>> totalcategory();
 
     //일별 매출
-    public List<SalesData> findDailySales();
+    public List<Map<String, Object>> findDailySales();
 
     //월별 매출
-    public List<SalesDate> findMonthlySales();
+    public List<Map<String, Object>> findMonthlySales();
 
     //연도별 매출
-    public List<SalesDate> findYearlySales();
+    public List<Map<String, Object>> findYearlySales();
 }

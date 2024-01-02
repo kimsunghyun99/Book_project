@@ -112,7 +112,7 @@ public interface PurchaseInfoRepository extends JpaRepository<PurchaseInfoEntity
             "JOIN tbl_category c ON p.categorynumber = c.categorynumber\n" +
             "WHERE um.statusseq = 5\n" +
             "GROUP BY DATE(purchasedate)", nativeQuery = true)
-    List<SalesData> findDailySales();
+    List<Map<String, Object>> findDailySales();
 
     //월별 매출
     @Query(value = "SELECT CONCAT(YEAR(purchasedate), '-', MONTH(purchasedate)) AS month, SUM(pu.total_price) AS total_sales, SUM(pu.volume) AS total_volume, c.categoryname\n" +
@@ -128,7 +128,7 @@ public interface PurchaseInfoRepository extends JpaRepository<PurchaseInfoEntity
             "JOIN tbl_category c ON p.categorynumber = c.categorynumber\n" +
             "WHERE um.statusseq = 5\n" +
             "GROUP BY YEAR(purchasedate), MONTH(purchasedate)", nativeQuery = true)
-    List<SalesDate> findMonthlySales();
+    List<Map<String, Object>> findMonthlySales();
 
     //년도별 매출
     @Query(value = "SELECT YEAR(purchasedate) AS year, SUM(pu.total_price) AS total_sales, SUM(pu.volume) AS total_volume, c.categoryname\n" +
@@ -144,7 +144,7 @@ public interface PurchaseInfoRepository extends JpaRepository<PurchaseInfoEntity
             "JOIN tbl_category c ON p.categorynumber = c.categorynumber\n" +
             "WHERE um.statusseq = 5\n" +
             "GROUP BY YEAR(purchasedate)", nativeQuery = true)
-    List<SalesDate> findYearlySales();
+    List<Map<String, Object>> findYearlySales();
 
 //    List<PurchaseInfoEntity> findByBuyerseq(BuyerInfoEntity buyerseq);
 //PurchaseInfoEntity findByBuyerseq( BuyerInfoEntity buyerseq);
