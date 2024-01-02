@@ -40,7 +40,7 @@
             font-family: 'GmarketSansMedium';
             width: 210px;
             padding: 20px;
-            background-color: #ffdb7a;
+            background-color: #ffc118;
             display: block;
             top: 60%;
             position:fixed;
@@ -49,15 +49,15 @@
         }
         .btn-primary {
             color: black;
-            background-color: #ffdb7a;
-            border-color: #ffdb7a;
+            background-color: #ffc118;
+            border-color: #ffc118;
         }
 
         /* 마우스 호버 시의 스타일 변경 */
         .btn-primary:hover {
             color: #007ACC;
-            background-color: #ffdb7a;
-            border-color: #ffdb7a;
+            background-color: #ffc118;
+            border-color: #ffc118;
         }
 
         #books {
@@ -94,6 +94,15 @@
             object-fit: cover;
             border: 1px solid #ddd;
             border-radius: 5px;
+        }
+
+        .book-title a{
+            color: #000;
+            font-family: 'GmarketSansMedium';
+            font-size: 15px;
+            padding-left: 50px;
+            word-wrap: break-word;
+            text-decoration: none;
         }
 
 
@@ -171,7 +180,7 @@
     <h2 style="text-align: center; font-size: 18px">국내 도서 카테고리</h2>
 <!--    <a href="/product/productList?category=all&page=1">모두보기</a>-->
 <div class="container mt-3">
-    <a href="/product/productList?category=all&page=1">모두보기</a>
+<!--    <a href="/product/productList?category=all&page=1">모두보기</a>-->
     <br>
     <div class="dropdown dropend">
     <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">OS/Networking</button>
@@ -350,11 +359,13 @@
             <img th:src="${product.cover}" alt="책 표지 이미지" style="width: 100px; height: 150px;">
         </a>
             <br>
+        <div class="book-title">
         <a th:href="@{'/product/productInfo?bookid=' + ${product.bookid} + '&page=1'}"
            th:onclick="addProductToRecentlyViewed('[[${product.bookid}]]', '[[${product.bookname}]]', '[[${product.cover}]]')"
            th:text="${product.bookname}">
         </a>
         </div>
+            </div>
     </div>
 </div>
 <div style="text-align:center; margin-top:20px; bottom:0; left:50%; ">[(${pageList})]</div>

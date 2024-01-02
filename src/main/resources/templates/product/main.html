@@ -38,15 +38,43 @@
             padding: 10px;
         }
 
+        /*.product-row {*/
+        /*    display: flex;*/
+        /*    flex-wrap: wrap;*/
+        /*    justify-content: space-between;*/
+        /*}*/
+
+        /*.product-item {*/
+        /*    width: calc(50% - 10px);*/
+        /*    margin-bottom: 20px;*/
+        /*    font-family: 'GmarketSansMedium';*/
+        /*}*/
+
+        /*.product-item img {*/
+        /*    width: 100%;*/
+        /*    max-width: 100px;*/
+        /*    height: auto;*/
+        /*    border-radius: 5px;*/
+        /*    border: 1px solid #ddd;*/
+        /*}*/
+
         .product-row {
+            width: calc(50% - 20px);
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
+            margin: 0 auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+            box-sizing: border-box;
         }
 
         .product-item {
-            width: calc(50% - 10px);
+            width: calc(23% - 10px); /* 23%로 설정하여 4개씩 가로로 배치, 여유 공간을 주기 위해 23%로 조절 */
             margin-bottom: 20px;
+            font-family: 'GmarketSansMedium';
+            padding-left : 10px;
+
         }
 
         .product-item img {
@@ -57,8 +85,16 @@
             border: 1px solid #ddd;
         }
 
+        .product-title {
+            font-size: 10px;
+            padding-right: 50px;
+            word-wrap: break-word;
+        }
+
+
         section {
             padding: 20px;
+            font-family: 'GmarketSansMedium';
         }
 
         .news-row {
@@ -68,6 +104,12 @@
         h2 {
             font-family: 'SBAggroB';
             font-size: 24px;
+            margin-bottom: 20px;
+        }
+        h4 {
+            font-family: 'SBAggroB';
+            font-size: 20px;
+            text-align: center;
             margin-bottom: 20px;
         }
 
@@ -109,6 +151,7 @@
             overflow: auto;
             background-color: #ffd153;
             padding: 10px;
+            margin-right: 40px;
         }
 
         footer {
@@ -174,33 +217,35 @@
                 recentlyViewedDiv.appendChild(productContainer);
             }
         };
+
+
+
     </script>
 </head>
 <body>
 <div th:include="/etc/header.html"></div>
 
 <section>
-    <h2>추천 도서</h2>
+    <h4>추천 도서</h4>
     <div class="product-row">
+
         <div class="product-item" th:each="product, stat : ${productList}" th:if="${stat.count <= 9}">
             <a th:href="@{'/product/productInfo?bookid=' + ${product.bookid} + '&page=1'}"
                th:onclick="addProductToRecentlyViewed('[[${product.bookid}]]', '[[${product.bookname}]]', '[[${product.cover}]]')">
                 <img th:src="${product.cover}" alt="책 표지 이미지">
             </a>
+            <div class="product-title">
             <p>
                 <a th:href="@{'/product/productInfo?bookid=' + ${product.bookid} + '&page=1'}"
                    th:onclick="addProductToRecentlyViewed('[[${product.bookid}]]', '[[${product.bookname}]]', '[[${product.cover}]]')"
                    th:text="${product.bookname}">
                 </a>
-            </p>
+            </p></div>
         </div>
     </div>
 </section>
 
-<section>
-    <h2>이벤트</h2>
-    <p>현재 진행 중인 이벤트 정보를 여기에 추가하세요.</p>
-</section>
+
 
 <section>
     <h2>IT New</h2>
@@ -213,6 +258,11 @@
             </tr>
         </div>
     </div>
+</section>
+
+<section>
+    <h2>이벤트</h2>
+    <p>※ 현재 이벤트 준비중입니다.</p>
 </section>
 
 <section>
