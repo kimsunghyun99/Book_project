@@ -39,12 +39,15 @@
 <div class="main">
     <h1>장르별 매출 내역</h1>
     <div style="width:80%; text-align:right; position:relative; left: 35px; margin:10px; padding: 10px;">
-        <select name="job">
-            <option value="all" disabled selected>선택</option>
-            <option value="일">일</option>
-            <option value="월">월</option>
-            <option value="년도">년도</option>
-        </select>
+        <form th:action="@{/master/genreStatistics}" method="get">
+            <select name="CategoryList">
+                <option value="all" disabled selected>선택</option>
+                <option value="day">일</option>
+                <option value="month">월</option>
+                <option value="year">년도</option>
+            </select>
+            <button type="submit">조회</button>
+        </form>
         <br>
     </div>
     <div class="table-container">
@@ -56,7 +59,7 @@
             </tr>
             <tr th:each="totallist : ${totalCategoryList}">
                 <td th:text="${totallist.categoryname}"></td>
-                <td th:text="${totallist.total_volume} + '권'"></td>
+                <td th:text="|${#numbers.formatInteger(totallist.total_volume, 0, 'COMMA')}권|"></td>
                 <td th:text="|${#numbers.formatInteger(totallist.total_sales, 0, 'COMMA')}원|"></td>
             </tr>
         </table>

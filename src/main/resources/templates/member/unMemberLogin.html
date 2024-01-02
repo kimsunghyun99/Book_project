@@ -75,34 +75,37 @@
 
         const temppassword = document.querySelector('#temppassword');
         const receivertelno = document.querySelector('#receivertelno');
+        const msg = document.querySelector('#msg');
 
-        if(temppassword.value === ''){
-            alert("비밀번호를 입력하세요")
-            temppassword.focus();
-            return false;
-        }
         if(receivertelno.value === ''){
             alert("전화번호를 입력하세요")
             receivertelno.focus();
             return false;
         }
 
+        if(temppassword.value === ''){
+            alert("비밀번호를 입력하세요")
+            temppassword.focus();
+            return false;
+        }
+
         let formData = new FormData();
-        formData.append("temppassword", temppassword.value);
         formData.append("receivertelno", receivertelno.value);
+        formData.append("temppassword", temppassword.value);
         console.log(temppassword.value);
         console.log(receivertelno.value);
+
         await fetch('/member/unMemberLoginCheck',{
             method: "POST",
             body: formData
         }).then((response) => response.json())
             .then((data) => {
                 if(data.message === 'GOOD'){
-                    document.location.href="/member/unMemberPurchaseList";
+                    document.location.href="/member/unMemberPurchaseList?receivertelno="+ receivertelno.value;
+                }else if(data.message ==='Receivertelno_NOT_FOUND'){
+                    msg.innerHTML = '잘못된 전화번호입니다';
                 }else if(data.message === 'PASSWORD_NOT_FOUND'){
                     msg.innerHTML = '잘못된 비밀번호입니다';
-                }else if(data.message ==='receivertelno_NOT_FOUND'){
-                    msg.innerHTML = '잘못된 전화번호입니다';
                 }else{
                     alert("시스템 장애로 로그인이 실패했습니다");
                 }
@@ -118,10 +121,6 @@
             document.loginForm.submit();
         }
 
-
-        // const press = () => {
-        //     if(event.keyCode === 13) unMemberLoginCheck();
-        // }
     }
 </script>
 </head>
@@ -151,6 +150,5 @@
     </div>
 </div>
 </div>
-
 </body>
 </html>

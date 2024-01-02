@@ -68,6 +68,7 @@ public class MemberController {
     private final PurchaseStatusService purchaseStatusService;
     private final RefundService refundService;
     private final RefundRepository refundRepository;
+    private final UnMemberRepository unMemberRepository;
 
 
 
@@ -198,16 +199,10 @@ public class MemberController {
 
         System.out.println("컨트롤러1");
 
-//        System.out.println(member.getUsername());
-//        System.out.println(member.getNickname());
-//        System.out.println(member.getTelno());
-
-
         String username = member.getUsername();
         String nickname = member.getNickname();
         String telno = member.getTelno();
         String interest = member.getInterest();
-
 
         if ("U".equals(option)) {
             service.modifyMember(userid,username, nickname,telno, interest); // 회원 기본정보 수정
@@ -216,8 +211,6 @@ public class MemberController {
         return "{\"message\":\"GOOD\"}";
 
     }
-
-
 
     //주소 검색
     @GetMapping("/member/addrSearch")
@@ -247,10 +240,7 @@ public class MemberController {
     public int postIdCheck(@RequestBody String userid) throws Exception {
         int result = service.idCheck(userid);
         return result;
-
     }
-
-
 
     //로그인 화면 보기
     @GetMapping("/member/login")
@@ -277,16 +267,6 @@ public class MemberController {
         }
         service.lastloginUpdate(member);
         return "{\"message\":\"GOOD\"}";
-
-
-    }
-
-    //마이페이지 화면 (23-12-11)
-    @GetMapping("/member/mypage")
-    public void getMyPage(HttpSession session, Model model) {
-        String userid = (String)session.getAttribute("userid");
-        model.addAttribute("memberInfo", service.memberInfo(userid));//회원정보 불러오기
-        model.addAttribute("countReviewsByUserId", service.countReviewsByUserId(userid));//리뷰 갯수 구하기
 
     }
 
@@ -317,7 +297,6 @@ public class MemberController {
         MemberEntity memberEntity = new MemberEntity();
         memberEntity.setUserid(userid);
 
-
         List<BuyerInfoEntity> buyerInfo=buyerInfoService.buyerInfo(memberEntity); // -> userid에 대한 받는이 주소, 집코드, 주소, 이름, 번호가 담김
         List<PurchaseInfoEntity> purchaseInfoList = new ArrayList<>();
         List<String> BookNameList = new ArrayList<>();
@@ -330,15 +309,10 @@ public class MemberController {
             PurchaseInfoEntity purchaseInfoEntity =  purchaseInfoRepository.findByBuyerseq(buyerInfoEntity); // buyerseq 값 정의
             purchaseInfoList.add(purchaseInfoEntity);
 
-
-
             String bookid  = String.valueOf(purchaseInfoEntity.getBookid().getBookid());
             String bookname = productRepository.getBookName(bookid);
             String statusseq =  String.valueOf(purchaseInfoEntity.getStatusseq().getStatusseq());
            String statusname = purchaseStatusService.getStatusName(statusseq);
-//            System.out.println(statusname);
-
-
 
             BookIdList.add(bookid);
             StatusList.add(statusname);
@@ -351,8 +325,6 @@ public class MemberController {
         model.addAttribute("statusList", StatusList);
 //        System.out.println("purchaseInfolist 실험 : " + purchaseInfoList.get(0));
     }
-
-
 
 
     //회원 구매내역 교환,환불, 취소 처리 , 철회처리
@@ -379,7 +351,6 @@ public class MemberController {
         }
         else if(option.equals("w")) {
 
-
         }
         else if(option.equals("d")) {
             int statsseq = 11;
@@ -392,39 +363,31 @@ public class MemberController {
             refundService.delete(refundDTO.getPurchaseinfonumber().getPurchaseinfonumber());
         }
 
-//        System.out.println("controller purchaseinfonumber : " + refundDTO.getPurchaseinfonumber().getPurchaseinfonumber());
-//        System.out.println("컨트롤러1");
-//        System.out.println("컨트롤러2");
-
-
-
         return "{\"message\":\"GOOD\"}";
     }
 
+    //비회원 구매내역 조회 화면
+    @GetMapping("/member/unMemberPurchaseList")
+    public String getUnMemberPurchaseList(@RequestParam("receivertelno") String receivertelno,Model model) throws Exception {
+        List<Map<String, String>> list = unMemberRepository.unmempurchaseList(receivertelno);
 
+        List<Map<String, Object>> purchaseList = new ArrayList<>();
 
+        for(Map<String, String> map : list){
+            Map<String, Object> purchaseListMap = new HashMap<>();
+            purchaseListMap.put("purchasedate", map.get("purchasedate"));
+            purchaseListMap.put("unmemberpurchaseinfoseq", map.get("unmemberpurchaseinfoseq"));
+            purchaseListMap.put("statusseq", map.get("statusseq"));
+            purchaseListMap.put("total_price", map.get("total_price"));
+            purchaseListMap.put("bookname", map.get("bookname"));
 
-
-
-//    비회원 구매내역 조회 화면
-//    @GetMapping("/member/unMemberPurchaseList")
-//    public void getUnMemberPurchaseList(Model model, HttpSession session,PurchaseInfoService purchaseInfoService) throws Exception {
-//        UnMemberEntity unmemberseq = (UnMemberEntity)
-//        List<UnMemberEntity> unMemberEntityList=unMemberService.unMemberInfo(unmembertelno);
-//
-//        List<PurchaseInfoEntity> purchaseInfoList = new ArrayList<>();
-//
-//        for(UnMemberEntity unMemberEntity:unMemberEntityList){
-//            UnMemberEntity unmembertelno = unMemberEntity;
-//            List<PurchaseInfoEntity> purchaseList = purchaseInfoService.unMemberPurchaseList(unmembertelno);
-//            purchaseInfoList.addAll(purchaseList);
-//            model.addAttribute("purchaseList",purchaseInfoList);
-//        }
-//    }
-
+            purchaseList.add(purchaseListMap);
+        }
+        model.addAttribute("purchaseList", purchaseList);
+        return "/member/unMemberPurchaseList";
+    }
 
     //비회원 로그인 화면
-    //비회원 로그인 화면 (23-12-12)
     @GetMapping("/member/unMemberLogin")
     public void getUnMemberLogin() {}
 
@@ -437,8 +400,8 @@ public class MemberController {
     @PostMapping("/member/unMemberLoginCheck")
     public String postUnMemberLogin(UnMemberDTO unMember) {
         //아이디 존재 여부 확인
-        if(unMemberService.findByTemppassword(unMember.getTemppassword()) == null) {
-            return "{\"message\":\"receivertelno_NOT_FOUND\"}";
+        if(unMemberService.findByReceivertelno(unMember.getReceivertelno()) == null) {
+            return "{\"message\":\"Receivertelno_NOT_FOUND\"}";
         }
 
         //비밀번호가 올바르게 들어왔는지 정확도 여부 확인
@@ -449,10 +412,5 @@ public class MemberController {
         return "{\"message\":\"GOOD\"}";
 
     }
-
-
-
-
-
 
 }
