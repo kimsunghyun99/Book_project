@@ -137,4 +137,52 @@ public class PurchaseInfoServiceImpl implements PurchaseInfoService {
         return token;
     }
 
+
+    //회원 구매내역 불러오기(갯수)
+    @Override
+    public int purchasecount(String userid){
+        return purchaseInfoRepository.purchasecount(userid);
+    }
+
+    //매출 내역 뽑기
+    @Override
+    public List<Map<String, String>> totalPrice() {
+        List<Map<String, String>> list = purchaseInfoRepository.totalPrice();
+        return list;
+    }
+
+    //전체 판매 수량, 전체 판매 금액 합계
+    @Override
+    public List<Map<String, String>> totalSalesPrice(){
+        List<Map<String, String>> list = purchaseInfoRepository.totalSalesPrice();
+        return list;
+    }
+
+    //카테고리 별 매출
+    @Override
+    public List<Map<String, Object>> totalcategory(){
+        List<Map<String, Object>> list = purchaseInfoRepository.totalcategory();
+        return list;
+    }
+
+    //일별 매출
+    @Override
+    public List<Map<String, Object>> findDailySales(){
+        List<Map<String, Object>> listA = purchaseInfoRepository.findDailySales();
+        return listA;
+    }
+
+    //월별 매출
+    @Override
+    public List<Map<String, Object>> findMonthlySales(){
+        List<Map<String, Object>> listB = purchaseInfoRepository.findDailySales();
+        return listB;
+    }
+
+    //연도별 매출
+    @Override
+    public List<Map<String, Object>> findYearlySales(){
+        List<Map<String, Object>> listC = purchaseInfoRepository.findDailySales();
+        return listC;
+    }
 }

@@ -46,7 +46,29 @@ public interface PurchaseInfoService {
     public void memberorderupdate(int statusseq, int purchaseinfonumber);
 
     //비회원 주문 상태 변경
-    public void unmemberorderupdate(int statusseq, int unmember_purseq);
+    public void unmemberorderupdate(int statusseq, int unmemberpurchaseinfoseq);
+
+    //회원 구매내역 불러오기(갯수)
+    public int purchasecount(String userid);
+
+    //매출 내역 뽑기
+    public List<Map<String, String>> totalPrice();
+
+    //전체 판매 수량, 전체 판매 금액 합계
+    public List<Map<String, String>> totalSalesPrice();
+
+    //카테고리 별 매출
+    public List<Map<String, Object>> totalcategory();
+
+    //일별 매출
+    public List<Map<String, Object>> findDailySales();
+
+    //월별 매출
+    public List<Map<String, Object>> findMonthlySales();
+
+    //연도별 매출
+    public List<Map<String, Object>> findYearlySales();
+
 
     public void processPayment(PurchaseInfoEntity paymentInfo) throws Exception;
 

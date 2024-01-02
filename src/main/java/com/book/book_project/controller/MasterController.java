@@ -145,7 +145,24 @@ public class MasterController {
 
     // 장르별 통계
     @GetMapping("/master/genreStatistics")
-    public void getGenreStatistics() {}
+    public void getGenreStatistics(Model model) {
+        List<Map<String, Object>> list = purchaseInfoRepository.totalcategory();
+        List<Map<String, Object>> totalCategoryList = new ArrayList<>();
+
+        for(Map<String, Object> map : list){
+            Map<String, Object> totalCategoryMap = new HashMap<>();
+            totalCategoryMap.put("categoryname", map.get("categoryname"));
+            totalCategoryMap.put("total_sales", map.get("total_sales"));
+            totalCategoryMap.put("total_volume", map.get("total_volume"));
+            System.out.println(totalCategoryMap.put("categoryname", map.get("categoryname")));
+            System.out.println(totalCategoryMap.put("total_sales", map.get("total_sales")));
+            System.out.println(totalCategoryMap.put("total_volume", map.get("total_volume")));
+
+            totalCategoryList.add(totalCategoryMap);
+        }
+
+        model.addAttribute("totalCategoryList", totalCategoryList);
+    }
 
     // 회원 관리
     @GetMapping("/master/memberManage")
@@ -229,7 +246,6 @@ public class MasterController {
             unmempurchaseMap.put("unmemberpurchaseinfoseq", map.get("unmemberpurchaseinfoseq"));
             unmempurchaseMap.put("statusseq", map.get("statusseq"));
             unmempurchaseMap.put("statusname", map.get("statusname"));
-            System.out.println(unmempurchaseMap.put("unmemberpurchaseinfoseq", map.get("unmemberpurchaseinfoseq")));
 
             //비회원 정보
             unmempurchaseMap.put("name", map.get("receivername"));
@@ -260,11 +276,9 @@ public class MasterController {
     @ResponseBody
     @PostMapping("/master/unmemorderupdate")
     public String unmemberorderupdate(@RequestBody UnMemberPurchaseInfoEntity unMemberPurchaseInfoEntity){
-        System.out.println("비회원 주문 상태 변경");
+
         int statusseq = unMemberPurchaseInfoEntity.getStatusseq().getStatusseq();
         int unmemberpurchaseinfoseq = unMemberPurchaseInfoEntity.getUnmemberpurchaseinfoseq();
-        System.out.println(statusseq);
-        System.out.println(unmemberpurchaseinfoseq);
 
         purchaseInfoRepository.unmemberorderupdate(statusseq, unmemberpurchaseinfoseq);
 
@@ -273,6 +287,34 @@ public class MasterController {
 
     // 매출 내역
     @GetMapping("/master/salesInfo")
-    public void getSalesInfo() {}
+    public void getSalesInfo(Model model) {
+        List<Map<String, String>> list = purchaseInfoRepository.totalPrice();
+        List<Map<String, String>> list2 = purchaseInfoRepository.totalSalesPrice();
+
+        List<Map<String, Object>> totalList = new ArrayList<>();
+        List<Map<String, Object>> totalSalesPriceList = new ArrayList<>();
+
+        for(Map<String, String> map : list){
+            Map<String, Object> totalListMap = new HashMap<>();
+            totalListMap.put("bookname", map.get("bookname"));
+            totalListMap.put("price", map.get("price"));
+            totalListMap.put("volume", map.get("volume"));
+            totalListMap.put("total_price", map.get("total_price"));
+
+            totalList.add(totalListMap);
+
+        }
+
+        for(Map<String, String> map2 : list2){
+            Map<String, Object> totalSalesPriceMap = new HashMap<>();
+            totalSalesPriceMap.put("totalsales", map2.get("totalsales"));
+            totalSalesPriceMap.put("totalvolume", map2.get("totalvolume"));
+
+            totalSalesPriceList.add(totalSalesPriceMap);
+        }
+
+        model.addAttribute("totalList", totalList);
+        model.addAttribute("totalSalesPriceList", totalSalesPriceList);
+    }
 
 }

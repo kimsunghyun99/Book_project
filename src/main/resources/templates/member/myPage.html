@@ -53,27 +53,27 @@
 </head>
 <body>
 <div th:insert="~{/etc/header.html}"></div>
-<br><br>
-<h2 th:text="${memberInfo.username} "> <a href="/member/memberPurchaseList">장바구니</a></h2>
-<br><br>
-<h4 th:text="${memberInfo.username} "><a href="/member/memberInfoModify">정보수정</a></h4>
-
-<div class="table-container">
-    <table class="InfoTable">
-        <tr>
-            <th>포인트</th>
-            <th>구매내역</th>
-            <th>리뷰</th>
-            <th>장바구니</th>
-        </tr>
-        <tr>
-            <td th:text="${memberInfo.point}"></td>
-            <td></td>
-            <td th:text="${countReviewsByUserId}"></td>
-            <td></td>
-        </tr>
-    </table>
-</div>
+<div class="center-content">
+    <div class="user-info">
+        <h4 th:text="${memberInfo.username} ">회원 이름</h4>
+        <button type="button" onclick="location.href='/member/memberInfoModify'">회원 정보 변경</button>
+    </div>
+    <div class="table-container">
+        <table class="InfoTable">
+            <tr>
+                <th>포인트</th>
+                <th>총 리뷰</th>
+                <th><a href="/product/shoppingBasket">장바구니</a></th>
+                <th><a href="/member/memberPurchaseList"> 구매 내역</a></th>
+            </tr>
+            <tr>
+                <td th:text="${memberInfo.point}">0</td>
+                <td th:text="${countReviewsByUserId}">0</td>
+                <td th:text="${cartcount}">0</td>
+                <td th:text="${purchasecount}">0</td>
+            </tr>
+        </table>
+    </div>
 </div>
 </body>
 </html>

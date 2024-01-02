@@ -10,7 +10,7 @@
         var ageChart;
         var userTypeChart;
 
-        // Default chart (연령대)
+        // 처음 화면에 보이는 차트(연령대별)
         var ageData = {
             labels: ["10대", "20대", "30대", "40대", "50대"],
             datasets: [
@@ -27,6 +27,9 @@
             scales: {
                 y: {
                     beginAtZero: true,
+                    ticks : {
+                        stepSize: 1 // 눈금 간격 1로 설정
+                    }
                 }
             }
         };
@@ -51,7 +54,10 @@
             var selectedChartType = this.value;
             if (selectedChartType === '연령대(일반회원)') {
                 // 이용자 구분 차트 파괴
-                if (userTypeChart) userTypeChart.destroy();
+                if (userTypeChart) {
+                    userTypeChart.destroy();
+                    userTypeChart = null;
+                }
 
                 document.getElementById('secondBarChart').style.display = 'none';  //  이용자 구분 차트 숨김
                 document.getElementById('myBarChart').style.display = 'block';  // 연령대 차트 보여줌
@@ -71,11 +77,14 @@
                 }
             } else if (selectedChartType === '이용자 구분') {
                 // 연령대 차트 파괴
-                if (ageChart) ageChart.destroy();
+                if (ageChart) {
+                    ageChart.destroy();
+                    ageChart = null;
+                }
 
                 document.getElementById('myBarChart').style.display = 'none';  // 연령대 차트 숨김
                 document.getElementById('secondBarChart').style.display = 'block';  // 이용자 구분 차트 보여줌
-                rankingDiv.innerHTML = '';  // Clear rankingDiv content
+                rankingDiv.innerHTML = '';  //랭크 순위 초기화
 
                 // 이용자 구분 차트 생성 후 보여주기
                 var userTypeData = {

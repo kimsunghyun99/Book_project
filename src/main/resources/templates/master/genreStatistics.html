@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -9,11 +10,11 @@
         }
 
         .table-container {
-            width: 80%;
+            width: 60%;
             margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr; /* 1개의 컬럼 */
-            grid-row-gap: 20px; /* 행 간격 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         table {
@@ -23,14 +24,13 @@
 
         th, td {
             border: 1px solid #dddddd;
-            text-align: left;
+            text-align: center;
             padding: 8px;
         }
 
         th {
             background-color: #f2f2f2;
         }
-
     </style>
 </head>
 
@@ -54,11 +54,10 @@
                 <th>판매수량</th>
                 <th>판매금액</th>
             </tr>
-            <tr>
-                <td>시/에세이</td>
-                <td>10,000</td>
-                <td>1,500,000</td>
-
+            <tr th:each="totallist : ${totalCategoryList}">
+                <td th:text="${totallist.categoryname}"></td>
+                <td th:text="${totallist.total_volume} + '권'"></td>
+                <td th:text="|${#numbers.formatInteger(totallist.total_sales, 0, 'COMMA')}원|"></td>
             </tr>
         </table>
     </div>
