@@ -40,4 +40,16 @@ public interface PurchaseInfoService {
 
     //전체 판매 수량, 전체 판매 금액 합계
     public List<Map<String, String>> totalSalesPrice();
+
+    //카테고리 별 매출
+    public List<Map<String, Object>> totalcategory();
+
+    //일별 매출
+    public List<SalesData> findDailySales();
+
+    //월별 매출
+    public List<SalesDate> findMonthlySales();
+
+    //연도별 매출
+    public List<SalesDate> findYearlySales();
 }

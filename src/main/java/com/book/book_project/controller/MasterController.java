@@ -145,7 +145,24 @@ public class MasterController {
 
     // 장르별 통계
     @GetMapping("/master/genreStatistics")
-    public void getGenreStatistics() {}
+    public void getGenreStatistics(Model model) {
+        List<Map<String, Object>> list = purchaseInfoRepository.totalcategory();
+        List<Map<String, Object>> totalCategoryList = new ArrayList<>();
+
+        for(Map<String, Object> map : list){
+            Map<String, Object> totalCategoryMap = new HashMap<>();
+            totalCategoryMap.put("categoryname", map.get("categoryname"));
+            totalCategoryMap.put("total_sales", map.get("total_sales"));
+            totalCategoryMap.put("total_volume", map.get("total_volume"));
+            System.out.println(totalCategoryMap.put("categoryname", map.get("categoryname")));
+            System.out.println(totalCategoryMap.put("total_sales", map.get("total_sales")));
+            System.out.println(totalCategoryMap.put("total_volume", map.get("total_volume")));
+
+            totalCategoryList.add(totalCategoryMap);
+        }
+
+        model.addAttribute("totalCategoryList", totalCategoryList);
+    }
 
     // 회원 관리
     @GetMapping("/master/memberManage")
