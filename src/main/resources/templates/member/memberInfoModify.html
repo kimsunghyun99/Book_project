@@ -68,31 +68,40 @@
 
         }
 
-        .btn_write {
+        .btn_write,.btn_cancel {
             display:inline-block;
             width: 20%; /* 원하는 폭으로 조절하세요 */
             font-size: 18px;
             padding: 10px;
             box-sizing: border-box;
+            background-color: #ffd153;
+            color: black;
+            font-weight: bold;
+            border:none;
+            cursor:pointer;
+            font-family: 'GmarketSansMedium';
         }
-        .btn_cancel {
-            display:inline-block;
-            width: 20%; /* 원하는 폭으로 조절하세요 */
-            font-size: 18px;
-            padding: 10px;
-            box-sizing: border-box;
+
+        .btn_modify{
+            background-color: #ffd153;
+            color: black;
+            font-weight: bold;
+            border:none;
+            cursor:pointer;
         }
 
         input[type="radio"] {
             display: inline-block;
             vertical-align: middle; /* 수직 정렬 추가 */
             margin-bottom: 0; /* 여백 제거 */
+            font-family: 'GmarketSansMedium';
         }
 
         label {
             display: inline-block;
             vertical-align: middle; /* 수직 정렬 추가 */
             margin-bottom: 8px;
+            font-family: 'GmarketSansMedium';
         }
 
         form input[type="radio"] + input[type="radio"] {
@@ -103,14 +112,16 @@
             display: flex;
             justify-content: flex-end;
             margin-top: 10px; /* 원하는 여백 값으로 조절하세요 */
+
         }
 
         #add {
-            width:60px;
-            font-size: 14px; /* 원하는 글자 크기로 조절하세요 */
-            padding: 5px 10px; /* 원하는 패딩 값으로 조절하세요 */
-            margin-left: 5px; /* 각 버튼 사이 여백 조절 */
-            text-align:center;
+            background-color: #ffd153;
+            color: black;
+            font-weight: bold;
+            border:none;
+            cursor:pointer;
+            font-family: 'GmarketSansMedium';
         }
         #addplus {
             display: none;
@@ -139,8 +150,34 @@
             margin-right: auto;
         }
         .delevery{
-            text-align: center  ;
+            padding-left: 570px;
         }
+        #subcategories label {
+            display: block;
+            margin-bottom: 8px;
+            white-space: nowrap; /* 글자가 길어질 경우 줄바꿈 방지 */
+        }
+
+        #subcategories input[type="radio"] {
+            display: inline-block;
+            vertical-align: middle; /* 수직 정렬 추가 */
+            margin-bottom: 0; /* 여백 제거 */
+            margin-right: 5px; /* 라디오 버튼 사이 여백 조절 */
+        }
+        #subcategories{
+            padding-top: 20px;
+            padding-right: 300px;
+            font-family: 'GmarketSansMedium';
+        }
+        #delete{
+            background-color: #ffd153;
+            color: black;
+            font-weight: bold;
+            border:none;
+            cursor:pointer;
+            font-family: 'GmarketSansMedium';
+        }
+
 
     </style>
 
@@ -275,7 +312,11 @@
     <label for="nickname">전화번호:</label>
     <input type="text" id="telno" class="input_field" name="telno" th:value="${memberInfo.telno}" placeholder="전화번호를 입력하세요" >
 
-    관심분야 :
+    <div id="modify">
+        <input type="button" class="btn_modify" value="비밀번호 수정" onclick="passwordModify()">
+    </div>
+
+    <div class="interestselect" style="font-family: 'GmarketSansMedium'; padding-bottom: 10px;"> 관심분야 :</div>
     <select id="interests" name="interests" onchange="handleInterestChange(this.value)">
         <option value="all" disabled selected>관심분야 ▼</option>
         <option value="OS/Networking">OS/Networking </option>
@@ -298,7 +339,7 @@
     <input type="text" id="interests1" class="input_field" name="interests1" placeholder="직접입력">
 </form>
     <div class="delevery">
-    <h4 style="display: inline-block; ">배송지 목록</h4>
+    <h4 style="display: inline-block; font-family: 'GmarketSansMedium';">배송지 목록</h4>
     <div id="ADDorDelete" style="display: inline-block;">
         <input type="button" id="add" value="추가" onclick="AddAddr()">
     </div>
@@ -323,7 +364,7 @@
                 <td th:text="${list.addr} + ' ' + ${list.detailaddr}" ></td>
                 <td th:text="${list.zipcode}"></td>
                 <td th:text="${list.telno}"></td>
-                <td ><input type="button" style="text-align: center;" value="삭제" onclick="DeleteAddr(this)"></td>
+                <td ><input type="button" id="delete" value="삭제" onclick="DeleteAddr(this)"></td>
                 <input type="hidden" id="deleteseqno" th:value="${list.deliveryseq}">
 <!--                <span style="display: none" id="deleteseqno" th:value="${list.deliveryseq}"></span>-->
             </tr>
@@ -348,7 +389,6 @@
 <div id="aa">
     <input type="button" id="btnRegister" class="btn_write" value="수정" onclick="ModifyMember()">
     <input type="button" class="btn_cancel" value="취소" onclick="history.back()">
-    <a href="/member/pwModify" class="btn_pwModify">비밀번호 변경</a>
 </div>
 
 
@@ -465,6 +505,11 @@
             "width=950, height=540, top=50, left=50"
         );
     }
+
+    const passwordModify = () => {
+        window.location.href = '/member/pwModify';
+    }
+
 
 </script>
 
