@@ -36,24 +36,44 @@
             display: none;
         }
 
-        #buttons {
-            display: flex;
-
+        button{
+            background:#ffd518;
+            border: 1px solid #1AAB8A; /* 테두리 추가 */
+            position:relative;
+            height:30px;
+            font-size:1.0em;
+            padding:0 1em;
+            cursor:pointer;
+            transition:800ms ease all;
+            outline:none;
+            color: #000;
+        }
+        button:hover{
+            background:#fff;
+            color:#1AAB8A;
+        }
+        button:before,button:after{
+            content:'';
+            position:absolute;
+            top:0;
+            right:0;
+            height:1px;
+            width:0;
+            background: #1AAB8A;
+            transition:400ms ease all;
+        }
+        button:after{
+            right:inherit;
+            top:inherit;
+            left:0;
+            bottom:0;
+        }
+        button:hover:before,button:hover:after{
+            width:10%;
+            transition:800ms ease all;
         }
 
-        /*#buttons button {*/
-        /*    background: none;*/
-        /*    border: none;*/
-        /*    padding: 0;*/
-        /*    cursor: pointer;*/
-        /*    margin-right: 10px; !* 각 버튼 사이에 간격을 조절할 수 있습니다. *!*/
-        /*    display: none;*/
-        /*}*/
 
-        /*#buttons button:hover {*/
-        /*    background: pink;*/
-        /*    text-decoration: underline;*/
-        /*}*/
 
         .cancel, .exchange, .refund, .exchangecancel, .refundcancel {
             display: none;
@@ -66,6 +86,36 @@
             font-style: normal;
         }
 
+        .table-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 50vh; /* 높이 조절, 원하는 만큼 설정하세요 */
+
+        }
+
+        table {
+            /* 테이블 스타일, 원하는 스타일 설정 */
+            border-collapse: collapse;
+            border: 1px solid #ddd;
+            width: 80%; /* 테이블 너비 조절, 원하는 만큼 설정하세요 */
+            background-color: #fff; /* 초기 배경색을 흰색으로 설정 */
+        }
+
+        th, td {
+            font-family: 'GmarketSansMedium';
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            text-align:center;
+            background-color: #ffc118;
+        }
+        a {
+            text-decoration: none; /* 링크의 밑줄 제거 */
+            color: inherit; /* 기본 색상 유지 */
+        }
 
 
 
@@ -355,10 +405,10 @@
 <!--    <script src="/js/getCookie.js"></script>-->
 <body>
 <div th:include="/etc/header.html"></div>
-    <h2>구매내역조회</h2>
-    <div>
+    <h2 style="font-family:GmarketSansMedium">&nbsp&nbsp&nbsp&nbsp구매내역조회</h2>
+    <div class="table-container">
         <table border="1px">
-            <tr>
+            <tr style="text-align:center">
                 <th>주문일자</th>
                 <th>주문번호</th>
                 <th>상품명</th>
