@@ -414,10 +414,6 @@ public class MemberController {
             purchaseListMap.put("statusseq", map.get("statusseq"));
             purchaseListMap.put("total_price", map.get("total_price"));
             purchaseListMap.put("bookname", map.get("bookname"));
-            System.out.println(purchaseListMap.put("purchasedate", map.get("purchasedate")));
-            System.out.println(purchaseListMap.put("unmemberpurchaseinfonumber", map.get("unmemberpurchaseinfonumber")));
-            System.out.println(purchaseListMap.put("stattusseq", map.get("statusseq")));
-            System.out.println(purchaseListMap.put("total_price", map.get("total_price")));
 
             purchaseList.add(purchaseListMap);
         }
