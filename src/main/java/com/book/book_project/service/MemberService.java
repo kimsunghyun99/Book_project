@@ -75,4 +75,6 @@ public interface MemberService {
     //일반 회원 나이대 별 회원 수 불러오기
     public List<Map<String, Integer>> memberage();
 
+    public MemberEntity findById(String userid);
+
 }

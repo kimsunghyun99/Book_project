@@ -197,6 +197,11 @@ public class MemberServiceImpl implements MemberService {
 
         return list;
     }
+    @Override
+    public MemberEntity findById(String userid) {
+        return memberRepository.findById(userid).orElse(null);
+    }
+
 
 
 

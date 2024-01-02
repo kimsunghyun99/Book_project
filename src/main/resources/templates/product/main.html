@@ -59,7 +59,7 @@
         /*}*/
 
         .product-row {
-            width: calc(50% - 20px);
+            width: calc(30% - 20px);
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
@@ -79,15 +79,15 @@
 
         .product-item img {
             width: 100%;
-            max-width: 100px;
+            max-width: 150px;
             height: auto;
             border-radius: 5px;
             border: 1px solid #ddd;
         }
 
         .product-title {
-            font-size: 10px;
-            padding-right: 50px;
+            font-size: 13px;
+            padding-right: 10px;
             word-wrap: break-word;
         }
 
@@ -95,6 +95,7 @@
         section {
             padding: 20px;
             font-family: 'GmarketSansMedium';
+            text-align: center;
         }
 
         .news-row {
@@ -258,9 +259,9 @@
 </section>
 
 
-
+<h2>IT New</h2>
 <section>
-    <h2>IT New</h2>
+
     <div class="news-row">
         <div th:each="news : ${newsList}">
             <tr style="font-size: 10px">
