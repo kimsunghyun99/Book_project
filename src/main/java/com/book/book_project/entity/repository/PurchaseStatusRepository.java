@@ -15,4 +15,5 @@ public interface PurchaseStatusRepository extends JpaRepository<PurchaseInfoEnti
 
 
 
+
 }

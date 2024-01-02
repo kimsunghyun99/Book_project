@@ -54,22 +54,29 @@ public class ProductController {
 
 
         String userid = (String)session.getAttribute("userid") != null?  (String)session.getAttribute("userid") : "";
+        String interest ="";
+
 
         if(userid != "") {
-            String interest = memberService.memberInfo(userid).getInterest();
+            interest = memberService.memberInfo(userid).getInterest();
+        }
+
+
+        if(userid != "" && interest != null && !interest.isEmpty() && interest != "") {
+//             interest = memberService.memberInfo(userid).getInterest();
+//            System.out.println("interest : " + interest);
             List<ProductEntity> productDTOList = service.productlist(interest);
             model.addAttribute("productList", productDTOList);
+//        } else if(interest == null || interest.isEmpty()) {
         } else {
             List<ProductEntity> productDTOList1 = service.productlist1();
             model.addAttribute("productList", productDTOList1);
-
         }
 
         List<NewsDTO> newsDTOList = newsService.crawlNews();
         List<ProductEntity> bookList=productRepository.getProductList();
         model.addAttribute("bookListId", bookList.get(0).getBookid());
         model.addAttribute("newsList", newsDTOList);
-
     }
 
     @GetMapping("/product/productInfo")

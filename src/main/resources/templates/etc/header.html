@@ -15,34 +15,34 @@
             console.log("javascript userid = "+userid);
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-            if(userid !==''){
-                if(confirm("로그인하지 않고 담아놓은 물건이 있습니다. 추가하시겠습니까?")){
+           if (userid !== '' && cart.length > 0) {
+               if (confirm("로그인하지 않고 담아놓은 물건이 있습니다. 추가하시겠습니까?")) {
+                   Promise.all(cart.map(item => {
+                       var bookid = item.bookid;
+                       console.log("bookid = " + bookid);
 
-                    for (const item of cart) {
-                        var bookid = item.bookid;
-                        console.log("bookid = " + bookid);
-
-                        fetch('/product/shoppingBasket', {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify({bookid: bookid}),
-                        }).then((response) => response.json())
-                            .then((data) => {
-                                if (data.message !== 'GOOD') {
-                                    throw new Error('장바구니에 추가 실패했습니다.');
-                                }
-                            }).catch((error) => {
-                                console.log("error = " + error);
-                            });
-                    }
-                    alert('장바구니에 추가되었습니다.');
-                    localStorage.removeItem('cart');
-                    document.location.href="/product/shoppingBasket"
-                }
-            }
-        }
+                       return fetch('/product/shoppingBasket', {
+                           method: "POST",
+                           headers: {
+                               "Content-Type": "application/json",
+                           },
+                           body: JSON.stringify({ bookid: bookid }),
+                       }).then((response) => response.json())
+                           .then((data) => {
+                               if (data.message !== 'GOOD') {
+                                   throw new Error('장바구니에 추가 실패했습니다.');
+                               }
+                           });
+                   })).then(() => {
+                       localStorage.removeItem('cart');
+                       alert('장바구니에 추가되었습니다.');
+                       window.location.href = "/product/shoppingBasket";
+                   }).catch((error) => {
+                       console.log("error = " + error);
+                   });
+               }
+           }
+       }
     </script>
     <nav>
         <!-- 세션 값이 없을 경우 로그인 및 회원가입 버튼 표시 -->

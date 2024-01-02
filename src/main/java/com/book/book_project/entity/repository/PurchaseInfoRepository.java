@@ -20,7 +20,9 @@ import java.util.Objects;
 @Repository
 public interface PurchaseInfoRepository extends JpaRepository<PurchaseInfoEntity, Integer> {
 
-    List<PurchaseInfoEntity> findByBuyerseq(BuyerInfoEntity buyerseq);
+   // List<PurchaseInfoEntity> findByBuyerseq(BuyerInfoEntity buyerseq);
+   PurchaseInfoEntity findByBuyerseq( BuyerInfoEntity buyerseq);
+
     //주문 상태 불러오기
     @Query(value = "select * from tbl_purchasestatus", nativeQuery = true)
     List<Map<String,String>> statuslist();
@@ -149,4 +151,9 @@ public interface PurchaseInfoRepository extends JpaRepository<PurchaseInfoEntity
 //    List<PurchaseInfoEntity> findByBuyerseq(BuyerInfoEntity buyerseq);
 //PurchaseInfoEntity findByBuyerseq( BuyerInfoEntity buyerseq);
 
+
+    @Transactional
+    @Modifying //  테이블에 DML ( insert, update, delete) 을 실행 시켜 변화를 주었을 경우 테이블에 반영된 내용을 엔티티 클래스에 반영
+    @Query(value="update tbl_purchaseinfo set statusseq = :statusseq where purchaseinfonumber = :purchaseinfonumber",nativeQuery = true)
+    public void updateStatusseq(@Param("statusseq") int statusseq, @Param("purchaseinfonumber") int purchaseinfonumber);
 }

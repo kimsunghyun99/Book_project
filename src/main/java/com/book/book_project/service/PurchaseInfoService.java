@@ -3,6 +3,7 @@ package com.book.book_project.service;
 import com.book.book_project.entity.BuyerInfoEntity;
 import com.book.book_project.entity.ProductEntity;
 import com.book.book_project.entity.PurchaseInfoEntity;
+import com.book.book_project.entity.PurchaseStatusEntity;
 import com.book.book_project.entity.UnMemberEntity;
 import org.springframework.data.repository.query.Param;
 
@@ -17,6 +18,16 @@ public interface PurchaseInfoService {
    PurchaseInfoEntity purchaseList( BuyerInfoEntity buyerseq) throws Exception;
 
     List<PurchaseInfoEntity> unMemberPurchaseList(UnMemberEntity unmembertelno) throws Exception;
+
+
+
+
+
+
+    // 주문상태 변경하기
+    public void updateStatusseq(int statsseq, int purchaseinfonumber) throws Exception;
+
+
 
 //    String repository(String statusseq) throws Exception;
 
