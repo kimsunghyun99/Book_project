@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -23,9 +24,16 @@ public class UnMemberServiceImpl implements UnMemberService{
         return unMemberRepository.findByTemppassword(temppassword);
     }
 
-    //비회원 주문 내역 불러오기
+    // 비회원 전화번호 가져오기
     @Override
-    public List<UnMemberPurchaseInfoEntity> unmemberList(String receivertelno){
+    public List<UnMemberEntity> findByReceivertelno(String receivertelno){
         return unMemberRepository.findByReceivertelno(receivertelno);
+    }
+
+    //비회원 구매 목록 가져오기
+    @Override
+    public List<Map<String, String>> unmempurchaseList(String receivertelno){
+        List<Map<String, String>> list = unMemberRepository.unmempurchaseList(receivertelno);
+        return list;
     }
 }

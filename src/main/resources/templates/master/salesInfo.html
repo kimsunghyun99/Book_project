@@ -62,12 +62,13 @@
             </tr>
             <tr th:each="total2 : ${totalSalesPriceList}">
                 <td>합계</td>
-                <td></td> <!-- 서버로부터 전달받은 판매 금액 합계 -->
-                <td th:text="${total2.totalvolume}">0</td> <!-- 서버로부터 전달받은 판매 수량 합계 -->
-                <td th:text="${total2.totalsales}">0</td> <!-- 서버로부터 전달받은 총 판매 금액 합계 -->
+                <td></td>
+                <td th:text="${total2.totalvolume}">0</td>
+                <td th:text="${total2.totalsales}">0</td>
             </tr>
             </tbody>
         </table>
+        <a th:href="@{/master/genreStatistics}" class="btn">장르별 매출 통계</a>
     </div>
 </div>
 </body>

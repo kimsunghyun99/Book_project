@@ -68,20 +68,20 @@ public interface PurchaseInfoRepository extends JpaRepository<PurchaseInfoEntity
     @Query(value = "select pp.*, p.total_price , p.volume  \n" +
             "from tbl_purchaseinfo p \n" +
             "join tbl_product pp on p.bookid = pp.bookid \n" +
-            "where p.statusseq = 5\n" +
+            "where p.statusseq = 11\n" +
             "UNION\n" +
             "select pp.* , ub.total_price , ub.volume \n" +
             "from tbl_unmemberpurchaseinfo ub\n" +
             "join tbl_product pp on ub.bookid = pp.bookid \n" +
-            "where ub.statusseq = 5", nativeQuery = true)
+            "where ub.statusseq = 11", nativeQuery = true)
     List<Map<String, String>> totalPrice();
 
     //전체 판매 수량, 전체 판매 금액 합계
     @Query(value = "SELECT \n" +
-            "  (SELECT sum(total_price) FROM tbl_purchaseinfo WHERE statusseq = 5) +\n" +
-            "  (SELECT sum(total_price) FROM tbl_unmemberpurchaseinfo WHERE statusseq = 5) AS totalsales,\n" +
-            "  (select sum(volume) from tbl_purchaseinfo where statusseq = 5) +\n" +
-            "  (select sum(volume) from tbl_unmemberpurchaseinfo where statusseq = 5) as totalvolume", nativeQuery = true)
+            "  (SELECT sum(total_price) FROM tbl_purchaseinfo WHERE statusseq = 11) +\n" +
+            "  (SELECT sum(total_price) FROM tbl_unmemberpurchaseinfo WHERE statusseq = 11) AS totalsales,\n" +
+            "  (select sum(volume) from tbl_purchaseinfo where statusseq = 11) +\n" +
+            "  (select sum(volume) from tbl_unmemberpurchaseinfo where statusseq = 11) as totalvolume", nativeQuery = true)
     List<Map<String, String>> totalSalesPrice();
 
     //카테고리 별 매출(일별 매출)
@@ -89,14 +89,14 @@ public interface PurchaseInfoRepository extends JpaRepository<PurchaseInfoEntity
             "FROM tbl_purchaseinfo pu\n" +
             "JOIN tbl_product p ON pu.bookid = p.bookid\n" +
             "JOIN tbl_category c ON p.categorynumber = c.categorynumber\n" +
-            "WHERE pu.statusseq = 5\n" +
+            "WHERE pu.statusseq = 11\n" +
             "GROUP BY c.categoryname\n" +
             "union\n" +
             "SELECT c.categoryname, SUM(um.total_price) AS total_sales, SUM(um.volume) AS total_volume\n" +
             "FROM tbl_unmemberpurchaseinfo um\n" +
             "JOIN tbl_product p ON um.bookid = p.bookid\n" +
             "JOIN tbl_category c ON p.categorynumber = c.categorynumber\n" +
-            "WHERE um.statusseq = 5\n" +
+            "WHERE um.statusseq = 11\n" +
             "GROUP BY c.categoryname", nativeQuery = true)
     List<Map<String, Object>> totalcategory();
 /*=========================================================================================================================*/
@@ -105,14 +105,14 @@ public interface PurchaseInfoRepository extends JpaRepository<PurchaseInfoEntity
             "FROM tbl_purchaseinfo pu\n" +
             "JOIN tbl_product p ON pu.bookid = p.bookid\n" +
             "JOIN tbl_category c ON p.categorynumber = c.categorynumber\n" +
-            "WHERE pu.statusseq = 5\n" +
+            "WHERE pu.statusseq = 11\n" +
             "GROUP BY DATE(purchasedate)\n" +
             "union\n" +
             "SELECT DATE(purchasedate) AS DATE, c.categoryname, SUM(um.total_price) AS total_sales, SUM(um.volume) AS total_volume\n" +
             "FROM tbl_unmemberpurchaseinfo um\n" +
             "JOIN tbl_product p ON um.bookid = p.bookid\n" +
             "JOIN tbl_category c ON p.categorynumber = c.categorynumber\n" +
-            "WHERE um.statusseq = 5\n" +
+            "WHERE um.statusseq = 11\n" +
             "GROUP BY DATE(purchasedate)", nativeQuery = true)
     List<Map<String, Object>> findDailySales();
 
@@ -121,14 +121,14 @@ public interface PurchaseInfoRepository extends JpaRepository<PurchaseInfoEntity
             "FROM tbl_purchaseinfo pu\n" +
             "JOIN tbl_product p ON pu.bookid = p.bookid\n" +
             "JOIN tbl_category c ON p.categorynumber = c.categorynumber\n" +
-            "WHERE pu.statusseq = 5\n" +
+            "WHERE pu.statusseq = 11\n" +
             "GROUP BY YEAR(purchasedate), MONTH(purchasedate)\n" +
             "union\n" +
             "SELECT CONCAT(YEAR(purchasedate), '-', MONTH(purchasedate)) AS month, SUM(um.total_price) AS total_sales, SUM(um.volume) AS total_volume ,c.categoryname\n" +
             "FROM tbl_unmemberpurchaseinfo um\n" +
             "JOIN tbl_product p ON um.bookid = p.bookid\n" +
             "JOIN tbl_category c ON p.categorynumber = c.categorynumber\n" +
-            "WHERE um.statusseq = 5\n" +
+            "WHERE um.statusseq = 11\n" +
             "GROUP BY YEAR(purchasedate), MONTH(purchasedate)", nativeQuery = true)
     List<Map<String, Object>> findMonthlySales();
 
@@ -137,14 +137,14 @@ public interface PurchaseInfoRepository extends JpaRepository<PurchaseInfoEntity
             "FROM tbl_purchaseinfo pu\n" +
             "JOIN tbl_product p ON pu.bookid = p.bookid\n" +
             "JOIN tbl_category c ON p.categorynumber = c.categorynumber\n" +
-            "WHERE pu.statusseq = 5\n" +
+            "WHERE pu.statusseq = 11\n" +
             "GROUP BY YEAR(purchasedate)\n" +
             "union\n" +
             "SELECT YEAR(purchasedate) AS year, SUM(um.total_price) AS total_sales, SUM(um.volume) AS total_volume ,c.categoryname\n" +
             "FROM tbl_unmemberpurchaseinfo um\n" +
             "JOIN tbl_product p ON um.bookid = p.bookid\n" +
             "JOIN tbl_category c ON p.categorynumber = c.categorynumber\n" +
-            "WHERE um.statusseq = 5\n" +
+            "WHERE um.statusseq = 11\n" +
             "GROUP BY YEAR(purchasedate)", nativeQuery = true)
     List<Map<String, Object>> findYearlySales();
 

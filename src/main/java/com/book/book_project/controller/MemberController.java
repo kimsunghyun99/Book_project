@@ -68,6 +68,7 @@ public class MemberController {
     private final PurchaseStatusService purchaseStatusService;
     private final RefundService refundService;
     private final RefundRepository refundRepository;
+    private final UnMemberRepository unMemberRepository;
 
 
 
@@ -217,8 +218,6 @@ public class MemberController {
 
     }
 
-
-
     //주소 검색
     @GetMapping("/member/addrSearch")
     public void getAddrsearch(@RequestParam("addrSearch") String addrSearch,
@@ -250,8 +249,6 @@ public class MemberController {
 
     }
 
-
-
     //로그인 화면 보기
     @GetMapping("/member/login")
     public void getLogin() {}
@@ -281,14 +278,15 @@ public class MemberController {
 
     }
 
-    //마이페이지 화면 (23-12-11)
-    @GetMapping("/member/mypage")
-    public void getMyPage(HttpSession session, Model model) {
-        String userid = (String)session.getAttribute("userid");
-        model.addAttribute("memberInfo", service.memberInfo(userid));//회원정보 불러오기
-        model.addAttribute("countReviewsByUserId", service.countReviewsByUserId(userid));//리뷰 갯수 구하기
-
-    }
+//    //마이페이지 화면 (23-12-11)
+//    @GetMapping("/member/mypage")
+//    public void getMyPage(HttpSession session, Model model) {
+//        String userid = (String)session.getAttribute("userid");
+//        model.addAttribute("memberInfo", service.memberInfo(userid));//회원정보 불러오기
+//        model.addAttribute("countReviewsByUserId", service.countReviewsByUserId(userid));//리뷰 갯수 구하기
+//        model.addAttribute("cartcount",cartService.usercartcount(userid));//회원 별 장바구니 갯수
+//        model.addAttribute("purchasecount", purchaseInfoRepository.purchasecount(userid));
+//    }
 
     //아이디 찾기 화면
     @GetMapping("/member/idSearch")
@@ -353,8 +351,6 @@ public class MemberController {
     }
 
 
-
-
     //회원 구매내역 교환,환불, 취소 처리 , 철회처리
     @PostMapping("/member/memberPurchaseList")
     @ResponseBody
@@ -401,27 +397,30 @@ public class MemberController {
         return "{\"message\":\"GOOD\"}";
     }
 
-
-
-
-
-
     //비회원 구매내역 조회 화면
-//    @GetMapping("/member/unMemberPurchaseList")
-//    public void getUnMemberPurchaseList(Model model, HttpSession session,PurchaseInfoService purchaseInfoService) throws Exception {
-//        UnMemberEntity unmemberseq = (UnMemberEntity)
-//        List<UnMemberEntity> unMemberEntityList=unMemberService.unMemberInfo(unmembertelno);
-//
-//        List<PurchaseInfoEntity> purchaseInfoList = new ArrayList<>();
-//
-//        for(UnMemberEntity unMemberEntity:unMemberEntityList){
-//            UnMemberEntity unmembertelno = unMemberEntity;
-//            List<PurchaseInfoEntity> purchaseList = purchaseInfoService.unMemberPurchaseList(unmembertelno);
-//            purchaseInfoList.addAll(purchaseList);
-//            model.addAttribute("purchaseList",purchaseInfoList);
-//        }
-//    }
+    @GetMapping("/member/unMemberPurchaseList")
+    public String getUnMemberPurchaseList(@RequestParam("receivertelno") String receivertelno,Model model) throws Exception {
+        List<Map<String, String>> list = unMemberRepository.unmempurchaseList(receivertelno);
 
+        List<Map<String, Object>> purchaseList = new ArrayList<>();
+
+        for(Map<String, String> map : list){
+            Map<String, Object> purchaseListMap = new HashMap<>();
+            purchaseListMap.put("purchasedate", map.get("purchasedate"));
+            purchaseListMap.put("unmemberpurchaseinfoseq", map.get("unmemberpurchaseinfoseq"));
+            purchaseListMap.put("statusseq", map.get("statusseq"));
+            purchaseListMap.put("total_price", map.get("total_price"));
+            purchaseListMap.put("bookname", map.get("bookname"));
+            System.out.println(purchaseListMap.put("purchasedate", map.get("purchasedate")));
+            System.out.println(purchaseListMap.put("unmemberpurchaseinfonumber", map.get("unmemberpurchaseinfonumber")));
+            System.out.println(purchaseListMap.put("stattusseq", map.get("statusseq")));
+            System.out.println(purchaseListMap.put("total_price", map.get("total_price")));
+
+            purchaseList.add(purchaseListMap);
+        }
+        model.addAttribute("purchaseList", purchaseList);
+        return "/member/unMemberPurchaseList";
+    }
 
     //비회원 로그인 화면
     //비회원 로그인 화면 (23-12-12)
@@ -437,8 +436,8 @@ public class MemberController {
     @PostMapping("/member/unMemberLoginCheck")
     public String postUnMemberLogin(UnMemberDTO unMember) {
         //아이디 존재 여부 확인
-        if(unMemberService.findByTemppassword(unMember.getTemppassword()) == null) {
-            return "{\"message\":\"receivertelno_NOT_FOUND\"}";
+        if(unMemberService.findByReceivertelno(unMember.getReceivertelno()) == null) {
+            return "{\"message\":\"Receivertelno_NOT_FOUND\"}";
         }
 
         //비밀번호가 올바르게 들어왔는지 정확도 여부 확인

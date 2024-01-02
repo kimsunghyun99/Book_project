@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Transactional
@@ -22,7 +23,17 @@ public interface UnMemberRepository extends JpaRepository<UnMemberEntity, String
     @Query(value = "select * from tbl_unmember where temppassword = :temppassword", nativeQuery = true)
     List<UnMemberEntity> findByTemppassword(String temppassword);
 
-    //비회원 구매 내역 가져오기
-    @Query(value = "select * from tbl_unmemberpurchaseinfo p join tbl_unmember u on p.unmemberseq = u.unmemberseq where u.receivertelno = :receivertelno", nativeQuery = true)
-    List<UnMemberPurchaseInfoEntity> findByReceivertelno(String receivertelno);
+    //비회원 전화번호 가져오기
+    @Query(value = "select * from tbl_unmember where receivertelno = receivertelno", nativeQuery = true)
+    List<UnMemberEntity> findByReceivertelno(String receivertelno);
+
+    //비회원 구매 목록 가져오기
+    @Query(value = "SELECT * \n" +
+            "FROM tbl_unmemberpurchaseinfo ump \n" +
+            "JOIN tbl_unmember u ON ump.unmemberseq = u.unmemberseq\n" +
+            "JOIN tbl_product p ON ump.bookid = p.bookid \n" +
+            "WHERE u.receivertelno = :receivertelno", nativeQuery = true)
+    List<Map<String, String>> unmempurchaseList(@Param("receivertelno") String receivertelno);
+
+
 }
