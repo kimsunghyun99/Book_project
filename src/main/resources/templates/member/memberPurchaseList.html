@@ -51,83 +51,61 @@
 
             const statusElements = document.querySelectorAll('[id^="status"]');
 
-
-            const cancel = document.querySelectorAll('[id^="cancel"]');
-            const exchange = document.querySelectorAll('[id^="exchange"]');
-            const refund1 = document.querySelectorAll('[id^="refund"]');
-            const reply = document.querySelectorAll('[id^="reply"]');
-            const noreply = document.querySelectorAll('[id^="noreply"]');
-            const determine = document.querySelectorAll('[id^="determine"]');
-            const exchangecancel = document.querySelectorAll('[id^="exchangecancel"]');
-            const refundcancel = document.querySelectorAll('[id^="refundcancel"]');
-
-
-            // const return1 = document.querySelectorAll('.return1');
-
             statusElements.forEach((statusElement, index) => {
                 console.log(index);
-                const status = statusElement.innerText
+                const cancel=document.getElementById("cancel"+index);
+                const exchange=document.getElementById("exchange"+index);
+                const refund=document.getElementById("refund"+index);
+                const reply=document.getElementById("reply"+index);
+                const determine=document.getElementById("determine"+index);
+                const exchangecancel=document.getElementById("exchangecancel"+index);
+                const refundcancel=document.getElementById("refundcancel"+index);
+                const status = statusElement.textContent
                 console.log(status);
-                if (status === "주문완료" || status === "출고처리중" || status === "배송준비중" || status === "배송중") {
-                    cancel[index].style.display = 'block';
-                    exchange[index].style.display = 'none';
-                    refund1[index].style.display = 'none';
-                    reply[index].style.display = 'none';
-                    noreply[index].style.display = 'block';
-                    determine[index].style.display = 'none';
-                    exchangecancel[index].style.display = 'none';
-                    refundcancel[index].style.display = 'none';
-
-                }
-                else if(status === "배송완료") {
-                    cancel[index].style.display = 'none';
-                    exchange[index].style.display = 'block';
-                    refund1[index].style.display = 'block';
-                    reply[index].style.display = 'block';
-                    noreply[index].style.display = 'none';
-                    determine[index].style.display = 'block';
-                    exchangecancel[index].style.display = 'none';
-                    refundcancel[index].style.display = 'none';
+                if(status === "배송완료") {
+                    cancel.style.display = 'none';
+                    exchange.style.display = 'block';
+                    refund.style.display = 'block';
+                    reply.style.display = 'block';
+                    determine.style.display = 'block';
+                    exchangecancel.style.display = 'none';
+                    refundcancel.style.display = 'none';
                 }
                 else if(status === "구매확정") {
-                    cancel[index].style.display = 'none';
-                    exchange[index].style.display = 'none';
-                    refund1[index].style.display = 'none';
-                    reply[index].style.display = 'block';
-                    noreply[index].style.display = 'none';
-                    determine[index].style.display = 'none';
-                    exchangecancel[index].style.display = 'none';
-                    refundcancel[index].style.display = 'none';
+                    cancel.style.display = 'none';
+                    exchange.style.display = 'none';
+                    refund.style.display = 'none';
+                    reply.style.display = 'block';
+                    determine.style.display = 'none';
+                    exchangecancel.style.display = 'none';
+                    refundcancel.style.display = 'none';
                 }
                 else if(status === "교환처리중") {
-                    cancel[index].style.display = 'none';
-                    exchange[index].style.display = 'none';
-                    refund1[index].style.display = 'none';
-                    reply[index].style.display = 'none';
-                    noreply[index].style.display = 'block';
-                    determine[index].style.display = 'none';
-                    exchangecancel[index].style.display = 'block';
-                    refundcancel[index].style.display = 'none';
+                    cancel.style.display = 'none';
+                    exchange.style.display = 'none';
+                    refund.style.display = 'none';
+                    reply.style.display = 'none';
+                    determine.style.display = 'none';
+                    exchangecancel.style.display = 'block';
+                    refundcancel.style.display = 'none';
                 }
                 else if(status === "환불처리중") {
-                    cancel[index].style.display = 'none';
-                    exchange[index].style.display = 'none';
-                    refund1[index].style.display = 'none';
-                    reply[index].style.display = 'none';
-                    noreply[index].style.display = 'block';
-                    determine[index].style.display = 'none';
-                    exchangecancel[index].style.display = 'none';
-                    refundcancel[index].style.display = 'block';
+                    cancel.style.display = 'none';
+                    exchange.style.display = 'none';
+                    refund.style.display = 'none';
+                    reply.style.display = 'none';
+                    determine.style.display = 'none';
+                    exchangecancel.style.display = 'none';
+                    refundcancel.style.display = 'block';
                 }
                 else {
-                    cancel[index].style.display = 'none';
-                    exchange[index].style.display = 'none';
-                    refund1[index].style.display = 'none';
-                    reply[index].style.display = 'none';
-                    noreply[index].style.display = 'block';
-                    determine[index].style.display = 'none';
-                    exchangecancel[index].style.display = 'none';
-                    refundcancel[index].style.display = 'none';
+                    cancel.style.display = 'block';
+                    exchange.style.display = 'none';
+                    refund.style.display = 'none';
+                    reply.style.display = 'none';
+                    determine.style.display = 'none';
+                    exchangecancel.style.display = 'none';
+                    refundcancel.style.display = 'none';
                 }
 
             });
@@ -351,34 +329,28 @@
                 <th>주문일자</th>
                 <th>주문번호</th>
                 <th>상품명</th>
-                <th>주문상태</th>
                 <th>결제금액</th>
-                <th>리뷰작성</th>
-                <th class="CancelOrExchangeOrRefund">취소  | 교환ㅣ 환불</th>
-                <th>구매확정</th>
+                <th colspan="2">주문상태</th>
+                <th></th>
             </tr>
             <th:block th:if="${purchaseInfo != null}">
             <tr th:each="list, stat :${purchaseInfo}"
                 onMouseover="this.style.background='#46D2D2'"
                 onMouseout="this.style.background='white'">
                 <td th:text="${list.purchasedate}"></td>
-                <td th:text="${list.purchaseinfonumber}"></td>
+                <td th:id="purchaseinfonumber + ${stat.index}" th:text="${list.purchaseinfonumber}"></td>
                 <td th:text="${booknames[stat.index]}"></td>
-                <td id="status${stat.index}" class="status" th:text="${statusList[stat.index]}"></td>
                 <td th:text="${list.totalprice}"></td>
-                <td>
-                <button th:id="'noreply' + ${stat.index}">배송완료 또는 구매확정 시 리뷰작성 가능합니다</button>
-                <button th:id="'reply' + ${stat.index}"><a th:href="@{'/product/productInfo?bookid='+ ${bookids[stat.index]} + '&page=1'  + '&focus=true'}">리뷰작성</a></button>
-                </td>
-                <td>
+                <td th:id="'status'+${stat.index}" class="status" th:text="${statusList[stat.index]}"></td>
+                <td colspan="3">
+                    <button th:id="'reply' + ${stat.index}"><a th:href="@{'/product/productInfo?bookid='+ ${bookids[stat.index]} + '&page=1'  + '&focus=true'}">리뷰작성</a></button>
                     <button th:id="'cancel'+${stat.index}" class="cancel" th:onclick="'cancel(\'' + ${stat.index} + '\')'">주문취소</button>
                     <button th:id="'exchange' + ${stat.index}" class="exchange" th:onclick="'javascript:showDiv(' + ${stat.index} + ');'">교환</button>
                     <button th:id="'refund' + ${stat.index}" class="refund" th:onclick="'javascript:showDiv1(' + ${stat.index} + ');'">환불</button>
-                    <button th:id="'exchangecancel' + ${stat.index}" class="exchangecancel" th:onclick="'cancelexchangeorrefund(\'' + ${stat.index} + '\')'">교환 취소</button>
-                    <button th:id="'refundcancel' +${stat.index}" class="refundcancel" th:onclick="'cancelexchangeorrefund(\'' + ${stat.index} + '\')'">환불 취소 </button>
-                <input type="hidden" th:id="purchaseinfonumber + ${stat.index}" th:data-purchaseinfonumber="${list.purchaseinfonumber}">
-            </td>
-                <td th:id="'determine' + ${stat.index}" th:onclick="'determine(\'' + ${stat.index} + '\')'">구매확정</td>
+                    <button th:id="'exchangecancel' + ${stat.index}" class="exchangecancel" th:onclick="'cancelexchangeorrefund(\'' + ${stat.index} + '\')'">교환취소</button>
+                    <button th:id="'refundcancel' +${stat.index}" class="refundcancel" th:onclick="'cancelexchangeorrefund(\'' + ${stat.index} + '\')'">환불취소 </button>
+                    <button th:id="'determine' + ${stat.index}" class="determine" th:onclick="'determine(\'' + ${stat.index} + '\')'">구매확정</button>
+                </td>
             </tr>
             </th:block>
             <th:block th:if="${purchaseInfo == null}">
