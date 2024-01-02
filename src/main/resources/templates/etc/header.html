@@ -17,6 +17,7 @@
                 font-style: normal;
             }
 
+
             h1{
                 font-family: 'WarhavenB';
                 font-size: 60px;
@@ -50,9 +51,31 @@
                 color: #007ACC; /* 호버 시에 색상 변경 (예: 파란색) */
             }
 
+            #topBanner {
+                /* 배경 이미지 설정 */
+                background-image: url('/images/logo.PNG');
+
+                /* 배경 이미지 크기 조절: 화면에 꽉 차도록 */
+                background-size: auto;
+
+                /* 배경 이미지 위치 조절: 원하는 위치에 맞게 수정 가능 */
+                background-position: center center;
+
+                /* 배경 이미지가 반복되지 않도록 */
+                background-repeat: no-repeat;
+
+                /* 화면의 높이만큼 배너의 높이를 설정 */
+                height: auto;
+
+                /* 화면의 너비만큼 배너의 너비를 설정 */
+                width: 35%;
+                border: none;
+            }
+
 
         </style>
-        <h1><a href="/">IT커넥션</a></h1>
+        <img src="/images/logo.PNG" id="topBanner" alt="Company Logo">
+
     </header>
 </div>
 
