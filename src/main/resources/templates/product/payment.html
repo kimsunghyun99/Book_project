@@ -7,8 +7,31 @@
 
     <style>
 
+        @font-face {
+            font-family: 'GmarketSansMedium';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2ede9;
+        }
+
+        header, nav {
+            background:#ffc118;
+            color: #FFF;
+            text-align: center;
+            padding: 10px;
+        }
+
+
+
         .tableDiv {
             text-align: center;
+            font-family: 'GmarketSansMedium';
         }
 
         .InfoTable {
@@ -19,9 +42,10 @@
         }
         .InfoTable th {
             border-bottom: 3px solid #168;
-            color: #168;
-            background: #f0f6f9;
-            text-align: left;
+            color: black;
+            text-align: center;
+            background: #ffd153;
+
         }
         .InfoTable th, .InfoTable td {
             padding: 10px;
@@ -143,6 +167,15 @@
 
         #RequestText1 {
             display:none;
+        }
+
+        h2 {
+            font-family: 'GmarketSansMedium';
+            padding-left: 200px;
+        }
+        #finaladdr, .request, .point{
+            padding-left: 190px;
+            font-family: 'GmarketSansMedium';
         }
 
     </style>
@@ -425,9 +458,9 @@
 <div class="mall">
     <div class="main_shop">
 
-        <h1>주문서</h1><br>
+        <h2>주문서</h2><br>
 
-        <h4 style="display: inline-block;">배송지 목록</h4>
+        <h4 style="display: inline-block; padding-left: 200px">배송지 목록</h4>
         <div id="ADDorDelete" style="display: inline-block;">
             <input type="button" id="add" value="새로운 배송지" onclick="AddAddr()" style="width:120%;">
         </div>
@@ -471,7 +504,9 @@
 
         <span id="finaladdr">배송될 주소 : </span>
         <br><br>
+        <div class="request">
         배송 요청사항 :
+
         <select id="RequestText" name="RequestText" onchange="handleRequestChange()">
             <option value="all" disabled selected>배송 시 요청사항을 선택해주세요 ▼</option>
             <option value="1">부재 시 경비실에 맡겨주세요 </option>
@@ -481,6 +516,7 @@
             <option value="3">파손의 위험이 있는 상품입니다. 배송 시 주의해 주세요.</option>
             <option value="INPUT">직접 입력</option>
         </select>
+        </div>
         <br><br>
         <input type="text" id="RequestText1" class="input_field" name="RequestText1" placeholder="직접입력">
         <br><br><br>
@@ -531,14 +567,15 @@
             </table>
         </div>
         <br><br>
+        <div class="point">
         <p>나의 포인트 : <p th:text="${memberInfo.point}" id="mypoint"></p></p>
         <input type="text" style="width:11%" id="point" placeholder="사용할 포인트를 입력해주세요">
-        <input type="button" style="width:7%" value="사용하기" onclick="UsePoint()">
-
+        <input type="button" style="width:7%; background-color: #ffd153; border:none;" value="사용하기" onclick="UsePoint()">
+        </div>
         <p id="FinalPay"></p>
         <br><br>
             <div id="pay">
-                <input type="button" style="text-align: center" class="btn_order" value="결제하기" onclick="KGpay()">
+                <input type="button" style="text-align: center; background-color: #ffd153; color: #191919" class="btn_order" value="결제하기" onclick="KGpay()">
             </div>
 
     </div>

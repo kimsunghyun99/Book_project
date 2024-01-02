@@ -5,6 +5,33 @@
     <title>회원정보변경</title>
 
     <style>
+
+
+        @font-face {
+            font-family: 'GmarketSansMedium';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2ede9;
+        }
+
+        header {
+            background: #ffc118;
+            color: #FFF;
+            text-align: center;
+            padding: 10px;
+        }
+
+        nav {
+            text-align: center;
+            padding: 10px;
+        }
         body {
             font-family: Arial, sans-serif;
         }
@@ -100,7 +127,20 @@
             border: 1px solid black;
             padding: 5px;
         }
+        h2{
+            text-align: center;
+            font-family: 'GmarketSansMedium';
+        }
 
+        .InfoTable {
+            border-width: 2px;
+            border-style: solid;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .delevery{
+            text-align: center  ;
+        }
 
     </style>
 
@@ -223,7 +263,7 @@
 </head>
 <body>
 <div th:include="/etc/header.html"></div>
-<h1>회원정보 변경</h1>
+<h2>회원정보 변경</h2>
 <form id="RegistryForm" name="RegistryForm" method="POST" enctype="form-data">
 
     <label for="username">사용자 이름:</label>
@@ -257,12 +297,12 @@
     <br><br>
     <input type="text" id="interests1" class="input_field" name="interests1" placeholder="직접입력">
 </form>
-
-    <h4 style="display: inline-block;">배송지 목록</h4>
+    <div class="delevery">
+    <h4 style="display: inline-block; ">배송지 목록</h4>
     <div id="ADDorDelete" style="display: inline-block;">
         <input type="button" id="add" value="추가" onclick="AddAddr()">
     </div>
-
+</div>
     <table class="InfoTable" style="border-width: 2px; border-style: solid;">
         <thead>
         <tr>

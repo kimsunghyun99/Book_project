@@ -59,13 +59,9 @@
 <div th:fragment="nav">
     <script>
        function localcheck(){
-            var userid = `[[${session.userid}]]`
-
-
-            console.log("javascript userid = "+userid);
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-           if (userid !== '' && cart.length > 0) {
+           if (cart.length > 0) {
                if (confirm("로그인하지 않고 담아놓은 물건이 있습니다. 추가하시겠습니까?")) {
                    Promise.all(cart.map(item => {
                        var bookid = item.bookid;
@@ -91,6 +87,8 @@
                        console.log("error = " + error);
                    });
                }
+           }else{
+               window.location.href = "/product/shoppingBasket";
            }
        }
     </script>
