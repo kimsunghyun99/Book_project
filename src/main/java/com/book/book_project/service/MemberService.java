@@ -61,7 +61,7 @@ public interface MemberService {
 
     //회원 정지
     public void stop(List<String> userids);
-    public MemberEntity findById(String userid);
+//    public MemberEntity findById(String userid);
 
     //회원 정지 해제
     public void unstop(List<String> userids);

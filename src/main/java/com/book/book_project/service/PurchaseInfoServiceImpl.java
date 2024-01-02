@@ -41,7 +41,7 @@ public class PurchaseInfoServiceImpl implements PurchaseInfoService {
     public PurchaseInfoEntity purchaseList( BuyerInfoEntity buyerseq){
 
 
-        return (PurchaseInfoEntity) purchaseInfoRepository.findByBuyerseq(buyerseq);
+        return purchaseInfoRepository.findByBuyerseq(buyerseq);
     }
 
 
@@ -54,7 +54,7 @@ public class PurchaseInfoServiceImpl implements PurchaseInfoService {
     @Override
     public void updateStatusseq(int statsseq, int purchaseinfonumber) throws Exception {
         System.out.println("서비스임플1");
-        repository.updateStatusseq(statsseq,  purchaseinfonumber );
+        purchaseInfoRepository.updateStatusseq(statsseq,  purchaseinfonumber );
         System.out.println("서비스임플2");
     }
 
