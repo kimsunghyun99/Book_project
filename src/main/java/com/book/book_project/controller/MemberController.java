@@ -327,7 +327,7 @@ public class MemberController {
         for(int i =0; i<buyerInfo.size(); i++) {
 
             BuyerInfoEntity buyerInfoEntity = buyerInfoRepository.findById(buyerInfo.get(i).getBuyerseq()).orElse(null);
-            PurchaseInfoEntity purchaseInfoEntity = (PurchaseInfoEntity) purchaseInfoRepository.findByBuyerseq(buyerInfoEntity); // buyerseq 값 정의
+            PurchaseInfoEntity purchaseInfoEntity =  purchaseInfoRepository.findByBuyerseq(buyerInfoEntity); // buyerseq 값 정의
             purchaseInfoList.add(purchaseInfoEntity);
 
 
@@ -406,7 +406,7 @@ public class MemberController {
 
 
 
-    //비회원 구매내역 조회 화면
+//    비회원 구매내역 조회 화면
 //    @GetMapping("/member/unMemberPurchaseList")
 //    public void getUnMemberPurchaseList(Model model, HttpSession session,PurchaseInfoService purchaseInfoService) throws Exception {
 //        UnMemberEntity unmemberseq = (UnMemberEntity)
@@ -449,5 +449,10 @@ public class MemberController {
         return "{\"message\":\"GOOD\"}";
 
     }
+
+
+
+
+
 
 }
