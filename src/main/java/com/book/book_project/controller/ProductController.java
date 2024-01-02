@@ -145,60 +145,6 @@ public class ProductController {
             model.addAttribute("productList", list);
         }
 
-
-//        switch(interest) {
-//            case "all":
-//                List<ProductEntity> productDTOList2 = service.productlist1();
-//                model.addAttribute("productList", productDTOList2);
-//                break;
-//
-//            case "OS/Networking":
-//                List<ProductEntity> productDTOList3 = service.productlist2(interest);
-//                model.addAttribute("productList", productDTOList3);
-//                break;
-//            case "프로그래밍 개발/방법론":
-//                List<ProductEntity> productDTOList4 = service.productlist2(interest);
-//                model.addAttribute("productList", productDTOList4);
-//                break;
-//            case "프로그래밍 언어":
-//                List<ProductEntity> productDTOList5 = service.productlist2(interest);
-//                model.addAttribute("productList", productDTOList5);
-//                break;
-//            case "활용능력":
-//                List<ProductEntity> productDTOList6 = service.productlist2(interest);
-//                model.addAttribute("productList", productDTOList6);
-//                break;
-//            case "e비즈니스/창업":
-//                List<ProductEntity> productDTOList7 = service.productlist2(interest);
-//                model.addAttribute("productList", productDTOList7);
-//                break;
-//            case "오피스(엑셀/파워포인트)":
-//                List<ProductEntity> productDTOList8 = service.productlist2(interest);
-//                model.addAttribute("productList", productDTOList8);
-//                break;
-//            case "웹디자인/홈페이지":
-//                List<ProductEntity> productDTOList9 = service.productlist2(interest);
-//                model.addAttribute("productList", productDTOList9);
-//                break;
-//            case "그래픽/멀티미디어":
-//                List<ProductEntity> productDTOList10 = service.productlist2(interest);
-//                model.addAttribute("productList", productDTOList10);
-//                break;
-//            case "컴퓨터 공학":
-//                List<ProductEntity> productDTOList11 = service.productlist2(interest);
-//                model.addAttribute("productList", productDTOList11);
-//                break;
-//            case "스마트폰/태블릿/SNS":
-//                List<ProductEntity> productDTOList12 = service.productlist2(interest);
-//                model.addAttribute("productList", productDTOList12);
-//                break;
-//            case "모바일 프로그래밍":
-//                List<ProductEntity> productDTOList13 = service.productlist2(interest);
-//                model.addAttribute("productList", productDTOList13);
-//                break;
-//
-//        }
-
     }
 
 
@@ -319,6 +265,7 @@ public class ProductController {
     }
 
 
+
     // 결제화면
     @GetMapping("/product/payment")
     public void getPayment(
@@ -348,11 +295,12 @@ public class ProductController {
             productlist.add(productDTO);
             model.addAttribute("view", productlist);
 
+        }
             model.addAttribute("memberInfo", memberService.memberInfo(userid));
+            System.out.println(memberService.memberInfo(userid).getPoint());
             // userid에 대한 주소지 다 꺼내기
             model.addAttribute("deliverylist", deliveryService.list(userid));
             //bookid 에 대한 정보
-        }
 
     }
 
@@ -360,7 +308,6 @@ public class ProductController {
     public ResponseEntity<?> postPayment(@RequestBody Map<String, List<Map<String, Object>>> payload, HttpSession session) {
         List<Map<String, Object>> items = payload.get("items");
         List<ProductDTO> productDTOList = new ArrayList<>();
-
         for (Map<String, Object> item : items) {
             String bookid = (String) item.get("bookid");
             int quantity = (Integer) item.get("quantity");

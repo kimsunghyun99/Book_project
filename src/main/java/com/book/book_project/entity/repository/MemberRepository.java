@@ -27,6 +27,9 @@ public interface MemberRepository extends JpaRepository<MemberEntity, String> {
     @Query(value="SELECT COUNT(*) FROM tbl_member m JOIN tbl_buyerInfo b ON m.userid = b.userid JOIN tbl_purchaseInfo p ON b.buyerseq = p.buyerseq WHERE m.userid = :userid", nativeQuery = true)
     Long countJoinedRecordsByUserId(@Param("userid") String userid);
 
+    //리뷰 갯수 구하기
+    @Query(value = "select count(*) from tbl_review r join tbl_member m on r.userid = m.userid where m.userid = :userid", nativeQuery = true)
+    Long countReviewsByUserId(@Param("userid") String userid);
 
     // 회원 정보 변경
     @Transactional
