@@ -199,16 +199,10 @@ public class MemberController {
 
         System.out.println("컨트롤러1");
 
-//        System.out.println(member.getUsername());
-//        System.out.println(member.getNickname());
-//        System.out.println(member.getTelno());
-
-
         String username = member.getUsername();
         String nickname = member.getNickname();
         String telno = member.getTelno();
         String interest = member.getInterest();
-
 
         if ("U".equals(option)) {
             service.modifyMember(userid,username, nickname,telno, interest); // 회원 기본정보 수정
@@ -217,8 +211,6 @@ public class MemberController {
         return "{\"message\":\"GOOD\"}";
 
     }
-
-
 
     //주소 검색
     @GetMapping("/member/addrSearch")
@@ -248,10 +240,7 @@ public class MemberController {
     public int postIdCheck(@RequestBody String userid) throws Exception {
         int result = service.idCheck(userid);
         return result;
-
     }
-
-
 
     //로그인 화면 보기
     @GetMapping("/member/login")
@@ -278,16 +267,6 @@ public class MemberController {
         }
         service.lastloginUpdate(member);
         return "{\"message\":\"GOOD\"}";
-
-
-    }
-
-    //마이페이지 화면 (23-12-11)
-    @GetMapping("/member/mypage")
-    public void getMyPage(HttpSession session, Model model) {
-        String userid = (String)session.getAttribute("userid");
-        model.addAttribute("memberInfo", service.memberInfo(userid));//회원정보 불러오기
-        model.addAttribute("countReviewsByUserId", service.countReviewsByUserId(userid));//리뷰 갯수 구하기
 
     }
 
@@ -318,7 +297,6 @@ public class MemberController {
         MemberEntity memberEntity = new MemberEntity();
         memberEntity.setUserid(userid);
 
-
         List<BuyerInfoEntity> buyerInfo=buyerInfoService.buyerInfo(memberEntity); // -> userid에 대한 받는이 주소, 집코드, 주소, 이름, 번호가 담김
         List<PurchaseInfoEntity> purchaseInfoList = new ArrayList<>();
         List<String> BookNameList = new ArrayList<>();
@@ -331,15 +309,10 @@ public class MemberController {
             PurchaseInfoEntity purchaseInfoEntity =  purchaseInfoRepository.findByBuyerseq(buyerInfoEntity); // buyerseq 값 정의
             purchaseInfoList.add(purchaseInfoEntity);
 
-
-
             String bookid  = String.valueOf(purchaseInfoEntity.getBookid().getBookid());
             String bookname = productRepository.getBookName(bookid);
             String statusseq =  String.valueOf(purchaseInfoEntity.getStatusseq().getStatusseq());
            String statusname = purchaseStatusService.getStatusName(statusseq);
-//            System.out.println(statusname);
-
-
 
             BookIdList.add(bookid);
             StatusList.add(statusname);
@@ -378,7 +351,6 @@ public class MemberController {
         }
         else if(option.equals("w")) {
 
-
         }
         else if(option.equals("d")) {
             int statsseq = 11;
@@ -390,12 +362,6 @@ public class MemberController {
             purchaseInfoService.updateStatusseq(statsseq, refundDTO.getPurchaseinfonumber().getPurchaseinfonumber());
             refundService.delete(refundDTO.getPurchaseinfonumber().getPurchaseinfonumber());
         }
-
-//        System.out.println("controller purchaseinfonumber : " + refundDTO.getPurchaseinfonumber().getPurchaseinfonumber());
-//        System.out.println("컨트롤러1");
-//        System.out.println("컨트롤러2");
-
-
 
         return "{\"message\":\"GOOD\"}";
     }
@@ -422,7 +388,6 @@ public class MemberController {
     }
 
     //비회원 로그인 화면
-    //비회원 로그인 화면 (23-12-12)
     @GetMapping("/member/unMemberLogin")
     public void getUnMemberLogin() {}
 
