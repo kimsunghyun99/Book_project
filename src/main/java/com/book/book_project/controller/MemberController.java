@@ -2,10 +2,7 @@ package com.book.book_project.controller;
 
 import com.book.book_project.dto.DeliverAddrDTO;
 import com.book.book_project.entity.*;
-import com.book.book_project.entity.repository.BuyerInfoRepository;
-import com.book.book_project.entity.repository.ProductRepository;
-import com.book.book_project.entity.repository.PurchaseInfoRepository;
-import com.book.book_project.entity.repository.PurchaseStatusRepository;
+import com.book.book_project.entity.repository.*;
 import com.book.book_project.service.DeliveryService;
 import com.book.book_project.dto.*;
 import com.book.book_project.service.*;
@@ -70,6 +67,8 @@ public class MemberController {
     private final PurchaseInfoService purchaseInfoService;
     private final PurchaseStatusService purchaseStatusService;
     private final RefundService refundService;
+    private final RefundRepository refundRepository;
+
 
 
 
@@ -337,7 +336,7 @@ public class MemberController {
             String bookname = productRepository.getBookName(bookid);
             String statusseq =  String.valueOf(purchaseInfoEntity.getStatusseq().getStatusseq());
            String statusname = purchaseStatusService.getStatusName(statusseq);
-            System.out.println(statusname);
+//            System.out.println(statusname);
 
 
 
@@ -350,19 +349,54 @@ public class MemberController {
         model.addAttribute("booknames", BookNameList);
         model.addAttribute("purchaseInfo",purchaseInfoList);
         model.addAttribute("statusList", StatusList);
-        System.out.println("purchaseInfolist 실험 : " + purchaseInfoList.get(0));
+//        System.out.println("purchaseInfolist 실험 : " + purchaseInfoList.get(0));
     }
 
 
 
 
-    //회원 구매내역 교환,환불 처리
+    //회원 구매내역 교환,환불, 취소 처리 , 철회처리
     @PostMapping("/member/memberPurchaseList")
-    public String postMemberPurchaseList(RefundDTO refundDTO) throws Exception {
+    @ResponseBody
+    public String postMemberPurchaseList(@RequestBody RefundDTO refundDTO, @RequestParam("option") String option)throws Exception {
+
+        // 교환일경우
+        if(option.equals("e")) {
+            int statsseq = 6;
+            refundService.ExchangeRegistry(refundDTO);
+            purchaseInfoService.updateStatusseq(statsseq,refundDTO.getPurchaseinfonumber().getPurchaseinfonumber());
+
+        // 환불일 경우
+        }else if(option.equals("r")){
+            int statsseq = 7;
+            refundService.RefundRegistry(refundDTO);
+            purchaseInfoService.updateStatusseq(statsseq,refundDTO.getPurchaseinfonumber().getPurchaseinfonumber());
+        }
+        else if(option.equals("c")) {
+            int statsseq = 10;
+            System.out.println(refundDTO.getPurchaseinfonumber().getPurchaseinfonumber());
+            purchaseInfoService.updateStatusseq(statsseq, refundDTO.getPurchaseinfonumber().getPurchaseinfonumber());
+        }
+        else if(option.equals("w")) {
 
 
+        }
+        else if(option.equals("d")) {
+            int statsseq = 11;
+            purchaseInfoService.updateStatusseq(statsseq, refundDTO.getPurchaseinfonumber().getPurchaseinfonumber());
+        }
+        // 교환 또는 환불 신청해놓고 그걸 취소하는 경우 -> 배송완료로 변경 , refund 값 삭제
+        else if(option.equals("cer")) {
+            int statsseq = 5;
+            purchaseInfoService.updateStatusseq(statsseq, refundDTO.getPurchaseinfonumber().getPurchaseinfonumber());
+            refundService.delete(refundDTO.getPurchaseinfonumber().getPurchaseinfonumber());
+        }
 
-        refundService.ExchangeRegistry(refundDTO);
+//        System.out.println("controller purchaseinfonumber : " + refundDTO.getPurchaseinfonumber().getPurchaseinfonumber());
+//        System.out.println("컨트롤러1");
+//        System.out.println("컨트롤러2");
+
+
 
         return "{\"message\":\"GOOD\"}";
     }

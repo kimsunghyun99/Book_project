@@ -1,6 +1,8 @@
 package com.book.book_project.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -50,4 +52,13 @@ public class PurchaseInfoEntity {
     @OnDelete(action= OnDeleteAction.CASCADE)
     @JoinColumn(name="statusseq", nullable = false)
     private PurchaseStatusEntity statusseq;
+
+
+    @JsonCreator
+    public PurchaseInfoEntity(@JsonProperty("purchaseinfonumber") int purchaseinfonumber) {
+        this.purchaseinfonumber = purchaseinfonumber;
+    }
+
+
+
 }
