@@ -7,8 +7,6 @@ import com.book.book_project.service.DeliveryService;
 import com.book.book_project.dto.*;
 import com.book.book_project.service.*;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -556,7 +554,6 @@ public class MemberController {
 
 
 
-
 //        String bookid = requestData.get("bookid").toString();
 //        String receiveraddr = requestData.get("address").toString();
 //        String receiverdetailaddr = requestData.get("detailaddr").toString();
@@ -610,9 +607,8 @@ public class MemberController {
         // 나머지 로직 수행
         // ...
 
-
         // 성공했을 경우 응답
-        return ResponseEntity.status(HttpStatus.FOUND).header(HttpHeaders.LOCATION, "/member/unMemberPurchaseList").body("Success");
+        return ResponseEntity.ok("Success");
     }
 
 

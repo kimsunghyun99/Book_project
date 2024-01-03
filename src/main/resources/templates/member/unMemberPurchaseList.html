@@ -4,11 +4,63 @@
 <head>
     <meta charset="UTF-8">
     <title>비회원 구매내역 조회</title>
+    <style>
+        @font-face {
+            font-family: 'GmarketSansMedium';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2ede9;
+        }
+
+        header, nav {
+            background:#ffc118;
+            color: #FFF;
+            text-align: center;
+            padding: 10px;
+        }
+
+        table {
+            /* 테이블 스타일, 원하는 스타일 설정 */
+            border-collapse: collapse;
+            border: 1px solid #ddd;
+            width: 80%; /* 테이블 너비 조절, 원하는 만큼 설정하세요 */
+            background-color: #fff; /* 초기 배경색을 흰색으로 설정 */
+        }
+
+        th, td {
+            font-family: 'GmarketSansMedium';
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            text-align:center;
+            background-color: #ffc118;
+        }
+        a {
+            text-decoration: none; /* 링크의 밑줄 제거 */
+            color: inherit; /* 기본 색상 유지 */
+        }
+        .unmemberps{
+           padding-left: 18%;
+        }
+        h2{
+            text-align: center;
+            font-family: 'GmarketSansMedium';
+        }
+
+    </style>
 </head>
 <body>
 <div th:include="/etc/header.html"></div>
 <h2>비회원 구매내역조회</h2>
-<div>
+<div class="unmemberps">
     <table border="1px">
         <tr>
             <th>주문일자</th>
@@ -16,8 +68,6 @@
             <th>상품명</th>
             <th>주문상태</th>
             <th>결제금액</th>
-            <th rowspan="2"> <a href="/product/productInfo" onMouseover="this.style.background='pink'; this.style.textDecoration='underline';"
-                                onmouseout="this.style.background='white'; this.style.textDecoration='none';">리뷰작성</a></th>
         </tr>
         <th:block th:if="${purchaseList != null}">
         <tr th:each="list:${purchaseList}"
