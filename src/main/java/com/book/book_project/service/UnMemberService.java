@@ -2,6 +2,7 @@ package com.book.book_project.service;
 
 import com.book.book_project.dto.MemberDTO;
 import com.book.book_project.dto.UnMemberDTO;
+import com.book.book_project.entity.BuyerInfoEntity;
 import com.book.book_project.entity.UnMemberEntity;
 import com.book.book_project.entity.UnMemberPurchaseInfoEntity;
 import org.springframework.data.repository.query.Param;
@@ -21,4 +22,6 @@ public interface UnMemberService {
 
     //비회원 구매 목록 가져오기
     List<Map<String, String>> unmempurchaseList(String receivertelno);
+
+    public UnMemberEntity findByUnmemberseq(int unmemberseq);
 }

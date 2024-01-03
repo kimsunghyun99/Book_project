@@ -8,8 +8,30 @@
 
     <style>
 
+
+        @font-face {
+            font-family: 'GmarketSansMedium';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2ede9;
+        }
+
+        header, nav {
+            background:#ffc118;
+            color: #FFF;
+            text-align: center;
+            padding: 10px;
+        }
+
         .tableDiv {
             text-align: center;
+            font-family: 'GmarketSansMedium';
         }
 
         .InfoTable {
@@ -20,9 +42,9 @@
         }
         .InfoTable th {
             border-bottom: 3px solid #168;
-            color: #168;
-            background: #f0f6f9;
-            text-align: left;
+            color: black;
+            background: #ffd153;
+            text-align: center;
         }
         .InfoTable th, .InfoTable td {
             padding: 10px;
@@ -142,6 +164,17 @@
         #RequestText1 {
             display:none;
         }
+
+        .unmember{
+
+            align-items: center;
+        }
+        #buyerTelno, #addplus, #unMemberPassword,#unMemberPasswordCheck{
+            width: 50%;
+            padding-left: 590px;
+            font-family: 'GmarketSansMedium';
+        }
+
 
     </style>
     <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
@@ -313,6 +346,9 @@
             var day = ('0' + currentDate.getDate()).slice(-2);
             var seconds = ('0' + currentDate.getSeconds()).slice(-2);
 
+
+            var buyerTel = buyerTelno;
+            var Pw = tmpPw;
             var merchant_uid = year + month + day + seconds;
             var username = buyerName;
             var selectedBookid = bookid;
@@ -335,6 +371,8 @@
             console.log("detailaddr", detailaddr);
             console.log("postcode", postcode);
             console.log("receivertelno", receivertelno);
+            console.log("buyerTel", buyerTel);
+            console.log("Pw", Pw);
 
             // 나머지 코드 (Ajax 호출 등) 추가
 
@@ -343,8 +381,8 @@
                 pg: "html5_inicis",
                 pay_method: "card",
                 merchant_uid: merchant_uid,
-                buyerTelno:buyerTelno,
-                tmpPw: tmpPw,
+                buyerTelno:buyerTel,
+                tmpPw: Pw,
                 bookid: bookid,
                 username: username,
                 name: selectedBookname,
@@ -361,11 +399,11 @@
                     // 결제 성공 시에 서버로 데이터 전송
                     $.ajax({
                         type: "POST",
-                        url: "/member/paymentInfo",
+                        url: "/member/unmemberpaymentInfo",
                         contentType: "application/json",
                         data: JSON.stringify({
-                            "buyerTelno":buyerTelno,
-                            "tmpPw": tmpPw,
+                            "buyerTelno":buyerTel,
+                            "tmpPw": Pw,
                             "amount": amount,
                             "date": date,
                             "merchant_uid": merchant_uid,
@@ -374,6 +412,8 @@
                             "address": address,
                             "detailaddr": detailaddr,
                             "postcode": postcode,
+                            "buyerTel" : buyerTel,
+                            "Pw" : Pw,
                             "username": username,
                             "receivertelno": receivertelno
 
@@ -407,9 +447,9 @@
 <div class="mall">
     <div class="main_shop">
 
-        <h1>주문서</h1><br>
+        <h2>주문서</h2><br>
         <h4>비회원 주문</h4>
-        <div>
+        <div class="unmember">
             <input type="text" id="buyerTelno" name="buyerTelno" placeholder="번호를 입력하세요">
             <input type="password" id="unMemberPassword" name="unMemberPassword" placeholder="임시비밀번호를 입력하세요">
             <input type="password" id="unMemberPasswordCheck" name="unMemberPasswordCheck" placeholder="임시비밀번호를 다시 입력하세요">
@@ -422,7 +462,7 @@
             <input type="text" id="addrSearch" name="addrSearch" class="addrSearch" placeholder="주소를 검색합니다.">
             <input type="button" id="btn_addSearch" class="btn_addrSearch" value="주소검색" onclick="searchAddr()">
             <input type="text" id="zipcode" class="input_field" name="zipcode" placeholder="우편번호가 검색되어 입력됩니다." readonly>
-            <input type="text" id=" " class="input_field" name="addr1" placeholder="주소가 검색되어 입력됩니다." readonly>
+            <input type="text" id="addr1" class="input_field" name="addr1" placeholder="주소가 검색되어 입력됩니다." readonly>
             <input type="text" id="detailaddr" class="input_field" name="detailaddr" placeholder="상세 주소를 입력하세요">
             <input type="text" id="receiver" class="input_field" name="receiver" placeholder="받는사람 이름을 입력하세요">
             <input type="text" id="receivertelno" class="input_field" name="receivertelno" placeholder="받는사람 번호를 입력하세요">
