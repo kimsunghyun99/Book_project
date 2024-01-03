@@ -145,7 +145,7 @@ public class MasterController {
 
     // 장르별 통계
     @GetMapping("/master/genreStatistics")
-    public String getGenreStatistics(@RequestParam(name = "CategoryList", defaultValue = "defaultCategory") String categoryList, Model model) {
+    public String getGenreStatistics(@RequestParam(name = "CategoryList", defaultValue = "day") String categoryList, Model model) {
         List<Map<String, Object>> totalCategoryList = purchaseInfoRepository.totalcategory();
 
         switch (categoryList) {
@@ -157,6 +157,9 @@ public class MasterController {
                 break;
             case "year":
                 totalCategoryList = purchaseInfoRepository.findYearlySales();
+                break;
+            default:
+                totalCategoryList = purchaseInfoRepository.findDailySales(); // 디폴트 케이스 추가
                 break;
         }
 

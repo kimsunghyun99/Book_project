@@ -381,6 +381,7 @@ public class MemberController {
             purchaseListMap.put("statusseq", map.get("statusseq"));
             purchaseListMap.put("total_price", map.get("total_price"));
             purchaseListMap.put("bookname", map.get("bookname"));
+            purchaseListMap.put("statusname", map.get("statusname"));
 
             purchaseList.add(purchaseListMap);
         }

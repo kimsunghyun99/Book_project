@@ -4,6 +4,43 @@
 <head>
 <meta charset="UTF-8">
 <title>회원 통계</title>
+<header>
+<style>
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f2ede9;
+    }
+
+    header {
+        background: #ffc118;
+        color: #FFF;
+        text-align: center;
+        padding: 10px;
+        height: 200px;
+    }
+
+    nav {
+        text-align: center;
+        padding: 10px;
+    }
+
+    h2{
+        font-family: 'WarhavenB';
+        font-size: 30px;
+        color: #191919;
+    }
+
+    #ranking {
+        margin-right: 20px;
+        color: black;
+        text-align: left;
+        margin-top: 50px;
+    }
+
+</style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     window.onload = () => {
@@ -16,8 +53,8 @@
             datasets: [
                 {
                     label: '가입 연령',
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(254, 220, 128, 1)',
+                    borderColor: 'rgba(254, 220, 128, 1)',
                     borderWidth: 1,
                     data: [`[[${cnt10}]]`, `[[${cnt20}]]`, `[[${cnt30}]]`, `[[${cnt40}]]`, `[[${cnt50}]]`],
                 }]
@@ -44,7 +81,8 @@
         // 순위 표시
         var rankingDiv = document.getElementById('ranking');
         var rankingData = ageData.datasets[0].data.slice().sort(function (a, b) { return b - a });
-        for (var i = 0; i < rankingData.length; i++) {
+        rankingDiv.innerHTML='';
+        for (var i = 0; i < Math.min(rankingData.length, 3); i++) {
             var index = ageData.datasets[0].data.indexOf(rankingData[i]);
             rankingDiv.innerHTML += '<p>' + (i + 1) + '위: ' + ageData.labels[index] + '</p>';
         }
@@ -71,7 +109,8 @@
 
                 // 랭크 표시
                 var ageRankingData = ageData.datasets[0].data.slice().sort(function (a, b) { return b - a });
-                for (var i = 0; i < ageRankingData.length; i++) {
+                rankingDiv.innerHTML='';
+                for (var i = 0; i < Math.min(ageRankingData.length, 3); i++) {
                     var index = ageData.datasets[0].data.indexOf(ageRankingData[i]);
                     rankingDiv.innerHTML += '<p>' + (i + 1) + '위: ' + ageData.labels[index] + '</p>';
                 }
@@ -92,8 +131,8 @@
                     datasets: [
                         {
                             label: '이용자 구분',
-                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                            borderColor: 'rgba(75, 192, 192, 1)',
+                            backgroundColor: 'rgba(254, 220, 128, 1)',
+                            borderColor: 'rgba(254, 220, 128, 1)',
                             borderWidth: 1,
                             data: [`[[${normal}]]`, `[[${social}]]`],
                         }]
@@ -120,8 +159,8 @@
 </head>
 <body>
 <div th:include="/etc/header.html :: banner"></div>
-<div style="width: 400px; margin: auto;">
-    <h2>회원 통계</h2>
+<div style="max-width: 400px; margin: auto; margin-top: 100px">
+    <h2 style="text-align: center">회원 통계</h2>
     <div style="width:80%; text-align:right; position:relative; left: 35px; margin:10px; padding: 10px;">
         <select name="job" id="chartType">
             <option value="all" disabled selected>선택</option>
@@ -129,9 +168,13 @@
             <option value="이용자 구분">이용자 구분</option>
         </select>
     </div>
+    <div style="display: flex; justify-content: center">
     <canvas id="myBarChart" th:context="2d" width="400" height="200"></canvas>
+    </div>
+    <div style="display: flex; justify-content: center">
     <canvas id="secondBarChart" th:context="2d" width="400" height="200" style="display: none;"></canvas>
-    <div id="ranking"></div>
+    </div>
+    <div id="ranking" ></div>
 </div>
 </body>
 </html>

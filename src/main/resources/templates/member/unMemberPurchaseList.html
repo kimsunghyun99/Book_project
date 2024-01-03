@@ -77,8 +77,8 @@
             <td th:text="${#dates.format(list.purchasedate, 'yyyy-MM-dd')}"></td>
             <td th:text="${list.unmemberpurchaseinfoseq}"></td>
             <td th:text="${list.bookname}"></td>
-            <td th:text="${list.statusseq}"></td>
-            <td th:text="${list.total_price}"></td>
+            <td th:text="${list.statusname}"></td>
+            <td th:text="|${#numbers.formatInteger(list.total_price, 0, 'COMMA')}원|"></td>
         </tr>
         </th:block>
         <th:block th:if="${purchaseList == null}">
