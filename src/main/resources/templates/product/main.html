@@ -26,6 +26,7 @@
             background-color: #f2ede9;
         }
 
+
         header {
             background: #ffc118;
             color: #FFF;
@@ -59,12 +60,12 @@
         /*}*/
 
         .product-row {
-            width: calc(30% - 20px);
+            width: 55%;
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
             margin: 0 auto;
-            border: 1px solid #ddd;
+            border: none;
             padding: 10px;
             box-sizing: border-box;
         }
@@ -79,14 +80,14 @@
 
         .product-item img {
             width: 100%;
-            max-width: 150px;
+            max-width: 200px;
             height: auto;
             border-radius: 5px;
             border: 1px solid #ddd;
         }
 
         .product-title {
-            font-size: 13px;
+            font-size: 16px;
             padding-right: 10px;
             word-wrap: break-word;
         }
@@ -95,7 +96,7 @@
         section {
             padding: 20px;
             font-family: 'GmarketSansMedium';
-            text-align: center;
+            /*text-align: center;*/
         }
 
         .news-row {
@@ -106,7 +107,6 @@
             font-family: 'SBAggroB';
             font-size: 24px;
             margin-bottom: 20px;
-            text-align: center;
         }
         h4 {
             font-family: 'SBAggroB';
@@ -166,6 +166,10 @@
             position: relative;
             bottom: 0;
             width: 100%;
+        }
+
+        .news-row, .event-row {
+            margin-left:35%;
         }
     </style>
 
@@ -260,10 +264,10 @@
 </section>
 
 
-<h2>IT News</h2>
-<section>
 
-    <div class="news-row">
+<section class="news-row">
+    <h2>IT New</h2>
+    <div>
         <div th:each="news : ${newsList}">
             <tr style="font-size: 10px">
                 <td>
@@ -274,7 +278,7 @@
     </div>
 </section>
 
-<section>
+<section class="event-row">
     <h2>이벤트</h2>
     <p>※ 현재 이벤트 준비중입니다.</p>
 </section>
@@ -285,8 +289,10 @@
     </div>
 </section>
 
-<footer>
-    <p>&copy; 2023 IT커넥션. All rights reserved.</p>
+<footer style="color:black">
+    <p>&copy; 2024 IT커넥션 All rights reserved.</p>
+    <p> 대한상공희의소 서울기술교육센터 기업프로젝트 SW 개발전문가 과정</p>
+    <p>김성현 | 김정인 | 송윤주 | 조범주 </p>
 </footer>
 </body>
 </html>

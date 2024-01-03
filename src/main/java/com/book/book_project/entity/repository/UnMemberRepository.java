@@ -36,4 +36,6 @@ public interface UnMemberRepository extends JpaRepository<UnMemberEntity, String
     List<Map<String, String>> unmempurchaseList(@Param("receivertelno") String receivertelno);
 
 
+    UnMemberEntity findByUnmemberseq(int unmemerseq);
+
 }

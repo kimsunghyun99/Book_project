@@ -105,6 +105,39 @@
             text-decoration: none;
         }
 
+        #search-input {
+            display:flex;
+            justify-content: center;
+            flex-direction : row;
+            align-items: center;
+            text-align: center;
+        }
+
+        #search-input input[type="text"] {
+            width: 35%;
+            height: 30px;
+            border: 2px solid #ffd518;
+            font-size: 16px;
+            margin-left: 38%; /* 입력창과 버튼 간격 조정 */
+            padding: 5px; /* 더 나은 디자인을 위해 패딩 추가 */
+        }
+
+        #search-input input[type="button"] {
+            width: 5%;
+            height: 30px;
+            background: #158;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+            margin-right: 24%; /* 입력창과 버튼 간격 조정 */
+            margin-bottom: 9px;
+            border: none;
+        }
+        a {
+            color: #000;       /* 글씨 색상을 검정색으로 설정 */
+            text-decoration: none; /* 밑줄을 없앰 */
+        }
+
 
     </style>
     <script>
@@ -165,13 +198,13 @@
 </head>
 <body>
 <div th:insert="~{/etc/header.html}"></div>
-<!--<input type="text" name="keyword" id="keyword"-->
-<!--       style="width:35%;height:30px;border:2px solid #168;font-size: 16px;"-->
-<!--       placeholder="검색할 책 이름, 저자 및 출판사를 입력하세요." onkeydown="press()">-->
-<div style="display: flex; justify-content: center; align-items: center; flex-direction: column; margin-top: 20px;">
+
+<div id="search-input" style="display:flex; justify-content: space-between; margin-top: 20px;">
     <input type="text" name="keyword" id="keyword"
-           style="width:35%;height:30px;border:2px solid #168;font-size: 16px; margin-bottom: 10px;"
+           style="width:35%;height:30px;border:2px solid #ffd518;font-size: 16px; margin-bottom: 10px;"
            placeholder="검색할 책 이름, 저자 및 출판사를 입력하세요." onkeydown="press()">
+    <input type="button" value="검색" style= "display:flex; justify-content: space-between; width:50px;height:30px;background:#ffd518;color:black;font-weight:bold;cursor:pointer;"
+           onclick="search()">
 </div>
 
 
@@ -368,7 +401,7 @@
             </div>
     </div>
 </div>
-<div style="text-align:center; margin-top:20px; bottom:0; left:50%; ">[(${pageList})]</div>
+<div style="text-align:center; margin-top:20px; bottom:0; left:50%; margin-left:250px; color:#000">[(${pageList})]</div>
 
 </body>
 </html>

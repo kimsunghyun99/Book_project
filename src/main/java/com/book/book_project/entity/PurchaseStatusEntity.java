@@ -9,6 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Entity(name="purchasestatus")
+
 @Table(name="tbl_purchasestatus")
 public class PurchaseStatusEntity {
 

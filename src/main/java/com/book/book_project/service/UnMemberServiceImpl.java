@@ -2,6 +2,7 @@ package com.book.book_project.service;
 
 import com.book.book_project.dto.MemberDTO;
 import com.book.book_project.dto.UnMemberDTO;
+import com.book.book_project.entity.BuyerInfoEntity;
 import com.book.book_project.entity.UnMemberEntity;
 import com.book.book_project.entity.UnMemberPurchaseInfoEntity;
 import com.book.book_project.entity.repository.UnMemberRepository;
@@ -35,5 +36,9 @@ public class UnMemberServiceImpl implements UnMemberService{
     public List<Map<String, String>> unmempurchaseList(String receivertelno){
         List<Map<String, String>> list = unMemberRepository.unmempurchaseList(receivertelno);
         return list;
+    }
+
+    public UnMemberEntity findByUnmemberseq(int unmemerseq) {
+        return unMemberRepository.findByUnmemberseq(unmemerseq);
     }
 }
