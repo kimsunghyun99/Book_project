@@ -3,138 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>장바구니</title>
-    <style>
-        @font-face {
-            font-family: 'GmarketSansMedium';
-            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
-            font-weight: normal;
-            font-style: normal;
-        }
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f2ede9;
-        }
-
-        header, nav {
-            background:#ffc118;
-            color: #FFF;
-            text-align: center;
-            padding: 10px;
-        }
-
-        table {
-            width: 45%;
-            margin: 0 auto;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
-            vertical-align: middle;
-            font-size: 14px;
-        }
-
-        th {
-            background-color: #ffd153;
-            color: black;
-            font-weight: bold;
-        }
-
-        td img {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 5px;
-        }
-
-        .delete-button, .buy-button {
-            padding: 10px;
-            font-family: 'GmarketSansMedium';
-            font-size: 1.2em;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-        }
-
-        .delete-button {
-            background-color: #dc3545;
-            color: black;
-
-
-        }
-
-        .total-payment {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 20px; /* 상단 간격 조절 */
-        }
-
-        .delete-button, .buy-button {
-            width: 100px; /* 버튼의 너비를 조절합니다. 필요에 따라 조절하세요. */
-            padding: 10px;
-            font-family: 'GmarketSansMedium';
-            font-size: 1.2em;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            margin: 0 5px; /* 좌우 여백 조절 */
-        }
-
-
-        #sumOfCheckedPrices {
-            font-size: 1.5em;
-            font-weight: bold;
-            margin-right: 200px;
-
-        }
-
-        #checkAll {
-            transform: scale(1.5);
-        }
-
-        .buy-button{
-            background-color: #ffd153;
-            color: black;
-        }
-
-        h2{
-            text-align: center;
-            margin-right: 50px;
-            margin-left: 250px;
-        }
-
-        h3{
-            text-align: center;
-            font-family: 'GmarketSansMedium';
-        }
-
-        .book-container {
-            display: flex;
-            align-items: center; /* 수직 중앙 정렬 */
-        }
-
-        .book-image {
-            max-width: 100px;
-            height: auto;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-            margin-right: 10px; /* 이미지와 텍스트 사이의 간격 조절 */
-        }
-
-        .book-name {
-            font-size: 14px;
-            font-weight: bold;
-            /* 다른 스타일을 적용할 수 있습니다. */
-        }
-
-    </style>
-
+    <link rel="stylesheet" href="/css/style.css">
     <script>
 
         document.addEventListener('DOMContentLoaded', function () {
@@ -414,15 +283,16 @@
 
 
     </script>
+<div th:insert="~{/etc/header.html :: headerFragment}"></div>
 </head>
 <body>
-<div th:insert="~{/etc/header.html}"></div>
-
-
+<br>
+<br>
+<br>
 <h3>장바구니</h3>
-<table>
-    <tbody id="cartBody">
-    <th><input type="checkbox" id="checkAll"></th>
+<table style="width: 60%">
+    <tbody id="cartBod">
+    <th style="width: 5%;margin: auto;height: auto"><input type="checkbox" id="checkAll"></th>
     <th>책</th>
     <th>가격</th>
     <th>총 금액</th>
@@ -433,9 +303,9 @@
                 <input type="checkbox" th:id="'checkbox'+${booklist.bookid}" th:value="${booklist.bookid}" class="checkbox">
             </td>
             <td>
-                <a th:href="@{'/product/productInfo?bookid=' + ${booklist.bookid} + '&page=1'}" class="book-container">
-                    <img class="book-image" id="cover" th:src="${booklist.cover}">
-                    <span class="book-name" th:text="${booklist.bookname}"></span>
+                <a th:href="@{'/product/productInfo?bookid=' + ${booklist.bookid} + '&page=1'}" class="bsk_book-container">
+                    <img class="bsk_book-image" id="cover" th:src="${booklist.cover}">
+                    <span class="bsk_book-name" th:text="${booklist.bookname}"></span>
                 </a>
 
 
@@ -464,7 +334,7 @@
 
 <div class="total-payment">
     <button class="delete-button" onclick="deleteCheckedItems()">삭제</button>
-    <h2>총 결제금액</h2>
+    <h2 style="text-align: center; margin-right: 50px; margin-left: 250px;">총 결제금액</h2>
     <div id="sumOfCheckedPrices">0 원</div>
     <button class="buy-button" onclick="GoPayment()">구매하기</button>
 </div>

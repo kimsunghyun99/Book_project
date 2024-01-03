@@ -3,118 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>상품 정보</title>
-    <style>
-
-        @font-face {
-            font-family: 'GmarketSansMedium';
-            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
-            font-weight: normal;
-            font-style: normal;
-        }
-        span {
-            font-family: 'GmarketSansMedium';
-        }
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f2ede9;
-        }
-
-        header, nav {
-            background:#ffc118;
-            color: #FFF;
-            text-align: center;
-            padding: 10px;
-        }
-
-        .book-details {
-            display: flex;
-            justify-content: center;
-            gap: 100px;
-        }
-
-        .book-image-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .book-image {
-            width: 200px;
-            height: 300px;
-            border: 1px solid black;
-            object-fit: cover;
-        }
-
-        .likes-reviews {
-            display: flex;
-            gap: 10px;
-        }
-
-        .book-info {
-            display: flex;
-            flex-direction: column;
-
-        }
-
-        .book-info p {
-            font-size: 2em;
-            font-family: 'GmarketSansMedium';
-        }
-
-        .book-info p {
-            font-size: 1.2em;
-        }
-
-
-
-        .book-actions {
-            display: flex;
-            text-align: center;
-            gap: 10px;
-            margin: auto;
-        }
-
-        .book-actions input {
-
-            margin: 20px;
-            cursor: pointer;
-
-        }
-
-        #volume input {
-            display: inline-block; /* 인라인 요소로 배치 */
-            font-size: 16px; /* 원하는 폰트 크기로 조절 */
-            margin: 0; /* 기본 마진 제거 */
-        }
-
-        #quantity {
-            display: inline-block; /* 인라인 요소로 배치 */
-            font-size: 16px; /* 원하는 폰트 크기로 조절 */
-            margin: 0 5px; /* 좌우 마진 추가하여 간격 조절 */
-        }
-
-        #volume br {
-            display: none; /* 줄바꿈 요소 숨김 */
-        }
-
-        input[type="button"] {
-
-
-            background-color:#ffd518;
-            color: #000000;
-            border:none;
-            border-radius:10px;
-        }
-
-        .btn_cart ,.pay {
-            width:100%;
-            height:50%;
-        }
-
-    </style>
+    <link rel="stylesheet" href="/css/style.css">
     <script>
         var number = 1;
         var totalPrice = parseInt('[[${view.price}]]');
@@ -353,9 +242,9 @@
         };
 
     </script>
+    <div th:insert="~{/etc/header.html :: headerFragment}"></div>
 </head>
 <body>
-<div th:include="/etc/header.html"></div>
 <br><br><br>
 <div class="book-details">
     <div class="book-image-container"><br><br>
@@ -367,8 +256,8 @@
     </div>
     <div class="book-info"><br><br>
         <p class="book-title" id="bookname" th:text="${view.bookname}"></p>
-        <p class="book-author" id="author" th:text="'작가: ' + ${view.author}"></p>
-        <p class="book-price" id="price" th:text="'가격: ' + ${view.price} + '원'"></p>
+        <p class="book-author" id="author" style="text-align:right;" th:text="'작가: ' + ${view.author}"></p>
+        <p class="book-price" id="price" style="text-align:right;" th:text="'가격: ' + ${view.price} + '원'"></p>
 <!--        <p class="book-discount" id="pricesales" th:text="'할인가: ' + ${view.pricesales} + '%'"></p>-->
 
 
@@ -383,7 +272,7 @@
             <span id="total_price">[[${#numbers.formatInteger(view.price,3,'COMMA')}]] 원</span>
         </div>
         <br>
-        <div>
+        <div style="text-align:right;">
         <span>적립 포인트 : </span> <span id="total_salespoint">[[${view.salespoint}]] point</span>
         </div>
         <div class="book-actions">
@@ -395,21 +284,19 @@
             </div>
             <input type="button" class="pay" value="구매하기" th:onclick="GoPayment([[${view.bookid}]],document.getElementById('quantity').innerHTML)">
         </div>
-<!--        <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.salespoint,3,'COMMA')} + '원'"></p>-->
         <br>
-<!--            <span id="total_price">[[${#numbers.formatInteger(view.price,3,'COMMA')}]] 원</span>-->
-<!--            <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.price * 0.05, 3, 'COMMA')} + '원'"></p>-->
         </div><br>
         <br>
+
 </div>
 
-<div class="reviewDiv" style="width:60%;height:300px;margin:auto;text-align:left;">
+<div class="reviewDiv">
 
     <p id="reviewNotice">리뷰를 작성해 주세요.</p>
     <form id="reviewForm" name="reviewForm" method="POST">
         <input type="hidden" id="bookid" name="bookid" th:value="${view.bookid}">
         <input type="hidden" id="userid" name="userid" th:value="${session.userid}">
-        작성자: <input type="text" id="reviewer" name="reviewer" th:value="${nickname}" readonly>
+        작성자<input type="text" id="reviewer" name="reviewer" th:value="${nickname}" readonly>
         <br><br>
         <input type="hidden" id="reviewregdate" name="reviewregdate" th:value="${currentDateTime}">
 
@@ -419,45 +306,47 @@
     </form>
 
     <!-- 리뷰 등록 버튼 -->
-    <input type="button" id="btn_review" value="리뷰 등록" onclick="reviewRegister()">
+    <input type="button" class="reviewbtn" id="btn_review" value="리뷰 등록" onclick="reviewRegister()">
 
     <!-- 리뷰 취소 버튼 -->
-    <input type="button" id="btn_cancel" value="취소" onclick="reviewCancel()">
+    <input type="button" class="reviewbtn" id="btn_cancel" value="취소" onclick="reviewCancel()">
     <hr>
 
     <!-- 리뷰 목록 테이블 -->
-    <table id="reviewList" style="width:100%; height:600px; overflow:auto;">
+    <table id="reviewList" >
         <tr>
-            <th>작성자</th>
-            <th>리뷰 내용</th>
-            <th>작성 시간</th>
-            <th>수정</th>
-            <th>삭제</th>
+            <th style="width: 20%">작성자</th>
+            <th style="width: 60%">리뷰 내용</th>
+            <th style="width: 20%">작성 시간</th>
         </tr>
+        <th:block th:if="${list != null}">
         <tr th:each="list, index: ${list}">
             <td th:text="${list.reviewer}"></td>
             <td th:text="${list.reviewcontent}"></td>
 <!--            <td th:id="'datetime' +  ${index.index}"></td>-->
             <td th:text="${list.reviewregdate}"></td>
-            <td>
+            <th:block th:if="${list.reviewer==session.userid}">
                 <!-- 리뷰 수정 버튼 -->
                 <a th:if="${session.userid}" th:data-reviewseq="${list.reviewseq}" th:data-reviewcontent="${list.reviewcontent}"
                    style="cursor:pointer" class="btnReviewModify">수정</a>
-            </td>
-            <td>
                 <!-- 리뷰 삭제 버튼 -->
                 <a th:if="${session.userid}" th:data-reviewseq="${list.reviewseq}"
                    style="cursor:pointer" class="btnReviewDelete">삭제</a>
-            </td>
+            </th:block>
 
-             <!--리뷰 수정 폼-->
+            <!--리뷰 수정 폼-->
             <div id="modifyReviewForm" style="display: none;">
                 <textarea id="modifyReviewContent" cols="80" rows="5" maxlength="150" placeholder="글자수: 150자 이내"></textarea><br>
                 <input type="button" id="btnReviewModify" value="수정">
-                <input type="button" id="btnReviewModifyCancel" value="취소">
+                <input type="button" id="btnReviewModifyCancel" onclick="ModifyFormDelete()" value="취소">
             </div>
 
         </tr>
+        </th:block>
+
+        <th:block th:if="${list==null}">
+            등록된 댓글이 없습니다.
+        </th:block>
     </table>
 
     <script>
@@ -584,13 +473,11 @@
                     reviewModify(reviewSeq, reviewContent);
                 });
             });
+
             // 취소 버튼 클릭 이벤트 설정
-            document.getElementById('btnReviewModifyCancel').addEventListener('click', () => {
-                // 수정 폼 숨기기
+            const ModifyFormDelete=()=>{
                 document.getElementById('modifyReviewForm').style.display = 'none';
-            });
-
-
+            }
 
             const clearModifyReviewForm = () => {
                 document.getElementById('modifyReviewContent').value = '';
@@ -754,16 +641,5 @@
 
 <!--    <div id="pagination" style="margin-top: 10px;"></div>-->
 </div>
-
-
-
-
-
-
 </body>
-
-
-
-
-
 </html>

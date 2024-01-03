@@ -1,15 +1,9 @@
 
-<div th:fragment="headerFragment">
+<div th:fragment="headerFragment" style="position: fixed; width: 100%; top: 0">
 <div th:fragment="banner">
 
     <header>
         <style>
-            @font-face {
-                font-family: 'WarhavenB';
-                src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2312-1@1.1/WarhavenB.woff2') format('woff2');
-                font-weight: 700;
-                font-style: normal;
-            }
             @font-face {
                 font-family: 'GmarketSansMedium';
                 src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
@@ -17,20 +11,12 @@
                 font-style: normal;
             }
 
-
-            h1{
-                font-family: 'WarhavenB';
-                font-size: 60px;
-                color: #191919;
-            }
-
-            h1 a {
-                text-decoration: none; /* 링크에 밑줄 제거 */
-                color: inherit; /* 기본 링크 색상으로 변경 */
-            }
-
-            h1 a:hover {
-                text-decoration: underline; /* 호버 시에는 다시 밑줄 표시 */
+            header{
+                background:#ffc118;
+                color: #FFF;
+                text-align: center;
+                padding: 10px;
+                height:  140px;
             }
 
             nav {
@@ -38,6 +24,8 @@
                 /*background-color: #8B0000; !* 바탕색 지정 (예: 흰색) *!*/
                 background-color: #ffc118;
                 color: #191919;
+                text-align: center;
+                padding: 8px;
             }
 
             nav a {
@@ -114,13 +102,16 @@
                window.location.href = "/product/shoppingBasket";
            }
        }
+       function unMemberCheck(){
+
+       }
     </script>
     <nav>
         <!-- 세션 값이 없을 경우 로그인 및 회원가입 버튼 표시 -->
         <div th:if="${session.userid == null}">
             <a href="/product/productList?page=1"> 도서</a> |
             <a href="/product/shoppingBasket"> 장바구니</a> |
-            <a href="/member/unMemberPurchaseList"> 구매내역</a> |
+            <a href="javascript:unMembercheck()"> 구매내역</a> |
             <a href="/member/login"> 로그인</a> |
             <a href="/member/signup"> 회원가입</a>
         </div>

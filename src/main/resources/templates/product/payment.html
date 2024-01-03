@@ -3,182 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>쇼핑몰</title>
-
-
-    <style>
-
-        @font-face {
-            font-family: 'GmarketSansMedium';
-            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
-            font-weight: normal;
-            font-style: normal;
-        }
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f2ede9;
-        }
-
-        header, nav {
-            background:#ffc118;
-            color: #FFF;
-            text-align: center;
-            padding: 10px;
-        }
-
-
-
-        .tableDiv {
-            text-align: center;
-            font-family: 'GmarketSansMedium';
-        }
-
-        .InfoTable {
-            border-collapse: collapse;
-            width: 80%;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .InfoTable th {
-            border-bottom: 3px solid #168;
-            color: black;
-            text-align: center;
-            background: #ffd153;
-
-        }
-        .InfoTable th, .InfoTable td {
-            padding: 10px;
-            border: 1px solid #ddd;
-        }
-        .InfoTable th:first-child, .InfoTable td:first-child {
-            border-left: 0;
-        }
-        .InfoTable th:last-child, .InfoTable td:last-child {
-            border-right: 0;
-        }
-        .InfoTable tr td:first-child{
-            text-align: left;
-        }
-        .InfoTable caption{caption-side: top; }
-
-        body {
-            font-family: Arial, sans-serif;
-        }
-
-
-        .p_image {
-            max-width: 30%;
-            height: auto;
-            display: block;
-            margin: auto;
-        }
-
-        .c_info {
-            width: 80%;
-            border:none;
-            border-bottom: 2px solid #adadad;
-            margin: 5px;
-            padding: 10px 10px;
-            outline:none;
-            color: #636e72;
-            font-size:16px;
-            height:25px;
-            background: none;
-        }
-
-        .c_infoNames {
-            width: 80px;
-            height: 20px;
-            margin: 5px;
-            padding: 10px 10px;
-            color:  #168;
-            font-size:16px;
-            font-weight: bold;
-            background: #f0f6f9;
-            display:inline-block;
-        }
-
-        #btn_addrSearch {
-            width: 80px;
-            height: 20px;
-            margin: 5px;
-            padding: 10px 10px;
-            color:  white;
-            font-size:16px;
-            font-weight: bold;
-            background: #168;
-            display:inline-block;
-            cursor: pointer;
-        }
-
-        .btn_order  {
-            width:600px;
-            height:40px;
-            background: #168;
-            color:white;
-            font-weight: bold;
-            border:none;
-            cursor:pointer;
-
-        }
-
-        input {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 16px;
-            box-sizing: border-box;
-        }
-
-
-        #ADDorDelete {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 10px; /* 원하는 여백 값으로 조절하세요 */
-        }
-
-        #add {
-            width:60px;
-            font-size: 14px; /* 원하는 글자 크기로 조절하세요 */
-            padding: 5px 10px; /* 원하는 패딩 값으로 조절하세요 */
-            margin-left: 5px; /* 각 버튼 사이 여백 조절 */
-            text-align:center;
-        }
-        #addplus {
-            display: none;
-        }
-
-        table {
-
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid black;
-            padding: 5px;
-        }
-
-        #pay {
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-          /*//  height: 70vh; !* 화면의 100% 높이로 설정하여 가운데 정렬 *!*/
-        }
-
-        #RequestText1 {
-            display:none;
-        }
-
-        h2 {
-            font-family: 'GmarketSansMedium';
-            padding-left: 200px;
-        }
-        #finaladdr, .request, .point{
-            padding-left: 190px;
-            font-family: 'GmarketSansMedium';
-        }
-
-    </style>
+    <link rel="stylesheet" href="/css/style.css">
     <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
     <script th:inline="javascript">
@@ -456,10 +281,11 @@
 </head>
 
 <body>
-<div th:insert="~{/etc/header.html}"></div>
+<div th:insert="~{/etc/header.html :: headerFragment}"></div>
 <div class="mall">
     <div class="main_shop">
 
+<!--        padding-left: 200px;-->
         <h2>주문서</h2><br>
 
         <h4 style="display: inline-block; padding-left: 200px">배송지 목록</h4>

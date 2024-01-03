@@ -129,7 +129,6 @@ public class ProductController {
 
         model.addAttribute("view", service.view(bookId));
 
-
         model.addAttribute("list", list);
         System.out.println("......." + list);
         model.addAttribute("totalElement", totalCount);

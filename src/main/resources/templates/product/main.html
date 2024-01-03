@@ -4,175 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IT커넥션</title>
-    <style>
-        @font-face {
-            font-family: 'SBAggroB';
-            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SBAggroB.woff') format('woff');
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        @font-face {
-            font-family: 'GmarketSansMedium';
-            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f2ede9;
-        }
-
-
-        header {
-            background: #ffc118;
-            color: #FFF;
-            text-align: center;
-            padding: 10px;
-        }
-
-        nav {
-            text-align: center;
-            padding: 10px;
-        }
-
-        /*.product-row {*/
-        /*    display: flex;*/
-        /*    flex-wrap: wrap;*/
-        /*    justify-content: space-between;*/
-        /*}*/
-
-        /*.product-item {*/
-        /*    width: calc(50% - 10px);*/
-        /*    margin-bottom: 20px;*/
-        /*    font-family: 'GmarketSansMedium';*/
-        /*}*/
-
-        /*.product-item img {*/
-        /*    width: 100%;*/
-        /*    max-width: 100px;*/
-        /*    height: auto;*/
-        /*    border-radius: 5px;*/
-        /*    border: 1px solid #ddd;*/
-        /*}*/
-
-        .product-row {
-            width: 55%;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            margin: 0 auto;
-            border: none;
-            padding: 10px;
-            box-sizing: border-box;
-        }
-
-        .product-item {
-            width: calc(23% - 10px); /* 23%로 설정하여 4개씩 가로로 배치, 여유 공간을 주기 위해 23%로 조절 */
-            margin-bottom: 20px;
-            font-family: 'GmarketSansMedium';
-            padding-left : 10px;
-
-        }
-
-        .product-item img {
-            width: 100%;
-            max-width: 200px;
-            height: auto;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-        }
-
-        .product-title {
-            font-size: 16px;
-            padding-right: 10px;
-            word-wrap: break-word;
-        }
-
-
-        section {
-            padding: 20px;
-            font-family: 'GmarketSansMedium';
-            /*text-align: center;*/
-        }
-
-        .news-row {
-            margin-bottom: 10px;
-        }
-
-        h2 {
-            font-family: 'SBAggroB';
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-        h4 {
-            font-family: 'SBAggroB';
-            font-size: 20px;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        td {
-            padding: 10px;
-            text-align: center;
-            border: 1px solid #ddd;
-        }
-
-        a {
-            text-decoration: none;
-            color: #333;
-        }
-
-        img {
-            width: 100px;
-            height: 150px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        a:hover {
-            color: #007ACC;
-        }
-
-        #recentlyViewed {
-            font-family: 'GmarketSansMedium';
-            font-size: 10px;
-            position: fixed;
-            top: 25%;
-            right: 0;
-            width: 150px;
-            height: auto;
-            overflow: auto;
-            background-color: #ffd153;
-            padding: 10px;
-            margin-right: 40px;
-            /*margin-bottom: 100px;*/
-
-        }
-
-        footer {
-            background-color: #ffdb7a;
-            color: #FFF;
-            text-align: center;
-            padding: 10px;
-            position: relative;
-            bottom: 0;
-            width: 100%;
-        }
-
-        .news-row, .event-row {
-            margin-left:35%;
-        }
-    </style>
-
+<link rel="stylesheet" href="/css/style.css">
     <script>
 
         // localStorage.clear();
@@ -219,8 +51,8 @@
 
             lastThreeProducts.forEach(function (product) {
                 var productElement = document.createElement('div');
-                productElement.innerHTML =  '<img src=' + product.cover + ' style="width:100px;height:100px;">';
-                productElement.innerHTML =  productElement.innerHTML + '<h3>' + product.bookname + '</h3>';
+                productElement.innerHTML =  '<img src=' + product.cover + ' style="width:100px;height:100px;margin-bottom:20px;">';
+                // productElement.innerHTML =  productElement.innerHTML + '<h3>' + product.bookname + '</h3>';
 
 
                 productElement.onmouseover = function () {
@@ -239,9 +71,9 @@
 
 
     </script>
+<div th:insert="~{/etc/header.html :: headerFragment}"></div>
 </head>
 <body>
-<div th:include="/etc/header.html"></div>
 
 <section>
     <h4>추천 도서</h4>

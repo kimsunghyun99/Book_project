@@ -4,86 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원가입</title>
-    <style>
-
-        @font-face {
-            font-family: 'GmarketSansMedium';
-            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-        }
-        form {
-            max-width: 400px;
-            margin: 0 auto;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-        }
-        input {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 16px;
-            box-sizing: border-box;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-
-        input[type="radio"] {
-            display: inline-block;
-            vertical-align: middle; /* 수직 정렬 추가 */
-            margin-bottom: 0; /* 여백 제거 */
-        }
-
-        label {
-            display: inline-block;
-            vertical-align: middle; /* 수직 정렬 추가 */
-            margin-bottom: 8px;
-        }
-
-        form input[type="radio"] + input[type="radio"] {
-            margin-left: 10px;
-        }
-        #interests1 {
-            display:none;
-        }
-
-        #subcategories {
-            padding-top: 20px;
-            padding-right: 300px;
-            font-family: 'GmarketSansMedium';
-        }
-
-        #subcategories label {
-            display: block;
-            margin-bottom: 8px;
-            white-space: nowrap; /* 글자가 길어질 경우 줄바꿈 방지 */
-
-        }
-
-        #subcategories input[type="radio"] {
-            display: inline-block;
-            vertical-align: middle; /* 수직 정렬 추가 */
-            margin-bottom: 0; /* 여백 제거 */
-            margin-right: 5px; /* 라디오 버튼 사이 여백 조절 */
-        }
-
-
-    </style>
-
+    <link rel="stylesheet" href="/css/style.css">
     <script>
         window.onload = () => {
             const btnRegister = document.querySelector('#btnRegister');
@@ -319,46 +240,28 @@
             }
 
         }
-
-
-
-
     </script>
 
 
+<div th:insert="~{/etc/header.html :: headerFragment}"></div>
 </head>
 <body>
-<div th:include="/etc/header.html :: banner" style="text-align: center"></div>
-<form id="RegistryForm" name="RegistryForm" method="POST" enctype="form-data">
+<div class="container">
+    <br><br><br>
     <h2>회원가입</h2>
-    <label for="username">사용자 이름:</label>
-    <input type="text" id="username" name="username" required>
-
-    <label for="nickname">닉네임:</label>
-    <input type="text" id="nickname" name="nickname" required>
-
-    <label for="telno">번호:</label>
-    <input type="text" id="telno" class="input_field" name="telno" required>
-
-    <label for="birthday">생년월일:</label>
-    <input type="text" id="birthday" class="input_field" name="birthday" required>
-
-
-    <label for="userid">아이디:</label>
-    <input type="text" id="userid" name="userid" placeholder="이메일 형식으로 작성해주세요" onchange="idCheck()" required>
+<form id="RegistryForm" name="RegistryForm" method="POST" enctype="form-data">
+    <div class="radio-group">
+        <input type="radio" name="gender" style="width: 15%" value="남성"><span style="width: 30%">남성</span>
+        <input type="radio" name="gender" style="width: 15%" value="여성"><span style="width: 30%">여성</span>
+    </div>
+    <input type="text" id="username" name="username" placeholder="이름을 입력해주세요" required>
+    <input type="text" id="nickname" name="nickname" placeholder="닉네임을 입력해주세요" required>
+    <input type="text" id="telno" class="input_field" name="telno" placeholder="전화번호를 입력해주세요" required>
+    <input type="text" id="birthday" class="input_field" name="birthday" placeholder="생년월일을 입력해주세요" required>
+    <input type="text" id="userid" name="userid" placeholder="이메일을 입력해주세요(exam12@email.com)" onchange="idCheck()" required>
     <br><span id="idCheckNotice"></span>
-    <br>
-    <label for="password">비밀번호:</label>
-    <input type="password" id="password" name="password" required>
-
-    <label for="password1">비밀번호 확인:</label>
-    <input type="password" id="password1" name="password1" required>
-
-    성별 :
-    <label><input type="radio" name="gender" value="남성">남성</label>
-    <label><input type="radio" name="gender" value="여성">여성<br></label>
-
-
+    <input type="password" id="password" name="password" placeholder="비밀번호를 입력해주세요" required>
+    <input type="password" id="password1" name="password1" placeholder="비밀번호를 다시 한번 입력해주세요" required>
     <input type="text" id="addrSearch" name="addrSearch" class="addrSearch" placeholder="주소를 검색합니다.">
     <input type="button" id="btn_addSearch" class="btn_addrSearch" value="주소검색" onclick="searchAddr()">
     <input type="text" id="zipcode" class="input_field" name="zipcode" placeholder="우편번호가 검색되어 입력됩니다." readonly>
@@ -366,7 +269,7 @@
     <input type="text" id="detailaddr" class="input_field" name="detailaddr" placeholder="상세 주소를 입력하세요">
 
 
-    관심분야 :
+    관심분야
     <select id="interests" name="interests" onchange="handleInterestChange(this.value)">
         <option value="all" disabled selected>관심분야 ▼</option>
         <option value="OS/Networking">OS/Networking </option>
@@ -385,13 +288,10 @@
 
     <div id="subcategories" name="subcategories" style="display:none;"></div>
 
-
-<br><br>
     <input type="text" id="interests1" class="input_field" name="interests1" placeholder="직접입력">
 
-<br><br>
-    <input type="button" id="btnRegister" class="btn_write" value="가입하기">
+    <input type="button" id="btnRegister" class="btn_write" style="margin-top: 10px" value="가입하기">
 </form>
-
+</div>
 </body>
 </html>

@@ -6,6 +6,7 @@ import com.book.book_project.entity.repository.*;
 import com.book.book_project.service.DeliveryService;
 import com.book.book_project.dto.*;
 import com.book.book_project.service.*;
+import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -400,7 +401,7 @@ public class MemberController {
     //비회원 로그인 (23-12-12)
     @ResponseBody
     @PostMapping("/member/unMemberLoginCheck")
-    public String postUnMemberLogin(UnMemberDTO unMember) {
+    public String postUnMemberLogin(UnMemberDTO unMember, HttpSession session) {
         //아이디 존재 여부 확인
         if(unMemberService.findByReceivertelno(unMember.getReceivertelno()) == null) {
             return "{\"message\":\"Receivertelno_NOT_FOUND\"}";
@@ -410,6 +411,8 @@ public class MemberController {
         if (unMemberService.findByTemppassword(unMember.getTemppassword()) == null) {
             return "{\"message\":\"PASSWORD_NOT_FOUND\"}";
         }
+
+        session.setAttribute("receivertelno", unMember.getReceivertelno());
 
         return "{\"message\":\"GOOD\"}";
 

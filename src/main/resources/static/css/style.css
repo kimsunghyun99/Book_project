@@ -1,0 +1,677 @@
+@font-face {
+    font-family: 'GmarketSansMedium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2ede9;
+    margin-top: 200px;
+}
+
+footer {
+    background-color: #ffdb7a;
+    color: #FFF;
+    text-align: center;
+    padding: 10px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+section {
+    padding: 20px;
+    font-family: 'GmarketSansMedium';
+    text-align: center;
+}
+
+h1{
+    font-family: 'WarhavenB';
+    font-size: 60px;
+    color: #191919;
+}
+
+h1 a {
+    text-decoration: none; /* 링크에 밑줄 제거 */
+    color: inherit; /* 기본 링크 색상으로 변경 */
+}
+
+h1 a:hover {
+    text-decoration: underline; /* 호버 시에는 다시 밑줄 표시 */
+}
+
+h2 {
+    font-family: 'GmarketSansMedium';
+    font-size:36px;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+h3{
+    text-align: center;
+    font-family: 'GmarketSansMedium';
+}
+
+h4 {
+    font-family: 'SBAggroB';
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto 20px;
+}
+
+th {
+    background-color: #ffd153;
+    color: black;
+    font-weight: bold;
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 14px;
+}
+
+td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 14px;
+}
+
+td img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+img {
+    width: 100px;
+    height: 150px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    color: #333;
+}
+
+a:hover {
+    color: #007ACC;
+}
+
+span {
+    font-family: 'GmarketSansMedium';
+}
+input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+}
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #45a049;
+}
+
+input[type="radio"] {
+    display: inline-block;
+    vertical-align: middle; /* 수직 정렬 추가 */
+    margin-bottom: 0; /* 여백 제거 */
+}
+
+
+form input[type="radio"] + input[type="radio"] {
+    margin-left: 10px;
+}
+
+input[type="button"] {
+    background-color:#ffd518;
+    color: #000000;
+    border:none;
+    border-radius:10px;
+}
+
+form{
+    text-align: center;
+    width: 25%;
+    margin: 5px
+}
+
+.product-row {
+    width: 55%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 0 auto;
+    border: none;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.product-item {
+    width: calc(23% - 10px); /* 23%로 설정하여 4개씩 가로로 배치, 여유 공간을 주기 위해 23%로 조절 */
+    margin-bottom: 20px;
+    font-family: 'GmarketSansMedium';
+    padding-left : 10px;
+
+}
+
+.product-item img {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.product-title {
+    font-size: 16px;
+    padding-right: 10px;
+    word-wrap: break-word;
+}
+
+.news-row {
+    margin-bottom: 10px;
+}
+
+.p_image {
+    max-width: 30%;
+    height: auto;
+    display: block;
+    margin: auto;
+}
+
+.c_info {
+    width: 80%;
+    border:none;
+    border-bottom: 2px solid #adadad;
+    margin: 5px;
+    padding: 10px 10px;
+    outline:none;
+    color: #636e72;
+    font-size:16px;
+    height:25px;
+    background: none;
+}
+
+.c_infoNames {
+    width: 80px;
+    height: 20px;
+    margin: 5px;
+    padding: 10px 10px;
+    color:  #168;
+    font-size:16px;
+    font-weight: bold;
+    background: #f0f6f9;
+    display:inline-block;
+}
+
+.btn_order  {
+    width:600px;
+    height:40px;
+    background: #168;
+    color:white;
+    font-weight: bold;
+    border:none;
+    cursor:pointer;
+}
+
+.tableDiv {
+    text-align: center;
+    font-family: 'GmarketSansMedium';
+}
+.InfoTable {
+    border-collapse: collapse;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.InfoTable th {
+    border-bottom: 3px solid #168;
+    color: black;
+    text-align: center;
+    background: #ffd153;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+.InfoTable td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+.InfoTable th:first-child, .InfoTable td:first-child {
+    border-left: 0;
+}
+.InfoTable th:last-child, .InfoTable td:last-child {
+    border-right: 0;
+}
+.InfoTable tr td:first-child{
+    text-align: left;
+}
+.InfoTable caption{
+    caption-side: top;
+}
+
+.book-details {
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+    margin-left: 10%;
+}
+.book-image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+.book-image {
+    width: 200px;
+    height: 300px;
+    border: 1px solid black;
+    object-fit: cover;
+}
+.bsk_book-container {
+    display: flex;
+    align-items: center; /* 수직 중앙 정렬 */
+}
+
+.bsk_book-image {
+    max-width: 100px;
+    height: auto;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin-right: 10px; /* 이미지와 텍스트 사이의 간격 조절 */
+}
+
+.bsk_book-name {
+    font-size: 14px;
+    font-weight: bold;
+    /* 다른 스타일을 적용할 수 있습니다. */
+}
+.likes-reviews {
+    display: flex;
+    gap: 10px;
+}
+
+.book-info {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+}
+.book-info p {
+    font-size: 1.2em;
+    font-family: 'GmarketSansMedium';
+}
+.book-actions {
+    display: flex;
+    text-align: center;
+    gap: 10px;
+    margin: auto;
+}
+.book-actions input {
+    margin: 20px;
+    cursor: pointer;
+}
+
+.btn_cart ,.pay {
+    width:100%;
+    height:50%;
+}
+
+.reviewDiv{
+    width:60%;
+    height:auto;
+    margin:auto;
+    text-align:left;
+    font-size: medium;
+}
+.reviewbtn{
+    width: 10%;
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px; /* 컨테이너 간 간격 조절을 위해 추가 */
+    justify-content: space-around;
+}
+
+.container h1 {
+    margin-bottom: 10px; /* h1과 책 사이 간격 조절을 위해 추가 */
+}
+
+.book {
+    width: 100%;
+    margin: 10px;
+    text-align: center;
+}
+
+.book img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.book-title a{
+    color: #000;
+    font-family: 'GmarketSansMedium';
+    font-size: 15px;
+    padding-left: 50px;
+    word-wrap: break-word;
+    text-decoration: none;
+}
+
+.btn-primary {
+    color: black;
+    background-color: #ffc118;
+    border-color: #ffc118;
+}
+
+/* 마우스 호버 시의 스타일 변경 */
+.btn-primary:hover {
+    color: #007ACC;
+    background-color: #ffc118;
+    border-color: #ffc118;
+}
+
+.delete-button {
+    background-color: #dc3545;
+    color: black;
+}
+
+.buy-button{
+    background-color: #ffd153;
+    color: black;
+}
+
+.total-payment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px; /* 상단 간격 조절 */
+}
+
+.delete-button, .buy-button {
+    width: 100px; /* 버튼의 너비를 조절합니다. 필요에 따라 조절하세요. */
+    padding: 10px;
+    font-family: 'GmarketSansMedium';
+    font-size: 1.2em;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    margin: 0 5px; /* 좌우 여백 조절 */
+}
+
+.userid,
+.password,
+#btn_login {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    margin: 5px;
+}
+
+.btn_login {
+    font-size: 18px;
+    background-color: #ffd153; /* 뉴트럴톤 노랑색 */
+    color: black;
+    cursor: pointer;
+    border: none; /* 테두리 없앰 */
+    outline: none; /* 포커스 효과 제거 */
+}
+
+.bottomText {
+    font-family: 'GmarketSansMedium';
+    text-align: center;
+}
+
+.remember {
+    font-family: 'GmarketSansMedium';
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size:13px;
+    height: auto;
+
+}
+
+.remember div {
+    display: flex;
+    align-items: center;
+}
+
+.remember input {
+    width: 5%;
+    margin-right: 5px;
+    height: auto;
+    margin: auto;
+}
+
+.bottomText a {
+    margin-right: 5px;
+    text-align: center;
+}
+
+.oauth-link {
+    font-family: 'GmarketSansMedium';
+    margin: auto;
+    height: auto;
+    text-decoration: none;
+    display: inline-block;
+    align-items: center;
+}
+.oauth-link img{
+    width: 25px;
+    height: 25px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: auto;
+    vertical-align: middle;
+}
+
+
+#sumOfCheckedPrices {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-right: 200px;
+
+}
+
+#categories {
+    font-family: 'GmarketSansMedium';
+    width: 15%;
+    padding: 20px;
+    background-color: #ffc118;
+    margin-top: 5%;
+    display: block;
+    top: 60%;
+    position:fixed;
+    left: 0;
+    transform: translateY(-50%);
+}
+
+#books {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    padding: 20px;
+    margin-left: 230px;
+}
+
+#reviewList{
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+    border: 1px solid #ddd;
+    margin-bottom: 15%;
+}
+
+#btn_addrSearch {
+    width: 80px;
+    height: 20px;
+    margin: 5px;
+    padding: 10px 10px;
+    color:  white;
+    font-size:16px;
+    font-weight: bold;
+    background: #168;
+    display:inline-block;
+    cursor: pointer;
+}
+
+#recentlyViewed {
+    position: fixed;
+    top: 25%;
+    right: 0;
+    width: 130px;
+    height: auto;
+    overflow: auto;
+    background-color: #ffd153;
+    padding: 10px;
+    margin-right: 7%;
+}
+
+#finaladdr, .request, .point{
+    padding-left: 190px;
+    font-family: 'GmarketSansMedium';
+}
+
+#RequestText1 {
+    display:none;
+}
+
+#pay {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /*//  height: 70vh; !* 화면의 100% 높이로 설정하여 가운데 정렬 *!*/
+}
+
+#ADDorDelete {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px; /* 원하는 여백 값으로 조절하세요 */
+}
+
+#add {
+    width:60px;
+    font-size: 14px; /* 원하는 글자 크기로 조절하세요 */
+    padding: 5px 10px; /* 원하는 패딩 값으로 조절하세요 */
+    margin-left: 5px; /* 각 버튼 사이 여백 조절 */
+    text-align:center;
+}
+#addplus {
+    display: none;
+}
+
+#quantity {
+    display: inline-block; /* 인라인 요소로 배치 */
+    font-size: 16px; /* 원하는 폰트 크기로 조절 */
+    margin: 0 5px; /* 좌우 마진 추가하여 간격 조절 */
+}
+
+#volume{
+    text-align: right;
+}
+
+#volume input {
+    display: inline-block; /* 인라인 요소로 배치 */
+    font-size: 16px; /* 원하는 폰트 크기로 조절 */
+    margin: 0; /* 기본 마진 제거 */
+    width: 5%;
+}
+
+#volume br {
+    display: none; /* 줄바꿈 요소 숨김 */
+}
+
+#search-input {
+    display:flex;
+    justify-content: center;
+    flex-direction : row;
+    align-items: center;
+    text-align: center;
+}
+
+#search-input input[type="text"] {
+    width: 35%;
+    height: 30px;
+    border: 2px solid #ffd518;
+    font-size: 16px;
+    margin-left: 38%; /* 입력창과 버튼 간격 조정 */
+    padding: 5px; /* 더 나은 디자인을 위해 패딩 추가 */
+}
+
+#search-input input[type="button"] {
+    width: 5%;
+    height: 30px;
+    background: #158;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+    margin-right: 24%; /* 입력창과 버튼 간격 조정 */
+    margin-bottom: 9px;
+    border: none;
+}
+
+#interests1 {
+    display:none;
+}
+
+#subcategories {
+    padding-top: 20px;
+    padding-right: 300px;
+    font-family: 'GmarketSansMedium';
+}
+
+#subcategories label {
+    display: block;
+    margin-bottom: 8px;
+    white-space: nowrap; /* 글자가 길어질 경우 줄바꿈 방지 */
+
+}
+
+#subcategories input[type="radio"] {
+    display: inline-block;
+    vertical-align: middle; /* 수직 정렬 추가 */
+    margin-bottom: 0; /* 여백 제거 */
+    margin-right: 5px; /* 라디오 버튼 사이 여백 조절 */
+}
+
+.radio-group {
+    text-align: center;
+    display: flex;
+}
+

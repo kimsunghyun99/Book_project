@@ -7,54 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>아이디 찾기</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .container {
-            text-align: center;
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 20%;
-            display: flex;
-            flex-direction: column; /* 수정된 부분 */
-            justify-content: space-between; /* 수정된 부분 */
-        }
-
-        h1 {
-            color: #333;
-        }
-
-        h3 {
-            text-align: left;
-            color: #333;
-            cursor: pointer;
-            user-select: none;
-            margin-bottom: 5px;
-        }
-
-        form {
-            flex-direction: column;
-            align-items: center;
-        }
-
-        input, button {
-            margin: 5px;
-            width: 100%; /* 입력 필드의 너비를 100%로 설정하여 부모 요소에 맞춥니다. */
-            padding: 10px; /* 선택적으로 패딩을 추가할 수 있습니다. */
-            box-sizing: border-box; /* 패딩을 요소의 크기에 포함시킵니다. */
-        }
-    </style>
+    <link rel="stylesheet" href="/css/style.css">
     <script>
         const idSearchByTelno = async() => {
             if(nameT.value===""){
@@ -89,26 +42,22 @@
         }
 
     </script>
+    <div th:insert="~{/etc/header.html :: headerFragment}"></div>
 </head>
 <body>
 <div class="container">
-<div th:include="/etc/header.html :: banner"></div>
     <br><br><br>
-<form id="findByTelnoForm" action="/submit" method="post">
-    <h1>ID 찾기</h1>
-    <br><br>
-    <input type="text" id="nameT" name="nameT" class="input_field" placeholder="이름">
-    <br>
-    <input type="text" id="birthdayT" name="birthdayT" class="input_field" placeholder="생년월일">
-    <br>
-    <input type="text" id="telno" name="telno" class="input_field" placeholder="휴대폰번호">
-    <br>
-</form>
-    <input type="button" id="btn_idSearchByTelno" class="btn_idSearchByTelno" value="ID 찾기" onclick="idSearchByTelno()">
-
-
-
-
+    <h2>ID 찾기</h2>
+        <form id="findByTelnoForm" action="/submit" method="post">
+            <br><br>
+            <input type="text" id="nameT" name="nameT" class="input_field" placeholder="이름">
+            <br>
+            <input type="text" id="birthdayT" name="birthdayT" class="input_field" placeholder="생년월일">
+            <br>
+            <input type="text" id="telno" name="telno" class="input_field" placeholder="휴대폰번호">
+            <br>
+            <input type="button" id="btn_idSearchByTelno" class="btn_idSearchByTelno" value="ID 찾기" onclick="idSearchByTelno()">
+        </form>
 </div>
 </body>
 </html>

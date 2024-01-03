@@ -59,7 +59,7 @@
 </style>
 </head>
 <body>
-<div th:insert="~{/etc/header.html}"></div>
+<div th:insert="~{/etc/header.html :: headerFragment}"></div>
 <div class="center-content">
     <div class="user-info">
         <h4 th:text="${memberInfo.username} ">회원 이름</h4>
