@@ -5,13 +5,40 @@
 <meta charset="UTF-8">
 <title>매출 내역</title>
 <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f2ede9;
+    }
+
+    header {
+        background: #ffc118;
+        color: #FFF;
+        text-align: center;
+        padding: 10px;
+        height: 200px;
+    }
+
+    nav {
+        text-align: center;
+        padding: 10px;
+    }
+
+    h2{
+        font-family: 'WarhavenB';
+        font-size: 30px;
+        color: #191919;
+        margin-top: 70px;
+    }
+
     .main {
         text-align: center;
     }
 
     .table-container {
-        width: 80%;
-        margin: 0 auto;
+        width: 100%;
+        margin-left: 20%;
         display: grid;
         grid-template-columns: 1fr; /* 1개의 컬럼 */
         grid-row-gap: 20px; /* 행 간격 */
@@ -19,30 +46,25 @@
 
     table {
         border-collapse: collapse;
-        width: 100%;
+        width: 65%;
     }
 
     th, td {
         border: 1px solid #dddddd;
-        text-align: left;
+        text-align: center;
         padding: 8px;
     }
 
     th {
-        background-color: #f2f2f2;
+        background-color: #ffc118;
     }
 
-    .bottom_menu {
-        text-align: left;
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
 </style>
 </head>
 <body>
 <div th:include="/etc/header.html :: banner"></div>
 <div class="main">
-    <h1>매출 내역</h1>
+    <h2 style="text-align: center">매출 내역</h2>
     <div class="table-container">
         <table class="InfoTable">
             <thead>
@@ -57,14 +79,14 @@
             <tr th:each="total : ${totalList}">
                 <td th:text="${total.bookname}"></td>
                 <td th:text="${total.price}"></td>
-                <td th:text="${total.volume}"></td>
-                <td th:text="${total.total_price}"></td>
+                <td th:text="|${#numbers.formatInteger(total.volume, 3 , 'COMMA')}권|"></td>
+                <td th:text="|${#numbers.formatInteger(total.total_price, 3 , 'COMMA')}원|"></td>
             </tr>
             <tr th:each="total2 : ${totalSalesPriceList}">
-                <td>합계</td>
+                <td style="background-color: #ffc118">합계</td>
                 <td></td>
-                <td th:text="${total2.totalvolume}">0</td>
-                <td th:text="${total2.totalsales}">0</td>
+                <td th:text="|${#numbers.formatInteger(total2.volume, 3, 'COMMA')}권|">0</td>
+                <td th:text="|${#numbers.formatInteger(total2.total_price, 3, 'COMMA')}원|">0</td>
             </tr>
             </tbody>
         </table>

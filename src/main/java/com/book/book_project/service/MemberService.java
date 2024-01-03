@@ -77,6 +77,8 @@ public interface MemberService {
 
     public MemberEntity findById(String userid);
 
+    //회원 구매 순위
+    public List<Map<String, String>> memberRank();
 
     public int getPoint(String userid);
 

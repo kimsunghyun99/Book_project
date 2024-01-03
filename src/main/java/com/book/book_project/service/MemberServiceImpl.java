@@ -244,8 +244,12 @@ public class MemberServiceImpl implements MemberService {
         return false; // 사용자가 존재하지 않으면 업데이트 실패
     }
 
-
-
+    //회원 구매 순위
+    @Override
+    public List<Map<String, String>> memberRank(){
+        List<Map<String, String>> list = memberRepository.memberRank();
+        return list;
+    }
 
 
 
