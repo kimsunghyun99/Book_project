@@ -114,6 +114,18 @@
             height:50%;
         }
 
+        #reviewList td {
+            padding: 5px; /* 각 셀의 안쪽 여백을 조절합니다. */
+        }
+
+        #reviewList tr {
+            border-bottom: 1px solid #ddd; /* 각 행의 아래쪽에 선을 추가하여 구분합니다. */
+        }
+
+        /*#reviewList th, #reviewList td {*/
+        /*    text-align: left; !* 텍스트를 왼쪽 정렬합니다. *!*/
+        /*}*/
+
     </style>
     <script>
         var number = 1;
@@ -146,12 +158,21 @@
         //리뷰 등록하기
         const reviewRegister = async () => {
             const reviewcontent = document.querySelector('#reviewcontent');
+            const reviewer = document.querySelector('#reviewer');
+
+            if(reviewer.value === '') {
+                alert('닉네임을 등록해주세요');
+                return false;
+            }
+
 
             if (reviewcontent.value === '') {
                 alert('댓글을 입력하세요.');
                 reviewcontent.focus();
                 return false;
             }
+
+
 
             const data = {
                 reviewer: reviewer.value,
@@ -226,7 +247,7 @@
 
                 // "확인"을 눌렀을 때 실행될 코드
                 window.open("nickname", "닉네임입력", "width=950, height=540, top=50, left=50"); // 새 창 열기
-            }
+            }else{reviewContentTextarea.blur()}
             }else{
                 reviewContentTextarea.focus();
             }
@@ -347,9 +368,9 @@
             var urlParams = new URLSearchParams('?bookid=123&page=1&focus=true');
             var focus = urlParams.get('focus');
 
-            if (focus === 'true') {
-                document.getElementById("reviewcontent").focus();
-            }
+            // if (focus === 'true') {
+            //     document.getElementById("reviewcontent").focus();
+            // }
         };
 
     </script>
@@ -415,7 +436,7 @@
 
         <!-- 리뷰 내용 입력 폼 -->
         <textarea id="reviewcontent" name="reviewcontent" cols="80" rows="5" maxlength="150" placeholder="글자수: 150자 이내"
-                  onfocus="checkAndAlert()"></textarea><br>
+                  onclick="checkAndAlert()"></textarea><br>
     </form>
 
     <!-- 리뷰 등록 버튼 -->
@@ -466,6 +487,7 @@
             const reviewList = (data) => {
                 var session_userid = '[[${session.userid}]]';
                 const jsonInfo = data;
+                console.log(session_userid);
 
                 let reviewList = document.querySelector('#reviewList');
                 reviewList.innerHTML = '';
@@ -486,32 +508,33 @@
                     let tdActions = document.createElement('td');
 
                     // 리뷰 수정 버튼
-                    let btnReviewModify = document.createElement('a');
-                    btnReviewModify.innerText = '수정';
-                    btnReviewModify.setAttribute('style', 'cursor:pointer');
-                    btnReviewModify.addEventListener('click', function () {
-                        reviewModify(jsonInfo[i].reviewseq, jsonInfo[i].reviewcontent);
-                    });
 
-                    // 리뷰 삭제 버튼
-                    let btnReviewDelete = document.createElement('a');
-                    btnReviewDelete.innerText = '삭제';
-                    btnReviewDelete.setAttribute('style', 'cursor:pointer');
-                    btnReviewDelete.addEventListener('click', function () {
-                        console.log('삭제버튼 눌렀는데?')
-                        reviewDelete(jsonInfo[i].reviewseq);
-                    });
+                        let btnReviewModify = document.createElement('a');
+                        btnReviewModify.innerText = '수정';
+                        btnReviewModify.setAttribute('style', 'cursor:pointer');
+                        btnReviewModify.addEventListener('click', function () {
+                            reviewModify(jsonInfo[i].reviewseq, jsonInfo[i].reviewcontent);
+                        });
 
+                        // 리뷰 삭제 버튼
+                        let btnReviewDelete = document.createElement('a');
+                        btnReviewDelete.innerText = '삭제';
+                        btnReviewDelete.setAttribute('style', 'cursor:pointer');
+                        btnReviewDelete.addEventListener('click', function () {
+                            console.log('삭제버튼 눌렀는데?')
+                            reviewDelete(jsonInfo[i].reviewseq);
+                        });
+                    tr.appendChild(tdActions);
+                    tr.appendChild(tdReviewer);
+                    tr.appendChild(tdReviewContent);
+                    tr.appendChild(tdRegDate);
                     tdActions.appendChild(btnReviewModify);
                     tdActions.appendChild(document.createTextNode(' '));  // 공백 추가
                     tdActions.appendChild(btnReviewDelete);
 
-                    tr.appendChild(tdReviewer);
-                    tr.appendChild(tdReviewContent);
-                    tr.appendChild(tdRegDate);
-                    tr.appendChild(tdActions);
-
                     reviewList.appendChild(tr);
+
+
                 }
             };
 
