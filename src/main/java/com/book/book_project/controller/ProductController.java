@@ -2,13 +2,10 @@ package com.book.book_project.controller;
 
 import com.book.book_project.dto.*;
 import com.book.book_project.entity.*;
-import com.book.book_project.entity.repository.CategoryRepository;
+import com.book.book_project.entity.repository.*;
 import com.book.book_project.service.NewsService;
 import com.book.book_project.service.ProductService;
 import com.book.book_project.entity.ProductEntity;
-import com.book.book_project.entity.repository.CartRepository;
-import com.book.book_project.entity.repository.MemberRepository;
-import com.book.book_project.entity.repository.ProductRepository;
 import com.book.book_project.service.*;
 import com.book.book_project.util.PageUtil;
 import com.book.book_project.util.PageUtil2;
@@ -30,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.lang.reflect.Member;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -55,6 +53,7 @@ public class ProductController {
     private final DeliveryService deliveryService;
     private final CategoryRepository categoryRepository;
     private final PurchaseInfoService purchaseInfoService;
+    private final BuyerInfoService buyerInfoService;
 
 
     // main화면 보기
@@ -89,56 +88,68 @@ public class ProductController {
     }
 
     @GetMapping("/product/productInfo")
-    public void getProductInfo(@RequestParam("page") int pageNum,
-                               @RequestParam("bookid") ProductEntity bookid,
-                               Model model,
-                               HttpSession session) throws Exception {
-
+    public void getProductInfo(@RequestParam("page") int pageNum, @RequestParam("bookid") ProductEntity bookid, Model model, HttpSession session) throws Exception {
         //상품정보를 불러와야함.
         String bookId= String.valueOf(bookid.getBookid());
-
         int postNum = 10; //한 화면에 보여지는 게시물 행의 갯수
         int pageListCount = 5; //화면 하단에 보여지는 페이지리스트의 페이지 갯수
         System.out.println("ProductEntity1: "+bookid.getClass().getName());
         System.out.println("ProductEntity2: "+bookid.getBookid());
-
         PageUtil page = new PageUtil();
         Page<ReviewEntity> list = reviewService.list(bookid, pageNum, postNum);
         int totalCount = (int)list.getTotalElements();
         if(session.getAttribute("userid")!=null){
             String userid = (String) session.getAttribute("userid");
             String nickname = memberService.memberInfo(userid).getNickname();
+            MemberEntity memberEntity = new MemberEntity();
+            memberEntity.setUserid(userid);
+            // 배송완료 , 구매확정시에만 댓글작성가능하게
+            List<BuyerInfoEntity> buyerInfoEntities = buyerInfoService.buyerInfo(memberEntity);
+            List<PurchaseInfoEntity> purchaseInfoEntities = new ArrayList<PurchaseInfoEntity>();
+            for(int i=0; i<buyerInfoEntities.size(); i++) {
+               int buyerseq = buyerInfoEntities.get(i).getBuyerseq();
+
+               PurchaseInfoEntity purchaseInfoEntity = new PurchaseInfoEntity();
+               BuyerInfoEntity buyerInfoEntity = new BuyerInfoEntity();
+                buyerInfoEntity.setBuyerseq(buyerseq);
+
+                purchaseInfoEntity.setBuyerseq(buyerInfoEntity);
+
+               purchaseInfoEntities.add(purchaseInfoEntity);
+            }
+            List<String> BookIdlist = new ArrayList<String>();
+                for(int t=0; t<purchaseInfoEntities.size(); t++) {
+                    BookIdlist = purchaseInfoService.GetBookId(purchaseInfoEntities.get(t).getBuyerseq().getBuyerseq());
+                }
+                    for(int k=0; k<BookIdlist.size(); k++) {
+                            if(BookIdlist.get(k).equals(bookId)) {
+                                if(purchaseInfoService.GetStatusSeq(bookId) == 5 || purchaseInfoService.GetStatusSeq(bookId) == 11) {
+                                    model.addAttribute("userid", userid);
+                                    break;
+                                }
+                            }
+                    }
             model.addAttribute("nickname", nickname);
-        }
-
-        //ReviewInterfaceImpl review = new ReviewInterfaceImpl(bookId);
-        //List<ReviewInterface> reviews =  reviewService.reviewView(review);
-
+            }
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedNow = now.format(formatter);
-
-
         int count = reviewService.countreview(bookId);
-
         model.addAttribute("count", count);
-
         model.addAttribute("currentDateTime", formattedNow);
-
-//        model.addAttribute("")
-
         model.addAttribute("view", service.view(bookId));
-
-
         model.addAttribute("list", list);
         System.out.println("......." + list);
         model.addAttribute("totalElement", totalCount);
         model.addAttribute("postNum", postNum);
         model.addAttribute("page", pageNum);
         model.addAttribute("pageList", page.getPageList(pageNum, postNum, pageListCount, totalCount, bookId));
+        }
 
 
-    }
+
+
+
 
 // interest에 따른 흥미보기
     @GetMapping("/product/productList")

@@ -44,6 +44,18 @@ public class PurchaseInfoServiceImpl implements PurchaseInfoService {
         return purchaseInfoRepository.findByBuyerseq(buyerseq);
     }
 
+    // bookid 를 토대로 statusseq 가져오기
+    @Override
+    public int GetStatusSeq(String bookid) throws Exception {
+        return purchaseInfoRepository.GetStatusSeq(bookid);
+    }
+
+    // buyerseq 를 토대로 bookid 가져오기
+    @Override
+    public List<String> GetBookId(int buyerseq) throws Exception {
+        return purchaseInfoRepository.GetBookId(buyerseq);
+    }
+
 
     @Override
     public List<PurchaseInfoEntity> unMemberPurchaseList(UnMemberEntity unmembertelno) throws Exception {

@@ -247,7 +247,7 @@
     <h4>추천 도서</h4>
     <div class="product-row">
 
-        <div class="product-item" th:each="product, stat : ${productList}" th:if="${stat.count <= 9}">
+        <div class="product-item" th:each="product, stat : ${productList}" th:if="${stat.count <= 8}">
             <a th:href="@{'/product/productInfo?bookid=' + ${product.bookid} + '&page=1'}"
                th:onclick="addProductToRecentlyViewed('[[${product.bookid}]]', '[[${product.bookname}]]', '[[${product.cover}]]')">
                 <img th:src="${product.cover}" alt="책 표지 이미지">

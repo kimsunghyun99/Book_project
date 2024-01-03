@@ -155,6 +155,12 @@
         });
 
 
+
+
+
+
+
+
         //리뷰 등록하기
         const reviewRegister = async () => {
             const reviewcontent = document.querySelector('#reviewcontent');
@@ -367,6 +373,19 @@
         window.onload = function() {
             var urlParams = new URLSearchParams('?bookid=123&page=1&focus=true');
             var focus = urlParams.get('focus');
+            // var userid =  `[[${session.userid}]]`;
+
+            // if(userid === '') {
+            //     var reviewList = document.getElementById('reviewList');
+            //     var reviewDiv = document.querySelector('.reviewDiv');
+            //     var btn_review = document.getElementById('btn_review');
+            //     var btn_cancel = document.getElementById('btn_cancel');
+            //     reviewDiv.style.display = 'none';
+            //     reviewList.style.display = 'block';
+            //     btn_review.style.display = 'none;'
+            //     btn_cancel.style.display = 'none;'
+            // }
+
 
             // if (focus === 'true') {
             //     document.getElementById("reviewcontent").focus();
@@ -382,7 +401,6 @@
     <div class="book-image-container"><br><br>
         <img class="book-image" id="cover" th:src="${view.cover}" alt="책 이미지">
         <div class="likes-reviews">
-
             <p class="book-reviews" th:text="'후기: ' + ${count}"></p>
         </div>
     </div>
@@ -391,8 +409,6 @@
         <p class="book-author" id="author" th:text="'작가: ' + ${view.author}"></p>
         <p class="book-price" id="price" th:text="'가격: ' + ${view.price} + '원'"></p>
 <!--        <p class="book-discount" id="pricesales" th:text="'할인가: ' + ${view.pricesales} + '%'"></p>-->
-
-
         <div id="volume">
             <input type='button' onclick='count("plus")' value='+'/>
             <span id="quantity">1</span>
@@ -414,7 +430,7 @@
             <div th:if="${session.userid!=null}">
                 <input type="button" id="btn_cart" class="btn_cart" value="장바구니 담기" th:onclick="cart()">
             </div>
-            <input type="button" class="pay" value="구매하기" th:onclick="GoPayment([[${view.bookid}]],document.getElementById('quantity').innerHTML)">
+            <input type="button" class="pay" value="구매하기" th:onclick="'GoPayment(' + ${view.bookid} + ',document.getElementById(\'quantity\').value);'">
         </div>
 <!--        <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.salespoint,3,'COMMA')} + '원'"></p>-->
         <br>
@@ -424,7 +440,7 @@
         <br>
 </div>
 
-<div class="reviewDiv" style="width:60%;height:300px;margin:auto;text-align:left;">
+<div th:if="${session.userid == userid}" class="reviewDiv" style="width:60%;height:300px;margin:auto;text-align:left;">
 
     <p id="reviewNotice">리뷰를 작성해 주세요.</p>
     <form id="reviewForm" name="reviewForm" method="POST">
@@ -437,14 +453,13 @@
         <!-- 리뷰 내용 입력 폼 -->
         <textarea id="reviewcontent" name="reviewcontent" cols="80" rows="5" maxlength="150" placeholder="글자수: 150자 이내"
                   onclick="checkAndAlert()"></textarea><br>
+        <!-- 리뷰 등록 버튼 -->
+        <input type="button" id="btn_review" value="리뷰 등록" onclick="reviewRegister()">
+        <!-- 리뷰 취소 버튼 -->
+        <input type="button" id="btn_cancel" value="취소" onclick="reviewCancel()">
+        <hr>
     </form>
-
-    <!-- 리뷰 등록 버튼 -->
-    <input type="button" id="btn_review" value="리뷰 등록" onclick="reviewRegister()">
-
-    <!-- 리뷰 취소 버튼 -->
-    <input type="button" id="btn_cancel" value="취소" onclick="reviewCancel()">
-    <hr>
+<div>
 
     <!-- 리뷰 목록 테이블 -->
     <table id="reviewList" style="width:100%; height:600px; overflow:auto;">
@@ -776,17 +791,6 @@
     <div>[(${pageList})]</div>
 
 <!--    <div id="pagination" style="margin-top: 10px;"></div>-->
-</div>
-
-
-
-
-
 
 </body>
-
-
-
-
-
 </html>

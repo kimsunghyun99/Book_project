@@ -23,6 +23,14 @@ public interface PurchaseInfoRepository extends JpaRepository<PurchaseInfoEntity
    // List<PurchaseInfoEntity> findByBuyerseq(BuyerInfoEntity buyerseq);
    PurchaseInfoEntity findByBuyerseq( BuyerInfoEntity buyerseq);
 
+
+    @Query(value = "select t.statusseq from tbl_purchaseinfo as t where t.bookid = :bookid", nativeQuery = true)
+    public int GetStatusSeq(@Param("bookid") String bookid);
+
+    @Query(value = "select t.bookid from tbl_purchaseinfo as t where t.buyerseq = :buyerseq", nativeQuery = true)
+    public List<String> GetBookId(@Param("buyerseq") int buyerseq);
+
+
     //주문 상태 불러오기
     @Query(value = "select * from tbl_purchasestatus", nativeQuery = true)
     List<Map<String,String>> statuslist();

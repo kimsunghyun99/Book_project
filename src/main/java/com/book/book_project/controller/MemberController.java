@@ -290,8 +290,6 @@ public class MemberController {
 
     //회원 구매내역 조회 화면
     @GetMapping("/member/memberPurchaseList")
-
-
     public void getMemberPurchaseList(Model model, HttpSession session,PurchaseInfoService purchaseInfoService) throws Exception {
 
         String userid = (String) session.getAttribute("userid");
