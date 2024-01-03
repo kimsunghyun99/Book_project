@@ -97,7 +97,6 @@ public class OnAuth2UserDetailsServiceimpl extends DefaultOAuth2UserService {
 			if("Y".equals(member.getSuspend())){
 				throw new RuntimeException("정지된 아이디입니다");
 			}
-			return member;
 		}
 	//23.12.14 수정 / 추가
 		//String provider = (String) session.getAttribute("provider");  // 로그인 공급자를 세션에서 참조
