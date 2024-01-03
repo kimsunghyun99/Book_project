@@ -77,4 +77,5 @@ public interface MemberService {
 
     public MemberEntity findById(String userid);
 
+
 }

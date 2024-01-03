@@ -37,4 +37,5 @@ public interface UnMemberRepository extends JpaRepository<UnMemberEntity, String
 
 
     UnMemberEntity findByUnmemberseq(int unmemerseq);
+
 }

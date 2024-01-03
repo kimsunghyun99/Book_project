@@ -556,6 +556,7 @@ public class MemberController {
 
 
 
+
 //        String bookid = requestData.get("bookid").toString();
 //        String receiveraddr = requestData.get("address").toString();
 //        String receiverdetailaddr = requestData.get("detailaddr").toString();

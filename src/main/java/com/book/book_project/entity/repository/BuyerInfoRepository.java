@@ -23,4 +23,5 @@ public interface BuyerInfoRepository extends JpaRepository<BuyerInfoEntity, Inte
     List<BuyerInfoEntity> findByUserid(MemberEntity userid);
 
     BuyerInfoEntity findByBuyerseq(int buyerseq);
+
 }

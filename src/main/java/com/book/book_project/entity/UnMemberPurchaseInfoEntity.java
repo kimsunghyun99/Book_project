@@ -28,6 +28,7 @@ public class UnMemberPurchaseInfoEntity {
     @Column(name="totalPrice", nullable=false)
     private int totalprice;
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action= OnDeleteAction.CASCADE)
     @JoinColumn(name="bookid", nullable = false)
