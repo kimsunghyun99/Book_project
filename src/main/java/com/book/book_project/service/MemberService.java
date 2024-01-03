@@ -78,4 +78,11 @@ public interface MemberService {
     public MemberEntity findById(String userid);
 
 
+    public int getPoint(String userid);
+
+    public boolean finalupdatePoint(String userid, int finalpoint);
+
+    public boolean totalupdatePoint(String userid, int totalpoint);
+
+
 }

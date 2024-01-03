@@ -73,4 +73,9 @@ public interface MemberRepository extends JpaRepository<MemberEntity, String> {
     //전체 회원 목록 불러오기
     public Page<MemberEntity> findByRole(String role, Pageable pageable);
 
+
+
+//    @Query(value = "SELECT SUM(point) FROM tbl_member", nativeQuery = true)
+//    public int getPoint(String userid);
+MemberEntity findByUserid(String userid);
 }
