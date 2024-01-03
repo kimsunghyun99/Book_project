@@ -21,11 +21,11 @@ public interface UnMemberRepository extends JpaRepository<UnMemberEntity, String
 
     //비회원 정보 가져오기
     @Query(value = "select * from tbl_unmember where temppassword = :temppassword", nativeQuery = true)
-    List<UnMemberEntity> findByTemppassword(String temppassword);
+    List<UnMemberEntity> findByTemppassword(@Param("temppassword") String temppassword);
 
     //비회원 전화번호 가져오기
-    @Query(value = "select * from tbl_unmember where receivertelno = receivertelno", nativeQuery = true)
-    List<UnMemberEntity> findByReceivertelno(String receivertelno);
+    @Query(value = "select * from tbl_unmember where receivertelno = :receivertelno", nativeQuery = true)
+    List<UnMemberEntity> findByReceivertelno(@Param("receivertelno") String receivertelno);
 
     //비회원 구매 목록 가져오기
     @Query(value = "SELECT * \n" +

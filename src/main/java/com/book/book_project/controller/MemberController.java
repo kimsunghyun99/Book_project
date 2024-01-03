@@ -451,6 +451,8 @@ public class MemberController {
         System.out.println("10" + receivertelno);
         String receivername = requestData.get("username") != null ? requestData.get("username").toString() : "";
         System.out.println("11" + receivername);
+        String finalpoint = requestData.get("finalpoint") != null ? requestData.get("finalpoint").toString() : "";
+        System.out.println("12" + finalpoint);
 
 
 
@@ -502,13 +504,29 @@ public class MemberController {
 
         purchaseInfoRepository.save(purchaseInfo);
 
+        MemberEntity memberinfo = new MemberEntity();
+
+        int originalPoint = memberService.getPoint(userid);
+        int currentPoint = originalPoint + Integer.parseInt(finalpoint);
+        System.out.println("오아아아아아아아아아아아아아아아아앙" + currentPoint);
+        memberinfo.setPoint(currentPoint);
 
 
         // 나머지 로직 수행
         // ...
 
+        boolean updateSuccess = memberService.updatePoint(userid, Integer.parseInt(finalpoint));
+
+        if (updateSuccess) {
+            int updatedPoint = memberService.getPoint(userid);
+            return ResponseEntity.ok("포인트 업데이트 성공! 현재 포인트: " + updatedPoint);
+        } else {
+            return ResponseEntity.badRequest().body("사용자가 존재하지 않아 포인트 업데이트 실패!");
+        }
+
+
         // 성공했을 경우 응답
-        return ResponseEntity.ok("Success");
+//        return ResponseEntity.ok("Success");
     }
 
     @Transactional

@@ -78,4 +78,7 @@ public interface MemberService {
     public MemberEntity findById(String userid);
 
 
+    public int getPoint(String userid);
+
+    public boolean updatePoint(String userid, int finalpoint);
 }
