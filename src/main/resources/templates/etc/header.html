@@ -124,22 +124,26 @@
             <a href="/member/login"> 로그인</a> |
             <a href="/member/signup"> 회원가입</a>
         </div>
+        <!-- 세션의 role이 MASTER일 경우 회원 관리, 회원 통계, 주문 관리 표시 -->
+        <div th:if="${session.role == 'MASTER'} and ${session.userid != null}">
+            <a href="/master/ageStatistics">연령별 통계</a> |
+            <a href="/master/memberManage"> 회원 관리</a> |
+            <a href="/master/genreStatistics">장르별 매출</a> |
+            <a href="/master/purchaseManage">회원 주문 관리</a> |
+            <a href="/master/unmemberPurchaseManage">비회원 주문 관리</a> |
+            <a href="/master/salesInfo"> 매출 내역</a> |
+            <a href="/master/bookUpdate"> 책 업데이트</a> |
+            <a href="/member/logout">로그아웃</a>
+        </div>
         <!-- 세션 값이 있을 경우 로그아웃 및 마이페이지 버튼 표시 -->
-        <div th:if="${session.userid != null}">
+        <div th:if="${session.userid != null} and ${session.role == 'USER'}">
             <a href="/product/productList?page=1"> 도서</a> |
             <a href="javascript:localcheck()"> 장바구니</a> |
             <a href="/member/memberPurchaseList"> 구매내역</a> |
             <a href="/member/memberInfoModify"> 회원 정보 변경</a> |
-            <!-- 세션의 role이 MASTER일 경우 회원 관리, 회원 통계, 주문 관리 표시 -->
-            <div th:if="${session.role == 'MASTER'}">
-                <a href="/master/memberManage"> 회원 관리</a> |
-                <a href="/master/purchaseManage"> 주문 관리</a> |
-                <a href="/master/salesInfo"> 매출 내역</a> |
-                <a href="/master/bookUpdate"> 책 업데이트</a> |
-            </div>
             <a href="/member/logout"> 로그아웃</a>
         </div>
-    </nav>
 
+    </nav>
 </div>
 </div>

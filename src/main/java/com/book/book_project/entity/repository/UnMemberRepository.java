@@ -32,6 +32,7 @@ public interface UnMemberRepository extends JpaRepository<UnMemberEntity, String
             "FROM tbl_unmemberpurchaseinfo ump \n" +
             "JOIN tbl_unmember u ON ump.unmemberseq = u.unmemberseq\n" +
             "JOIN tbl_product p ON ump.bookid = p.bookid \n" +
+            "JOIN tbl_purchasestatus pp ON ump.statusseq = pp.statusseq\n" +
             "WHERE u.receivertelno = :receivertelno", nativeQuery = true)
     List<Map<String, String>> unmempurchaseList(@Param("receivertelno") String receivertelno);
 

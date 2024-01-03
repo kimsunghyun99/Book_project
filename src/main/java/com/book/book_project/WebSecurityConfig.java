@@ -73,7 +73,8 @@ public class WebSecurityConfig {
 			.authorizeHttpRequests((authz) -> authz
 					.anyRequest().permitAll());
 
-		
+
+
 		//OAuth2 
 		http
 			.oauth2Login((login) -> login
