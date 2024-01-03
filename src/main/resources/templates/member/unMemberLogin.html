@@ -89,63 +89,63 @@
         }
 
     </style>
-<script>
-    //로그인 처리
-    const unMemberLoginCheck = async () => {
+    <script>
+        //로그인 처리
+        const unMemberLoginCheck = async () => {
 
-        const temppassword = document.querySelector('#temppassword');
-        const receivertelno = document.querySelector('#receivertelno');
-        const msg = document.querySelector('#msg');
+            const temppassword = document.querySelector('#temppassword');
+            const receivertelno = document.querySelector('#receivertelno');
+            const msg = document.querySelector('#msg');
 
-        if(receivertelno.value === ''){
-            alert("전화번호를 입력하세요")
-            receivertelno.focus();
-            return false;
+            if(receivertelno.value === ''){
+                alert("전화번호를 입력하세요")
+                receivertelno.focus();
+                return false;
+            }
+
+            if(temppassword.value === ''){
+                alert("비밀번호를 입력하세요")
+                temppassword.focus();
+                return false;
+            }
+
+            let formData = new FormData();
+            formData.append("receivertelno", receivertelno.value);
+            formData.append("temppassword", temppassword.value);
+            console.log(temppassword.value);
+            console.log(receivertelno.value);
+
+            await fetch('/member/unMemberLoginCheck',{
+                method: "POST",
+                body: formData
+            }).then((response) => response.json())
+                .then((data) => {
+                    if(data.message === 'GOOD'){
+                        document.location.href="/member/unMemberPurchaseList?receivertelno="+ receivertelno.value;
+                    }else if(data.message ==='Receivertelno_NOT_FOUND'){
+                        msg.innerHTML = '잘못된 전화번호입니다';
+                    }else if(data.message === 'PASSWORD_NOT_FOUND'){
+                        msg.innerHTML = '잘못된 비밀번호입니다';
+                    }else{
+                        alert("시스템 장애로 로그인이 실패했습니다");
+                    }
+                }).catch((error) => {
+                    console.log("error =" + error);
+                })
         }
 
-        if(temppassword.value === ''){
-            alert("비밀번호를 입력하세요")
-            temppassword.focus();
-            return false;
+        window.onload = async() => {
+
+            const unMemberlogin = () => {
+                document.loginForm.action = '/member/unMemberLogin'; //리퀘스트 발생
+                document.loginForm.submit();
+            }
         }
-
-        let formData = new FormData();
-        formData.append("receivertelno", receivertelno.value);
-        formData.append("temppassword", temppassword.value);
-        console.log(temppassword.value);
-        console.log(receivertelno.value);
-
-        await fetch('/member/unMemberLoginCheck',{
-            method: "POST",
-            body: formData
-        }).then((response) => response.json())
-            .then((data) => {
-                if(data.message === 'GOOD'){
-                    document.location.href="/member/unMemberPurchaseList?receivertelno="+ receivertelno.value;
-                }else if(data.message ==='Receivertelno_NOT_FOUND'){
-                    msg.innerHTML = '잘못된 전화번호입니다';
-                }else if(data.message === 'PASSWORD_NOT_FOUND'){
-                    msg.innerHTML = '잘못된 비밀번호입니다';
-                }else{
-                    alert("시스템 장애로 로그인이 실패했습니다");
-                }
-            }).catch((error) => {
-                console.log("error =" + error);
-            })
-    }
-
-    window.onload = async() => {
-
-        const unMemberlogin = () => {
-            document.loginForm.action = '/member/unMemberLogin'; //리퀘스트 발생
-            document.loginForm.submit();
-        }
-    }
-</script>
+    </script>
 </head>
 <body>
 <div class="container">
-<div th:include="/etc/header.html :: banner"></div>
+    <div th:include="/etc/header.html :: banner"></div>
     <br><br><br>
     <h2>비회원로그인</h2>
     <form name="loginForm" id="loginForm" method="post">
