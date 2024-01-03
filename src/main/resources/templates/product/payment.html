@@ -326,6 +326,29 @@
             var detailAddr = document.getElementById("detailaddr");
             var zipcode = document.getElementById("zipcode");
             var point = document.getElementById("totalSalespoint" +bookid);
+            var usepoint = document.getElementById("point");
+            var userpoint = document.getElementById("mypoint");
+
+            if(usepoint == ''){
+                if (point) {
+                    var totalpoint = point.innerText;
+                    var extractedNumber = parseInt(totalpoint.replace(/\D/g, ''), 10);
+                    console.log("//////////" + extractedNumber);
+                }
+            }else{
+                 totalpoint = point.innerText;
+               // var realusepoint = usepoint.innerText;
+                var realuserpoint = userpoint.innerText;
+                var realusepoint = parseInt(usepoint.value, 10);
+                extractedNumber = parseInt(totalpoint.replace(/\D/g, ''), 10);
+                 var pluspoint = (realuserpoint - realusepoint) + extractedNumber;
+                console.log("포인트 쓴 게 있어서 이거 찍힘");
+                 // console.log("ddddddd" +  point)
+                // console.log("아오오오ㅠㅇ노ㅓㅇ노ㅓㅇ" + realusepoint);
+                // console.log("아오오오ㅠㅇ노ㅓㅇ노ㅓㅇ" + realuserpoint);
+                //  console.log("아오오오ㅠㅇ노ㅓㅇ노ㅓㅇ" + pluspoint);
+            }
+
 
 
             console.log("Bookid:", bookid);
@@ -361,11 +384,13 @@
                 var book = bookname.innerText;
             }
 
-            if (point) {
-                var totalpoint = point.innerText;
-                var extractedNumber = parseInt(totalpoint.replace(/\D/g, ''), 10);
-                console.log("//////////" + extractedNumber);
-            }
+            // if (point) {
+            //     var totalpoint = point.innerText;
+            //     var extractedNumber = parseInt(totalpoint.replace(/\D/g, ''), 10);
+            //     console.log("//////////" + extractedNumber);
+            // }
+
+
             // 참조를 가져온 후에 값을 읽어보세요.
             var currentDate = new Date();
             var year = currentDate.getFullYear().toString().substr(2, 2);
@@ -387,6 +412,7 @@
             var postcode = zipcode ? zipcode.value : null;
             var date = new Date();
             var finalpoint = extractedNumber;
+            var totalpoint = pluspoint;
 
             console.log("merchant_uid:", merchant_uid);
             console.log("amount:", amount);
@@ -399,6 +425,7 @@
             console.log("postcode", postcode);
             console.log("receivertelno", receivertelno);
             console.log("finalpoint", finalpoint);
+            console.log("totalpoint", totalpoint);
 
 
             // 나머지 코드 (Ajax 호출 등) 추가
@@ -418,7 +445,8 @@
                 detailaddr: detailaddr,
                 postcode: postcode,
                 date: date,
-                finalpoint : finalpoint
+                finalpoint : finalpoint,
+                totalpoint: totalpoint
             }, function (rsp) {
                 if (rsp.success) {
                     // 결제 성공 시에 서버로 데이터 전송
@@ -438,7 +466,8 @@
                             "postcode": postcode,
                             "username": username,
                             "receivertelno": receivertelno,
-                            "finalpoint" : finalpoint
+                            "finalpoint" : finalpoint,
+                            "totalpoint" : totalpoint
 
 
                         }),
