@@ -11,6 +11,9 @@
             font-weight: normal;
             font-style: normal;
         }
+        span {
+            font-family: 'GmarketSansMedium';
+        }
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -95,6 +98,20 @@
 
         #volume br {
             display: none; /* 줄바꿈 요소 숨김 */
+        }
+
+        input[type="button"] {
+
+
+            background-color:#ffd518;
+            color: #000000;
+            border:none;
+            border-radius:10px;
+        }
+
+        .btn_cart ,.pay {
+            width:100%;
+            height:50%;
         }
 
     </style>
@@ -345,7 +362,7 @@
         <img class="book-image" id="cover" th:src="${view.cover}" alt="책 이미지">
         <div class="likes-reviews">
 
-            <p class="book-reviews" th:text="'후기: ' + ${count}"></p>>후기: 00</p>
+            <p class="book-reviews" th:text="'후기: ' + ${count}"></p>
         </div>
     </div>
     <div class="book-info"><br><br>
@@ -370,16 +387,13 @@
         <span>적립 포인트 : </span> <span id="total_salespoint">[[${view.salespoint}]] point</span>
         </div>
         <div class="book-actions">
-
             <div th:if="${session.userid==null}">
                 <input type="button" id="btn_unmembercart" class="btn_cart" value="장바구니 담기" th:onclick="unMemberCart()">
             </div>
             <div th:if="${session.userid!=null}">
                 <input type="button" id="btn_cart" class="btn_cart" value="장바구니 담기" th:onclick="cart()">
             </div>
-
-            <input type="button" value="구매하기" th:onclick="GoPayment([[${view.bookid}]],document.getElementById('quantity').innerHTML)">
-
+            <input type="button" class="pay" value="구매하기" th:onclick="GoPayment([[${view.bookid}]],document.getElementById('quantity').innerHTML)">
         </div>
 <!--        <p class="book-price" th:text="'포인트 적립: ' + ${#numbers.formatInteger(view.salespoint,3,'COMMA')} + '원'"></p>-->
         <br>
@@ -391,7 +405,7 @@
 
 <div class="reviewDiv" style="width:60%;height:300px;margin:auto;text-align:left;">
 
-    <p id="reviewNotice">리뷰을 작성해 주세요.</p>
+    <p id="reviewNotice">리뷰를 작성해 주세요.</p>
     <form id="reviewForm" name="reviewForm" method="POST">
         <input type="hidden" id="bookid" name="bookid" th:value="${view.bookid}">
         <input type="hidden" id="userid" name="userid" th:value="${session.userid}">

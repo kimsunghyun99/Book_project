@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원가입</title>
     <style>
+
+        @font-face {
+            font-family: 'GmarketSansMedium';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         body {
             font-family: Arial, sans-serif;
         }
@@ -54,21 +62,23 @@
         }
 
         #subcategories {
-            display: none;
-            margin-top: 10px; /* 상단 여백 조절 */
+            padding-top: 20px;
+            padding-right: 300px;
+            font-family: 'GmarketSansMedium';
         }
 
         #subcategories label {
-            display: inline-block;
-            /*margin-bottom: 5px; !* 각 라디오 버튼 아래 여백 조절 *!*/
-            margin-right: 10px;
-            /*vertical-align: middle;*/
+            display: block;
+            margin-bottom: 8px;
+            white-space: nowrap; /* 글자가 길어질 경우 줄바꿈 방지 */
 
         }
 
         #subcategories input[type="radio"] {
-            margin-right: 5px; /* 라디오 버튼 오른쪽 여백 조절 */
-            margin-top: 10px;
+            display: inline-block;
+            vertical-align: middle; /* 수직 정렬 추가 */
+            margin-bottom: 0; /* 여백 제거 */
+            margin-right: 5px; /* 라디오 버튼 사이 여백 조절 */
         }
 
 

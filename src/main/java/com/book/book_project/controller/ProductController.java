@@ -140,7 +140,7 @@ public class ProductController {
 
     }
 
-
+// interest에 따른 흥미보기
     @GetMapping("/product/productList")
     public void getProductList(@RequestParam(name = "category", required = false, defaultValue = "all") String interest, @RequestParam("page") int pageNum,@RequestParam(name="keyword",defaultValue="",required=false) String keyword, Model model) throws Exception{
 
