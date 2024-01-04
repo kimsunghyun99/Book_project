@@ -8,21 +8,42 @@
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
+        background-color: #f2ede9;
     }
+
+    header {
+        background: #ffc118;
+        color: #FFF;
+        text-align: center;
+        padding: 10px;
+        height: 200px;
+    }
+
+    nav {
+        text-align: center;
+        padding: 10px;
+    }
+
+    h2 {
+        font-family: 'WarhavenB';
+        font-size: 30px;
+        color: #191919;
+    }
+
 
     .container {
         display: flex;
         flex-direction: row; /* 수평으로 정렬 */
         align-items: center;
-        border: 1px solid #ddd;
+        border: 1px solid #ffc118;
         padding: 20px;
         margin-top: 20px; /* 상단 여백 추가 */
-        width: 50%; /* 가로폭을 조절하여 중앙으로 정렬 */
+        /*width: 50%;  가로폭을 조절하여 중앙으로 정렬 */
+        justify-content: space-between;
+        width: 50%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 30px;
     }
 
     .info-container {
@@ -30,18 +51,25 @@
         flex-direction: column; /* 세로로 정렬 */
         align-items: center;
         margin-left: 100px; /* 오른쪽 여백 추가 */
+        text-align: center;
+        margin-top: -30px;
+        margin-bottom: 13px;
     }
 
     .book-image img {
         width: 150px;
         height: auto;
-        margin-bottom: 20px; /* 아래 여백 추가 */
+        margin-bottom: -49px;
+        margin-right: auto;
+        margin-left: -80px;
+    }
     }
 
     .book-info,
     .buyer-info {
         text-align: left;
-        margin-top: 20px; /* 상단 여백 추가 */
+        margin-top: 20px;
+        margin-left: -40px;
     }
 
     select {
@@ -50,12 +78,6 @@
         margin-top: 10px;
     }
 
-    header input[type="text"] {
-        width: 200px; /* 검색바 너비 조절 */
-        padding: 5px; /* 내부 여백 추가 */
-        margin-left: auto; /* 검색바를 헤더 오른쪽에 위치시키기 */
-        margin-right: 10px; /* 오른쪽 여백 추가 */
-    }
 </style>
 <Script>
     // 회원 주문 상태 변경
@@ -109,14 +131,8 @@
 </head>
 <body>
 <div th:include="/etc/header.html :: banner"></div>
-<h1>주문 확인</h1>
-<div style="width:80%; text-align:center; position:relative; left: 35px; ">
-    <input type="text" placeholder="검색">
-    <h2>회원 주문</h2>
-</div>
-
+<h2 style="text-align:center;">회원 주문 확인</h2>
 <div class="container" th:each="purchase : ${memPurchaseList}">
-    <input type="checkbox">
     <div class="info-container">
         <div class="book-image" >
             <img th:src="${purchase.cover}" alt="책 이미지">
@@ -128,7 +144,7 @@
             <h2 th:text="${purchase.bookname}"></h2>
             <p th:text="${purchase.author}"></p>
             <p th:text="${purchase.publisher}"></p>
-            <p th:text="${purchase.price}"></p>
+            <p th:text="|${#numbers.formatInteger(purchase.price, 3, 'COMMA')}원|"></p>
             <p th:text="${purchase.publicationdate}"></p>
 
             <select class="statusSelect" th:data-purchaseinfonumber="${purchase.purchaseinfonumber}">
