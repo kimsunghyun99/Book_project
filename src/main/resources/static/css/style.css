@@ -568,6 +568,7 @@ form{
 }
 .cancel, .exchange, .refund, .exchangecancel, .refundcancel {
     width: 100%;
+    margin: auto;
     display: none;
 }
 #exchangeDiv, #refundDiv {

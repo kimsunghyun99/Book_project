@@ -298,13 +298,13 @@
                 <td th:text="${list.totalprice}"></td>
                 <td th:id="'status'+${stat.index}" class="status" th:text="${statusList[stat.index]}"></td>
                 <td>
-                    <button th:id="'reply' + ${stat.index}"><a th:href="@{'/product/productInfo?bookid='+ ${bookids[stat.index]} + '&page=1'  + '&focus=true'}">리뷰작성</a></button>
+                    <button th:id="'reply' + ${stat.index}" style="width: 100%"><a th:href="@{'/product/productInfo?bookid='+ ${bookids[stat.index]} + '&page=1'  + '&focus=true'}">리뷰작성</a></button>
                     <button th:id="'cancel'+${stat.index}" class="cancel" th:onclick="'cancel(\'' + ${stat.index} + '\')'">주문취소</button>
                     <button th:id="'exchange' + ${stat.index}" class="exchange" th:onclick="'javascript:showDiv(' + ${stat.index} + ');'">교환</button>
                     <button th:id="'refund' + ${stat.index}" class="refund" th:onclick="'javascript:showDiv1(' + ${stat.index} + ');'">환불</button>
                     <button th:id="'exchangecancel' + ${stat.index}" class="exchangecancel" th:onclick="'cancelexchangeorrefund(\'' + ${stat.index} + '\')'">교환취소</button>
                     <button th:id="'refundcancel' +${stat.index}" class="refundcancel" th:onclick="'cancelexchangeorrefund(\'' + ${stat.index} + '\')'">환불취소 </button>
-                    <button th:id="'determine' + ${stat.index}" class="determine" th:onclick="'determine(\'' + ${stat.index} + '\')'">구매확정</button>
+                    <button th:id="'determine' + ${stat.index}" class="determine" style="width: 100%" th:onclick="'determine(\'' + ${stat.index} + '\')'">구매확정</button>
                 </td>
             </tr>
             </th:block>

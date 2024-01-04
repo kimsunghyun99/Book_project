@@ -82,9 +82,8 @@ public interface MemberService {
 
     public int getPoint(String userid);
 
-    public boolean finalupdatePoint(String userid, int finalpoint);
+    public boolean finalupdatePoint(String userid, int finalpoint, int totalpoint);
 
-    public boolean totalupdatePoint(String userid, int totalpoint);
 
 
 }

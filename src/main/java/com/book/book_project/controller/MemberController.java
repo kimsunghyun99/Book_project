@@ -303,6 +303,8 @@ public class MemberController {
         List<String> BookIdList = new ArrayList<>();
         List<String> StatusList = new ArrayList<>();
 
+        Collections.reverse(buyerInfo);
+
         for(int i =0; i<buyerInfo.size(); i++) {
 
             BuyerInfoEntity buyerInfoEntity = buyerInfoRepository.findById(buyerInfo.get(i).getBuyerseq()).orElse(null);

@@ -230,22 +230,6 @@ public class MemberServiceImpl implements MemberService {
 
         return false; // 사용자가 존재하지 않으면 업데이트 실패
     }
-    @Override
-    public boolean totalupdatePoint(String userid, int totalpoint) {
-        MemberEntity memberEntity = memberRepository.findByUserid(userid);
-
-        // 사용자가 존재하면 포인트를 업데이트하고 저장
-        if (memberEntity != null) {
-
-
-            int newPoint = totalpoint;
-            memberEntity.setPoint(newPoint);
-            memberRepository.save(memberEntity);
-            return true;
-        }
-
-        return false; // 사용자가 존재하지 않으면 업데이트 실패
-    }
 
     //회원 구매 순위
     @Override
