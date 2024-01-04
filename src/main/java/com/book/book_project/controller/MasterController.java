@@ -324,7 +324,8 @@ public class MasterController {
             Map<String, Object> totalSalesPriceMap = new HashMap<>();
             totalSalesPriceMap.put("totalsales", map2.get("totalsales"));
             totalSalesPriceMap.put("totalvolume", map2.get("totalvolume"));
-
+            System.out.println(totalSalesPriceMap.put("totalsales", map2.get("totalsales")));
+            System.out.println(totalSalesPriceMap.put("totalvolume", map2.get("totalvolume")));
             totalSalesPriceList.add(totalSalesPriceMap);
         }
 

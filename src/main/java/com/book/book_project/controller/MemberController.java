@@ -411,7 +411,7 @@ public class MemberController {
         }
 
         session.setAttribute("receivertelno", unMember.getReceivertelno());
-
+        System.out.println(session);
         return "{\"message\":\"GOOD\"}";
 
     }

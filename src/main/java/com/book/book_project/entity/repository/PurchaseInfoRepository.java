@@ -88,10 +88,10 @@ public interface PurchaseInfoRepository extends JpaRepository<PurchaseInfoEntity
 
     //전체 판매 수량, 전체 판매 금액 합계
     @Query(value = "SELECT \n" +
-            "  (SELECT sum(total_price) FROM tbl_purchaseinfo WHERE statusseq = 11) +\n" +
-            "  (SELECT sum(total_price) FROM tbl_unmemberpurchaseinfo WHERE statusseq = 11) AS totalsales,\n" +
-            "  (select sum(volume) from tbl_purchaseinfo where statusseq = 11) +\n" +
-            "  (select sum(volume) from tbl_unmemberpurchaseinfo where statusseq = 11) as totalvolume", nativeQuery = true)
+            "(SELECT SUM(p.total_price) FROM tbl_purchaseinfo p WHERE p.statusseq = '11')+\n" +
+            "(SELECT SUM(up.total_price) FROM tbl_unmemberpurchaseinfo up WHERE up.statusseq = '11') AS totalsales,\n" +
+            "(SELECT SUM(p.volume) FROM tbl_purchaseinfo p WHERE p.statusseq = '11')+\n" +
+            "(SELECT SUM(up.volume) FROM tbl_unmemberpurchaseinfo up WHERE up.statusseq = '11') AS totalvolume", nativeQuery = true)
     List<Map<String, String>> totalSalesPrice();
 
     //카테고리 별 매출(일별 매출)

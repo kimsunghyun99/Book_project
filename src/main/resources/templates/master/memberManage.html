@@ -63,15 +63,16 @@
         background-color: #ffc118;
     }
 
-    .paging{
-        margin-left: -260px;
+    .bottom_menu {
+        text-align: right;
+        margin-right: 20%;
     }
 
-    .bottom_menu {
-        text-align: left;
-        margin-top: -50px;
-        margin-bottom: 10px;
+    .pagelist {
+        text-align: center;
+        margin-left: -23%;
     }
+
     .button-like {
         display: inline-block;
         padding: 10px 15px;
@@ -138,6 +139,15 @@
     <h2>회원</h2>
     <div class="table-container">
         <table class="InfoTable">
+            <div class="bottom_menu">
+                <form id="memberSuspendForm" method="POST" action="/master/suspend">
+                    <input type="hidden" id="suspendMembers" name="suspendMembers">
+                    <a href="javascript:suspendSelectedMembers()" class="button-like">정지/해제</a>
+                </form>
+                <form id="unSuspendMembersForm" method="POST" action="/master/unsuspend">
+                    <input type="hidden" id="unSuspendMembers" name="unSuspendMembers">
+                </form>
+            </div>
             <tr>
                 <th>선택</th>
                 <th>순번</th>
@@ -150,28 +160,19 @@
             <tr th:each="member, stat : ${members.content}" th:with="pageNum=${members.number}, pageSize=${members.size}, rowNum=${pageNum*pageSize + stat.index + 1}">
                 <td><input type="checkbox" class="member-checkbox" th:value="${member.userid}" th:data-suspend="${member.suspend}"></td>
                 <td th:text="${rowNum}"></td> <!-- 순번 -->
-                <td th:text="${member.nickname}"></td><!-- 회원 nickname -->
+                <td th:text="${member.userid}"></td><!-- 회원 nickname -->
                 <td th:text="${member.username}"></td><!-- 회원명 -->
                 <td th:text="${#dates.format(member.regdate, 'yyyy-MM-dd')}"></td><!-- 가입일 -->
                 <td th:text="${member.interest}"></td><!-- 선호장르 -->
                 <td th:text="${member.suspend}"></td>
             </tr>
         </table>
-        <div class="paging">
+        <div class="pagelist">
             <!-- <a th:if="${members.first}" disabled="disabled"> 첫 페이지 </a> -->
-            <!-- <a th:if="${!members.first}" th:with="prevPage=${members.number - 1}" th:href="@{'/master/memberManage?page=' + ${prevPage}}"> 이전 페이지 </a>-->
+            <!-- <a th:if="${!members.first}" th:with="prevPage=${members.number - 1}" th:href="@{'/master/memberManage?page=' + ${prevPage}}"> 이전 페이지 </a> -->
             <a th:each="page : ${#numbers.sequence(0, members.totalPages)}" th:with="displayPage=${page.intValue() + 1}, intPage=${page.intValue()}" th:href="@{'/master/memberManage?page=' + ${intPage}}" th:text="${displayPage}"></a>
-            <!--<a th:if="${!members.last}" th:with="nextPage=${members.number + 1}" th:href="@{'/master/memberManage?page=' + ${nextPage}}"> 다음 페이지 </a>-->
-            <!--<a th:if="${members.last}" disabled="disabled"> 마지막 페이지 </a> -->
-        </div>
-        <div class="bottom_menu">
-            <form id="memberSuspendForm" method="POST" action="/master/suspend">
-                <input type="hidden" id="suspendMembers" name="suspendMembers">
-                <a href="javascript:suspendSelectedMembers()" class="button-like">정지/해제</a>
-            </form>
-            <form id="unSuspendMembersForm" method="POST" action="/master/unsuspend">
-                <input type="hidden" id="unSuspendMembers" name="unSuspendMembers">
-            </form>
+<!--            <a th:if="${!members.last}" th:with="nextPage=${members.number + 1}" th:href="@{'/master/memberManage?page=' + ${nextPage}}"> 다음 페이지 </a>-->
+<!--            <a th:if="${members.last}" disabled="disabled"> 마지막 페이지 </a>-->
         </div>
     </div>
 

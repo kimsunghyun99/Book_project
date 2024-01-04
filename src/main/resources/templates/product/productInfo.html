@@ -32,16 +32,10 @@
         });
 
 
-
-
-
-
-
-
-        //리뷰 등록하기
-        const reviewRegister = async () => {
-            const reviewcontent = document.querySelector('#reviewcontent');
-            const reviewer = document.querySelector('#reviewer');
+    //리뷰 등록하기
+    const reviewRegister = async () => {
+        const reviewcontent = document.querySelector('#reviewcontent');
+        const reviewer = document.querySelector('#reviewer');
 
             if(reviewer.value === '') {
                 alert('닉네임을 등록해주세요');
@@ -286,6 +280,7 @@
     <div th:insert="~{/etc/header.html :: headerFragment}"></div>
 </head>
 <body>
+<div th:include="/etc/header.html"></div>
 <br><br><br>
 <div class="book-details">
     <div class="book-image-container"><br><br>
