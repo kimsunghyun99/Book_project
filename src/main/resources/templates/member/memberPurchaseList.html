@@ -2,136 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-
-
-    <style>
-
-        @font-face {
-            font-family: 'GmarketSansMedium';
-            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f2ede9;
-        }
-
-        header {
-            background: #ffc118;
-            color: #FFF;
-            text-align: center;
-            padding: 10px;
-        }
-
-        nav {
-            text-align: center;
-            padding: 10px;
-        }
-
-        #exchangeDiv, #refundDiv {
-            display: none;
-        }
-
-        button{
-            margin-bottom: 10px;
-            background:#ffd518;
-            /*border: 1px solid #1AAB8A; !* 테두리 추가 */
-            border: none;
-            position:relative;
-            height:30px;
-            font-size:1.0em;
-            padding:0 1em;
-            cursor:pointer;
-            transition:800ms ease all;
-            outline:none;
-            color: #000;
-        }
-        button:hover{
-            background:#fff;
-            color:#1AAB8A;
-        }
-        button:before,button:after{
-            content:'';
-            position:absolute;
-            top:0;
-            right:0;
-            height:1px;
-            width:0;
-            background: #1AAB8A;
-            transition:400ms ease all;
-        }
-        button:after{
-            right:inherit;
-            top:inherit;
-            left:0;
-            bottom:0;
-        }
-        button:hover:before,button:hover:after{
-            width:10%;
-            transition:800ms ease all;
-        }
-
-
-
-        .cancel, .exchange, .refund, .exchangecancel, .refundcancel {
-            display: none;
-        }
-
-        @font-face {
-            font-family: 'GmarketSansMedium';
-            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        .table-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 50vh; /* 높이 조절, 원하는 만큼 설정하세요 */
-
-        }
-
-        table {
-            /* 테이블 스타일, 원하는 스타일 설정 */
-            border-collapse: collapse;
-            border: 1px solid #ddd;
-            width: 80%; /* 테이블 너비 조절, 원하는 만큼 설정하세요 */
-            background-color: #fff; /* 초기 배경색을 흰색으로 설정 */
-        }
-
-        th, td {
-            font-family: 'GmarketSansMedium';
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            text-align:center;
-            background-color: #ffc118;
-        }
-        a {
-            text-decoration: none; /* 링크의 밑줄 제거 */
-            color: inherit; /* 기본 색상 유지 */
-        }
-
-
-
-    </style>
-
-
+    <title>회원구매내역조회</title>
+    <link rel="stylesheet" href="/css/style.css">
     <script>
-
-
-
-
-
-
-
         document.addEventListener("DOMContentLoaded", function() {
 
             const statusElements = document.querySelectorAll('[id^="status"]');
@@ -402,33 +275,29 @@
 
 
     </script>
-</head>
-    <title>회원구매내역조회</title>
-<!--    <script src="/js/getCookie.js"></script>-->
-<body>
 <div th:insert="~{/etc/header.html :: headerFragment}"></div>
+</head>
+<body>
     <h2 style="font-family:GmarketSansMedium">&nbsp&nbsp&nbsp&nbsp구매내역조회</h2>
 <br>
-    <div class="table-container">
-        <table border="1px">
+    <div class="container">
+        <table style="width: 70%">
             <tr style="text-align:center">
                 <th>주문일자</th>
                 <th>주문번호</th>
                 <th>상품명</th>
                 <th>결제금액</th>
-                <th colspan="2">주문상태</th>
+                <th>주문상태</th>
                 <th></th>
             </tr>
             <th:block th:if="${purchaseInfo != null}">
-            <tr th:each="list, stat :${purchaseInfo}"
-                onMouseover="this.style.background='#46D2D2'"
-                onMouseout="this.style.background='white'">
+            <tr th:each="list, stat :${purchaseInfo}">
                 <td th:text="${list.purchasedate}"></td>
                 <td th:id="purchaseinfonumber + ${stat.index}" th:text="${list.purchaseinfonumber}"></td>
                 <td th:text="${booknames[stat.index]}"></td>
                 <td th:text="${list.totalprice}"></td>
                 <td th:id="'status'+${stat.index}" class="status" th:text="${statusList[stat.index]}"></td>
-                <td colspan="3">
+                <td>
                     <button th:id="'reply' + ${stat.index}"><a th:href="@{'/product/productInfo?bookid='+ ${bookids[stat.index]} + '&page=1'  + '&focus=true'}">리뷰작성</a></button>
                     <button th:id="'cancel'+${stat.index}" class="cancel" th:onclick="'cancel(\'' + ${stat.index} + '\')'">주문취소</button>
                     <button th:id="'exchange' + ${stat.index}" class="exchange" th:onclick="'javascript:showDiv(' + ${stat.index} + ');'">교환</button>

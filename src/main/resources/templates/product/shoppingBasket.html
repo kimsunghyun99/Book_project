@@ -32,19 +32,20 @@
                     const bookCell = row.insertCell(1);
                     const anchor = document.createElement('a');
                     anchor.href = '/product/productInfo?bookid=' + item.bookid + '&page=1';
+                    anchor.classList.add('bsk_book-container');
 
                     bookCell.appendChild(anchor);
 
                     const img = document.createElement('img');
                     img.src = item.cover;
-                    img.classList.add('book-image');
+                    img.classList.add('bsk-book-image');
                     anchor.appendChild(img);
                     anchor.href = '/product/productInfo?bookid=' + item.bookid + '&page=1';
                     const br = document.createElement('br');
                     anchor.appendChild(br);
 
                     const bookNameSpan = document.createElement('span');
-                    bookNameSpan.classList.add('book-name');
+                    bookNameSpan.classList.add('bsk-book-name');
                     bookNameSpan.textContent = item.bookname;
                     anchor.appendChild(bookNameSpan);
 
@@ -289,9 +290,9 @@
 <br>
 <br>
 <br>
-<h3>장바구니</h3>
+<h2>장바구니</h2>
 <table style="width: 60%">
-    <tbody id="cartBod">
+    <tbody id="cartBody">
     <th style="width: 5%;margin: auto;height: auto"><input type="checkbox" id="checkAll"></th>
     <th>책</th>
     <th>가격</th>

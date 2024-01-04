@@ -45,6 +45,7 @@ h1 a:hover {
 }
 
 h2 {
+    text-align: center;
     font-family: 'GmarketSansMedium';
     font-size:36px;
     margin-top: 0;
@@ -128,15 +129,15 @@ input {
     box-sizing: border-box;
 }
 button {
-    background-color: #4CAF50;
-    color: white;
+    background-color: #ffd518;
+    color: black;
     padding: 10px 15px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
 }
 button:hover {
-    background-color: #45a049;
+    background-color: #ffd518;
 }
 
 input[type="radio"] {
@@ -161,6 +162,16 @@ form{
     text-align: center;
     width: 25%;
     margin: 5px
+}
+
+.form-input {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    margin: 5px 0;
+    font-size: 18px;
+    border: solid 1px;
+    border-radius: 4px;
 }
 
 .product-row {
@@ -233,6 +244,7 @@ form{
 }
 
 .btn_order  {
+    font-family: 'GmarketSansMedium';
     width:600px;
     height:40px;
     background: #168;
@@ -266,12 +278,10 @@ form{
 }
 .InfoTable th:first-child, .InfoTable td:first-child {
     border-left: 0;
+    text-align: left;
 }
 .InfoTable th:last-child, .InfoTable td:last-child {
     border-right: 0;
-}
-.InfoTable tr td:first-child{
-    text-align: left;
 }
 .InfoTable caption{
     caption-side: top;
@@ -332,6 +342,7 @@ form{
     text-align: center;
     gap: 10px;
     margin: auto;
+    margin-left: 60%;
 }
 .book-actions input {
     margin: 20px;
@@ -405,12 +416,11 @@ form{
 
 .delete-button {
     background-color: #dc3545;
-    color: black;
 }
 
 .buy-button{
     background-color: #ffd153;
-    color: black;
+
 }
 
 .total-payment {
@@ -425,6 +435,7 @@ form{
     padding: 10px;
     font-family: 'GmarketSansMedium';
     font-size: 1.2em;
+    color: black;
     cursor: pointer;
     border: none;
     border-radius: 5px;
@@ -433,14 +444,14 @@ form{
 
 .userid,
 .password,
-#btn_login {
+#btn_login, #btn_signup {
     width: 100%;
     padding: 10px;
     box-sizing: border-box;
     margin: 5px;
 }
 
-.btn_login {
+.btn_login,.btn_signup {
     font-size: 18px;
     background-color: #ffd153; /* 뉴트럴톤 노랑색 */
     color: black;
@@ -498,6 +509,100 @@ form{
     vertical-align: middle;
 }
 
+.unmember{
+
+    display: flex;
+    flex-direction: column; /* 수직 방향으로 정렬하려면 column을 사용합니다. */
+    align-items: center;
+}
+.unmemberps{
+    padding-left: 18%;
+}
+.addr{
+    font-family: 'GmarketSansMedium';
+    width: 25%;
+    font-family: 'GmarketSansMedium';
+    display: flex;
+    flex-direction: column; /* 수직 방향으로 정렬하려면 column을 사용합니다. */
+    align-items: center;
+    margin: auto;
+}
+.input_field {
+    display: block;
+    margin: 0 auto;
+    width: 80%; /* 원하는 폭으로 조절하세요 */
+    font-size: 16px; /* 원하는 폰트 크기로 조절하세요 */
+    padding: 10px;
+    box-sizing: border-box;
+}
+.btn_write,.btn_cancel {
+    display:inline-block;
+    width: 20%; /* 원하는 폭으로 조절하세요 */
+    font-size: 18px;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: #ffd153;
+    color: black;
+    font-weight: bold;
+    border:none;
+    cursor:pointer;
+    font-family: 'GmarketSansMedium';
+}
+.btn_modify{
+    background-color: #ffd153;
+    color: black;
+    font-weight: bold;
+    border:none;
+    cursor:pointer;
+}
+.input_field {
+    display: block;
+    margin: 0 auto;
+    width: 80%; /* 원하는 폭으로 조절하세요 */
+    font-size: 16px; /* 원하는 폰트 크기로 조절하세요 */
+    padding: 10px;
+    box-sizing: border-box;
+}
+.delivery{
+    margin-left: 45%;
+}
+.cancel, .exchange, .refund, .exchangecancel, .refundcancel {
+    width: 100%;
+    display: none;
+}
+#exchangeDiv, #refundDiv {
+    display: none;
+}
+#delete{
+    background-color: #ffd153;
+    color: black;
+    font-weight: bold;
+    border:none;
+    cursor:pointer;
+    font-family: 'GmarketSansMedium';
+}
+#subcategories label {
+    display: block;
+    margin-bottom: 8px;
+    white-space: nowrap; /* 글자가 길어질 경우 줄바꿈 방지 */
+}
+
+#subcategories input[type="radio"] {
+    display: inline-block;
+    vertical-align: middle; /* 수직 정렬 추가 */
+    margin-bottom: 0; /* 여백 제거 */
+    margin-right: 5px; /* 라디오 버튼 사이 여백 조절 */
+}
+#subcategories{
+    padding-top: 20px;
+    padding-right: 300px;
+    font-family: 'GmarketSansMedium';
+}
+#buyerTelno,  #unMemberPassword,#unMemberPasswordCheck{
+    width: 25%;
+
+    font-family: 'GmarketSansMedium';
+}
 
 #sumOfCheckedPrices {
     font-size: 1.5em;
@@ -532,20 +637,21 @@ form{
 #reviewList{
     padding: 10px;
     text-align: center;
-    width: 100%;
+    width: 40%;
     border: 1px solid #ddd;
+    margin-left: 32%;
     margin-bottom: 15%;
 }
 
-#btn_addrSearch {
-    width: 80px;
-    height: 20px;
+#btn_addrSearch, #newdelivery{
+    width: 100%;
+    height: auto;
     margin: 5px;
     padding: 10px 10px;
-    color:  white;
+    color:  black;
     font-size:16px;
     font-weight: bold;
-    background: #168;
+    background: #ffd153;
     display:inline-block;
     cursor: pointer;
 }
@@ -594,8 +700,13 @@ form{
 }
 #addplus {
     display: none;
+    margin: auto;
+    width: 50%;
 }
-
+#infoModify_btn{
+    margin: auto;
+    text-align: center;
+}
 #quantity {
     display: inline-block; /* 인라인 요소로 배치 */
     font-size: 16px; /* 원하는 폰트 크기로 조절 */

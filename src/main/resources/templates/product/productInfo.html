@@ -181,8 +181,8 @@
 
         const unMemberCart = () => {
 
-            // var bookid = document.getElementById("bookid").value;
             var bookid = `[[${view.bookid}]]`
+            // var bookid = document.getElementById("bookid").value;
             var bookname = document.getElementById("bookname").innerText;
             var cover = document.getElementById("cover").getAttribute('src');
             var author = document.getElementById("author").innerText.replace('작가: ', '');
@@ -220,19 +220,10 @@
             }
         };
 
+        const GoPayment = async (bookid, quantity) => {
+            var userid =  `[[${session.userid}]]`;
+            console.log(userid);
 
-        document.addEventListener('DOMContentLoaded', function() {
-            var userid =  `[[${session.userid}]]`
-            // var bookid = document.getElementById("bookid").value;
-            var bookid = `[[${view.bookid}]]`
-
-
-        window.GoPayment = async () => {
-
-
-            // // console.log(userid);
-            // var bookid = document.getElementById("bookid").value;
-            var quantity = document.getElementById("quantity").innerText;
 
             console.log("productInfo_userid = "+userid);
             console.log("userid = "+userid);
@@ -250,9 +241,6 @@
             }
 
         };
-            document.querySelector('.pay').addEventListener('click', GoPayment);
-        });
-
 
         window.onload = function() {
             var urlParams = new URLSearchParams('?bookid=123&page=1&focus=true');
@@ -280,7 +268,6 @@
     <div th:insert="~{/etc/header.html :: headerFragment}"></div>
 </head>
 <body>
-<div th:include="/etc/header.html"></div>
 <br><br><br>
 <div class="book-details">
     <div class="book-image-container"><br><br>
@@ -310,12 +297,11 @@
         </div>
         <div class="book-actions">
             <div th:if="${session.userid==null}">
-                <input type="button" id="btn_unmembercart" class="btn_cart" value="장바구니 담기" th:onclick="unMemberCart()">
+                <input type="button" id="btn_unmembercart" class="btn_cart" value="장바구니 담기" onclick="unMemberCart()">
             </div>
             <div th:if="${session.userid!=null}">
-                <input type="button" id="btn_cart" class="btn_cart" value="장바구니 담기" th:onclick="cart()">
+                <input type="button" id="btn_cart" class="btn_cart" value="장바구니 담기" onclick="cart()">
             </div>
-<!--            <input type="button" class="pay" value="구매하기" th:onclick="'GoPayment(' + ${view.bookid} + ',document.getElementById(\'quantity\').value);'">-->
             <input type="button" class="pay" value="구매하기" th:onclick="GoPayment([[${view.bookid}]],document.getElementById('quantity').innerHTML)">
         </div>
         <br>
@@ -328,8 +314,7 @@
 
     <p id="reviewNotice">리뷰를 작성해 주세요.</p>
     <form id="reviewForm" name="reviewForm" method="POST">
-        <input type="hidden" id="bookid" name="bookid" th:value="${view.bookid}">
-        <input type="hidden" id="userid" name="userid" th:value="${session.userid}">
+
         작성자<input type="text" id="reviewer" name="reviewer" th:value="${nickname}" readonly>
         <br><br>
         <input type="hidden" id="reviewregdate" name="reviewregdate" th:value="${currentDateTime}">
@@ -425,11 +410,10 @@
                             console.log('삭제버튼 눌렀는데?')
                             reviewDelete(jsonInfo[i].reviewseq);
                         });
-
+                    tr.appendChild(tdActions);
                     tr.appendChild(tdReviewer);
                     tr.appendChild(tdReviewContent);
                     tr.appendChild(tdRegDate);
-                    tr.appendChild(tdActions);
                     tdActions.appendChild(btnReviewModify);
                     tdActions.appendChild(document.createTextNode(' '));  // 공백 추가
                     tdActions.appendChild(btnReviewDelete);

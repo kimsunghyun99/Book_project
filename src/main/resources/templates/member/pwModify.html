@@ -3,40 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>패스워드 변경</title>
-    <style>
-        .input_field {
-            display: block;
-            margin: 0 auto;
-            width: 80%; /* 원하는 폭으로 조절하세요 */
-            font-size: 16px; /* 원하는 폰트 크기로 조절하세요 */
-            padding: 10px;
-            box-sizing: border-box;
-        }
-
-        #aa {
-            margin: 0 auto;
-
-            text-align:center;
-
-        }
-
-        .btn_write {
-            display:inline-block;
-            width: 20%; /* 원하는 폭으로 조절하세요 */
-            font-size: 18px;
-            padding: 10px;
-            box-sizing: border-box;
-        }
-        .btn_cancel {
-            display:inline-block;
-            width: 20%; /* 원하는 폭으로 조절하세요 */
-            font-size: 18px;
-            padding: 10px;
-            box-sizing: border-box;
-        }
-
-    </style>
-
+    <link rel="stylesheet" href="/css/style.css">
     <script>
 
         const passwordUpdate = async() => {
@@ -125,7 +92,7 @@
             <input type="password" id="new_password1" name="new_password1"
                    class="input_field" placeholder="신규 패스워드를 한번 더 입력하세요">
             <br>
-            <div id="aa">
+            <div>
             <input type="button" class="btn_write"	 value="패스워드 변경" onclick="passwordUpdate()">
             <input type="button" class="btn_cancel"	 value="취소" onclick="history.back()">
             </div>

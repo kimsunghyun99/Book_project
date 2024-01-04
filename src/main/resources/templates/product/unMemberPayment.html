@@ -4,202 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>쇼핑몰</title>
+    <link rel="stylesheet" href="/css/style.css">
 
-
-    <style>
-
-
-        @font-face {
-            font-family: 'GmarketSansMedium';
-            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
-            font-weight: normal;
-            font-style: normal;
-        }
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f2ede9;
-
-        }
-
-        header, nav {
-            background:#ffc118;
-            color: #FFF;
-            text-align: center;
-            padding: 10px;
-        }
-
-        .tableDiv {
-            padding-left: 230px;
-            width: 80%;
-            font-family: 'GmarketSansMedium';
-        }
-
-        .InfoTable {
-            border-collapse: collapse;
-            width: 80%;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .InfoTable th {
-            border-bottom: 3px solid #168;
-            color: black;
-            background: #ffd153;
-            text-align: center;
-        }
-        .InfoTable th, .InfoTable td {
-            padding: 10px;
-            border: 1px solid #ddd;
-        }
-        .InfoTable th:first-child, .InfoTable td:first-child {
-            border-left: 0;
-        }
-        .InfoTable th:last-child, .InfoTable td:last-child {
-            border-right: 0;
-        }
-        .InfoTable tr td:first-child{
-            text-align: left;
-        }
-        .InfoTable caption{caption-side: top; }
-
-        body {
-            font-family: Arial, sans-serif;
-        }
-
-
-        .p_image {
-            max-width: 30%;
-            height: auto;
-            display: block;
-            margin: auto;
-        }
-
-        .c_info {
-            width: 80%;
-            border:none;
-            border-bottom: 2px solid #adadad;
-            margin: 5px;
-            padding: 10px 10px;
-            outline:none;
-            color: #636e72;
-            font-size:16px;
-            height:25px;
-            background: none;
-        }
-
-        .c_infoNames {
-            width: 80px;
-            height: 20px;
-            margin: 5px;
-            padding: 10px 10px;
-            color:  #168;
-            font-size:16px;
-            font-weight: bold;
-            background: #f0f6f9;
-            display:inline-block;
-        }
-
-        #btn_addSearch, #newdelivery {
-            width:475px;
-            height:40px;
-            background: #ffd153;
-            color:black;
-            font-weight: bold;
-            border:none;
-            cursor:pointer;
-            font-family: 'GmarketSansMedium';
-        }
-
-        .btn_order  {
-            width:600px;
-            height:40px;
-            background: #ffd153;
-            color:black;
-            font-weight: bold;
-            border:none;
-            cursor:pointer;
-            font-family: 'GmarketSansMedium';
-
-        }
-
-        input {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 16px;
-            box-sizing: border-box;
-        }
-
-
-        #ADDorDelete {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 10px; /* 원하는 여백 값으로 조절하세요 */
-        }
-
-        #add {
-            width:60px;
-            font-size: 14px; /* 원하는 글자 크기로 조절하세요 */
-            padding: 5px 10px; /* 원하는 패딩 값으로 조절하세요 */
-            margin-left: 5px; /* 각 버튼 사이 여백 조절 */
-            text-align:center;
-        }
-
-        table {
-
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid black;
-            padding: 5px;
-        }
-
-        #pay {
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-          /*//  height: 70vh; !* 화면의 100% 높이로 설정하여 가운데 정렬 *!*/
-        }
-
-        #RequestText1 {
-            display:none;
-        }
-
-        .unmember{
-
-            display: flex;
-            flex-direction: column; /* 수직 방향으로 정렬하려면 column을 사용합니다. */
-            align-items: center;
-        }
-        #buyerTelno,  #unMemberPassword,#unMemberPasswordCheck{
-            width: 18%;
-
-            font-family: 'GmarketSansMedium';
-        }
-        #addplus{
-            width: 25%;
-            font-family: 'GmarketSansMedium';
-        }
-        .addr{
-            display: flex;
-            flex-direction: column; /* 수직 방향으로 정렬하려면 column을 사용합니다. */
-            align-items: center;
-        }
-        #finaladdr{
-            font-family: 'GmarketSansMedium';
-            padding-left: 380px;
-        }
-        .Request{
-            font-family: 'GmarketSansMedium';
-            padding-left: 380px;
-        }
-
-        h2, h4{
-            text-align: center;
-            font-family: 'GmarketSansMedium';
-        }
-    </style>
     <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
 
@@ -468,11 +274,11 @@
 
 <body>
 
-
+<br><br><br>
 <div class="mall">
     <div class="main_shop">
+        <h2>주문서</h2>
 
-        <h2>주문서</h2><br>
         <h4>비회원 주문</h4>
         <div class="unmember">
             <input type="text" id="buyerTelno" name="buyerTelno" placeholder="번호를 입력하세요">
@@ -483,7 +289,6 @@
         <h4 >배송지</h4>
         <br><br>
         <div class="addr">
-        <div id="addplus">
             <input type="text" id="addrSearch" name="addrSearch" class="addrSearch" placeholder="주소를 검색합니다.">
             <input type="button" id="btn_addSearch" class="btn_addrSearch" value="주소검색" onclick="searchAddr()">
             <input type="text" id="zipcode" class="input_field" name="zipcode" placeholder="우편번호가 검색되어 입력됩니다." readonly>
@@ -493,13 +298,12 @@
             <input type="text" id="receivertelno" class="input_field" name="receivertelno" placeholder="받는사람 번호를 입력하세요">
             <input type="button" id="newdelivery" class="input_field" value="확인" onclick="finaldelivery1(document.getElementById('addr1').value, document.getElementById('detailaddr').value)">
         </div>
-        </div>
 
         <br><br><br>
 
         <span id="finaladdr">배송될 주소 : </span>
         <br><br>
-        <div class="Request">
+        <div class="request">
         배송 요청사항 :
         <select id="RequestText" name="RequestText" onchange="handleRequestChange()">
             <option value="all" disabled selected>배송 시 요청사항을 선택해주세요 ▼</option>
