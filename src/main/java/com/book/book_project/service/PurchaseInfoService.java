@@ -24,9 +24,9 @@ public interface PurchaseInfoService {
 
     List<PurchaseInfoEntity> unMemberPurchaseList(UnMemberEntity unmembertelno) throws Exception;
 
+ public int GetStatusSeq(String bookid) throws Exception;
 
-
-
+public List<String> GetBookId(int buyerseq) throws Exception;
 
 
     // 주문상태 변경하기

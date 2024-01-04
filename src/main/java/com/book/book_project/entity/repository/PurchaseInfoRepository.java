@@ -23,6 +23,14 @@ public interface PurchaseInfoRepository extends JpaRepository<PurchaseInfoEntity
    // List<PurchaseInfoEntity> findByBuyerseq(BuyerInfoEntity buyerseq);
    PurchaseInfoEntity findByBuyerseq( BuyerInfoEntity buyerseq);
 
+
+    @Query(value = "select t.statusseq from tbl_purchaseinfo as t where t.bookid = :bookid", nativeQuery = true)
+    public int GetStatusSeq(@Param("bookid") String bookid);
+
+    @Query(value = "select t.bookid from tbl_purchaseinfo as t where t.buyerseq = :buyerseq", nativeQuery = true)
+    public List<String> GetBookId(@Param("buyerseq") int buyerseq);
+
+
     //주문 상태 불러오기
     @Query(value = "select * from tbl_purchasestatus", nativeQuery = true)
     List<Map<String,String>> statuslist();
@@ -32,7 +40,8 @@ public interface PurchaseInfoRepository extends JpaRepository<PurchaseInfoEntity
             "FROM tbl_purchaseinfo p\n" +
             "JOIN tbl_buyerinfo b ON p.buyerseq = b.buyerseq\n" +
             "JOIN tbl_product pr ON p.bookid = pr.bookid\n" +
-            "JOIN tbl_purchasestatus s ON p.statusseq = s.statusseq;", nativeQuery = true)
+            "JOIN tbl_purchasestatus s ON p.statusseq = s.statusseq\n" +
+            "WHERE p.statusseq != 11", nativeQuery = true)
     List<Map<String, String>> mempurchaseinfo();
 
     //비회원 주문 관리
@@ -40,7 +49,8 @@ public interface PurchaseInfoRepository extends JpaRepository<PurchaseInfoEntity
             "FROM tbl_unmemberpurchaseinfo u\n" +
             "JOIN tbl_unmember um ON u.unmemberseq = um.unmemberseq\n" +
             "JOIN tbl_product p ON u.bookid = p.bookid\n" +
-            "JOIN tbl_purchasestatus s on u.statusseq = s.statusseq", nativeQuery = true)
+            "JOIN tbl_purchasestatus s on u.statusseq = s.statusseq\n" +
+            "where u.statusseq != 11", nativeQuery = true)
     List<Map<String, String>> unpurchaseinfo();
 
     //회원 주문 상태 변경

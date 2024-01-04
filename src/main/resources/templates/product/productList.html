@@ -65,16 +65,16 @@
         //     $('.dropdown-toggle').dropdown();
         // });
     </script>
+<div th:insert="~{/etc/header.html :: headerFragment}"></div>
 </head>
 <body>
-<div th:insert="~{/etc/header.html :: headerFragment}"></div>
 
 
 <div id="search-input" style="display:flex; justify-content: space-between; margin-top: 20px;">
     <input type="text" name="keyword" id="keyword"
-           style="width:35%;height:30px;border:2px solid #ffd518;font-size: 16px; margin-bottom: 10px;"
+           style="width:20%;height:30px;border:2px solid #ffd518;font-size: 16px; margin-bottom: 10px;"
            placeholder="검색할 책 이름, 저자 및 출판사를 입력하세요." onkeydown="press()">
-    <input type="button" value="검색" style= "display:flex; justify-content: space-between; width:50px;height:30px;background:#ffd518;color:black;font-weight:bold;cursor:pointer;"
+    <input type="button" value="검색" style= "display:flex; justify-content: space-between; width:45px;height:30px;background:#ffd518;color:black;font-weight:bold;cursor:pointer;"
            onclick="search()">
 </div>
 

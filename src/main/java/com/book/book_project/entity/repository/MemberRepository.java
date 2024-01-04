@@ -73,4 +73,20 @@ public interface MemberRepository extends JpaRepository<MemberEntity, String> {
     //전체 회원 목록 불러오기
     public Page<MemberEntity> findByRole(String role, Pageable pageable);
 
+    //회원 구매 순위
+    @Query(value = "SELECT m.username, SUM(p.total_price) AS total\n" +
+            "FROM tbl_purchaseinfo p\n" +
+            "JOIN tbl_buyerinfo b ON p.buyerseq = b.buyerseq\n" +
+            "JOIN tbl_member m ON b.userid = m.userid\n" +
+            "WHERE p.statusseq = 11\n" +
+            "GROUP BY m.username\n" +
+            "ORDER BY total DESC\n" +
+            "LIMIT 3", nativeQuery = true)
+    List<Map<String, String>> memberRank();
+
+
+
+//    @Query(value = "SELECT SUM(point) FROM tbl_member", nativeQuery = true)
+//    public int getPoint(String userid);
+MemberEntity findByUserid(String userid);
 }

@@ -32,15 +32,30 @@
         });
 
 
+
+
+
+
+
+
         //리뷰 등록하기
         const reviewRegister = async () => {
             const reviewcontent = document.querySelector('#reviewcontent');
+            const reviewer = document.querySelector('#reviewer');
+
+            if(reviewer.value === '') {
+                alert('닉네임을 등록해주세요');
+                return false;
+            }
+
 
             if (reviewcontent.value === '') {
                 alert('댓글을 입력하세요.');
                 reviewcontent.focus();
                 return false;
             }
+
+
 
             const data = {
                 reviewer: reviewer.value,
@@ -115,7 +130,7 @@
 
                 // "확인"을 눌렀을 때 실행될 코드
                 window.open("nickname", "닉네임입력", "width=950, height=540, top=50, left=50"); // 새 창 열기
-            }
+            }else{reviewContentTextarea.blur()}
             }else{
                 reviewContentTextarea.focus();
             }
@@ -235,10 +250,23 @@
         window.onload = function() {
             var urlParams = new URLSearchParams('?bookid=123&page=1&focus=true');
             var focus = urlParams.get('focus');
+            // var userid =  `[[${session.userid}]]`;
 
-            if (focus === 'true') {
-                document.getElementById("reviewcontent").focus();
-            }
+            // if(userid === '') {
+            //     var reviewList = document.getElementById('reviewList');
+            //     var reviewDiv = document.querySelector('.reviewDiv');
+            //     var btn_review = document.getElementById('btn_review');
+            //     var btn_cancel = document.getElementById('btn_cancel');
+            //     reviewDiv.style.display = 'none';
+            //     reviewList.style.display = 'block';
+            //     btn_review.style.display = 'none;'
+            //     btn_cancel.style.display = 'none;'
+            // }
+
+
+            // if (focus === 'true') {
+            //     document.getElementById("reviewcontent").focus();
+            // }
         };
 
     </script>
@@ -250,7 +278,6 @@
     <div class="book-image-container"><br><br>
         <img class="book-image" id="cover" th:src="${view.cover}" alt="책 이미지">
         <div class="likes-reviews">
-
             <p class="book-reviews" th:text="'후기: ' + ${count}"></p>
         </div>
     </div>
@@ -259,8 +286,6 @@
         <p class="book-author" id="author" style="text-align:right;" th:text="'작가: ' + ${view.author}"></p>
         <p class="book-price" id="price" style="text-align:right;" th:text="'가격: ' + ${view.price} + '원'"></p>
 <!--        <p class="book-discount" id="pricesales" th:text="'할인가: ' + ${view.pricesales} + '%'"></p>-->
-
-
         <div id="volume">
             <input type='button' onclick='count("plus")' value='+'/>
             <span id="quantity">1</span>
@@ -282,7 +307,7 @@
             <div th:if="${session.userid!=null}">
                 <input type="button" id="btn_cart" class="btn_cart" value="장바구니 담기" th:onclick="cart()">
             </div>
-            <input type="button" class="pay" value="구매하기" th:onclick="GoPayment([[${view.bookid}]],document.getElementById('quantity').innerHTML)">
+            <input type="button" class="pay" value="구매하기" th:onclick="'GoPayment(' + ${view.bookid} + ',document.getElementById(\'quantity\').value);'">
         </div>
         <br>
         </div><br>
@@ -290,7 +315,7 @@
 
 </div>
 
-<div class="reviewDiv">
+<div th:if="${session.userid == userid}" class="reviewDiv" style="width:60%;height:300px;margin:auto;text-align:left;">
 
     <p id="reviewNotice">리뷰를 작성해 주세요.</p>
     <form id="reviewForm" name="reviewForm" method="POST">
@@ -302,15 +327,14 @@
 
         <!-- 리뷰 내용 입력 폼 -->
         <textarea id="reviewcontent" name="reviewcontent" cols="80" rows="5" maxlength="150" placeholder="글자수: 150자 이내"
-                  onfocus="checkAndAlert()"></textarea><br>
+                  onclick="checkAndAlert()"></textarea><br>
+        <!-- 리뷰 등록 버튼 -->
+        <input type="button" id="btn_review" value="리뷰 등록" onclick="reviewRegister()">
+        <!-- 리뷰 취소 버튼 -->
+        <input type="button" id="btn_cancel" value="취소" onclick="reviewCancel()">
+        <hr>
     </form>
-
-    <!-- 리뷰 등록 버튼 -->
-    <input type="button" class="reviewbtn" id="btn_review" value="리뷰 등록" onclick="reviewRegister()">
-
-    <!-- 리뷰 취소 버튼 -->
-    <input type="button" class="reviewbtn" id="btn_cancel" value="취소" onclick="reviewCancel()">
-    <hr>
+<div>
 
     <!-- 리뷰 목록 테이블 -->
     <table id="reviewList" >
@@ -355,6 +379,7 @@
             const reviewList = (data) => {
                 var session_userid = '[[${session.userid}]]';
                 const jsonInfo = data;
+                console.log(session_userid);
 
                 let reviewList = document.querySelector('#reviewList');
                 reviewList.innerHTML = '';
@@ -375,32 +400,33 @@
                     let tdActions = document.createElement('td');
 
                     // 리뷰 수정 버튼
-                    let btnReviewModify = document.createElement('a');
-                    btnReviewModify.innerText = '수정';
-                    btnReviewModify.setAttribute('style', 'cursor:pointer');
-                    btnReviewModify.addEventListener('click', function () {
-                        reviewModify(jsonInfo[i].reviewseq, jsonInfo[i].reviewcontent);
-                    });
 
-                    // 리뷰 삭제 버튼
-                    let btnReviewDelete = document.createElement('a');
-                    btnReviewDelete.innerText = '삭제';
-                    btnReviewDelete.setAttribute('style', 'cursor:pointer');
-                    btnReviewDelete.addEventListener('click', function () {
-                        console.log('삭제버튼 눌렀는데?')
-                        reviewDelete(jsonInfo[i].reviewseq);
-                    });
+                        let btnReviewModify = document.createElement('a');
+                        btnReviewModify.innerText = '수정';
+                        btnReviewModify.setAttribute('style', 'cursor:pointer');
+                        btnReviewModify.addEventListener('click', function () {
+                            reviewModify(jsonInfo[i].reviewseq, jsonInfo[i].reviewcontent);
+                        });
 
+                        // 리뷰 삭제 버튼
+                        let btnReviewDelete = document.createElement('a');
+                        btnReviewDelete.innerText = '삭제';
+                        btnReviewDelete.setAttribute('style', 'cursor:pointer');
+                        btnReviewDelete.addEventListener('click', function () {
+                            console.log('삭제버튼 눌렀는데?')
+                            reviewDelete(jsonInfo[i].reviewseq);
+                        });
+                    tr.appendChild(tdActions);
+                    tr.appendChild(tdReviewer);
+                    tr.appendChild(tdReviewContent);
+                    tr.appendChild(tdRegDate);
                     tdActions.appendChild(btnReviewModify);
                     tdActions.appendChild(document.createTextNode(' '));  // 공백 추가
                     tdActions.appendChild(btnReviewDelete);
 
-                    tr.appendChild(tdReviewer);
-                    tr.appendChild(tdReviewContent);
-                    tr.appendChild(tdRegDate);
-                    tr.appendChild(tdActions);
-
                     reviewList.appendChild(tr);
+
+
                 }
             };
 
@@ -640,6 +666,6 @@
     <div>[(${pageList})]</div>
 
 <!--    <div id="pagination" style="margin-top: 10px;"></div>-->
-</div>
+
 </body>
 </html>

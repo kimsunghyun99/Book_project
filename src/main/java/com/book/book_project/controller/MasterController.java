@@ -172,6 +172,18 @@ public class MasterController {
     public String findAll(Model model, @PageableDefault(size = 5) Pageable pageable, @RequestParam(value = "page", defaultValue = "0") int page) {
         Pageable adjustedPageable = PageRequest.of(page, 5);
         Page<MemberEntity> members = memberRepository.findByRole("USER", adjustedPageable);
+
+        List<Map<String, String>> list = memberRepository.memberRank();
+        List<Map<String, Object>> RankList = new ArrayList<>();
+
+        for(Map<String, String> map : list){
+            Map<String, Object> RankListMap = new HashMap<>();
+            RankListMap.put("username", map.get("username"));
+            RankListMap.put("total", map.get("total"));
+
+            RankList.add(RankListMap);
+        }
+        model.addAttribute("RankList", RankList);
         model.addAttribute("members", members);
         return "/master/memberManage";
     }
