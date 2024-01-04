@@ -1,14 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>책업데이트</title>
+<meta charset="UTF-8">
+<title>책업데이트</title>
+<style>
 
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f2ede9;
+    }
+
+    header {
+        background: #ffc118;
+        color: #FFF;
+        text-align: center;
+        padding: 10px;
+        height: 200px;
+    }
+
+    nav {
+        text-align: center;
+        padding: 10px;
+    }
+
+    #BookUpdate {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 70vh;
+        flex-direction: column;
+    }
+
+    .btn-style {
+        display: inline-block;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        color: #fff;
+        background-color: #ffc118;
+        border-radius: 5px;
+        transition: all 0.3s;
+        font-size: 50px;
+    }
+
+    .btn-style:hover {
+        background-color: #feb900;
+    }
+</style>
 </head>
 <body>
 <div th:include="/etc/header.html :: banner"></div>
 <form id="BookUpdate">
-    <a href="/master/bookUpdate">책 업데이트</a>
+    <a href="/master/bookUpdate" class="btn-style">책 업데이트</a>
 </form>
 </body>
 </html>

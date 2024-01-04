@@ -398,7 +398,7 @@ public class MemberController {
     //비회원 로그인 (23-12-12)
     @ResponseBody
     @PostMapping("/member/unMemberLoginCheck")
-    public String postUnMemberLogin(UnMemberDTO unMember) {
+    public String postUnMemberLogin(UnMemberDTO unMember, HttpSession session) {
         //아이디 존재 여부 확인
         if(unMemberService.findByReceivertelno(unMember.getReceivertelno()) == null) {
             return "{\"message\":\"Receivertelno_NOT_FOUND\"}";
@@ -409,6 +409,8 @@ public class MemberController {
             return "{\"message\":\"PASSWORD_NOT_FOUND\"}";
         }
 
+        session.setAttribute("receivertelno", unMember.getReceivertelno());
+        System.out.println(session);
         return "{\"message\":\"GOOD\"}";
 
     }

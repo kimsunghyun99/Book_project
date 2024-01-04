@@ -71,7 +71,7 @@ public interface MemberRepository extends JpaRepository<MemberEntity, String> {
     public List<Map<String, Integer>> memberage();
 
     //전체 회원 목록 불러오기
-    public Page<MemberEntity> findByRole(String role, Pageable pageable);
+    Page<MemberEntity> findByRole(String role, Pageable pageable);
 
     //회원 구매 순위
     @Query(value = "SELECT m.username, SUM(p.total_price) AS total\n" +

@@ -78,15 +78,15 @@
             <tbody>
             <tr th:each="total : ${totalList}">
                 <td th:text="${total.bookname}"></td>
-                <td th:text="${total.price}"></td>
-                <td th:text="|${#numbers.formatInteger(total.volume, 3 , 'COMMA')}권|"></td>
+                <td th:text="|${#numbers.formatInteger(total.price,3,'COMMA')}원|"></td>
+                <td th:text="|${total.volume}권|"></td>
                 <td th:text="|${#numbers.formatInteger(total.total_price, 3 , 'COMMA')}원|"></td>
             </tr>
             <tr th:each="total2 : ${totalSalesPriceList}">
                 <td style="background-color: #ffc118">합계</td>
                 <td></td>
-                <td th:text="|${#numbers.formatInteger(total2.volume, 3, 'COMMA')}권|">0</td>
-                <td th:text="|${#numbers.formatInteger(total2.total_price, 3, 'COMMA')}원|">0</td>
+                <td th:text="|${total2.totalvolume}권|">0</td>
+                <td th:text="|${#numbers.formatInteger(total2.totalsales, 3, 'COMMA')}원|">0</td>
             </tr>
             </tbody>
         </table>

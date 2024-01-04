@@ -68,8 +68,6 @@
             font-size: 1.2em;
         }
 
-
-
         .book-actions {
             display: flex;
             text-align: center;
@@ -78,10 +76,8 @@
         }
 
         .book-actions input {
-
             margin: 20px;
             cursor: pointer;
-
         }
 
         #volume input {
@@ -101,8 +97,6 @@
         }
 
         input[type="button"] {
-
-
             background-color:#ffd518;
             color: #000000;
             border:none;
@@ -155,16 +149,10 @@
         });
 
 
-
-
-
-
-
-
-        //리뷰 등록하기
-        const reviewRegister = async () => {
-            const reviewcontent = document.querySelector('#reviewcontent');
-            const reviewer = document.querySelector('#reviewer');
+    //리뷰 등록하기
+    const reviewRegister = async () => {
+        const reviewcontent = document.querySelector('#reviewcontent');
+        const reviewer = document.querySelector('#reviewer');
 
             if(reviewer.value === '') {
                 alert('닉네임을 등록해주세요');
