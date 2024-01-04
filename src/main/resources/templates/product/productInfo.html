@@ -160,7 +160,8 @@
 
         //장바구니에 상품 담기
         const cart = async () => {
-            var bookid = document.getElementById("bookid").value;
+            // var bookid = document.getElementById("bookid").value;
+            var bookid = `[[${view.bookid}]]`
             console.log("bookid = "+bookid);
 
                     await fetch('/product/shoppingBasket',{
@@ -186,7 +187,8 @@
 
         const unMemberCart = () => {
 
-            var bookid = document.getElementById("bookid").value;
+            // var bookid = document.getElementById("bookid").value;
+            var bookid = `[[${view.bookid}]]`
             var bookname = document.getElementById("bookname").innerText;
             var cover = document.getElementById("cover").getAttribute('src');
             var author = document.getElementById("author").innerText.replace('작가: ', '');
@@ -224,10 +226,18 @@
             }
         };
 
-        const GoPayment = async () => {
-            var userid =  `[[${session.userid}]]`;
-            console.log(userid);
-            var bookid = document.getElementById("bookid").value;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var userid =  `[[${session.userid}]]`
+            // var bookid = document.getElementById("bookid").value;
+            var bookid = `[[${view.bookid}]]`
+
+
+        window.GoPayment = async () => {
+
+
+            // // console.log(userid);
+            // var bookid = document.getElementById("bookid").value;
             var quantity = document.getElementById("quantity").innerText;
 
             console.log("productInfo_userid = "+userid);
@@ -246,6 +256,9 @@
             }
 
         };
+            document.querySelector('.pay').addEventListener('click', GoPayment);
+        });
+
 
         window.onload = function() {
             var urlParams = new URLSearchParams('?bookid=123&page=1&focus=true');
@@ -307,7 +320,8 @@
             <div th:if="${session.userid!=null}">
                 <input type="button" id="btn_cart" class="btn_cart" value="장바구니 담기" th:onclick="cart()">
             </div>
-            <input type="button" class="pay" value="구매하기" th:onclick="'GoPayment(' + ${view.bookid} + ',document.getElementById(\'quantity\').value);'">
+<!--            <input type="button" class="pay" value="구매하기" th:onclick="'GoPayment(' + ${view.bookid} + ',document.getElementById(\'quantity\').value);'">-->
+            <input type="button" class="pay" value="구매하기" th:onclick="GoPayment([[${view.bookid}]],document.getElementById('quantity').innerHTML)">
         </div>
         <br>
         </div><br>
@@ -315,7 +329,7 @@
 
 </div>
 
-<div th:if="${session.userid == userid}" class="reviewDiv" style="width:60%;height:300px;margin:auto;text-align:left;">
+<div th:if="${userid != null}" class="reviewDiv" style="width:60%;height:300px;margin:auto;text-align:left;">
 
     <p id="reviewNotice">리뷰를 작성해 주세요.</p>
     <form id="reviewForm" name="reviewForm" method="POST">
@@ -334,7 +348,7 @@
         <input type="button" id="btn_cancel" value="취소" onclick="reviewCancel()">
         <hr>
     </form>
-<div>
+</div>
 
     <!-- 리뷰 목록 테이블 -->
     <table id="reviewList" >
@@ -416,10 +430,11 @@
                             console.log('삭제버튼 눌렀는데?')
                             reviewDelete(jsonInfo[i].reviewseq);
                         });
-                    tr.appendChild(tdActions);
+
                     tr.appendChild(tdReviewer);
                     tr.appendChild(tdReviewContent);
                     tr.appendChild(tdRegDate);
+                    tr.appendChild(tdActions);
                     tdActions.appendChild(btnReviewModify);
                     tdActions.appendChild(document.createTextNode(' '));  // 공백 추가
                     tdActions.appendChild(btnReviewDelete);
