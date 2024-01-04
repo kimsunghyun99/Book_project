@@ -84,8 +84,6 @@ public interface MemberRepository extends JpaRepository<MemberEntity, String> {
             "LIMIT 3", nativeQuery = true)
     List<Map<String, String>> memberRank();
 
-
-
 //    @Query(value = "SELECT SUM(point) FROM tbl_member", nativeQuery = true)
 //    public int getPoint(String userid);
 MemberEntity findByUserid(String userid);
