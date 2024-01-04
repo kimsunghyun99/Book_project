@@ -440,7 +440,7 @@
         <br>
 </div>
 
-<div th:if="${session.userid == userid}" class="reviewDiv" style="width:60%;height:300px;margin:auto;text-align:left;">
+<div class="reviewDiv" style="width:60%;height:300px;margin:auto;text-align:left;">
 
     <p id="reviewNotice">리뷰를 작성해 주세요.</p>
     <form id="reviewForm" name="reviewForm" method="POST">
@@ -459,7 +459,7 @@
         <input type="button" id="btn_cancel" value="취소" onclick="reviewCancel()">
         <hr>
     </form>
-<div>
+</div>
 
     <!-- 리뷰 목록 테이블 -->
     <table id="reviewList" style="width:100%; height:600px; overflow:auto;">
