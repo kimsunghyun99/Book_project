@@ -161,8 +161,8 @@
                 var realuserpoint = userpoint.innerText;
                 var realusepoint = parseInt(usepoint.value, 10);
                 extractedNumber = parseInt(totalpoint.replace(/\D/g, ''), 10);
-                 var pluspoint = (realuserpoint - realusepoint) + extractedNumber;
-                console.log("포인트 쓴 게 있어서 이거 찍힘");
+                 var pluspoint = (realuserpoint - realusepoint) ;
+                console.log("포인트 쓴 게 있어서 이거 찍힘" +pluspoint );
                  // console.log("ddddddd" +  point)
                 // console.log("아오오오ㅠㅇ노ㅓㅇ노ㅓㅇ" + realusepoint);
                 // console.log("아오오오ㅠㅇ노ㅓㅇ노ㅓㅇ" + realuserpoint);
@@ -288,6 +288,7 @@
                             "receivertelno": receivertelno,
                             "finalpoint" : finalpoint,
                             "totalpoint" : totalpoint
+
 
 
                         }),

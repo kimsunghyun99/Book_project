@@ -213,13 +213,16 @@ public class MemberServiceImpl implements MemberService {
 
     // 사용자 아이디로 회원 엔터티를 찾아 포인트를 업데이트하는 메서드
     @Override
-    public boolean finalupdatePoint(String userid, int finalpoint) {
+    public boolean finalupdatePoint(String userid, int finalpoint, int totalpoint) {
         MemberEntity memberEntity = memberRepository.findByUserid(userid);
 
         // 사용자가 존재하면 포인트를 업데이트하고 저장
         if (memberEntity != null) {
             int originalPoint = memberEntity.getPoint();
-            int newPoint = originalPoint + finalpoint;
+            int newPoint = totalpoint + finalpoint ;
+            System.out.println(originalPoint);
+            System.out.println(totalpoint);
+            System.out.println(finalpoint);
             memberEntity.setPoint(newPoint);
             memberRepository.save(memberEntity);
             return true;
@@ -227,15 +230,15 @@ public class MemberServiceImpl implements MemberService {
 
         return false; // 사용자가 존재하지 않으면 업데이트 실패
     }
-
     @Override
     public boolean totalupdatePoint(String userid, int totalpoint) {
         MemberEntity memberEntity = memberRepository.findByUserid(userid);
 
         // 사용자가 존재하면 포인트를 업데이트하고 저장
         if (memberEntity != null) {
-            int originalPoint = memberEntity.getPoint();
-            int newPoint = originalPoint + totalpoint;
+
+
+            int newPoint = totalpoint;
             memberEntity.setPoint(newPoint);
             memberRepository.save(memberEntity);
             return true;

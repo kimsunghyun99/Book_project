@@ -458,9 +458,6 @@ public class MemberController {
         System.out.println("13" + totalpoint);
 
 
-
-
-
 //        String bookid = requestData.get("bookid").toString();
 //        String receiveraddr = requestData.get("address").toString();
 //        String receiverdetailaddr = requestData.get("detailaddr").toString();
@@ -471,7 +468,7 @@ public class MemberController {
 
 
         ProductEntity productEntity = productService.findById(bookid);
-        System.out.println("///////////" + productEntity );
+        System.out.println("///////////" + productEntity);
 
         MemberEntity memberEntity = memberService.findById(userid);
 
@@ -523,41 +520,39 @@ public class MemberController {
         boolean finalpointSuccess = (finalpointValue > 0);
         boolean totalpointSuccess = (totalpointValue > 0);
 
-
+        System.out.println(finalpointValue);
 
 
         System.out.println("finalpointSuccess" + finalpointSuccess);
         System.out.println("totalpointSuccess" + totalpointSuccess);
 
-        if(finalpointSuccess){
+        if (finalpointSuccess) {
             System.out.println("1번");
-        boolean updateSuccess = memberService.finalupdatePoint(userid, Integer.parseInt(finalpoint));
-        if (updateSuccess) {
-            System.out.println("2번");
-            int updatedPoint = memberService.getPoint(userid);
-            return ResponseEntity.ok("포인트 업데이트 성공! 현재 포인트: " + updatedPoint);
-        } else {
-            System.out.println("3번");
-            return ResponseEntity.badRequest().body("사용자가 존재하지 않아 포인트 업데이트 실패!");
-        }
-        }else if(totalpointSuccess){
-            System.out.println("4번");
-            boolean totalupdateSuccess = memberService.totalupdatePoint(userid, Integer.parseInt(totalpoint));
-            if (totalupdateSuccess) {
-                System.out.println("5번");
+            boolean updateSuccess = memberService.finalupdatePoint(userid, Integer.parseInt(finalpoint),Integer.parseInt(totalpoint) );
+           // boolean totalupdateSuccess = memberService.totalupdatePoint(userid, Integer.parseInt(totalpoint));
+            if (updateSuccess) {
+                System.out.println("2번");
                 int updatedPoint = memberService.getPoint(userid);
-                return ResponseEntity.ok("포인트 업데이트 성공! 현재 포인트: " + updatedPoint);
-            } else {
-                System.out.println("6번");
-                return ResponseEntity.badRequest().body("사용자가 존재하지 않아 포인트 업데이트 실패!");
+
+
+                System.out.println("여기탔어요" + updatedPoint);
+//                if (totalupdateSuccess) {
+//                    System.out.println("5번");
+//                    int totaledPoint = memberService.getPoint(userid);
+//                    return ResponseEntity.ok("포인트 업데이트 성공! 현재 포인트: " + totaledPoint);
+//                } else {
+//                    System.out.println("6번");
+//                    return ResponseEntity.badRequest().body("사용자가 존재하지 않아 포인트 업데이트 실패!");
+//                }
             }
-        }else {
-            System.out.println("실패했음. 다시해야함");
-            return ResponseEntity.ok("Fail");
+
+            } else {
+                System.out.println("실패했음. 다시해야함");
+                return ResponseEntity.ok("Fail");
+            }
+            // 성공했을 경우 응답
+        return ResponseEntity.ok("Success");
         }
-        // 성공했을 경우 응답
-//        return ResponseEntity.ok("Success");
-    }
 
     @Transactional
     @PostMapping(value = "/member/unmemberpaymentInfo")
