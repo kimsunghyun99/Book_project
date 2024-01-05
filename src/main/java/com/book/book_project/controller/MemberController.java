@@ -22,6 +22,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Book;
 import java.lang.reflect.Member;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
@@ -305,6 +306,11 @@ public class MemberController {
 
         Collections.reverse(buyerInfo);
 
+        List<String> BookIdList1 = new ArrayList<>();
+
+        Collections.reverse(buyerInfo);
+
+
         for(int i =0; i<buyerInfo.size(); i++) {
 
             BuyerInfoEntity buyerInfoEntity = buyerInfoRepository.findById(buyerInfo.get(i).getBuyerseq()).orElse(null);
@@ -319,6 +325,16 @@ public class MemberController {
             BookIdList.add(bookid);
             StatusList.add(statusname);
             BookNameList.add(bookname);
+
+
+
+//            Collections.reverse(BookIdList);
+//            Collections.reverse(BookNameList);
+//            Collections.reverse(purchaseInfoList);
+//            Collections.reverse(StatusList);
+
+
+
 
         }
         model.addAttribute("bookids", BookIdList);

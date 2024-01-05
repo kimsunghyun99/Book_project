@@ -619,7 +619,7 @@ form{
     background-color: #ffc118;
     margin-top: 5%;
     display: block;
-    top: 60%;
+    top: 50%;
     position:fixed;
     left: 0;
     transform: translateY(-50%);
@@ -715,14 +715,18 @@ form{
 }
 
 #volume{
-    text-align: right;
+    /*text-align: right;*/
+    display: flex;
+    align-items: center;
+    justify-content: center; /* 요소들을 가운데 정렬 */
 }
 
 #volume input {
-    display: inline-block; /* 인라인 요소로 배치 */
-    font-size: 16px; /* 원하는 폰트 크기로 조절 */
-    margin: 0; /* 기본 마진 제거 */
-    width: 5%;
+    /*display: inline-block; !* 인라인 요소로 배치 *!*/
+    font-size: 12px; /* 원하는 폰트 크기로 조절 */
+    margin: 0 5px; /* 기본 마진 제거 */
+    padding: 0 10px;
+    /*width: 3%;*/
 }
 
 #volume br {
@@ -747,13 +751,14 @@ form{
 }
 
 #search-input input[type="button"] {
-    width: 5%;
+    width: 10%;
     height: 30px;
     background: #158;
+    text-align: center;
     color: black;
     font-weight: bold;
     cursor: pointer;
-    margin-right: 24%; /* 입력창과 버튼 간격 조정 */
+    margin-right: 39%; /* 입력창과 버튼 간격 조정 */
     margin-bottom: 9px;
     border: none;
 }

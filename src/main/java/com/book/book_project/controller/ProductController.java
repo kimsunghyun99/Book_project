@@ -99,6 +99,7 @@ public class ProductController {
         Page<ReviewEntity> list = reviewService.list(bookid, pageNum, postNum);
         int totalCount = (int)list.getTotalElements();
         if(session.getAttribute("userid")!=null){
+
             String userid = (String) session.getAttribute("userid");
             String nickname = memberService.memberInfo(userid).getNickname();
             MemberEntity memberEntity = new MemberEntity();
