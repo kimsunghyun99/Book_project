@@ -118,14 +118,18 @@ public class ProductController {
 
                purchaseInfoEntities.add(purchaseInfoEntity);
             }
+            System.out.println("bookId = " + bookId); // 맞음
             List<String> BookIdlist = new ArrayList<String>();
                 for(int t=0; t<purchaseInfoEntities.size(); t++) {
-                    BookIdlist = purchaseInfoService.GetBookId(purchaseInfoEntities.get(t).getBuyerseq().getBuyerseq());
+                    BookIdlist.add(purchaseInfoService.GetBookId(purchaseInfoEntities.get(t).getBuyerseq().getBuyerseq()));
+                    System.out.println("bookidlist = " + BookIdlist.get(t));
                 }
                     for(int k=0; k<BookIdlist.size(); k++) {
                             if(BookIdlist.get(k).equals(bookId)) {
                                 if(purchaseInfoService.GetStatusSeq(bookId) == 5 || purchaseInfoService.GetStatusSeq(bookId) == 11) {
-                                    model.addAttribute("userid", userid);
+                                    System.out.println("11111 배송완료, 또는 구매확정인 상품있나요 ? ");
+                                    String userid1 = (String) session.getAttribute("userid");
+                                    model.addAttribute("userid", userid1);
                                     break;
                                 }
                             }

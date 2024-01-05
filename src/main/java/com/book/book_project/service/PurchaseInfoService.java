@@ -26,7 +26,7 @@ public interface PurchaseInfoService {
 
  public int GetStatusSeq(String bookid) throws Exception;
 
-public List<String> GetBookId(int buyerseq) throws Exception;
+public String GetBookId(int buyerseq) throws Exception;
 
 
     // 주문상태 변경하기

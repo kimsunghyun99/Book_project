@@ -49,14 +49,16 @@
                 return false;
             }
 
-
+        var bookid = `[[${view.bookid}]]`
 
             const data = {
                 reviewer: reviewer.value,
                 reviewcontent: reviewcontent.value,
                 userid: userid.value,
-                bookid: bookid.value
+                bookid: bookid
             };
+
+
             //let formData = new FormData(reviewForm);
 
             await fetch('/product/review?option=I', {
@@ -110,27 +112,34 @@
             }
         }
 
-        //닉네임 등록하기
-        const checkAndAlert=()=> {
-            var reviewContentTextarea = document.getElementById("reviewcontent");
-            var currentNickname =document.getElementById("reviewer");
-            var currentUserid = '[[${session.userid}]]';
-            //   var FromSocial = '[[${session.FromSocial}]]'; // 가정: socialfrom이 세션 속성으로 존재한다고 가정
-            console.log(currentNickname);
-            if (currentUserid) {
-                if (currentNickname.value == '') {
-                    if (confirm("새로운 닉네임을 입력하세요. 계속하시겠습니까?")) {
-                        reviewContentTextarea.blur(); // 리뷰 내용 입력 칸의 포커스 해제
+        document.addEventListener('DOMContentLoaded', function() {
+            //닉네임 등록하기
+            const checkAndAlert = () => {
+                var reviewContentTextarea = document.getElementById("reviewcontent");
+                console.log(1);
+                var currentNickname = document.getElementById("reviewer");
+                console.log(1);
+                var currentUserid = '[[${session.userid}]]';
+                console.log(1);
+                //   var FromSocial = '[[${session.FromSocial}]]'; // 가정: socialfrom이 세션 속성으로 존재한다고 가정
+                console.log(currentNickname);
+                if (currentUserid) {
+                    if (currentNickname.value == '') {
+                        if (confirm("새로운 닉네임을 입력하세요. 계속하시겠습니까?")) {
+                            reviewContentTextarea.blur(); // 리뷰 내용 입력 칸의 포커스 해제
 
-                // "확인"을 눌렀을 때 실행될 코드
-                window.open("nickname", "닉네임입력", "width=950, height=540, top=50, left=50"); // 새 창 열기
-            }else{reviewContentTextarea.blur()}
-            }else{
-                reviewContentTextarea.focus();
+                            // "확인"을 눌렀을 때 실행될 코드
+                            window.open("nickname", "닉네임입력", "width=950, height=540, top=50, left=50"); // 새 창 열기
+                        } else {
+                            reviewContentTextarea.blur()
+                        }
+                    } else {
+                        reviewContentTextarea.focus();
+                    }
+                }
             }
-    }
-}
 
+        });
         const count = (type) =>  {
 
     number = parseInt(document.getElementById('quantity').innerHTML);
@@ -264,6 +273,7 @@
             // }
         };
 
+
     </script>
     <div th:insert="~{/etc/header.html :: headerFragment}"></div>
 </head>
@@ -282,9 +292,9 @@
         <p class="book-price" id="price" style="text-align:right;" th:text="'가격: ' + ${view.price} + '원'"></p>
 <!--        <p class="book-discount" id="pricesales" th:text="'할인가: ' + ${view.pricesales} + '%'"></p>-->
         <div id="volume">
-            <input type='button' onclick='count("plus")' value='+'/>
+            <input style="width:35px; font-size:16px; font-weight: bold;" type='button' onclick='count("plus")' value='+'/>
             <span id="quantity">1</span>
-            <input type='button' onclick='count("minus")' value='-'/><br><br>
+            <input style="width:35px; font-size:20px; font-weight: bold;" type='button' onclick='count("minus")' value='-'/><br><br>
         </div>
         <br>
         <div style="text-align:right;font-size:30px;font-weight:bold;">
@@ -305,31 +315,34 @@
             <input type="button" class="pay" value="구매하기" th:onclick="GoPayment([[${view.bookid}]],document.getElementById('quantity').innerHTML)">
         </div>
         <br>
-        </div><br>
-        <br>
+        </div>
+
 
 </div>
 
-<div th:if="${userid != null}" class="reviewDiv" style="width:60%;height:300px;margin:auto;text-align:left;">
-
+<div th:if="${userid != null and !#strings.isEmpty(userid)}" class="reviewDiv" style="width:90%;height:300px;margin:auto;text-align:left;">
+<!--    <div class="reviewDiv" style="width:60%;height:300px;margin:auto;text-align:left;">-->
     <p id="reviewNotice">리뷰를 작성해 주세요.</p>
     <form id="reviewForm" name="reviewForm" method="POST">
 
-        작성자<input type="text" id="reviewer" name="reviewer" th:value="${nickname}" readonly>
+        작성자<br>
+        <input type="text" id="reviewer" name="reviewer" th:value="${nickname}" readonly>
         <br><br>
         <input type="hidden" id="reviewregdate" name="reviewregdate" th:value="${currentDateTime}">
-
+        <input type="hidden" id="userid" name="userid"  th:value="${userid}">
         <!-- 리뷰 내용 입력 폼 -->
         <textarea id="reviewcontent" name="reviewcontent" cols="80" rows="5" maxlength="150" placeholder="글자수: 150자 이내"
-                  onclick="checkAndAlert()"></textarea><br>
+                  focus="checkAndAlert()"></textarea><br>
         <!-- 리뷰 등록 버튼 -->
-        <input type="button" id="btn_review" value="리뷰 등록" onclick="reviewRegister()">
+        <input style="width:30%; margin-right: 40px;" type="button" id="btn_review" value="리뷰 등록" onclick="reviewRegister()">&nbsp&nbsp&nbsp&nbsp&nbsp
         <!-- 리뷰 취소 버튼 -->
-        <input type="button" id="btn_cancel" value="취소" onclick="reviewCancel()">
-        <hr>
+        <input style="width:30%; display: inline-block; margin-right: 37%; margin-left: -15%;" type="button" id="btn_cancel" value="취소" onclick="reviewCancel()">
+
+<!--        <hr>-->
+        <br><br>
     </form>
 </div>
-
+<br><br><br>
     <!-- 리뷰 목록 테이블 -->
     <table id="reviewList" >
         <tr>
@@ -410,69 +423,19 @@
                             console.log('삭제버튼 눌렀는데?')
                             reviewDelete(jsonInfo[i].reviewseq);
                         });
-                    tr.appendChild(tdActions);
+
                     tr.appendChild(tdReviewer);
                     tr.appendChild(tdReviewContent);
                     tr.appendChild(tdRegDate);
                     tdActions.appendChild(btnReviewModify);
                     tdActions.appendChild(document.createTextNode(' '));  // 공백 추가
                     tdActions.appendChild(btnReviewDelete);
-
+                    tr.appendChild(tdActions);
                     reviewList.appendChild(tr);
 
 
                 }
             };
-
-            // // 페이징 처리를 위한 함수
-            // const displayPageButtons = (currentPage, totalPage) => {
-            //     let pagination = document.getElementById('pagination');
-            //     pagination.innerHTML = '';
-            //
-            //     const buttonCount = 5; // 표시할 페이지 버튼 수
-            //     const startPage = Math.max(1, currentPage - Math.floor(buttonCount / 2));
-            //     const endPage = Math.min(totalPage, startPage + buttonCount - 1);
-            //
-            //     if (startPage > 1) {
-            //         addPageButton('<<', 1); // 처음 페이지로 가는 버튼
-            //     }
-            //
-            //     for (let i = startPage; i <= endPage; i++) {
-            //         addPageButton(i, i);
-            //     }
-            //
-            //     if (endPage < totalPage) {
-            //         addPageButton('>>', totalPage); // 마지막 페이지로 가는 버튼
-            //     }
-            // };
-
-            // const addPageButton = (label, page) => {
-            //     let button = document.createElement('button');
-            //     button.innerText = label;
-            //     button.addEventListener('click', () => {
-            //         goToPage(page);
-            //     });
-            //
-            //     let pagination = document.getElementById('pagination');
-            //     pagination.appendChild(button);
-            // };
-            //
-            // const goToPage = (page) => {
-            //     fetch(`/product/review?option=L&page=${page}`, {
-            //         method: 'POST',
-            //         headers: { "Content-Type": "application/json" },
-            //         body: JSON.stringify({ option: 'L' })
-            //     })
-            //         .then((response) => response.json())
-            //         .then((data) => {
-            //             reviewList(data); // 해당 페이지의 리뷰 목록만 전달하여 갱신
-            //             displayPageButtons(page, data.totalPage); // 페이징 버튼 갱신
-            //         })
-            //         .catch((error) => {
-            //             console.error('페이지 이동 오류:', error);
-            //             alert('페이지 이동 중 오류가 발생했습니다.');
-            //         });
-            // };
 
 
             document.querySelectorAll('.btnReviewDelete').forEach(btn => {

@@ -78,7 +78,8 @@
                 var exchangenumber = document.getElementById('exchangenumber');
 
                 var a = document.getElementById('purchaseinfonumber' + index);
-                var number = a.getAttribute('data-purchaseinfonumber');
+                // var number = a.getAttribute('data-purchaseinfonumber');
+                var number = a.innerText;
                 exchangenumber.value = number;
                 console.log(number);
                 if (exchange.style.display === 'none') {
@@ -92,7 +93,8 @@
 
             function showDiv1(index) {
                 var a = document.getElementById('purchaseinfonumber' + index);
-                var number = a.getAttribute('data-purchaseinfonumber');
+                // var number = a.getAttribute('data-purchaseinfonumber');
+                var number = a.innerText;
 
                 var exchange = document.getElementById('exchangeDiv');
                 var refund = document.getElementById('refundDiv');
@@ -115,7 +117,7 @@
 
             console.log(index);
             const a = document.getElementById('purchaseinfonumber' + index);
-            var purchaseinfonumber = a.getAttribute('data-purchaseinfonumber');
+            var purchaseinfonumber = a.innerText;
             console.log(purchaseinfonumber);
             await fetch('/member/memberPurchaseList?option=cer', {
                 method: "POST",
@@ -141,7 +143,7 @@
 
             console.log(index);
             const a = document.getElementById('purchaseinfonumber' + index);
-            var purchaseinfonumber = a.getAttribute('data-purchaseinfonumber');
+            var purchaseinfonumber = a.innerText;
             console.log(purchaseinfonumber);
                 await fetch('/member/memberPurchaseList?option=c', {
                     method: "POST",
@@ -166,7 +168,7 @@
 
             console.log(index);
             const a = document.getElementById('purchaseinfonumber' + index);
-            var purchaseinfonumber = a.getAttribute('data-purchaseinfonumber');
+            var purchaseinfonumber = a.innerText;
             console.log(purchaseinfonumber);
             await fetch('/member/memberPurchaseList?option=d', {
                 method: "POST",
@@ -291,6 +293,7 @@
                 <th></th>
             </tr>
             <th:block th:if="${purchaseInfo != null}">
+<!--                <th:block th:if="${purchaseInfo != null}">-->
             <tr th:each="list, stat :${purchaseInfo}">
                 <td th:text="${list.purchasedate}"></td>
                 <td th:id="purchaseinfonumber + ${stat.index}" th:text="${list.purchaseinfonumber}"></td>
@@ -298,7 +301,7 @@
                 <td th:text="${list.totalprice}"></td>
                 <td th:id="'status'+${stat.index}" class="status" th:text="${statusList[stat.index]}"></td>
                 <td>
-                    <button th:id="'reply' + ${stat.index}" style="width: 100%"><a th:href="@{'/product/productInfo?bookid='+ ${bookids[stat.index]} + '&page=1'  + '&focus=true'}">리뷰작성</a></button>
+                    <button th:id="'reply' + ${stat.index}" class="reply" style="width: 100%"><a th:href="@{'/product/productInfo?bookid='+ ${bookids[stat.index]} + '&page=1'  + '&focus=true'}">리뷰작성</a></button>
                     <button th:id="'cancel'+${stat.index}" class="cancel" th:onclick="'cancel(\'' + ${stat.index} + '\')'">주문취소</button>
                     <button th:id="'exchange' + ${stat.index}" class="exchange" th:onclick="'javascript:showDiv(' + ${stat.index} + ');'">교환</button>
                     <button th:id="'refund' + ${stat.index}" class="refund" th:onclick="'javascript:showDiv1(' + ${stat.index} + ');'">환불</button>

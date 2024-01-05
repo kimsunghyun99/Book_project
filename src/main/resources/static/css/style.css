@@ -355,7 +355,7 @@ form{
 }
 
 .reviewDiv{
-    width:60%;
+    width:90%;
     height:auto;
     margin:auto;
     text-align:left;
@@ -364,6 +364,10 @@ form{
 .reviewbtn{
     width: 10%;
     text-align: center;
+}
+
+#reviewcontent ,#reivewDivbutton {
+display:inline-block;
 }
 
 .container {
@@ -566,10 +570,11 @@ form{
 .delivery{
     margin-left: 45%;
 }
-.cancel, .exchange, .refund, .exchangecancel, .refundcancel {
+.reply, .determine, .cancel, .exchange, .refund, .exchangecancel, .refundcancel {
     width: 100%;
-    margin: auto;
+    /*margin: auto;*/
     display: none;
+    margin-bottom: 5px;
 }
 #exchangeDiv, #refundDiv {
     display: none;

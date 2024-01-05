@@ -52,7 +52,7 @@ public class PurchaseInfoServiceImpl implements PurchaseInfoService {
 
     // buyerseq 를 토대로 bookid 가져오기
     @Override
-    public List<String> GetBookId(int buyerseq) throws Exception {
+    public String GetBookId(int buyerseq) throws Exception {
         return purchaseInfoRepository.GetBookId(buyerseq);
     }
 

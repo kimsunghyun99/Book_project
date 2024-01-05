@@ -134,7 +134,9 @@
         <input type="button" class="btn_modify" value="비밀번호 수정" onclick="passwordModify()">
     </div>
 
-    <div class="interestselect" style="font-family: 'GmarketSansMedium'; padding-bottom: 10px;"> 관심분야 :</div>
+    <div class="interestselect" style="font-family: 'GmarketSansMedium'; padding-bottom: 10px;">
+        관심분야 : <span th:text="${memberInfo.interest}"></span><br>
+    </div>
     <select id="interests" name="interests" onchange="handleInterestChange(this.value)">
         <option value="all" disabled selected>관심분야 ▼</option>
         <option value="OS/Networking">OS/Networking </option>

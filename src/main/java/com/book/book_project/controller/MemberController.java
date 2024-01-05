@@ -308,7 +308,7 @@ public class MemberController {
 
         List<String> BookIdList1 = new ArrayList<>();
 
-        Collections.reverse(buyerInfo);
+//        Collections.reverse(buyerInfo);
 
 
         for(int i =0; i<buyerInfo.size(); i++) {

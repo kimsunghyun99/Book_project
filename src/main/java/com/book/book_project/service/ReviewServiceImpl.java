@@ -42,6 +42,8 @@ public class ReviewServiceImpl implements ReviewService{
     // 리뷰 등록
     @Override
     public void reviewRegistry(ReviewInterfaceImpl review) throws Exception {
+
+
         ProductEntity productEntity = productRepository.findById(review.getBookid()).orElse(null);
         MemberEntity memberEntity = memberRepository.findById(review.getUserid()).orElse(null);
 

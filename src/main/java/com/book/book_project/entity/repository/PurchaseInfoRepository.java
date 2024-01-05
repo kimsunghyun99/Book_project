@@ -28,7 +28,7 @@ public interface PurchaseInfoRepository extends JpaRepository<PurchaseInfoEntity
     public int GetStatusSeq(@Param("bookid") String bookid);
 
     @Query(value = "select t.bookid from tbl_purchaseinfo as t where t.buyerseq = :buyerseq", nativeQuery = true)
-    public List<String> GetBookId(@Param("buyerseq") int buyerseq);
+    public String GetBookId(@Param("buyerseq") int buyerseq);
 
 
     //주문 상태 불러오기
@@ -164,6 +164,6 @@ public interface PurchaseInfoRepository extends JpaRepository<PurchaseInfoEntity
 
     @Transactional
     @Modifying //  테이블에 DML ( insert, update, delete) 을 실행 시켜 변화를 주었을 경우 테이블에 반영된 내용을 엔티티 클래스에 반영
-    @Query(value="update tbl_purchaseinfo set statusseq = :statusseq where purchaseinfonumber = :purchaseinfonumber",nativeQuery = true)
+    @Query(value="update tbl_purchaseinfo set statusseq =:statusseq where purchaseinfonumber =:purchaseinfonumber",nativeQuery = true)
     public void updateStatusseq(@Param("statusseq") int statusseq, @Param("purchaseinfonumber") int purchaseinfonumber);
 }
